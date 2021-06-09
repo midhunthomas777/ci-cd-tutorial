@@ -1,0 +1,59 @@
+<aura:component controller="CreateRevenueCtrl" implements="lightning:actionOverride,force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global"><!--added lightningquickaction by akhil-->
+    <aura:attribute name="showSpinner" type="Boolean" default="true" />
+    <aura:attribute name="oppoLineItems" type="List" />
+    <aura:attribute name="loadSpinner" type ="Boolean" default="false"/>
+    <aura:attribute name="userTheme" type="String"/> <!--added by akhil-->
+    <aura:attribute name="revenueDelta" type ="Boolean" default="false"/>
+  
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner alternativeText="Loading.." variant="brand" size="large" aura:id="mySpinner"/>
+    </aura:if>
+    <lightning:recordForm recordId="{!v.recordId}"
+                          objectApiName="Opportunity"
+                          layoutType="Compact"
+                          columns="4"
+                          mode="readonly" />
+    <div class="slds-box slds-theme_default">
+        
+        <aura:if isTrue="{!not(empty(v.oppoLineItems))}">
+            
+            <lightning:accordion allowMultipleSectionsOpen="true">
+                <aura:iteration items="{!v.oppoLineItems}" var="oppoLineItemId">
+                    <lightning:accordionSection label="{!oppoLineItemId.Product2.Name + ' ' +'(' + oppoLineItemId.Opportunity.CurrencyIsoCode + ')' + ' | Revenue Delta: ' + 
+                                                       oppoLineItemId.Revenue_Delta_New__c}">
+                        <!--lightning:formattedNumber value="{!oppoLineItemId.Revenue_Delta__c}"/ -->
+                        <aura:if isTrue="{!not(empty(oppoLineItemId.Id))}"> 
+                            <lightning:recordEditForm objectApiName="OpportunityLineItem" onsubmit="{!c.handleSubmit}" onerror ="{!c.handleError}" recordId="{!oppoLineItemId.Id}" >
+                                <div class="c-container">
+                                    <lightning:layout verticalAlign="center" class="x-large">
+                                        <lightning:layoutItem flexibility="auto" padding="around-small">
+                                            <lightning:inputField fieldName="UnitPrice" />
+                                            <span>{!'The above Price field may display the wrong Currency sign.  It is actually in' + ' ' + oppoLineItemId.Opportunity.CurrencyIsoCode}</span>
+                                        </lightning:layoutItem>
+                                        <lightning:layoutItem flexibility="auto" padding="around-small">
+                                            <lightning:inputField fieldName="Product_Segment__c" />
+                                        </lightning:layoutItem>
+                                        <lightning:layoutItem flexibility="auto" padding="around-small">
+                                            <lightning:inputField fieldName="Description" />
+                                        </lightning:layoutItem>
+                                        <lightning:inputField fieldName="recordId" value="{!oppoLineItemId.Id}" />
+                                        <lightning:layoutItem flexibility="auto" padding="around-small">
+                                            <lightning:button variant="brand" type="submit" label="Save"/>
+                                        </lightning:layoutItem>
+                                    </lightning:layout>
+                                </div>
+                            </lightning:recordEditForm >
+                        </aura:if>
+                        <!--aura:if isTrue="{!v.revenueDelta}">   
+            <lightning:button variant="brand" label="Update Revenue Delta" onclick ="{!c.updateOppLineItem}"/>
+                        </aura:if-->
+                        <c:CreateRevenue recordId="{!oppoLineItemId.Id}" oppCloseDate="{!oppoLineItemId.Opportunity.CloseDate}" oppId="{!v.recordId}"
+                                         oppCurrency="{!oppoLineItemId.Opportunity.CurrencyIsoCode}" oppFiscalMonth="{!oppoLineItemId.Fiscal_Month__c}" 
+                                         userTheme="{!v.userTheme}" oppoLineItems ="{!v.oppoLineItems}" revenueDelta ="{!v.revenueDelta}" />
+                    </lightning:accordionSection>
+                </aura:iteration>
+            </lightning:accordion>
+        </aura:if>
+    </div>
+</aura:component>

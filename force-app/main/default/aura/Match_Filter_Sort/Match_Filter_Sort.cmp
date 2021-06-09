@@ -1,0 +1,27 @@
+<!--
+  - Copyright (c) 2018. 7Summits Inc.
+  -->
+
+<!--
+ - Created by francois korb on 6/15/18.
+ -->
+
+<aura:component description="Match_Filter_Sort"
+                extends="c:Match_Base">
+
+	<aura:registerEvent name="sortSubEvent" type="c:Match_Filter_Sort_Event"/>
+
+	<aura:attribute name="sortItem"   type="object" default="" access="public"/>
+	<aura:attribute name="sortString" type="String" default="confidence" access="private"/>
+
+	<lightning:layout >
+		<lightning:layoutItem size="12">
+			<lightning:combobox label="{!v.sortItem.label}"
+			                    name="select"
+			                    value="{!v.sortString}"
+			                    options="{!v.sortItem.entries}"
+			                    onchange="{!c.onSortChange}"/>
+		</lightning:layoutItem>
+	</lightning:layout>
+
+</aura:component>

@@ -1,0 +1,61 @@
+<aura:component controller="ExternalOrdersController" implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,lightning:isUrlAddressable" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="singleOrderTracking" type="Object"/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="false"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="orderTrackingDetailList" type="List"/>
+    
+    <aura:attribute name="orderDetailUrl" type="String"/>
+   
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="medium" aura:id="mySpinner"/>
+    </aura:if>
+    <div class="slds-p-vertical_large slds-m-bottom_medium slds-align_absolute-center">
+      <span class="moto-order-header">Order tracking info</span>
+    </div>
+    <div class="slds-m-bottom_small"></div>
+    <aura:if isTrue="{!not(empty(v.singleOrderTracking))}">
+        <div class="slds-p-vertical_large slds-align_absolute-center slds-m-bottom_medium">
+            <span class="moto-order-title">               
+                Sales Order No.
+              <lightning:formattedUrl value="{!v.orderDetailUrl}"
+                                      label="{!v.singleOrderTracking.confirmation_number}"/>
+            </span>           
+        </div>
+        <div class="c-container slds-border_bottom slds-border_top slds-border_right slds-border_left slds-p-around_small">
+            <lightning:layout horizontalAlign="spread" multipleRows="true">
+                 <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="End User Site ID">End User Site ID</p>
+                        <p>{!v.singleOrderTracking.end_user_site_id}</p>
+                    </div>
+                </lightning:layoutItem>
+                 <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="End User Site Name">End User Site Name</p>
+                        <p>{!v.singleOrderTracking.end_user_site_name}</p>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Invoice Number">Invoice Number</p>
+                        <p>{!v.singleOrderTracking.invoice_number}</p>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Shipping Address">Shipping Address</p>
+                        <lightning:formattedAddress street="{!v.singleOrderTracking.shipping_address.line1}"
+                                                    city="{!v.singleOrderTracking.shipping_address.line2}" country="{!v.singleOrderTracking.shipping_address.line4}"
+                                                    province="{!v.singleOrderTracking.shipping_address.line3}" disabled="true" />
+                    </div>
+                </lightning:layoutItem>           
+            </lightning:layout>
+        </div>
+        <div class="slds-m-bottom_medium"></div>
+        <aura:if isTrue="{!not(empty(v.orderTrackingDetailList))}">
+            <c:GenerateLightningDataTable columns="{!v.columns}" inlineEditing="false" resultList ="{!v.orderTrackingDetailList}" hideSelection="true" 
+                                          showPagination="true" pageSize="10" />
+        </aura:if>
+    </aura:if>
+</aura:component>

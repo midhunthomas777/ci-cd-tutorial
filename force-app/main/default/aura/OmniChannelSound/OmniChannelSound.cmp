@@ -1,0 +1,27 @@
+<aura:component description="Allows agents to select their own Omni-Channel Notification Sound" 
+    implements="flexipage:availableForAllPageTypes" 
+    controller="OmniChannelSoundsCtrl">
+    <aura:attribute name="selectedSound" type="String"/>
+    <aura:attribute name="availableSounds" type="List"/>
+    <aura:attribute name="retrieveSoundFinished" type="Boolean" default="false"/>
+    <aura:attribute name="retrieveSoundsFinished" type="Boolean" default="false"/>
+    
+    <lightning:omniToolkitAPI aura:id="omniToolkit" />
+     
+    <lightning:select aura:id="soundPicklist" 
+        name="select" 
+        label="Notification Sound" 
+        value="{!v.selectedSound}">
+                <aura:iteration items="{!v.availableSounds}" 
+                    var="sound" 
+                    indexVar="key">
+                    <option text="{!sound}" 
+                        selected="{!sound==v.selectedSound}" />
+                </aura:iteration>
+    </lightning:select>
+
+    <aura:handler name="change" value="{!v.selectedSound}" action="{!c.handleChange}"/>
+    <aura:handler event="lightning:omniChannelWorkAssigned" 
+        action="{!c.onWorkAssigned}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+</aura:component>

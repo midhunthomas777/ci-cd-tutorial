@@ -1,0 +1,51 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<aura:component description="SVNSUMMITS_Ideas_Tile_Image"
+                extends="c:SVNSUMMITS_Ideas_Base"
+                access="public">
+
+    <aura:attribute name="baseModel"        type="String"   access="global"/>
+    <aura:attribute name="idea"             type="Map"      access="public"/>
+    <aura:attribute name="sitePath"         type="String"   access="global"/>
+    <aura:attribute name="sitePrefix"       type="String"   access="global"/>
+    <aura:attribute name="ideaImageURL"     type="String"   default="/servlet/fileField?field=AttachmentBody" access="global"/>
+    <aura:attribute name="ideaUrl"          type="String" access="public"/>
+
+    <aura:attribute name="ideaDetailURL"    type="String"   default="/idea/"      access="public"/>
+    <aura:attribute name="height"           type="String"   default=""   access="global" />
+    <aura:attribute name="size"             type="Integer"  default="12" access="global" />
+    <aura:attribute name="smallDeviceSize"  type="Integer"  default=""   access="global" />
+    <aura:attribute name="mediumDeviceSize" type="Integer"  default=""   access="global" />
+    <aura:attribute name="largeDeviceSize"  type="Integer"  default=""   access="global" />
+
+    <aura:handler name="baseReady" event="c:SVNSUMMITS_BaseReady" action="{!c.init}"/>
+
+    <lightning:navigation aura:id="tileImageNavigation"/>
+
+    <lightning:layoutItem class="idea__image-wrapper"
+                          size="{!v.size}"
+                          smallDeviceSize="{!v.smallDeviceSize}"
+                          mediumDeviceSize="{!v.mediumDeviceSize}"
+                          largeDeviceSize="{!v.largeDeviceSize}"
+                          flexibility="no-grow"
+    >
+        <a data-id="{!v.idea.Id}"
+           href="{!v.ideaUrl}"
+           title="{!v.idea.Name}"
+           class="idea__image-link"
+        >
+            <aura:if isTrue="{!v.idea.AttachmentName}">
+                <div class="idea__image"
+                     style="{!'background-image:url(' + v.sitePrefix + v.ideaImageURL + '&amp;entityId=' + v.idea.Id + ');' + if(v.height, 'height: ' + v.height + ';', '')}">
+                </div>
+                <aura:set attribute="else">
+                    <div class="idea__image idea__image_default"
+                         style="{! 'background-image:url(' + $Resource.Ideas_Resources + '/Images/default-ideas.png);' + if(v.height, 'height: ' + v.height + ';', '')}">
+                    </div>
+                </aura:set>
+            </aura:if>
+        </a>
+    </lightning:layoutItem>
+
+</aura:component>

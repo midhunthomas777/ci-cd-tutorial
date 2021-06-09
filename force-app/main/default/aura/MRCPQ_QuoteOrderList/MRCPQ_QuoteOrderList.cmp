@@ -1,0 +1,60 @@
+<aura:component controller="MRCPQ_QuoteAndOrderListController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
+    <aura:html tag="style">  
+        .slds-modal__container{max-width: 70rem !important;width:90% !important;}
+    </aura:html>
+    <!--Adding static resource to increase the width-->
+    <!--<ltng:require styles="{!$Resource.ModalWidthCSS}"/-->
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="quoteId" type="String" />
+    <aura:attribute name="accountId" type="String"/>
+    <aura:attribute name="successMsg" type="String"/>
+    <aura:attribute name="displayProductFamilyButtons" type="boolean" default="false"/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="false"/>
+    <aura:attribute name="maxRowSelection" type="Integer" default="1"/>
+    <!-- Attribute Declration For Pagination -->
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="QuoteOrderData" type="Object"/>
+    <aura:attribute name="PaginationList" type="account"/>
+    <aura:attribute name="startPage" type="Integer" />
+    <aura:attribute name="endPage" type="Integer"/>
+    <aura:attribute name="totalRecords" type="Integer"/>
+    <aura:attribute name="pageSize" type="Integer" default="10"/>
+    <aura:attribute name="showError" type="boolean" default="false"/>
+    <aura:attribute name="shownextpre" type="boolean" default="false"/>
+    <aura:attribute name="CPQsuccessMsg" type="String" default=""/>
+    <aura:attribute name="CPQsuccessMsgLabel" type="String" default=""/>
+    <aura:attribute name="CPQremoveMsg" type="String" default=""/>
+    <aura:attribute name="CPQremoveMsgLabel" type="String" default=""/>
+    <aura:attribute name="quoteToRemove" type="String" />
+    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <lightning:notificationsLibrary  aura:id="notifLib" />
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="large" alternativetext="Loading" title="Loading"/>
+    </aura:if>
+    <aura:if isTrue="{!!v.showError}">
+        <lightning:datatable aura:id="quoteTable" class="cols" columns="{!v.columns}" data="{!v.PaginationList}" keyField="Id"
+                             maxRowSelection="{!v.maxRowSelection}" onrowselection="{!c.openQuoteDetails}"/>
+        <aura:if isTrue="{!v.shownextpre}">
+            <lightning:buttonGroup class="slds-align_absolute-center slds-m-top_xx-small">
+                <lightning:button label="Previous" disabled="{!v.startPage == 0}" onclick="{!c.previous}" iconName='utility:back'/>
+                <lightning:button label="Next" disabled="{!v.endPage >= v.totalRecords}" onclick="{!c.next}" variant="brand" iconName='utility:forward' iconPosition='right'/>
+            </lightning:buttonGroup>
+        </aura:if>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.showError}">
+        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+            <h2>No quote record to display.</h2>
+        </div>
+    </aura:if>
+    <div class="slds-m-top_small">
+        <div class="slds-float_right slds-p-right_medium">
+            <aura:If isTrue="{!v.displayProductFamilyButtons}">
+                <lightning:button variant="brand" label="Include in Product Families" onclick="{!c.includeProduct}"/>
+            <lightning:button variant="brand" label="Remove from Product Families" onclick="{!c.removeProduct}"/>
+            </aura:If>
+        </div>
+    </div>
+</aura:component>

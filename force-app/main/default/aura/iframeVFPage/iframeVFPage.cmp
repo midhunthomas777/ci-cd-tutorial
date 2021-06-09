@@ -1,0 +1,10 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="domainName" type ="String"/>
+    <aura:attribute name="vfPageName" type ="String"/>
+    <aura:attribute name="recrdId" type ="String"/>
+    <aura:attribute name="width" type ="String"/>
+    <aura:attribute name="height" type ="String"/>
+    <aura:attribute name="frameBorder" type ="String"/>
+    
+<iframe src="{! v.domainName +'/apex/'+v.vfPageName+'?Id=' + v.recrdId }" width="{!v.width}" height="{!v.height}" frameBorder="{!v.frameBorder}"/>
+</aura:component>

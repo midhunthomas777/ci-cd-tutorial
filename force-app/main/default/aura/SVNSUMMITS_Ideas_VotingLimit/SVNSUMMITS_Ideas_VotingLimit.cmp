@@ -1,0 +1,44 @@
+<!-- Copyright ©2019 7Summits Inc. All rights reserved. -->
+
+<aura:component description="SVNSUMMITS_Ideas_VotingLimit"
+                controller="SVNSUMMITS_IdeaViewController"
+                implements="force:hasRecordId"
+                access="global">
+
+    <!-- Attribute attributes -->
+    <aura:attribute name="headerText" type="String" default="Account Voting" access="global"/>
+    <aura:attribute name="accountLimits" type="Map" access="global"/>
+    <aura:attribute name="currentVoteCount" type="Integer" default="0" access="global"/>
+    <aura:attribute name="recordId" type="String" default=""/>
+    <aura:attribute name="totalVoteCount" type="Integer" default="0" access="global"/>
+    <aura:attribute name="currentLimit" type="String" default="Current Account Votes"/>
+    <aura:attribute name="totalLimit" type="String" default=" Account Voting Limit"/>
+
+    <!-- Boolean Attributes -->
+    <aura:attribute name="showHeaderText" type="Boolean" default="true" access="global"/>
+
+    <!--Init Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+
+    <!-- Body -->
+    <!-- Title -->
+    <aura:if isTrue="{!v.totalVoteCount != 0}">
+        <aura:if isTrue="{!v.showHeaderText}">
+            <lightning:layoutItem size="12">
+                <c:SVNSUMMITS_Ideas_Heading tag="h2" size="medium">
+                    <lightning:formattedText value="{!v.headerText}"/>
+                </c:SVNSUMMITS_Ideas_Heading>
+            </lightning:layoutItem>
+        </aura:if>
+
+        <div class="">
+            <div class="slds-p-top_x-small slds-grid slds-wrap">
+                <span class="slds-p-right_small">{!v.currentLimit} </span><span>{!v.currentVoteCount}</span>
+            </div>
+            <div class="slds-p-top_x-small slds-grid slds-wrap">
+                <span class="slds-p-right_small">{!v.totalLimit} </span><span>{!v.totalVoteCount}</span>
+            </div>
+        </div>
+    </aura:if>
+</aura:component>

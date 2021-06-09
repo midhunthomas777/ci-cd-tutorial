@@ -1,0 +1,28 @@
+/*
+ * Copyright (c) 2019. 7Summits Inc.
+ */
+.THIS .idea__image {
+    width:100%;
+    height:150px;
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position:top center;
+    transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+}
+
+.THIS .idea__image-link {
+    display: block;
+    overflow: hidden;
+}
+
+.THIS .idea:hover .idea__image {
+    transform: scale(1.05);
+    -moz-transform: scale(1.05);
+    -webkit-transform: scale(1.05);
+    -o-transform: scale(1.05);
+    -ms-transform: scale(1.05); /* IE 9 */
+}

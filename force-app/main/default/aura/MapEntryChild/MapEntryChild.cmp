@@ -1,0 +1,42 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes" access="global">
+    <aura:attribute name="map" type="map"/>
+    <aura:attribute name="key" type="String"/>
+    <aura:attribute name="value" type="map"/>
+    <aura:attribute access="private" type="List" name="selection" default="[]"/>
+    <aura:attribute type="Map" name="headingMap" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="message" type="boolean" default="false" description="use for display no record found message"/>
+    
+    <aura:iteration items="{!v.value}" var="children">
+        <c:CAPPToolHeading map="{!v.headingMap}" key="{!children.key}" />
+        <aura:iteration items="{!children.value}" var="grandChildren">
+            <lightning:layout multipleRows="true">
+                <aura:iteration items="{!grandChildren.grandChildren}" var="grandgrandChildren">
+                    <lightning:layoutItem size="6" mediumDeviceSize="3" padding="around-small">
+                        <aura:if isTrue="{!grandgrandChildren.fieldType == 'REFERENCE'}">
+                            <c:strike_lookup
+                                             label="{!grandgrandChildren.fieldLabel}"
+                                             object="Account"
+                                             searchField="Name"
+                                             placeholder="Search a Competitor"
+                                             iconName="standard:account"
+                                             subtitleField="BillingState"
+                                             order="Name"
+                                             limit="5"
+                                             loadingMessage="Loading..."
+                                             errorMessage="Invalid input"
+                                             value="{!grandgrandChildren.fieldValue}"
+                                             filter ="RecordType.Name = 'Competitor'"
+                                             lookupFieldAPI = "{!grandgrandChildren.fieldName}" 
+                                             helpText="{!grandgrandChildren.fieldHelp}" 
+                                             showRecentRecords = "true"/>
+                            <aura:set attribute="else">
+                                <lightning:inputField fieldName="{!grandgrandChildren.fieldName}" variant="label-stacked"/>
+                            </aura:set>
+                        </aura:if> 
+                    </lightning:layoutItem>
+                </aura:iteration>
+            </lightning:layout>
+        </aura:iteration>
+    </aura:iteration>
+</aura:component>

@@ -1,0 +1,6 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<aura:event type="APPLICATION" description="Event template" access="global">
+    <aura:attribute name="numResults" type="Integer" access="global"/>
+</aura:event>

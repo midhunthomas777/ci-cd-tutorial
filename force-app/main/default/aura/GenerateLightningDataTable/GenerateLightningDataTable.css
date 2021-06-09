@@ -1,0 +1,47 @@
+.THIS .slds-row-number {
+  display: none;
+}
+
+/* input */
+.THIS .moto-input-item.jump-to input {
+  height: 35px;
+  width: 53px;
+}
+
+.THIS .moto-input-item input {
+  color: #767676;
+  border-color: #e5e5e5;
+  border-radius: 0;
+  font-size: t(fontSizeMedium);
+}
+
+.THIS .moto-select-item {
+  color: #767676;
+  border-color: #e5e5e5;
+  border-radius: 0;
+  font-size: t(fontSizeMedium);
+  width: 50px;
+}
+
+.THIS .moto-input-item.jump-to .slds-form-element__control {
+  display: inline-block;
+}
+
+.THIS .moto-input-item label {
+  color: #343434;
+  font-weight: t(fontWeightRegular);
+  font-size: t(fontSizeSmall);
+  margin-bottom: t(spacingXSmall);
+}
+
+.THIS .align-right {
+  text-align: right;
+}
+
+.THIS .slds-table thead th {
+  font-weight: t(fontWeightRegular);
+}
+
+.THIS.c-container {
+  margin-top: 6px;
+}

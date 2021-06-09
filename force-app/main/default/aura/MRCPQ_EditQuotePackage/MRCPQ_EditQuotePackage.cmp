@@ -1,0 +1,53 @@
+<aura:component controller="MRCPQ_EditQuotePackageController" implements="lightning:availableForFlowScreens,lightning:availableForFlowActions" access="global" >
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="quoteList" type="List" />
+    <aura:attribute name="hostIds" type="List" />
+    <aura:attribute name="gridColumns" type="List" access="PRIVATE" />
+    <aura:attribute name="gridData" type="Object" access="PRIVATE" />
+    <aura:attribute name="gridExpandedRows" type="List" access="PRIVATE" />
+    <aura:attribute name="gridSelectedRows" type="List" access="PRIVATE" />
+    <aura:attribute name="flowOppId" type="String"/>
+    <aura:attribute name="quoteCount" type="Integer"/>
+    <aura:attribute name="displayProductFamilyButtons" type="boolean" default="false"/>
+    <aura:attribute name="currrentProductsIncluded" type="boolean" default="false"/>
+    <aura:attribute name="displayRemoveFamilyButton" type="boolean" default="false"/>
+    <aura:attribute name="successMsg" type="String"/>
+    <aura:attribute name="CPQSuccessMsg" type="String" default="Product Families have been updated with Quote Product data"/>
+    <aura:attribute name="CPQSuccessMsgLabel" type="String" default="Product Families have been updated with Quote Product data"/>
+    <aura:attribute name="CPQCancelMsg" type="String" default="No Quotes have been chosen, therefore no Product Families will be overwritten."/>
+    <aura:attribute name="CPQRemoveAllMsg" type="String" default="All Product Family values have been cleared successfully. Products not marked as CPQ Updatable remain unchanged."/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="false"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <lightning:notificationsLibrary  aura:id="notifLib" />
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="large" alternativetext="Loading" title="Loading"/>
+    </aura:if>
+    
+    <aura:if isTrue="{!!v.showError}">
+        <ui:scrollerWrapper class="innerScroller">
+            <lightning:treeGrid
+                aura:id="quoteTree"
+                columns="{! v.gridColumns }"
+                data="{! v.gridData }"
+                expandedRows="{! v.gridExpandedRows }"
+                selectedRows="{! v.gridSelectedRows }"
+                onrowselection="{!c.rowSelection}"
+                keyField="quoteId"
+            />
+        </ui:scrollerWrapper>
+    </aura:if>
+    <div class="slds-m-top_small">
+        <div class="slds-float_right slds-p-right_medium"> 
+            <aura:if isTrue="{!v.displayRemoveFamilyButton}">
+                <lightning:button variant="brand" label="Remove All Quotes" onclick="{!c.removeProducts}"/>
+            </aura:if>
+            <lightning:button variant="brand" label="Cancel" onclick="{!c.cancelProductEdit}"/>
+            <aura:If isTrue="{!v.displayProductFamilyButtons}">
+                <lightning:button variant="brand" label="Update Product Families" onclick="{!c.includeProduct}"/>
+            </aura:If>
+            
+        </div>
+    </div>
+
+</aura:component>

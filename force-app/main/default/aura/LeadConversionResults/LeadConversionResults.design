@@ -1,0 +1,7 @@
+<!-- These attributes will display on Flow for passing and storing values -->
+<design:component>
+	<!-- Inputs -->
+	<design:attribute name="convertedAccountId" label="Converted AccountId" />
+    <design:attribute name="convertedOpptyId" label="Converted OpportunityId" />
+    <design:attribute name="convertedContactId" label="Converted ContactId" />
+</design:component>

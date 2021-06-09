@@ -1,0 +1,20 @@
+/*
+ * Copyright (c) 2019. 7Summits Inc.
+ */
+.THIS .slds-button {
+    /* Fixes display bug in some cases where two buttons aren't vertically aligned together */
+    vertical-align: middle;
+    border-color: token(colorBrand);
+    color: token(colorTextBrand);
+}
+.THIS .slds-button:hover,
+.THIS .slds-button:focus {
+    background-color: token(colorBackgroundStencil);
+}
+
+.THIS .slds-button:disabled,
+.THIS .slds-button[disabled] {
+    border-color: token(colorBackgroundStencil);
+    background-color: token(colorBackgroundStencil);
+    color: token(colorTextDefault);
+}

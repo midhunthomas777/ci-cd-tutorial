@@ -1,0 +1,60 @@
+<!--
+ * Created by: Dipendra Dadhich
+ * Created Date: 19-08-2019. 
+ -->
+
+
+<aura:component description="Peak_OnboardingAdditionalDetails">
+    <aura:registerEvent name="pageChange" type="c:Peak_OnboardingChangePage"/>
+    <aura:attribute name="buttonColor" type="String" default="#ff8201" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="error" type="String" />
+    <aura:attribute name="additionalSlideHeader" type="String" access="global" />
+    <aura:attribute name="additionalSlideMessage" type="String" access="global" />
+    <aura:attribute name="additionalSlideLabel" type="String" access="global" />
+    <aura:attribute name="additionalSlideUserFieldName1" type="String" access="global" />
+    <aura:attribute name="additionalSlideUserFieldLabel1" type="String" access="global" />
+    <aura:attribute name="additionalSlideUserFieldName2" type="String" access="global" />
+    <aura:attribute name="additionalSlideUserFieldLabel2" type="String" access="global" />
+
+    <aura:handler name="init" action="{!c.init}" value="{!this}"/>
+    <lightning:notificationsLibrary aura:id="notificationsLibrary"/>
+
+    <c:Peak_OnboardingSlide class="additional"
+                            title="{!v.additionalSlideHeader}"
+                            description="{!v.additionalSlideMessage}"
+                            primaryButtonLabel="Save &amp; Next"
+                            primaryButtonColor="{!v.buttonColor}"
+                            primaryOnClick="{!c.goToNext}"
+                            backButtonLabel="Go Back"
+                            backOnClick="{!c.goBack}"
+    >
+        <div class="slds-theme--error">{!v.error}</div>
+
+        <lightning:recordEditForm
+                recordId="{!v.recordId}"
+                aura:id="form"
+                objectApiName="User"
+                onsuccess="{!c.handleSuccess}" >
+            <lightning:messages />
+
+            <lightning:layout multipleRows="true"
+                              pullToBoundary="small"
+                              horizontalAlign="center"
+                              class="inputWrapper"
+            >
+                <aura:if isTrue="{!v.additionalSlideUserFieldName1}">
+                    <lightning:layoutItem size="12" mediumDeviceSize="8" padding="horizontal-small">
+                        <lightning:inputField fieldName="{!v.additionalSlideUserFieldName1}" variant="label-stacked" />
+                    </lightning:layoutItem>
+                </aura:if>
+                <aura:if isTrue="{!v.additionalSlideUserFieldName2}">
+                    <lightning:layoutItem size="12" mediumDeviceSize="8" padding="horizontal-small">
+                        <lightning:inputField fieldName="{!v.additionalSlideUserFieldName2}" variant="label-stacked" />
+                    </lightning:layoutItem>
+                </aura:if>
+            </lightning:layout>
+
+        </lightning:recordEditForm>
+    </c:Peak_OnboardingSlide>
+</aura:component>

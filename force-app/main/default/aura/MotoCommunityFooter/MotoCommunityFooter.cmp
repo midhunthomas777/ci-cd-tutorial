@@ -1,0 +1,114 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes,forceCommunity:searchInterface,forceCommunity:profileMenuInterface" access="global">
+   <!-- <ltng:require styles="{!$Resource.motosales360Main}"/> -->
+    <div>
+        <div class="moto-footer-container">
+            <div class="moto-upper-section">
+                <div>
+                    <a href="https://www.motorolasolutions.com/en_us.html?geo=redirect" target="_blank">
+                        <img class="moto-left-icon" src="{!$Resource.MsiUniversalAssets + '/assets/logo-mark.svg'}" alt="motorola master" />
+                    </a>
+                </div>
+                <div class="moto-icons-container slds-grid slds-wrap" >
+                    <div class="moto-conversation-item slds-size_1-of-1 slds-large-size_5-of-12">
+                        <span>Join the conversation:</span>
+                    </div>
+                    <div class="slds-size_1-of-1 slds-large-size_7-of-12">
+                        <a href="https://www.facebook.com/MotorolaSolutions" target="_blank">
+                            <img src="{!$Resource.MsiUniversalAssets + '/assets/facebook_icon.png'}" alt="facebook"/>
+                        </a>
+                        <a href="https://twitter.com/motosolutions" target="_blank">
+                            <img src="{!$Resource.MsiUniversalAssets + '/assets/twitter_icon.png'}"  alt="twitter"/>
+                        </a>
+                        <a href="https://www.linkedin.com/company/motorolasolutions" target="_blank">
+                            <img src="{!$Resource.MsiUniversalAssets + '/assets/linkedin_icon.png'}" alt="linkedin"/>
+                        </a>
+                        <a href="https://www.youtube.com/user/MotorolaSolutions?reload=9" target="_blank">
+                            <img src="{!$Resource.MsiUniversalAssets + '/assets/youtube_icon.png'}"  alt="youtube"/>
+                        </a>
+                        <a href="https://blog.motorolasolutions.com/en_us/?_ga=2.207969882.95391844.1583616995-281614115.1582858121" target="_blank">
+                            <img src="{!$Resource.MsiUniversalAssets + '/assets/motorola_icon.png'}"  alt="motorola"/>
+                        </a>
+                        <a href="https://www.instagram.com/motorolasolutions/" target="_blank">
+                            <img src="{!$Resource.MsiUniversalAssets + '/assets/instagram_icon.png'}" alt="instagram"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="moto-tabnav-container slds-grid slds-wrap">
+                <div class="moto-tabnav-section slds-size_1-of-1 slds-large-size_1-of-5">
+                    <span>ABOUT US</span>
+                    <ul>
+                        <li><a href="https://www.motorolasolutions.com/en_us/about.html">About Motorola Solutions</a></li>
+                        <li><a href="https://newsroom.motorolasolutions.com/executive-biographies/board-directors?_ga=2.46470511.95391844.1583616995-281614115.1582858121">Board of Directors</a></li>
+                        <li><a href="https://www.motorolasolutions.com/en_us/about/company-overview.html">Company Overview</a></li>
+                        <li><a href="https://newsroom.motorolasolutions.com/executive-biographies/executive-committee?_ga=2.46470511.95391844.1583616995-281614115.1582858121">Executive Committee</a></li>
+                        <li><a href="https://www.motorolasolutions.com/en_us/about/suppliers.html#taboverview">Suppliers</a></li>
+                        <li><a href="https://www.motorolasolutions.com/en_us/about/trust-center.html">Trust Center</a></li>
+                        <li><a href="https://www.motorolasolutions.com/en_us/about/company-overview/ventures.html">Ventures</a></li>
+                        <li><a href="https://www.motorolasolutions.com/en_us/about/privacy-policy.html#californiaresidents">Do Not Sell My Personal Information</a></li>
+                    </ul>
+                </div>
+                <div class="moto-tabnav-section slds-size_1-of-1 slds-large-size_1-of-5 ">
+                    <span>CAREERS</span>
+                    <ul>
+                      <li><a href="https://www.motorolasolutions.com/en_us/about/careers.html">Careers</a></li>
+                      <li><a href="https://www.motorolasolutions.com/en_us/about/careers.html#phnnav_internship-program">Internship Program</a></li>
+                    </ul>
+                </div>
+
+                <div class="moto-tabnav-section slds-size_1-of-1 slds-large-size_1-of-5">
+                  <span>COMMUNITY</span>
+                    <ul>
+                      <li><a href="https://blog.motorolasolutions.com/en_us/?_ga=2.50551777.95391844.1583616995-281614115.1582858121">Blog</a></li>
+                      <li><a href="https://www.motorolasolutions.com/en_us/communities.html">User Groups</a></li>
+                    </ul>
+                </div>
+
+                <div class="moto-tabnav-section slds-size_1-of-1 slds-large-size_1-of-5">
+                    <span>INVESTOR RELATIONS</span>
+                    <ul>
+                      <li><a href="https://investors.motorolasolutions.com/?_ga=2.12391420.95391844.1583616995-281614115.1582858121">Investor Relations</a></li>
+                      <li><a href="https://investors.motorolasolutions.com/CommitteeComposition?_ga=2.12391420.95391844.1583616995-281614115.1582858121">Corporate Governance</a></li>
+                      <li><a href="https://investors.motorolasolutions.com/EventsandPresentations?_ga=2.12391420.95391844.1583616995-281614115.1582858121">Events &amp; Presentations</a></li>
+                      <li><a href="https://investors.motorolasolutions.com/QuarterlyResults?_ga=2.12391420.95391844.1583616995-281614115.1582858121">Financial Information</a></li>
+                      <li><a href="https://investors.motorolasolutions.com/StockInformation?_ga=2.12391420.95391844.1583616995-281614115.1582858121">Stock Information</a></li>
+                    </ul>
+                </div>
+                <div class="moto-tabnav-section slds-size_1-of-1 slds-large-size_1-of-5">
+                    <span>NEWSROOM</span>
+                    <ul>
+                      <li><a href="https://newsroom.motorolasolutions.com/news?_ga=2.7541370.95391844.1583616995-281614115.1582858121">Newsroom</a></li>
+                      <li><a href="https://www.motorolasolutions.com/en_us/about/events.html">Events</a></li>
+                      <li><a href="https://newsroom.motorolasolutions.com/media-contacts?_ga=2.217743070.95391844.1583616995-281614115.1582858121">Media Contacts</a></li>
+                      <li><a href="https://newsroom.motorolasolutions.com/news?_ga=2.217743070.95391844.1583616995-281614115.1582858121">News Releases</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="moto-mobile-container">
+                <c:MotoCommunityMobileFooter/>
+            </div>
+            <div class="moto-sales360-trademark-section">
+                <span>MOTOROLA, MOTO, MOTOROLA SOLUTIONS and the Stylized M Logo are trademarks or registered trademarks of Motorola Trademark holdings, LLC and
+                    are used under license. All other trademarks are the property of their respective owners.
+                </span>
+            </div>
+            <div class="moto-sales360-bottom-section slds-grid slds-wrap">
+                <div class="moto-sales360-copyright slds-size_1-of-1 slds-large-size_1-of-4">
+                    <span>&copy; 2020 Motorola Solutions Inc. All rights reserved</span>
+                </div>
+                <div class="moto-sales360-bottom-tabs slds-size_1-of-1 slds-large-size_2-of-4">
+                    <span><a href="https://www.motorolasolutions.com/en_us/about/privacy-policy.html#privacystatement">Privacy Policy</a></span>
+                    <span><a href="https://www.motorolasolutions.com/en_us/preference-center-form.html">Privacy Settings</a></span>
+                    <span><a href="https://www.motorolasolutions.com/en_us/about/terms-use.html">Terms of Use</a></span>
+                    <span><a href="https://www.motorolasolutions.com/en_us/site-map.html">Site Map</a></span>
+                    <span><a href="https://video.motorolasolutions.com/?_ga=2.87233488.95391844.1583616995-281614115.1582858121">Video Library</a></span>
+                    <span><a href="https://www.questionpro.com/a/TakeSurvey?tt=oXDdyuKwgLY%3D&amp;externalID=0&amp;mode=languageSelected">Feedback</a></span>
+                </div>
+                <div class="moto-sales360-language slds-size_1-of-1 slds-large-size_1-of-4">
+                    <img src="{!$Resource.MsiUniversalAssets + '/assets/location_icon.png'}" alt="globe"/>
+                    <a href="https://www.motorolasolutions.com/static/locationselector.html"> <span>USA &amp; Canada</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

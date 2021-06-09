@@ -1,0 +1,3 @@
+<design:component label="New Warranty Claim Button">
+    <design:attribute name="desimUrl" label="Depricated setting" default="" description="This setting is depricated." />
+</design:component>

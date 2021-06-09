@@ -1,0 +1,49 @@
+<!--
+ - Created by melindagrad on 8/1/18.
+   - Copyright (c) 2018. 7Summits Inc.
+ -->
+
+<aura:component description="Adventure_StepModule" extends="c:Adventure_Peak_Base">
+
+    <!--Attributes-->
+    <aura:attribute name="lastModule" type="Boolean" access="global" default="false"/>
+    <aura:attribute name="stepModule" type="Object"/>
+    <aura:attribute name="truncate" type="Boolean"/>
+    <aura:attribute name="showLinks" type="Boolean"/>
+
+    <lightning:layout>
+        <lightning:layoutItem size="12">
+            <lightning:layout verticalAlign="center">
+                <lightning:layoutItem padding="around-x_small" class="{!if(v.truncate == true, ' slds-truncate', '')}">
+                    <h3 class="{!'slds-text-heading_small slds-p-bottom_x-small' + if(v.truncate == true, ' slds-truncate', '')}" title="{!v.stepModule.title}"> {!v.stepModule.title} </h3>
+                </lightning:layoutItem>
+
+                <aura:if isTrue="{!v.stepModule.tooltip}">
+                    <lightning:layoutItem class="slds-p-left--small slds-p-bottom--small">
+                        <lightning:helptext content="{!v.stepModule.tooltip}"></lightning:helptext>
+                    </lightning:layoutItem>
+                </aura:if>
+
+            </lightning:layout>
+
+            <aura:if isTrue="{!and(v.stepModule.descriptionLabel, v.showLinks)}">
+                <lightning:layout>
+                        <a href="javascript:void(0)" onclick="{!c.linkClick}" data-url="{!v.stepModule.descriptionLink}">
+                            <lightning:layoutItem  class="slds-p-bottom_small">
+                                {!v.stepModule.descriptionLabel}
+                            </lightning:layoutItem>
+                        </a>
+                </lightning:layout>
+            </aura:if>
+
+            <lightning:layout>
+                <lightning:layoutItem padding="" size="12" class="stepModuleBox slds-p-around_small slds-border_top">
+                    <aura:iteration items="{!v.stepModule.moduleTasks}" var="moduleTask" indexVar="index">
+                        <c:Adventure_ModuleTask moduleTask="{!moduleTask}" lastTask="{!and(v.lastModule,index == v.stepModule.moduleTasks.length - 1)}"/>
+                    </aura:iteration>
+                </lightning:layoutItem>
+            </lightning:layout>
+        </lightning:layoutItem>
+    </lightning:layout>
+
+</aura:component>

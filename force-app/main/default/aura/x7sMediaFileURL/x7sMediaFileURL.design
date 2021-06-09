@@ -1,0 +1,9 @@
+<design:component label="7S Media File URL">
+    
+    <design:attribute name="title" label="Title" description="Title to be displayed for the application. If blank, no title will be displayed."/>
+    <design:attribute name="titleSize" label="Title Text Size" description="Select small, medium or large for the size of title text."  datasource="Small,Medium,Large" />
+    <design:attribute name="titleAlignment" label="Title Alignment" description="Alignment for the title. Options are Left, Center or Right." datasource="Left,Center,Right"/>
+    <design:attribute name="bodyText" label="Body Text" required="true" description="Required. Additional instructional text.  If blank, no text will show."/>
+    <design:attribute name="customIcon" label="Icon" required="true"  description="Required. SLDS icon to be clicked to copy the URL to copy the file URL to the user’s clipboard."/>
+    
+</design:component>

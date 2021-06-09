@@ -1,0 +1,38 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<design:component label="7S Ideas Record Banner">
+    <design:attribute name="zoneName"
+                      label="Zone Name"
+                      description="Ideas Zone Name"/>
+    <design:attribute name="displayPostDateAuthor"
+                      label="Display Post Date and Author"
+                      description="Display the idea post date and author name" />
+	<design:attribute name="allowExploreIdeas"
+	                  label="Enable Explore more Ideas"
+	                  description="Enable the Explore more Ideas link"/>
+	<design:attribute name="opaqueBackground"
+	                  label = "Opaque background"
+	                  description="Enable to show an opaque background"/>
+
+	<design:attribute name="ideaDetailURL"
+	                  label="Idea Detail URL"
+	                  description="URL to detail page" />
+	<design:attribute name="ideaNewURL"
+	                  label="Idea Create URL"
+	                  description="Enter the Create Idea page URL - used for editing"/>
+	<design:attribute name="ideasListURL"
+	                  label="Ideas List View URL"
+	                  description="Enter Url for the list view to explore more records" />
+
+	<design:attribute name="canFollow"
+	                  label="Enable follow button"
+	                  description="Hide follow button if tracking is not required in the community"/>
+	<design:attribute name="canEdit"
+	                  label="Enable edit button"
+	                  description="Check to enable the edit button"/>
+	<design:attribute name="canDelete"
+	                  label="Enable delete button"
+	                  description="Check to enable the delete button"/>
+
+</design:component>

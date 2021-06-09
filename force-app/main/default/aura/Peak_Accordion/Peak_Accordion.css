@@ -1,0 +1,50 @@
+/**
+ * Expedition_Pack - Front-end assets used for the 7Summits Expedition Pack
+ * @version 1.0.0
+ * @author 7Summits
+ *
+ * COMPILED FILE DO NOT DIRECTLY EDIT
+ */
+.THIS .peak-accordion__content {
+  visibility: visible;
+  overflow: hidden;
+  height: 0;
+  transition: opacity 300ms cubic-bezier(0.23, 1, 0.32, 1), height 300ms cubic-bezier(0.23, 1, 0.32, 1), transform 300ms cubic-bezier(0.23, 1, 0.32, 1);
+  transform: translateY(-10px);
+  opacity: 0;
+}
+.THIS .peak-accordion__content.is-opening {
+  height: auto;
+  transform: translateY(0px);
+  opacity: 1;
+}
+.THIS .peak-accordion__content.is-visible {
+  overflow: visible;
+  height: auto;
+  transform: translateY(0px);
+  opacity: 1;
+}
+.THIS .peak-accordion__content.is-closing {
+  height: auto;
+  transform: translateY(-10px);
+  opacity: 0;
+}
+.THIS .peak-accordion__summary-action:focus {
+  outline: none;
+}
+.THIS .peak-accordion__summary-action-icon {
+  line-height: 0.75rem;
+  margin-right: 6px;
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  transform: rotate(0);
+  transform-origin: 50% 50%;
+}
+.THIS .peak-accordion_open .peak-accordion__summary-action-icon {
+  transform: rotate(90deg);
+}
+.THIS .slds-button + .slds-button {
+  margin-left: 0;
+}
+.THIS .slds-is-open {
+  background-color: #efefef;
+}

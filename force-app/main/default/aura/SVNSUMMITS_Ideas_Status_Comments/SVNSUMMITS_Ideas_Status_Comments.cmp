@@ -1,0 +1,71 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+
+<!--
+ - Created by francoiskorb on 11/29/18.
+ -->
+
+<aura:component description="SVNSUMMITS_Ideas_Status_Comments"
+                controller="SVNSUMMITS_Ideas_StatusComments"
+                implements="force:hasRecordId"
+                extends="c:SVNSUMMITS_Ideas_Base"
+                access="global">
+
+	<aura:attribute name="recordId"         type="String" access="public"/>
+	<aura:attribute name="summaryWrapper"   type="Map"/>
+	<aura:attribute name="userProfileURL"   type="String" default="/profile/" access="global"/>
+	<aura:attribute name="sitePrefix"       type="String" access="global"/>
+	<aura:attribute name="baseModel"        type="String"  access="global"/>
+	<aura:handler   name="init" value="{!this}" action="{!c.doInit}" />
+
+	<aura:if isTrue="{!v.summaryWrapper.length > 0}">
+		<lightning:layout multipleRows="true">
+			<lightning:layoutItem size="12"
+			                      class="slds-p-bottom_small">
+                <c:SVNSUMMITS_Ideas_Heading tag="h2" size="medium">
+                    <lightning:formattedText value="{!$Label.c.ss_idea_label_StatusChanges}"
+                                             class="slds-text-heading--small"/>
+                </c:SVNSUMMITS_Ideas_Heading>
+			</lightning:layoutItem>
+
+			<aura:iteration items="{!v.summaryWrapper}" var="summary">
+				<lightning:layoutItem size="12"
+				                      class="slds-p-bottom--small">
+
+					<lightning:layout multipleRows="true">
+						<lightning:layoutItem>
+							<c:SVNSUMMITS_Ideas_User_Image userId="{!summary.changedById}"/>
+						</lightning:layoutItem>
+
+						<lightning:layoutItem class="slds-has-flexi-truncate slds-p-left--small">
+							<lightning:layout multipleRows="true">
+								<lightning:layoutItem size="12"
+								                      class="slds-text-body_regular slds-p-bottom--xx-small">
+									<lightning:formattedText value="{!summary.newStatus}"/>
+									<lightning:formattedText
+											value="{! ' ' + $Label.c.ss_idea_label_statusCommentBy + ' '}"/>
+									<lightning:formattedUrl value="{! v.sitePrefix + '/profile/' + summary.changedById}"
+									                        label="{!summary.changedBy}"/>
+								</lightning:layoutItem>
+
+								<lightning:layoutItem size="12"
+								                      class="slds-p-bottom--xx-small">
+									<lightning:formattedRichText value="{!summary.commentText}"
+									                             title="Comment"/>
+								</lightning:layoutItem>
+
+								<lightning:layoutItem size="12"
+								                      class="slds-text-body_small">
+									<lightning:formattedDateTime value="{!summary.changedDate}"/>
+								</lightning:layoutItem>
+							</lightning:layout>
+
+						</lightning:layoutItem>
+					</lightning:layout>
+				</lightning:layoutItem>
+			</aura:iteration>
+
+		</lightning:layout>
+	</aura:if>
+</aura:component>

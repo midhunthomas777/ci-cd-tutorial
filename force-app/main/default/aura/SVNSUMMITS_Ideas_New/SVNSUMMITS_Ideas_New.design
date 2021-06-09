@@ -1,0 +1,87 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<design:component label="7S Ideas Create">
+    <design:attribute name="zoneName"
+                      label="Zone Name"
+                      description="Ideas Zone Name" />
+
+    <design:attribute name="opaqueBackground"
+                      label = "Opaque background"
+                      description="Enable to show an opaque background"/>
+
+    <design:attribute name="allowImages"
+                      label="Allow Image Upload"
+                      description="Enable image upload"/>
+    <design:attribute name="attachmentAccept"
+                      label="Image file types"
+                      description="Specify allowed image file types (CSV list of file extensions)"/>
+
+    <design:attribute name="topicRequired"
+                      label="Require a Topic"
+                      description="Make topic as required field" />
+    <design:attribute name="useTopics"
+                      label="Display a Topic"
+                      description="Enable to display a topic selection"/>
+    <design:attribute name="allowCategories"
+                      label="Allow Categories"
+                      description="Enable optional category selection"/>
+    <design:attribute name="allowThemes"
+                      label="Allow Themes"
+                      description="Enable optional theme selection"/>
+    <design:attribute name="showDuplicates"
+                      label="Show similar ideas"
+                      description="Search for ideas with a similar title"/>
+    <design:attribute name="simIdeasLimit"
+                      label="Set similar idea search limit"
+                      description="Maximum number of similar ideas to search for (less is faster)"/>
+
+    <design:attribute name="editStatus"
+                      label="Edit: Allow Status"
+                      description="Check to enable idea status change"/>
+    <design:attribute name="requireComment"
+                      label="Edit: Require Status Comment"
+                      description="Check to require a comment on status change in edit mode"/>
+
+    <design:attribute name="showRelatedFiles"
+                      label="Enable related files upload"
+                      description="Check to enable the idea creator to upload a related file"/>
+    <design:attribute name="relatedFilesAccept"
+                      label="Related file types"
+                      description="Enter the related file types allowed (CSV list of file extensions)"/>
+
+    <design:attribute name="showCustomFields"
+                      label="Show custom fields"
+                      description="Enable to display all defined custom fields on the detail page"/>
+    <design:attribute name="customFieldSetName"
+                      label="Custom Field Set Name"
+                      description="Specify the custom metadata field set API name. Leave blank to fall back to the Ideas Settings field set."/>
+
+    <design:attribute name="presetField"
+                      label="Preset Field"
+                      description="Specify the API name for a custom field on the Idea object that will be populated with the provided preset value. Leave blank to ignore."/>
+    <design:attribute name="presetValue"
+                      label="Preset Value"
+                      description="Enter a value for the specified preset field on the Idea object. This value will be added to every new Idea created."/>
+
+    <design:attribute name="showRequestedBy"
+                      label="Show Requested By"
+                      description="Requested By for Idea Detail Page" />
+
+    <design:attribute name="ideaListURL"
+                      label="Idea List URL"
+                      description="URL to the ideas list" />
+    <design:attribute name="ideaDetailURL"
+                      label="Idea Detail URL"
+                      description="URL for Idea detail page"/>
+
+    <design:attribute name="topicSet"
+                      label="Topics"
+                      description="Enter a CSV list of topics to limit the topic selection"/>
+    <design:attribute name="categoriesAllowed"
+                      label="Categories"
+                      description="Categories allowed for zone - Enter a CSV list of categories for the current zone" />
+    <design:attribute name="statusAllowed"
+                      label="Idea Status List"
+                      description="Enter the allowed idea status list (csv) for the current zone" />
+</design:component>

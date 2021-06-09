@@ -1,0 +1,271 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<aura:component description="SVNSUMMITS_Ideas_View"
+                implements="force:appHostable,forceCommunity:availableForAllPageTypes,flexipage:availableForRecordHome,flexipage:availableForAllPageTypes,force:hasRecordId,lightning:isUrlAddressable"
+                extends="c:SVNSUMMITS_Ideas_Base"
+                controller="SVNSUMMITS_IdeaViewController"
+                access="global">
+
+	<ltng:require
+			scripts="{! join(',',
+			    $Resource.SVNSUMMITS_Ideas_MomentJS + '/moment.min.js',
+			    $Resource.SVNSUMMITS_Ideas_MomentJS + '/moment-with-locales.min.js',
+			    $Resource.SVNSUMMITS_Ideas_MomentJS + '/moment-timezone-with-data.min.js')}"
+			afterScriptsLoaded="{!c.doInit}"/>
+
+    <aura:attribute name="debugMode"            type="Boolean" default="false" access="global"/>
+	<aura:attribute name="init"                 type="Boolean" default="false" access="public"/>
+
+    <!-- Property editor -->
+    <aura:attribute name="zoneName"             type="String"   default="Internal Zone" required="true" access="global" />
+    <aura:attribute name="displayMode"          type="String"   default="Full"      access="global" />
+    <aura:attribute name="displayComments"      type="Boolean"  default="true"      access="global" />
+    <aura:attribute name="displayMerged"        type="Boolean"  default="true"      access="global" />
+    <aura:attribute name="displaySupporters"    type="Boolean"  default="true"      access="global" />
+	<aura:attribute name="numberSupporters"     type="Integer"  default="12"        access="global" />
+    <aura:attribute name="displayCategories"    type="Boolean"  default="true"      access="global" />
+    <aura:attribute name="displayTheme"         type="Boolean"  default="true"      access="global" />
+    <aura:attribute name="displayStatusChanges" type="Boolean"  default="true"      access="global" />
+	<aura:attribute name="opaqueBackground"     type="Boolean"  default="false"     access="global" />
+	<aura:attribute name="ideaListURL"          type="String"   default="/ideas/"   access="global" required="true"/>
+
+	<aura:attribute name="settings"             type="Map"      access="global"/>
+	<aura:attribute name="recordId"             type="String"   access="global"/>
+    <aura:attribute name="sObjectName"          type="String"   access="global" />
+    <aura:attribute name="zoneId"               type="String"   default=""          access="global" />
+    <aura:attribute name="authenticatedOnly"    type="Boolean"  default="false"     access="global" />
+	<aura:attribute name="showNickname"         type="Boolean"  default="false"     access="global" />
+    <aura:attribute name="ideaImageURL"         type="String"   default="/servlet/fileField?field=AttachmentBody" access="global" />
+    <aura:attribute name="userProfileURL"       type="String"   default="/profile/" access="global" />
+    <aura:attribute name="iconCategory"         type="String"   default="standard"  access="global" />
+    <aura:attribute name="iconSize"             type="String"   default="large"     access="global" />
+    <aura:attribute name="iconName"             type="String"   default="solution"  access="global" />
+
+    <aura:attribute name="idea"                 type="Map"      access="global" />
+    <aura:attribute name="mergedIdeas"          type="List"     access="global"/>
+
+    <aura:attribute name="isAuthenticated"      type="Boolean"  default="true" access="global" />
+    <aura:attribute name="sitePath"             type="String"   access="global" />
+    <aura:attribute name="sitePrefix"           type="String"   access="global" />
+    <aura:attribute name="currentURL"           type="String"   access="global" />
+
+	<!-- custom fields -->
+	<aura:attribute name="showCustomFields"     type="Boolean"  default="true" access="global" />
+	<aura:attribute name="hideEmptyCustomFields" type="Boolean"  default="true" access="global" />
+	<aura:attribute name="customFieldSetName"   type="String"   default=""     access="global"/>
+	<aura:attribute name="customFields"         type="Map" />
+
+	<!-- Comments -->
+	<aura:attribute name="numComments"          type="Integer"  default="6"     access="global"/>
+	<aura:attribute name="showPagination"       type="Boolean"  default="true"  access="global"/>
+	<aura:attribute name="showSort"             type="Boolean"  default="true"  access="global"/>
+	<aura:attribute name="sortOrder"            type="String"   default="LatestComment" access="global"/>
+	<aura:attribute name="commentsLikes"        type="String"   default="Likes" access="global" />
+
+	<!-- UI Labels-->
+    <aura:attribute name="labelTheme"           type="String"   default="{!$Label.c.ss_idea_label_Theme}"/>
+    <aura:attribute name="labelOverView"        type="String"   default="{!$Label.c.ss_idea_label_Overview}"/>
+    <aura:attribute name="labelMergedIdeas"     type="String"   default="{!$Label.c.ss_idea_label_MergedIdeas}"/>
+
+	<!-- Base -->
+    <aura:attribute name="baseModel"            type="String"   access="global"/>
+
+	<lightning:layout multipleRows="true"
+	                  class="{!v.opaqueBackground ? 'slds-card' : ''}"
+	                  >
+		<aura:if isTrue="{! and (v.idea.Id, v.zoneId != '')}">
+
+			<!-- Attachment -->
+			<aura:if isTrue="{!v.idea.AttachmentName}">
+				<lightning:layoutItem size="12"
+									  class="{!v.displayMode == 'Half' ? 'half-size' : v.displayMode == 'Full' ? '' : v.displayMode == 'None' ? 'hidden' : ''}"
+									  padding="around-small">
+					<img src="{!v.sitePrefix + v.ideaImageURL + '&amp;entityId=' + v.idea.Id}"
+					     alt="Idea image"
+					     class="featured-image" />
+				</lightning:layoutItem>
+			</aura:if>
+
+			<!-- Merged-->
+			<!--<aura:if isTrue="{!v.displayMerged}">-->
+				<!--Merged Ideas({!v.mergedIdeas.count})-->
+			<!--</aura:if>-->
+
+			<!-- Body -->
+			<lightning:layoutItem size="12"
+								  padding="horizontal-medium">
+				<lightning:formattedRichText value="{!v.idea.Body}"/>
+			</lightning:layoutItem>
+
+			<!-- Custom fields -->
+			<aura:if isTrue="{!v.showCustomFields}">
+				<aura:iteration items="{!v.customFields}" var="customField">
+					<aura:if isTrue="{! not(and(v.hideEmptyCustomFields, empty(customField.value)))}">
+					<lightning:layoutItem size="12"
+					                      padding="horizontal-medium">
+						<lightning:layout multipleRows="true"
+						                  class="slds-p-top--medium">
+
+							<!-- label -->
+							<aura:if isTrue="{!customField.fieldType != 'Checkbox'}">
+								<lightning:layoutItem size="12"
+								                      class="slds-form-element__label">
+									<lightning:formattedText value="{!customField.fieldLabel}"/>
+								</lightning:layoutItem>
+							</aura:if>
+
+							<!-- field -->
+							<lightning:layoutItem size="12">
+								<aura:if isTrue="{! customField.fieldType == 'Text'}">
+									<lightning:formattedText value="{!customField.value}"
+									                         class="{!customField.alignClass}"/>
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'Textarea'}">
+									<lightning:formattedText value="{!customField.value}"
+									                         class="{!customField.alignClass}"/>
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'Richtext'}">
+									<lightning:formattedRichText value="{!customField.value}"
+									                             class="{!customField.alignClass}"/>
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'Date'}">
+									<lightning:formattedDateTime value="{!customField.value}"/>
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'DateTime'}">
+									<lightning:formattedDateTime value="{!customField.value}"
+									                             year="numeric" month="short" day="numeric"
+									                             hour="2-digit" minute="2-digit" timeZoneName="short" hour12="true"/>
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'Currency'}">
+								<lightning:formattedNumber value="{!customField.value}"
+								                           style="currency"/>
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'Number'}">
+									<lightning:formattedNumber value="{!customField.value}"/>
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'Percent'}">
+									<lightning:formattedNumber value="{!customField.value}"
+									                           style="percent"/>
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'Email'}">
+									<lightning:formattedEmail value="{!customField.value}"/>
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'Phone'}">
+								<lightning:formattedPhone value="{!customField.value}"/>
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'Checkbox'}">
+									<lightning:input type="checkbox"
+									                 label="{!customField.fieldLabel}"
+									                 checked="{!customField.value}"
+									                 disabled="true"
+							                         class="{!customField.alignClass}"/>
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'Picklist'}">
+									<lightning:formattedText value="{!customField.value}"
+									                         class="{!customField.alignClass}"/>
+								</aura:if>
+
+							</lightning:layoutItem>
+						</lightning:layout>
+					</lightning:layoutItem>
+					</aura:if>
+				</aura:iteration>
+			</aura:if>
+
+			<!-- Theme -->
+			<aura:if isTrue="{!and(v.idea.IdeaTheme.Title, v.displayTheme)}">
+				<lightning:layoutItem size="12"
+									  smallDeviceSize="6"
+									  largeDeviceSize="4"
+									  padding="horizontal-medium"
+									  class="slds-p-vertical_medium">
+					<c:SVNSUMMITS_Ideas_Heading tag="h2" size="medium">
+						{!$Label.c.ss_idea_label_Theme}
+					</c:SVNSUMMITS_Ideas_Heading>
+					<span class="slds-text-heading--label topic-label">{!v.idea.IdeaTheme.Title}</span>
+				</lightning:layoutItem>
+			</aura:if>
+
+			<!-- Categories -->
+			<aura:if isTrue="{!and(v.idea.Categories.length > 0, v.displayCategories)}">
+				<lightning:layoutItem size="12"
+									  smallDeviceSize="6"
+									  largeDeviceSize="4"
+									  padding="horizontal-medium"
+									  class="slds-p-vertical_medium">
+					<c:SVNSUMMITS_Ideas_Heading tag="h2" size="medium">
+						{!if(v.idea.Categories.length > 1, $Label.c.ss_idea_label_Categories, $Label.c.ss_idea_label_Category)}
+					</c:SVNSUMMITS_Ideas_Heading>
+
+					<div>
+						<aura:iteration items="{!v.idea.Categories}" var="category" indexVar="idx">
+							<span class="slds-text-heading--label topic-label">
+								<aura:if isTrue="{!idx > 0}">, </aura:if>
+								<lightning:formattedText value="{!category}"/>
+							</span>
+						</aura:iteration>
+					</div>
+				</lightning:layoutItem>
+			</aura:if>
+
+			<!-- Supporters -->
+			<aura:if isTrue="{!v.displaySupporters}">
+				<lightning:layoutItem size="12"
+									  padding="horizontal-medium"
+									  class="slds-p-vertical_medium">
+					<c:SVNSUMMITS_Ideas_Voters numResults="{!v.numberSupporters}"
+					                           debugMode="{!v.debugMode}"
+											   zoneName="{!v.zoneName}"
+					                           zoneId="{!v.zoneId}"
+											   recordId="{!v.recordId}"
+					                           sitePrefix="{!v.sitePrefix}"
+					                           sitePath="{!v.sitePath}"
+					                           showNickname="{!v.showNickname}"
+											   userProfileURL="{!v.userProfileURL}" />
+				</lightning:layoutItem>
+			</aura:if>
+
+			<!-- Status Comments -->
+			<aura:if isTrue="{!v.displayStatusChanges}">
+				<lightning:layoutItem size="12"
+									  padding="horizontal-medium"
+									  class="slds-p-vertical_medium">
+					<c:SVNSUMMITS_Ideas_Status_Comments recordId="{!v.recordId}"
+														sitePrefix="{!v.sitePrefix}"/>
+				</lightning:layoutItem>
+			</aura:if>
+
+			<!-- Comments -->
+			<aura:if isTrue="{!v.displayComments}">
+				<lightning:layoutItem size="12"
+									  padding="horizontal-medium"
+									  class="slds-p-vertical_medium">
+					<c:SVNSUMMITS_Ideas_Comments debugMode="{!v.debugMode}"
+												 zoneName="{!v.zoneName}"
+												 recordId="{!v.recordId}"
+												 userProfileURL="{!v.userProfileURL}"
+												 numComments="{!v.numComments}"
+												 showPagination="{!v.showPagination}"
+												 showSort="{!v.showSort}"
+												 sortOrder="{!v.sortOrder}"
+												 likesText="{!v.commentsLikes}"
+												 allowComment="{!v.displayComments}"
+												 allowHtml="{!v.idea.IsHtml}" />
+				</lightning:layoutItem>
+			</aura:if>
+
+		</aura:if>
+	</lightning:layout>
+</aura:component>

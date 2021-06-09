@@ -1,0 +1,36 @@
+<!--
+  - Copyright (c) 2018  7Summits Inc.
+  -->
+
+<!--
+ - Created by francois korb on 5/9/18.
+ -->
+
+<design:component label="7S Match Filter">
+	<design:attribute name="settingName"
+	                  label="Scenario Name"
+	                  description="Specify the Match Settings Name to use for this scenario"/>
+	<design:attribute name="showHeader"
+	                  label="Show Filter Heading"
+	                  description="Enable to show header text"/>
+	<design:attribute name="headingIcon"
+	                  label="Heading Icon"
+	                  description="Show an icon in the header from the SLDS icon set - leave blank if not required. Ex utility:table"/>
+
+	<!-- Standard filters -->
+	<design:attribute name="showCritical"
+	                  label="Show Critical Filter"
+	                  description="Enable to show filter for critical matches only"/>
+	<design:attribute name="showRating"
+	                  label="Show Rating Filter"
+	                  description="Enable to show ratings filter"/>
+	<design:attribute name="showMatch"
+	                  label="Show Confidence Filter"
+	                  description="Enable to show confidence filter"/>
+
+	<!-- Sort options -->
+	<design:attribute name="showSort"
+	                  label="Show Sort Options"
+	                  description="Enable to show options select list"/>
+
+</design:component>

@@ -1,0 +1,38 @@
+<aura:component controller="CreateRevenueCtrl" implements="lightning:actionOverride,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,lightning:availableForFlowScreens,lightning:availableForFlowActions" access="global">
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="oppLineItemId" type="String"/>
+    <aura:attribute name="selectedRecId" type="String" />
+    <aura:attribute name="revMonth" type="List" default="january,february,march,april,may,june,july,august,september,october,november,december"/>
+    <aura:attribute name="andFilters" type="List"/>
+    <aura:attribute name="oppCloseDate" type="String"/>
+    <aura:attribute name="oppCloseDateServer" type="String"/>
+    <aura:attribute name="oppFiscalMonth" type="String"/>
+    <aura:attribute name="currentRevYear" type="String"/>
+
+    <aura:attribute name="oppCurrency" type="String"/>
+    <aura:attribute name="oppId" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="c:DynamicDataTableEvent" action="{!c.getselectedRecId}"/>    
+    <aura:registerEvent name="DynamicDataTableValidation" type="c:DynamicDataTableValidation"/>
+    
+    <aura:attribute name="errorMsg" type="String"/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="true"/>
+    
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="large" aura:id="mySpinner"/>
+    </aura:if>
+    
+    <aura:if isTrue="{!not(empty(v.errorMsg))}"> 
+        <c:AlertMessages Message="{!v.errorMsg}" type="error"/>
+    </aura:if>
+    <aura:if isTrue="{!not(empty(v.columns))}">
+        <div class ="slds-theme_default">
+            <c:ChildRecordsByParent columns="{!v.columns}" andFilters="{!v.andFilters}" objectName="Revenue__c" inlineEditing="true" 
+                                    additionalFields="Revenue_Url__c,Opportunity_Name__c,Name"
+                                    hideSelection="false" maxRowSelection ="50" showPageSize ="true" recordId="{!v.oppId}" pageSize="10"
+                                    sortField ="Revenue_Year__c ASC, Revenue_Month__c " inlineErrors ="false"
+                                    />
+        </div>
+    </aura:if>
+    
+</aura:component>

@@ -1,0 +1,10 @@
+<aura:component >
+	<div>
+        Street: <br/>
+        City  : <br/>
+        State : <br/>
+        Pincode :<br/>
+    
+    
+    </div>
+</aura:component>

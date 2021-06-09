@@ -1,0 +1,11 @@
+<!-- Copyright ©2019 7Summits Inc. All rights reserved. -->
+<aura:component implements="lightning:availableForFlowScreens" access="global">
+    <aura:attribute name="ProfileStep" type="String" default="step1" access="global"/>
+    <lightning:progressIndicator type="base" currentStep="{!v.ProfileStep}">
+        <lightning:progressStep label="Intro" value="step1"/>
+        <lightning:progressStep label="Step 2" value="step2"/>
+        <lightning:progressStep label="Step 3" value="step3"/>
+        <lightning:progressStep label="Step 4" value="step4"/>
+        <lightning:progressStep label="Recap" value="step5"/>
+    </lightning:progressIndicator>
+</aura:component>

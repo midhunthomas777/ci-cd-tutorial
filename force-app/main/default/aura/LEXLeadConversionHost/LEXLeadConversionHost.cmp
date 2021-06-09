@@ -1,0 +1,9 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,lightning:isUrlAddressable">
+	<aura:attribute name="leadId" type="String" />
+	<aura:handler name="init" value="{!this}" action="{!c.init}" />
+	<lightning:workspaceAPI aura:id="workspace" />
+	<lightning:navigation aura:id="navService" />
+	<lightning:card >
+		<lightning:flow aura:id="lead_conversion_flow" onstatuschange="{!c.flowStatusChange}" /> 
+	</lightning:card>
+</aura:component>

@@ -1,0 +1,20 @@
+<design:component>
+    <design:attribute name="accountName" label="Account Name" description="Name of the person you want to greet" />
+    <design:attribute name="countryName" label="Country Name" />
+    <design:attribute name="stateName" label="State" />
+    <design:attribute name="cityName" label="City" />
+    <design:attribute name="countyName" label="County"/>
+    <design:attribute name="streetName" label="Street" />
+    <design:attribute name="postalCode" label="Postal Code" />
+    <design:attribute name="dunsNumber" label="DUNS Number" />
+    <design:attribute name="countryISOCode" label="Country Code" />
+    <design:attribute name="stateCode" label="State Code" />
+    <design:attribute name="territory" label="Territory" />
+    <design:attribute name="region" label="Region" />
+    <design:attribute name="isLeadConvert" label ="Convert Lead"/>
+    <design:attribute name="leadId" label="Lead Id" />
+    <design:attribute name="doNotCreateOpportunity" label ="Do Not Create Opportunity"/>
+    <design:attribute name="leadSourceValue" label="Lead Source Value" />
+    <design:attribute name="oppRecordTypeId" label="Opportunity Record Type"/>
+	<design:attribute name="oppSalesProcess" label="Opportunity Sales Process"/>
+</design:component>

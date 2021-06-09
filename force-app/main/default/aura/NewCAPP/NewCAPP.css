@@ -1,0 +1,31 @@
+.THIS .uiMessage.info {
+    border-color: #fff;
+    background-color: #36a0fe;
+}
+.THIS .uiMessage{
+    color: #fff;
+}
+.THIS .helptextCSS{
+    position: absolute;
+    left: 85%;
+    bottom: 60%;
+}
+.THIS .layoutCSS{
+    position: relative;
+}
+.THIS .multiSelectCSS{
+    position: absolute;
+    left: 86%;
+    bottom: 88%;
+}
+.THIS .boxCSS{
+    padding: 0;
+}
+.THIS .accountSiteBoxCSS{
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+.THIS .slds-modal__content{
+    overflow: initial;
+}

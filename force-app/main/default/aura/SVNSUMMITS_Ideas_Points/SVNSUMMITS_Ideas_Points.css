@@ -1,0 +1,14 @@
+/*
+ * Copyright (c) 2019. 7Summits Inc.
+ */
+.THIS {
+    font-size:20px;
+}
+
+.THIS .idea-points__label {
+    font-size: 10px;
+    line-height: 1.25;
+    text-transform: uppercase;
+    color: token(colorTextWeak);
+    letter-spacing: .05em;
+}

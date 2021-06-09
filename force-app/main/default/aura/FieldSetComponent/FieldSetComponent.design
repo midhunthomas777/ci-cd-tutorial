@@ -1,0 +1,5 @@
+<design:component>
+    <design:attribute name="fieldSetName" label="Fieldset" description="The fieldset for this record type"/>
+    <design:attribute name="onSameObject" label="On Parent" description="If placing on Same Object"/>
+    <design:attribute name="parentApiName" label="Parent API Name" description="Parent API Name"/>
+</design:component>

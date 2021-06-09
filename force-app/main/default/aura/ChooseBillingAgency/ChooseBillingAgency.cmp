@@ -1,0 +1,68 @@
+<aura:component controller = "ChooseBillingAgencyCtrl" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId"
+                access="global" >
+    <aura:html tag="style">   
+        .slds-modal__container{max-width: 90rem !important;width:90% !important;}
+    </aura:html>
+    
+    <!--Host Account Result Attributes-->
+    <aura:attribute name="hostResLength" type="Integer" default="1" />
+    <aura:attribute name="subAccResLength" type="Integer" default="2" />
+    <aura:attribute name="subAccData" type="List"/>
+    <aura:attribute name="billingAgencyValues" type="List"/>
+    <aura:attribute name="selectedHostId" type="String"/>
+    <aura:attribute name="selectedSubAccIDList" type="List"/>
+    <aura:attribute name="selectedBillingEntity" type="String"/>
+    <aura:attribute name="showSave" type="boolean" default="false"/>
+    <aura:attribute name="isRenderData" type="boolean" default="false"/>
+    <!--End-->
+    <aura:attribute name="hostColumns" type="List"/>
+    <aura:attribute name="subAccColumns" type="List"/>
+    <aura:attribute name="MCNColumns" type="List"/>
+    <aura:attribute name="hostAccResult" type="List"/>
+    <aura:attribute name="loadSpinner" type="Boolean" default="true"/>
+    <aura:attribute name="isModalOpen" type="boolean" default="true"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="c:DynamicDataTableEvent" action="{!c.handleSelectedRows}"/>
+    <lightning:navigation aura:id="navigation"/>
+    <aura:handler event="force:refreshView" action="{!c.doInit}" />
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="large" aura:id="mySpinner" alternativeText="Loading..."/>
+    </aura:if>
+    
+    <div style="max-height :750px">
+        <ui:message title="| Choose Billing Entity |" severity="confirm" 
+                    class="slds-text-title_caps slds-align_absolute-center slds-m-top_small slds-text-title_bold" />
+        <ui:message title="Host Account Data" severity="info" 
+                    class="slds-text-title_caps slds-align_absolute-center slds-m-top_small slds-text-title_bold" />
+        <aura:if isTrue="{!(and(!empty(and(v.hostColumns,v.hostAccResult)),v.isRenderData))}">
+            <c:GenerateLightningDataTable columns="{!v.hostColumns}" inlineEditing="false" PaginationList="{!v.hostAccResult}"
+                                          maxRowSelection ="5" resultList="{!v.hostAccResult}" hideSelection="false"/>
+        </aura:if>
+        
+        <aura:if isTrue="{!(and(!empty(and(v.subAccColumns,v.subAccData)),v.isRenderData))}">
+            <ui:message title="Sub Accounts Data" severity="info" 
+                        class="slds-text-title_caps slds-align_absolute-center slds-m-top_small slds-text-title_bold" />
+            <c:GenerateLightningDataTable columns="{!v.subAccColumns}" inlineEditing="false"
+                                          resultList="{!v.subAccData}" hideSelection="false" 
+                                          maxRowSelection ="5" showPagination="true"/> 
+        </aura:if>
+        
+        <aura:if isTrue="{!and(!empty(and(v.MCNColumns,v.billingAgencyValues)),v.isRenderData)}">
+            <ui:message title="Choose one of the Billing Entities" severity="info" 
+                        class="slds-text-title_caps slds-align_absolute-center slds-m-top_small slds-text-title_bold" />
+            <c:GenerateLightningDataTable columns="{!v.MCNColumns}" inlineEditing="false"
+                                          resultList="{!v.billingAgencyValues}" hideSelection="false" 
+                                          maxRowSelection ="{!v.hostResLength}" showPagination="true"/> 
+        </aura:if>
+        <div class="slds-m-bottom_small"></div>
+        <aura:if isTrue="{!v.showSave}">
+            <section class="slds-clearfix">
+                <div class="slds-float--right">
+                    <lightning:button label="Save" variant="Brand" onclick="{!c.saveRows}"/>
+                    <lightning:button label="Save &amp; Close" variant="Brand" onclick="{!c.saveRows}" aura:id="closeBtn"/>
+                </div>
+            </section>
+        </aura:if>
+    </div>
+</aura:component>

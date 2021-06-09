@@ -1,0 +1,13 @@
+<design:component>
+    <design:attribute name="iconName" label="Name of the icon from SF library displayed on top of component" />
+    <design:attribute name="title" label="Center title of the component" />
+    <design:attribute name="subTitle" label="Subtitle for the component displaying short description" />
+    <design:attribute name="displayButton1" label="If button 1 should be displayed" />
+    <design:attribute name="textButton1" label="Text label for button 1" />
+    <design:attribute name="iconButton1" label="Icon for button 1" />
+    <design:attribute name="addressButton1" label="URL to redirect after clicking button 1" />
+    <design:attribute name="displayButton2" label="If button 2 should be displayed" />
+    <design:attribute name="textButton2" label="Text label for button 2" />
+    <design:attribute name="iconButton2" label="Icon for button 2" />
+    <design:attribute name="addressButton2" label="URL to redirect after clicking button 2" />
+</design:component>

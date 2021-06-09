@@ -1,0 +1,27 @@
+<!--
+  - Copyright (c) 2018. 7Summits Inc.
+  -->
+
+<!--
+ - Created by francois korb on 6/11/18.
+ -->
+
+<aura:component description="Match_Filter_Search"
+				extends="c:Match_Base">
+
+	<aura:registerEvent name="filterSubEvent" type="c:Match_Filter_SubEvent"/>
+
+	<aura:attribute name="filterItem"   type="Map"      default=""  access="public"/>
+	<aura:attribute name="searchString" type="String"   default=""  access="private"/>
+	<aura:attribute name="threshold"    type="Integer"  default="2" access="public"/>
+
+	<lightning:layout >
+		<lightning:layoutItem size="12">
+			<lightning:input type="search"
+			                 value="{!v.searchString}"
+			                 placeholder="{!v.filterItem.label}"
+							 onchange="{!c.onFilterChange}"
+							 label="{!v.filterItem.label}"/>
+		</lightning:layoutItem>
+	</lightning:layout>
+</aura:component>

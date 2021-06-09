@@ -1,0 +1,107 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<aura:component controller="SVNSUMMITS_IdeaViewController"
+                extends="c:SVNSUMMITS_Ideas_Base"
+                implements="force:appHostable,forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes,force:hasRecordId,force:hasSObjectName"
+                access="global">
+
+	<aura:attribute name="debugMode"    type="Boolean"  default="false" description="test" access="global"/>
+
+	<!-- Design attributes -->
+	<aura:attribute name="zoneName"     type="String"   default="Internal Zone" required="true" access="global"/>
+	<aura:attribute name="showPoints"   type="Boolean"  default="false" 		access="global"/>
+	<aura:attribute name="showStage"    type="Boolean"  default="false" 		access="global"/>
+	<aura:attribute name="recordId"     type="String"   default="" 			access="global"/>
+
+	<aura:attribute name="showLimits"       type="Boolean"  default="true"        access="global" />
+	<aura:attribute name="limitReachedMessage" type="String" default="{!$Label.c.ss_idea_label_accountVotingLimit}"  access="global"/>
+	<aura:attribute name="headerText"       type="String"   default="Account Voting" access="global" />
+	<aura:attribute name="showAccountLimitHeaderText"   type="Boolean"  default="true"        access="global" />
+	<aura:attribute name="currentLimit"     type="String" default="Current Account Votes" access="global" />
+	<aura:attribute name="totalLimit"       type="String" default=" Account Voting Limit" access="global" />
+
+	<aura:attribute name="zoneId"       type="String"   access="global"/>
+	<aura:attribute name="idea"         type="Map"      access="global"/>
+	<aura:attribute name="sObjectName"  type="String"   access="global"/>
+	<aura:attribute name="currentVote"  type="Vote"     access="global"/>
+
+	<!-- UI -->
+	<aura:attribute name="opaqueBackground"     type="Boolean"  default="false" access="global"/>
+	<aura:attribute name="tooltipVoteUp"        type="String"   default="{!$Label.c.ss_idea_label_UpVote}" access="global"/>
+	<aura:attribute name="tooltipVoteDown"      type="String"   default="{!$Label.c.ss_idea_label_DownVote}" access="global"/>
+	<aura:attribute name="callToAction"         type="String"   default="{!$Label.c.ss_idea_label_VoteOnIdeaCTA}" access="global"/>
+
+	<aura:attribute name="disableDownVoting"    type="Boolean"  default="false" description="Set in Custom settings" access="global"/>
+    <aura:attribute name="isVoting"             type="Boolean"  default="false" access="global" />
+	<aura:attribute name="enableVote"           type="Boolean"  default="true"/>
+	<aura:attribute name="voteDisableStatus"    type="String"   default=""/>
+	<aura:attribute name="showAlternateCTA"     type="Boolean"  default="false"/>
+
+	<!--Internal Attributes-->
+	<aura:attribute name="currentVoteCount" 	  	type="Integer" 	default="0" 	access="global" />
+	<aura:attribute name="totalVoteCount" 	 		type="Integer" 	default="0" 	access="global" />
+
+	<!-- Base -->
+	<aura:attribute name="baseModel"        type="String"   access="global"/>
+	<aura:handler   name="baseReady"        event="c:SVNSUMMITS_BaseReady" action="{!c.doInit}" />
+
+	<!-- Vote buttons event -->
+	<aura:handler   name="voteChanged"      event="c:SVNSUMMITS_Ideas_Vote_Event" action="{!c.voteChanged}"/>
+
+	<lightning:layout multipleRows="true"
+	                  class="{!v.opaqueBackground ? 'slds-card' : ''}">
+		<aura:if isTrue="{!v.idea.Id}">
+			<aura:if isTrue="{!v.showStage}">
+				<lightning:layoutItem size="12" padding="around-small">
+					<lightning:formattedText value="{!v.idea.Status}"/>
+				</lightning:layoutItem>
+			</aura:if>
+			<aura:if isTrue="{!v.showPoints}">
+				<lightning:layoutItem size="12" padding="around-small">
+					<c:SVNSUMMITS_Ideas_Points points="{!v.idea.VoteTotal}"
+					                           variant="large"/>
+				</lightning:layoutItem>
+			</aura:if>
+
+			<lightning:layoutItem size="12"
+			                      class="slds-p-left--small slds-p-vertical_x-small slds-text-heading_label">
+				<aura:if isTrue="{!v.showAlternateCTA}">
+					<lightning:formattedText
+							value="{! not(v.idea.enableVote) ? $Label.c.ss_idea_label_VoteClosed : v.currentVote.Id ? $Label.c.ss_idea_label_VotedOnIdeaCTA : $Label.c.ss_idea_label_VoteOnIdeaCTA}"/>
+					<aura:set attribute="else">
+						<lightning:formattedText value="{!$Label.c.ss_idea_label_VoteOnIdeaCTA}"/>
+					</aura:set>
+				</aura:if>
+			</lightning:layoutItem>
+
+			<lightning:layoutItem size="12"
+			                      class="slds-p-left--small slds-p-vertical_xx-small">
+				<c:SVNSUMMITS_Ideas_Vote_Buttons disableDownVoting="{!v.disableDownVoting}"
+				                                 userHasVoted="{!v.currentVote.Id}"
+				                                 userVoteType="{!v.currentVote.Type}"
+				                                 onVote="{!c.voteUp}"
+				                                 onDownVote="{!c.voteDown}"
+				                                 enableVote="{!v.idea.enableVote}"
+				                                 isVoting="{!v.isVoting}"
+				                                 reduceButtonLabels="false"
+												 currentVoteCount = "{!v.currentVoteCount}"
+												 totalVoteCount = "{!v.totalVoteCount}"
+												 accountVoteLimitReached="{!and(v.currentVoteCount >= v.totalVoteCount, v.totalVoteCount!= 0)}"/>
+			</lightning:layoutItem>
+		</aura:if> 
+
+		<!-- Account Voting Limits-->
+			<lightning:layoutItem size="12"
+								  class="slds-p-vertical_large">
+				<c:SVNSUMMITS_Ideas_VotingLimit headerText="{!v.headerText}"
+												showHeaderText="{!v.showAccountLimitHeaderText}"
+												currentVoteCount="{!v.currentVoteCount}"
+												totalVoteCount="{!v.totalVoteCount}"
+												totalLimit="{!v.totalLimit}" recordId="{!v.recordId}"
+												currentLimit="{!v.currentLimit}"/>
+			</lightning:layoutItem>
+		
+	</lightning:layout>
+
+</aura:component>

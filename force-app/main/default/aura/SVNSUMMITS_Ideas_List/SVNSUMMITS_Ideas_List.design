@@ -1,0 +1,87 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<design:component label="7S Ideas List">
+	<design:attribute name="zoneName"
+	                  label="Zone Name:"
+	                  description="Ideas Zone Name"/>
+	<design:attribute name="listId"
+	                  label="Ideas List ID"
+	                  description="Identify this list and use this identifier in the related Ideas Header "/>
+	<design:attribute name="displayMode"
+	                  label="Display Mode"
+	                  datasource="Tile View,Tile Carousel View,List View,Sidebar View"
+	                  description="Tile and Carousel Views display cards, along with either a grid or carousel layout. List view will lay out the ideas vertically down the page."/>
+	<design:attribute name="showTitle"
+	                  label="Show List Title"
+	                  description="Enable to show a list title"/>
+	<design:attribute name="titleText"
+	                  label="Title Text"
+	                  description="Enter the list title text"/>
+	<design:attribute name="titleAlignment"
+	                  label="Title Text Alignment"
+	                  description="Horizontal alignment for the list title"
+	                  dataSource="left, center, right"/>
+	<design:attribute name="headingLines"
+					  label="Heading Number of Lines"
+					  description="Truncates the number of lines in the heading to specific number of lines. Leave blank for no limit." />
+
+	<design:attribute name="opaqueBackground"
+	                  label = "Opaque background"
+	                  description="Enable to show an opaque background"/>
+	<design:attribute name="displayImages"
+	                  label="Display Images"
+	                  description="Display idea images"/>
+	<design:attribute name="displayPostDateAuthor"
+	                  label="Display Post Date and Author"
+	                  description="Display the idea post date and author name"/>
+	<design:attribute name="displayMergeIdeas"
+					  label="Exclude merged ideas"
+					  description="Exclude the merged idea"/>
+	<design:attribute name="listSize"
+	                  label="Number of Results:"
+	                  description="Number of ideas to show in list"/>
+	
+	<!-- pagination -->
+	<design:attribute name="displayPagination"
+	                  label="Display Pagination"
+	                  description="Display the page pagination buttons"/>
+	<design:attribute name="paginationPosition"
+	                  label="Pagination buttons position"
+	                  description="Display the page pagination buttons at the top, bottom, both or display More"
+	                  dataSource="Top, Bottom, Both"/>
+	<design:attribute name="sortBy"
+	                  label="Sort Ideas By"
+	                  datasource="Popular Ideas, Recent Ideas, Top All-Time, Recent Comments"
+	                  description="Sort By"/>
+	<design:attribute name="searchString"
+	                  label="Filter by Search String:"
+	                  description="Enter the name of the search string to filter on. To inherit search from the page use {!searchString}"/>
+	<design:attribute name="searchByTopics"
+	                  label="Filter by Topic:"
+	                  description="Enter name of topic to filter list on. To inherit topic from the page use {!topicId}"/>
+	<design:attribute name="searchByTheme"
+	                  label="Filter by Theme:"
+	                  description="Filter ideas by theme"/>
+	<design:attribute name="searchByStatus"
+	                  label="Filter by Status:"
+	                  description="To filter the list by status values, enter a comma separated list of status values from the zone. Leave blank to show all statuses in the zone"/>
+	<design:attribute name="searchByCategories"
+	                  label="Filter by Category:"
+	                  description="Filter ideas by category"/>
+	<design:attribute name="searchMyIdeas"
+	                  label="Filter for My Ideas"
+	                  dataSource="No,Display My Ideas Only,Display My Voted Ideas Only"
+	                  description="Filter for my ideas"/>
+	<design:attribute name="ideasListURL"
+	                  label="Ideas List URL"
+	                  description="URL for Ideas List page"/>
+	<design:attribute name="ideaDetailURL"
+	                  label="Idea Detail URL"
+	                  description="URL for Idea detail page"/>
+
+	<design:attribute name="accountLimitReachedMessage"
+					  label="Account Vote Limit Message"
+					  description="Account Vote Limit Message"/>
+
+</design:component>

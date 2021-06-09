@@ -1,0 +1,19 @@
+/*
+ * Copyright (c) 2019. 7Summits Inc.
+ */
+
+/**
+ * Created by francoiskorb on 11/29/18.
+ */
+.THIS .mobileImage {
+    display: none;
+}
+.THIS .userImage {
+    width: 32px;
+}
+
+@media (min-width: 1024px) {
+    .THIS .mobileImage {
+        display: block;
+    }
+}

@@ -1,0 +1,33 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+
+<design:component label="7S Ideas Convert">
+    <design:attribute name="zoneName"
+                      label="Zone Name"
+                      description="Ideas Zone Name" />
+
+    <design:attribute name="ideaListURL"
+                      label="Idea List URL"
+                      description="URL to the ideas list" />
+
+    <design:attribute name="questionToIdeaButtonLabel"
+                      label="Convert to Idea Button Label"
+                      description="Convert to Idea Button Label" />
+
+    <design:attribute name="showRequestedBy"
+                      label="Show Requested By"
+                      description="Requested By for Idea Detail Page" />
+    <design:attribute name="topicRequired"
+                      label="Require a Topic"
+                      description="Make topic as required field" />
+
+    <design:attribute name="useTopics"
+                      label="Display a Topic"
+                      description="Enable to display a topic selection"/>
+
+    <design:attribute name="allowCategories"
+                      label="Allow Categories"
+                      description="Enable optional category selection"/>
+
+</design:component>

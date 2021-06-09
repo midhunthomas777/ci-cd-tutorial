@@ -1,0 +1,29 @@
+<!--
+ - Created by brianpoulsen on 3/20/17.
+ - Edited by Joe Callin on 8/12/2017.
+ -->
+
+<aura:component description="Peak_HTML_Headings" implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" extends="c:Peak_Base" access="global">
+    <aura:attribute name="isInit" type="Boolean" default="false"/>
+    <aura:attribute name="tag" type="string" default="H2 - Section Heading"  access="global"/>
+    <aura:attribute name="text" type="string" access="global"/>
+    <aura:attribute name="align" type="string" default="left"  access="global"/>
+    <aura:attribute name="size" type="String" default="medium"  access="global"/>
+    <aura:attribute name="headingClass" type="String" access="global"/>
+    <aura:attribute name="style" type="string" default="" />
+
+    <aura:attribute name="class" type="String" default=""  access="global"/>
+    <aura:attribute name="CustomIdName" type="String" default=""  access="global"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <aura:if isTrue="{!v.isInit}">
+        <aura:html tag="{!v.tag}" class="{!v.headingClass}" style="{!v.style}">
+            <aura:if isTrue="{!v.text}">
+                <c:Peak_Base labelText="{!v.text}" />
+            </aura:if>
+            {!v.body}
+        </aura:html>
+    </aura:if>
+
+</aura:component>

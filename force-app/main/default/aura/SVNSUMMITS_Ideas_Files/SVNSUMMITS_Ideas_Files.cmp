@@ -1,0 +1,64 @@
+<!-- Copyright ©2019 7Summits Inc. All rights reserved. -->
+
+<aura:component description="SVNSUMMITS_Ideas_Files" access="global"
+                implements="forceCommunity:availableForAllPageTypes,force:hasRecordId"
+                extends="c:SVNSUMMITS_Ideas_Base"
+                controller="SVNSUMMITS_Ideas_FeedPublishController">
+
+    <aura:handler   name="baseReady"        event="c:SVNSUMMITS_BaseReady" action="{!c.doInit}" />
+    <aura:attribute name="baseModel"        type="String"   access="global"/>
+    <aura:attribute name="debugMode"        type="Boolean"  default="false" access="global"/>
+
+    <!--Internal Attributes-->
+    <aura:attribute name="accept"           type="String"   default=".pdf,.png" access="global"/>
+    <aura:attribute name="recordId"         type="String"   access="global"/>
+    <aura:attribute name="idea"             type="Map"      access="global"/>
+    <aura:attribute name="files"            type="List"     access="global"/>
+    <aura:attribute name="visibility"       type="String"   default="AllUsers"  access="global"/>
+
+    <!--Boolean Attributes-->
+    <aura:attribute name="multiple"         type="Boolean"  default="true"      access="global"/>
+    <aura:attribute name="disabled"         type="Boolean"  default="false"     access="global"/>
+    <aura:attribute name="showFileUploader" type="Boolean"  default="true"      access="global"/>
+    <aura:attribute name="showFileViewer"   type="Boolean"  default="true"      access="global"/>
+    <aura:attribute name="isParentCalled"   type="Boolean"  default="false"     access="global"/>
+
+    <!--Label Attributes-->
+    <aura:attribute name="title"            type="String"   default=""          access="global"/>
+
+    <!--BODY-->
+    <lightning:layout multipleRows="true">
+        <!--Title-->
+        <aura:if isTrue="{!v.title != ''}">
+            <lightning:layoutItem size="12"
+                                  padding="around-small">
+                <c:SVNSUMMITS_Ideas_Heading tag="h2" size="medium">
+                    <lightning:formattedText value="{!v.title}"/>
+                </c:SVNSUMMITS_Ideas_Heading>
+            </lightning:layoutItem>
+        </aura:if>
+
+        <!--File Uploader-->
+        <aura:if isTrue="{!v.showFileUploader}">
+            <lightning:layoutItem size="12"
+                                  padding="around-small">
+                <c:SVNSUMMITS_Ideas_FileUploader multiple="{!v.multiple}"
+                                                 accept="{!v.accept}"
+                                                 disabled="{!v.disabled}"
+                                                 recordId="{!v.idea.extension}"/>
+            </lightning:layoutItem>
+        </aura:if>
+
+        <!--List View-->
+        <aura:if isTrue="{!v.showFileViewer}">
+            <lightning:layoutItem size="12"
+                                  padding="around-small">
+                <c:SVNSUMMITS_Ideas_FileView recordId="{!v.idea.extension}"
+                                             files="{!v.files}"
+                                             isParentCalled="{!v.isParentCalled}"
+                                             visibility="{!v.visibility}"/>
+            </lightning:layoutItem>
+        </aura:if>
+
+    </lightning:layout>
+</aura:component>

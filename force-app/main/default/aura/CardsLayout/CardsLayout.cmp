@@ -1,0 +1,32 @@
+<aura:component  implements="forceCommunity:layout" description="Custom Content Layout" access="global">
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:attribute name="cardsPlaceholder" type="Aura.Component[]" required="false" />
+    <aura:attribute name="temporaryCards" type="Aura.Component[]" required="false" />
+
+    <aura:attribute name="extendedCards" type="Aura.Component[]" />
+    <aura:attribute name="basicCards" type="Aura.Component[]" />
+
+    <aura:attribute name="dynamicIdCounter" type="Integer" default="0"/>
+    <aura:attribute name="isNotEditor" type="Boolean" default="true"/>
+
+    <div class="builder">
+        {!v.cardsPlaceholder}
+    </div>
+
+    <aura:if isTrue="{!v.isNotEditor}">
+
+        <div class="card-container">
+            <div class="card-container extended-cards slds-grid slds-wrap slds-grid_vertical-stretch slds-gutters slds-grid--align-spread" aura:id="extendedCards">
+                {!v.extendedCards}
+            </div>
+
+            <div class="card-container basic-cards slds-grid slds-wrap slds-grid_vertical-stretch slds-gutters slds-grid--align-spread" aura:id="basicCards">
+                {!v.basicCards}
+            </div>
+        </div>
+
+    </aura:if>
+
+</aura:component>

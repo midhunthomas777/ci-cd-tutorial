@@ -1,0 +1,34 @@
+/**
+ * Expedition_Pack - Front-end assets used for the 7Summits Expedition Pack
+ * @version 1.0.0
+ * @author 7Summits
+ *
+ * COMPILED FILE DO NOT DIRECTLY EDIT
+ */
+.THIS {
+  position: relative;
+  display: flex;
+  padding: 1px;
+}
+.THIS.slds-size_auto-of-12 {
+  width: auto;
+  flex: 1 1 0%;
+}
+@media screen and (min-width: 30em) {
+  .THIS.slds-small-size_auto-of-12 {
+    width: auto;
+    flex: 1 1 0%;
+  }
+}
+@media screen and (min-width: 48em) {
+  .THIS.slds-medium-size_auto-of-12 {
+    width: auto;
+    flex: 1 1 0%;
+  }
+}
+@media screen and (min-width: 64.0625em) {
+  .THIS.slds-large-size_auto-of-12 {
+    width: auto;
+    flex: 1 1 0%;
+  }
+}

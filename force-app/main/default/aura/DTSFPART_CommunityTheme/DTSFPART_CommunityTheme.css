@@ -1,0 +1,34 @@
+.THIS .slds-container_x-large,
+.THIS .siteforceContentArea,
+.THIS .moto-theme__quick-actions {
+    max-width: 1480px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media screen and (min-width: 768px) {
+    .THIS .moto-theme__header {
+        padding-right: 30px;
+        padding-left: 30px;
+    }
+
+    .THIS.motorola-theme .siteforceContentArea:not([class^="moto-"]) > .slds-col_padded,
+    .THIS.motorola-theme .siteforceContentArea:not([class^="moto-"]) > .slds-col--padded {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+}
+
+@media screen and (max-width: 767px){
+    .THIS .moto-theme__header {
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+
+    .THIS.motorola-theme .siteforceContentArea:not([class^="moto-"]) > .slds-col_padded,
+    .THIS.motorola-theme .siteforceContentArea:not([class^="moto-"]) > .slds-col--padded {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}

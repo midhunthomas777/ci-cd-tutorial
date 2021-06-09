@@ -1,0 +1,6 @@
+<aura:component >
+    <aura:attribute name="empname" type="string"/>
+    <aura:attribute name="age" type ="integer" default="30"/>
+    <aura:attribute name="salary" type="decimal" required="true"/>
+    <aura:attribute name="exp" type="integer" description ="Round of value incase of decieml"/>
+</aura:component>

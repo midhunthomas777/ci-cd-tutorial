@@ -1,0 +1,30 @@
+<!-- Copyright ©2019 7Summits Inc. All rights reserved. -->
+
+<design:component label="7S Ideas Files">
+
+    <design:attribute name="title"
+                      label="Title"
+                      description="Display the title" />
+    
+ 	<design:attribute name="accept" 
+                      label="Allow File Types"
+                      description="File Formats Supported" />
+
+    <design:attribute name="visibility"
+                      dataSource="AllUsers,InternalUsers,SharedUsers"
+                      label="Files Visibility"
+                      description="Set File Share Visibility" />
+
+    <design:attribute name="showFileUploader"
+                      label="Show File Uploader"
+                      description="Display the file uploader" />
+
+    <design:attribute name="showFileViewer"
+                      label="Show File Viewer"
+                      description="Show the uploaded files" />
+
+    <design:attribute name="disabled"
+                      label="File Uploader Disabled"
+                      description="Set file uploader to disabled" />
+
+</design:component>

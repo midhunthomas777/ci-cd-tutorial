@@ -1,0 +1,8 @@
+<aura:component implements="force:lightningQuickAction,flexipage:availableForRecordHome,force:hasRecordId" access="Global" >
+    <lightning:fileUpload label="Attach Files"
+        name="fileUploader"
+        multiple="true"
+        accept=".pdf, .png, .jpg, .xls, .docx, .xlsx"
+        recordId="{!v.recordId}"
+        onuploadfinished="{!c.closeQuickAction}" />      
+</aura:component>

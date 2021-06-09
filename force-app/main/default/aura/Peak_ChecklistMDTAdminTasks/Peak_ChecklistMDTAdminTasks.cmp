@@ -1,0 +1,52 @@
+<!--
+ - Created by shashi arrabeli on 4/12/18.
+ -->
+
+<aura:component description="Peak_ChecklistMDTAdminTasks"
+                implements="forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes"
+                controller="Peak_ChecklistMDTController"
+                extends="c:Peak_ChecklistBase" access="global">
+    <aura:attribute name="title" type="String" default="Tasks" access="global" />
+    <aura:attribute name="titleAlignment" type="string" default="left"  access="global"/>
+
+    <aura:attribute name="listOfTasks" type="Peak_CommunityTaskMDTWrapper[]"/>
+    <aura:attribute name="newTaskName" type="string"/>
+
+    <aura:registerEvent name="refreshEvent" type="c:Peak_CheckListRefreshEvent" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doChecklistAdminTasksInit}"/>
+
+    <aura:if isTrue="{!v.isLoading}">
+        <c:Peak_LoadingGif />
+    </aura:if>
+
+    <div class="peak-component peak-checklist-tasks">
+        <form>
+            <aura:if isTrue="{!v.title}">
+                <c:Peak_HTML_Headings class="peak-checklist-tasks__title" align="{!v.titleAlignment}">
+                    <c:Peak_Base labelText="{!v.title}" />
+                </c:Peak_HTML_Headings>
+            </aura:if>
+
+            <ui:inputText aura:id="Checklist"
+                          class="slds-m-bottom_large"
+                          labelClass="slds-form-element__label"
+                          value="{!v.newTaskName}"
+                          required="true"/>
+
+            <ui:button label="Add Task"
+                       class="slds-button slds-button_neutral slds-m-bottom_large"
+                       labelClass="label"
+                       press="{!c.createTaskMDT}"/>
+
+        </form>
+
+        <aura:iteration items="{!v.listOfTasks}" var="tsk">
+            <div>
+
+                <a data-name="{!tsk.name}" data-label="{!tsk.label}" onclick="{!c.deleteSelectedTask}" title="Delete">Del</a>
+                &nbsp;{!tsk.label}
+            </div>
+        </aura:iteration>
+    </div>
+</aura:component>

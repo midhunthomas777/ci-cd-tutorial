@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION" description="Generic Submit for approval event">
+    <aura:attribute name="state" type="String" />
+    <aura:attribute name="response" type="String" />
+</aura:event>

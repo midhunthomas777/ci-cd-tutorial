@@ -1,0 +1,93 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+
+<!--
+ - Created by francois korb on 6/27/18.
+ -->
+
+<aura:component description="SVNSUMMITS_Ideas_Compact_Tile"
+                extends="c:SVNSUMMITS_Ideas_Base"
+                access="public">
+
+	<aura:attribute name="idea"              type="Object" access="public"/>
+	<aura:attribute name="ideaBody"          type="String" access="public"/>
+
+	<aura:attribute name="displayBody"       type="Boolean" default="true" access="global"/>
+	<aura:attribute name="headingLines"      type="String"  default=""     access="global"/>
+	<aura:attribute name="bodyLines"         type="String"  default="2"    access="global"/>
+	<aura:attribute name="displayCategories" type="Boolean" default="true" access="global"/>
+	<aura:attribute name="displaySubmitDate" type="Boolean" default="true" access="global"/>
+	<aura:attribute name="displayComments"   type="Boolean" default="true" access="global"/>
+	<aura:attribute name="displayVotes"      type="Boolean" default="true" access="global"/>
+	<aura:attribute name="displayStatus"     type="Boolean" default="true" access="global"/>
+	<aura:attribute name="displayBorder"     type="Boolean" default="true" access="global"/>
+
+	<aura:attribute name="appendEllipsis"    type="Boolean" default="true" />
+	<aura:attribute name="maxBodyCharLength" type="Integer" default="400" />
+
+	<aura:attribute name="ideaDetailURL"    type="String" default="/idea/"      access="global"/>
+
+	<!-- Base -->
+	<aura:attribute name="baseModel"        type="String" access="global"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+	<lightning:layoutItem size="12"
+	                      padding="around-small"
+						  class="{!'ideas-list-item ideas-list-item_compact slds-p-vertical_small ' + if(v.displayBorder, 'slds-border_bottom', '')}">
+
+		<!-- TITLE -->
+		<c:SVNSUMMITS_Ideas_Heading tag="h3"
+									size="small"
+									class="ideas-list-item__heading slds-m-bottom_xx-small"
+									style="{!if(v.headingLines, '-webkit-line-clamp:'+ v.headingLines + ';', '')}">
+			<a onclick="{!c.goToRecord}"
+			   data-id="{!v.idea.Id}"
+			   title="{!v.idea.Title}"
+			   class="peak-ideas-list-item_link"
+			>
+				{!v.idea.Title}
+			</a>
+		</c:SVNSUMMITS_Ideas_Heading>
+
+		<!-- Description-->
+		<aura:if isTrue="{!and(v.displayBody, v.ideaBody)}">
+			<div class="idea__description slds-m-bottom_xx-small"
+				 style="{!'-webkit-line-clamp:'+ v.bodyLines}">
+				<lightning:formattedRichText value="{!v.ideaBody}"/>
+			</div>
+		</aura:if>
+
+		<!-- Footer -->
+		<div class="idea__meta slds-m-bottom_xx-small">
+			<!-- Submit date -->
+			<aura:if isTrue="{!v.displaySubmitDate}">
+				<span>{!v.idea.submitDate}</span>
+			</aura:if>
+
+			<aura:if isTrue="{!and(v.displayStatus, v.idea.Status)}">
+				<span>{!v.idea.Status}</span>
+			</aura:if>
+
+			<!-- Category -->
+			<aura:if isTrue="{!and(v.displayCategories, v.idea.Categories)}">
+				<aura:iteration items="{!v.idea.Categories}" var="category">
+					<aura:if isTrue="{! not(empty(category))}">
+						<span>{!category}</span>
+					</aura:if>
+				</aura:iteration>
+			</aura:if>
+
+			<!-- Comments -->
+			<aura:if isTrue="{!and(v.displayComments, v.idea.NumComments)}">
+				<span>{!v.idea.NumComments}&nbsp;{!$Label.c.ss_idea_label_Comments}</span>
+			</aura:if>
+
+			<!-- Points -->
+			<aura:if isTrue="{!and(v.displayVotes, v.idea.VoteTotal > 0)}">
+				<span>{!v.idea.VoteTotal}&nbsp;{!$Label.c.ss_idea_label_points}</span>
+			</aura:if>
+		</div>
+
+	</lightning:layoutItem>
+</aura:component>

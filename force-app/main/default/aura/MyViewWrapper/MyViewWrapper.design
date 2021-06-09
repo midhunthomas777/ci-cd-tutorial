@@ -1,0 +1,7 @@
+<design:component label="MyView Module">
+    <design:attribute name="module" datasource=",Repairs,Entitlements,Coverage,Contracts" label="Module"></design:attribute>
+    <design:attribute name="component" datasource=",serialNumberLookup" label="Component"></design:attribute>
+    <design:attribute name="hash" label="URL Hash"></design:attribute>
+    <design:attribute name="myViewEnv" datasource="Test,Prod" label="MyView Env"></design:attribute>
+    <design:attribute name="mulesoftCredentials" label="Mulesoft Named Credentials" datasource="apex://DTSFPART_MulesoftCredentialsPicklist"></design:attribute>
+</design:component>

@@ -1,0 +1,205 @@
+<aura:component controller="MRCommissionCalculatorController"  access="global" implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:lightningQuickAction">
+    <aura:attribute name="loadSpinner" type ="Boolean" default="false"/>
+    <aura:attribute name="MCNList" type="List"/>
+    <aura:attribute name="Accountname" type="string" />
+    <aura:attribute name="MotorolaCustomerNumber" type="String"/>
+    <aura:attribute name="MCN" type="String"/>    
+    <aura:attribute name="Showmnc" type="Boolean" default='false'/>
+    <aura:attribute name="BillingCountry" type="String[]" default="--None--,United States,Canada"/> 
+    <aura:attribute name="BillingCountrySelected" type="String"/>
+    <aura:attribute name="BillingState" type="String[]"/>
+    <aura:attribute name="BillingStateSelected" type="String"/>
+    <aura:attribute name="BillingStateDisabled" type="Boolean" default='true'/>
+    <aura:attribute name="RoutetoMarketSelected" type="String"/>
+    <aura:attribute name="RoutetoMarket" type="String[]"  default="--None--,MR Led,Open"/>
+    <aura:attribute name="isInternalUser" type="Boolean" default='false'/>
+    <aura:attribute name="showCB" type="Boolean" default='false'/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.BillingCountrySelected}" action="{!c.validateStatePicklist}"/> 
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="medium" aura:id="mySpinner"/>
+    </aura:if>
+    <div class="slds-m-around_medium">
+        <div class="slds-page-header slds-box" role="banner">
+            <div class="slds-grid">
+                <div class="slds-col">
+                    <div class="slds-media slds-media--top slds-no-space slds-grow">
+                        <div class="slds-media__figure">
+                            <div class="slds-media__figure">
+                                <c:svgIcon class="slds-icon slds-icon-custom-custom17" svgPath="/partnercommunity/resource/slds214/assets/icons/custom-sprite/svg/symbols.svg#custom17" category="standard" size="medium"/>
+                            </div>
+                        </div>
+                        <div class="slds-media__body">
+                            <h1 class="slds-page-header__title">MR Commission Calculator</h1>
+                        </div>
+                    </div>
+                </div>
+                <!-- Display buttons-->
+                <div class="slds-col slds-no-flex slds-grid slds-align-top slds-p-bottom_xx-small">
+                    
+                    <aura:if isTrue="{!v.isInternalUser}">
+                        <lightning:button variant="neutral" label="Consolidated Buy" onclick="{!c.openConsolidatedBuy}"/>
+                    </aura:if>
+                    
+                    <lightning:button variant="neutral" label="Search" onclick="{!c.SearchMCN}"/>
+                </div> 
+            </div>
+        </div><br/>
+        <form class="slds-form--stacked slds-box">
+            <div class="slds">
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2">
+                        <fieldset class="slds-form--compound">
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row">
+                                    <div class="slds-form-element slds-size--2-of-2 size-xx-small">
+                                        <ui:inputText aura:id="CustomerAccountName" 
+                                                      label="Customer Account Name" 
+                                                      labelClass="slds-form-element__label" 
+                                                      class="slds-input" 
+                                                      value="" required="true" maxlength="30" />  
+                                    </div>
+                                </div>
+                                <div class="slds-form__control">
+                                    <div class="slds-form-element__row">
+                                        <div class="slds-form-element slds-size--2-of-2 size-xx-small">
+                                            <ui:inputText aura:id="City" 
+                                                          label="City" 
+                                                          labelClass="slds-form-element__label" 
+                                                          class="slds-input" 
+                                                          value="" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-form__control">
+                                    <div class="slds-form-element__row">
+                                        <div class="slds-form-element slds-size--2-of-2 ">
+                                            <div class="slds-form-element">
+                                                <div >
+                                                    <ui:inputSelect aura:id="BillingCountry"
+                                                                    label="Billing Country"
+                                                                    class="slds-select"
+                                                                    labelClass="slds-form-element__label"
+                                                                    value="{!v.BillingCountrySelected}">
+                                                        <aura:iteration items="{!v.BillingCountry}" var="loc" >                                                            
+                                                            <option value="{!loc}" text="{!loc}"></option>              
+                                                        </aura:iteration>                                                     
+                                                    </ui:inputSelect>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </fieldset>
+                    </div>
+                    <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2">
+                        <fieldset class="slds-form--compound">
+                            <div class="slds-form-element__group">
+                                <div class="slds-form__control">
+                                    <div class="slds-form-element__row">
+                                        <div class="slds-form-element slds-size--2-of-2 ">
+                                            <ui:inputText aura:id="MotorolaCustomerNumber" 
+                                                          label="Motorola Customer Number" 
+                                                          labelClass="slds-form-element__label" 
+                                                          class="slds-input" 
+                                                          value="" required="true"
+                                                          maxlength="20"
+                                                          /> 
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="slds-form-element__row">
+                                    <div class="slds-form-element slds-size--2-of-2 size-xx-small">
+                                        <ui:inputText aura:id="PostalCode" 
+                                                      label="Zip/Postal Code" 
+                                                      labelClass="slds-form-element__label" 
+                                                      class="slds-input" 
+                                                      value="" maxlength="10"/> 
+                                    </div>
+                                </div>
+                                
+                                <div class="slds-form__control">
+                                    <div class="slds-form-element__row">
+                                        <div class="slds-form-element slds-size--2-of-2 ">
+                                            <div class="slds-form-element">
+                                                <div>
+                                                    <ui:inputSelect aura:id="BillingState"
+                                                                    label="Billing State"
+                                                                    class="slds-select"
+                                                                    labelClass="slds-form-element__label"
+                                                                    value="{!v.BillingStateSelected}"
+                                                                    disabled="{!v.BillingStateDisabled}">
+                                                        <aura:iteration items="{!v.BillingState}" var="loc" >                                                            
+                                                            <option value="{!loc}" text="{!loc}"></option>              
+                                                        </aura:iteration>                                                      
+                                                    </ui:inputSelect>
+                                                </div>  
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <br/> <br/>
+        <aura:If isTrue="{!v.Showmnc}">
+            <c:MRCommissionMCNDetails motorolaCustomerList="{!v.MCNList}" aura:id="cmsDetailID" isInternalUser="{!v.isInternalUser}" />     
+        </aura:If>
+    </div>
+    <br/>
+    <aura:If isTrue="{!v.showCB}">
+        <aura:html tag="style">  
+            .slds-modal__container{max-width: 70rem !important;width:90% !important;}
+        </aura:html>
+        <div id="Modal"> 
+            <div role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal--large">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__header">
+                        <lightning:buttonIcon class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" iconName="utility:close"  size="large" variant="bare" onclick="{!c.close}"/>                     
+                    </div>
+                    <div class="slds-modal__content slds-p-around--medium">
+                        <div>
+                            <c:MRCommCalcConsolidatedBuy aura:id="mrCalcCB" />
+                        </div>
+                    </div>
+                    <div class="slds-modal__footer">
+                    </div>
+                </div>
+            </div>
+            <div class="slds-backdrop slds-backdrop--open"></div>
+        </div>  
+    </aura:If>
+    <c:ModalComponent aura:id="Validation"
+                      roleType="alertdialog"
+                      classSize="slds-modal slds-modal--prompt"
+                      headerClass="slds-theme--error slds-theme--alert-texture"
+                      headerStyle="background-color:DodgerBlue;"
+                      bodyClass="slds-p-around__medium slds-text-align--center"
+                      showCloseButton="true"
+                      showCancelButton="false"
+                      okAction="{!c.closeAlertBox}"
+                      okButtonLabel="Cancel"
+                      footerClass="slds-theme--default">
+        <aura:set attribute="header">
+            <h6 class="slds-text-heading--medium" id="prompt-heading-id">
+                <span>
+                    <c:svgIcon class="slds-icon slds-icon--small slds-m-right--small slds-col slds-no-flex" 
+                               svgPath="/partnercommunity/resource/slds214/assets/icons/utility-sprite/svg/symbols.svg#warning" 
+                               category="utility" 
+                               size="medium" 
+                               name="warning" />
+                </span>
+                <b>{!$Label.c.Modal_Opportunity_Header_Message}</b>
+            </h6>
+            <!-- Body is created Dynamically -->
+        </aura:set>
+    </c:ModalComponent> 
+
+    <c:tealiumTrigger aura:id="tealium-trigger" />
+</aura:component>

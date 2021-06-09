@@ -1,0 +1,114 @@
+<!--
+ - Created by jonbalza on 12/8/18.
+ -->
+
+<aura:component description="Peak_FeaturedTopics"
+                implements="forceCommunity:availableForAllPageTypes,lightning:availableForFlowScreens"
+                controller="Peak_FeaturedTopicsController"
+                extends="c:Peak_Base"
+                access="global"
+>
+    <!-- Data Attributes -->
+    <aura:attribute name="topics" type="List" />
+    <aura:attribute name="displayedTopics" type="List"  access="global"/>
+    <aura:attribute name="topicFilterList" type="String"  access="global"/>
+
+    <!-- Display Attributes -->
+    <aura:attribute name="animateHover" type="Boolean" default="true"  access="global"/>
+    <aura:attribute name="isInit" type="Boolean" default="false" />
+    <aura:attribute name="itemsPerRowSmall" type="String" default="2"  access="global"/>
+    <aura:attribute name="itemsPerRowMedium" type="String" default="3"  access="global"/>
+    <aura:attribute name="itemsPerRowLarge" type="String" default="4"  access="global"/>
+    <aura:attribute name="_rowWidthSmall" type="String" />
+    <aura:attribute name="_rowWidthMedium" type="String" />
+    <aura:attribute name="_rowWidthLarge" type="String" />
+    <aura:attribute name="showDescription" type="Boolean" default="true"  access="global"/>
+    <aura:attribute name="showImage" type="Boolean" default="true"  access="global"/>
+    <aura:attribute name="showOverlay" type="Boolean" default="true"  access="global"/>
+    <aura:attribute name="title" type="String" default="Featured Topics"  access="global"/>
+    <aura:attribute name="viewType" type="String" default="Tile"  access="global"/>
+    <aura:attribute name="isInBuilder" type="Boolean" default="false" />
+
+    <!-- Styling -->
+    <aura:attribute name="CustomClassName" type="String" default="" access="global"/>
+    <aura:attribute name="CustomIdName" type="String" default="" access="global"/>
+    <aura:attribute name="descriptionColor" type="String" default=""  access="global"/>
+    <aura:attribute name="descriptionColorHover" type="String" default=""  access="global"/>
+    <aura:attribute name="horizontalAlignment" type="String" default="Center"  access="global"/>
+    <aura:attribute name="_horizontalAlignment" type="String" default="center" access="private" />
+    <aura:attribute name="imageBorderRadius" type="String" default="2px"  access="global"/>
+    <aura:attribute name="imageHeight" type="String" default="48px"  access="global"/>
+    <aura:attribute name="imageWidth" type="String" default="48px"  access="global"/>
+    <aura:attribute name="itemSpacing" type="Integer" default="10"  access="global"/>
+    <aura:attribute name="maxHeight" type="String" default="100%"  access="global"/>
+    <aura:attribute name="overlayColor" type="String" default=""  access="global"/>
+    <aura:attribute name="overlayColorHover" type="String" default=""  access="global"/>
+    <aura:attribute name="titleColor" type="String" default=""  access="global"/>
+    <aura:attribute name="titleColorHover" type="String" default=""  access="global"/>
+    <aura:attribute name="verticalAlignment" type="String" default="Middle"  access="global"/>
+    <aura:attribute name="_verticalAlignment" type="String" default="center" access="private" />
+
+    <!-- Events -->
+    <aura:handler name="init" value="{!this}" action="{!c.handleInit}" />
+
+    <aura:if isTrue="{!v.isInit}">
+        <aura:if isTrue="{!greaterthan(v.topics.length, 0)}">
+            <div class="{!'peak-featured-topics ' + if(equals(v.viewType, 'Tile'), 'peak-featured-topics_tile', if(equals(v.viewType, 'List'), 'peak-featured-topics_list', 'peak-featured-topics_icon')) + ' ' + v.CustomClassName}"
+                 id="{!v.CustomIdName}"
+            >
+                <aura:if isTrue="{!v.title}">
+                    <c:Peak_HTML_Headings class="peak-featured-topics__heading">
+                        <c:Peak_Base labelText="{!v.title}" />
+                    </c:Peak_HTML_Headings>
+                </aura:if>
+                <aura:if isTrue="{!v.isInit}">
+                    <c:Peak_GridList class="peak-featured-topics__list"
+                                     useSLDSGrid="{!if(or(equals(v.viewType, 'Tile'), equals(v.viewType, 'Icon')), true, false)}"
+                                     itemSpacing="{!v.itemSpacing}"
+                    >
+                        <aura:iteration items="{!v.displayedTopics}" var="topic">
+                            <c:Peak_GridListItem class="peak-featured-topics__item"
+                                                 size="{!v._rowWidthSmall}"
+                                                 mediumDeviceSize="{!v._rowWidthMedium}"
+                                                 largeDeviceSize="{!v._rowWidthLarge}"
+                                                 itemSpacing="{!v.itemSpacing}"
+                                                 maxHeight="{!v.maxHeight}"
+                                                 >
+                                <!-- ConnectApi.ManagedTopics returns an array objects with a "topic.topic". -->
+                                <c:Peak_Tile id="{!topic.topic.id}"
+                                             animateHover="{!v.animateHover}"
+                                             description="{!topic.topic.description}"
+                                             descriptionColor="{!v.descriptionColor}"
+                                             descriptionColorHover="{!v.descriptionColorHover}"
+                                             horizontalAlignment="{!v._horizontalAlignment}"
+                                             imageBorderRadius="{!v.imageBorderRadius}"
+                                             imageHeight="{!v.imageHeight}"
+                                             imageURL="{!topic.topic.images.featuredImageUrl}"
+                                             imageWidth="{!v.imageWidth}"
+                                             onclick="{!c.handleClick}"
+                                             overlayColor="{!v.overlayColor}"
+                                             overlayColorHover="{!v.overlayColorHover}"
+                                             showDescription="{!v.showDescription}"
+                                             showImage="{!v.showImage}"
+                                             showOverlay="{!v.showOverlay}"
+                                             title="{!topic.topic.name}"
+                                             titleColor="{!v.titleColor}"
+                                             titleColorHover="{!v.titleColorHover}"
+                                             verticalAlignment="{!v._verticalAlignment}"
+                                             viewType="{!v.viewType}"
+                                />
+                            </c:Peak_GridListItem>
+                        </aura:iteration>
+                    </c:Peak_GridList>
+                </aura:if>
+            </div>
+            <aura:set attribute="else">
+                <aura:if isTrue="{!v.isInBuilder}">
+                    <div class="error-message">
+                        <p><strong><lightning:icon size="xx-small" iconName="utility:warning" variant="warning" class="slds-p-right_x-small" />Please Configure Featured Topics</strong><br />There are no Featured Topics configured for this community. Please go to My Workspaces > Content Management > Topics > Featured Topics to configure managed topics to be displayed here.</p>
+                    </div>
+                </aura:if>
+            </aura:set>
+        </aura:if>
+    </aura:if>
+</aura:component>

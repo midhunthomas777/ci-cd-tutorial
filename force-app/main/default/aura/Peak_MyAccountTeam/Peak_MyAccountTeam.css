@@ -1,0 +1,21 @@
+/**
+ * Expedition_Pack - Front-end assets used for the 7Summits Expedition Pack
+ * @version 1.0.0
+ * @author 7Summits
+ *
+ * COMPILED FILE DO NOT DIRECTLY EDIT
+ */
+.THIS .slds-button {
+  font-size: 1.25rem;
+  line-height: 1;
+  color: t(colorTextLink);
+  border: none;
+}
+.THIS .slds-button:focus {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.THIS .slds-button:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,13 @@
+<aura:component >
+    <aura:attribute name="name" type ="string" />
+    <aura:attribute name="age" type="integer" />
+    <aura:attribute name="colgname" type="string"/>
+    <aura:attribute name="fee" type="integer" />
+    
+    name:{!v.name}
+    age :{!v.age}
+    colgname:{!v.colgname}
+    fee  :{!v.fee}
+    
+    
+</aura:component>

@@ -1,0 +1,4 @@
+<design:component>
+	<design:attribute name="flowOppId" label="opportunityId"/>
+    <design:attribute name="quoteCount" label="quoteCount"/>
+</design:component>

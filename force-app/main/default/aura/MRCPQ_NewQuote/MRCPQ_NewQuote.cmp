@@ -1,0 +1,47 @@
+<aura:component controller="MRCPQ_NewQuoteController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,lightning:availableForFlowScreens" access="global" >
+    <aura:html tag="style">  
+        .slds-modal__container{max-width: 70rem !important;width:90% !important;}
+    </aura:html>
+    <aura:attribute name="isPartnerUser" type="Boolean" default="false" />
+    <aura:attribute name="accountRecType" type="String" default=""/>
+    <aura:attribute name="showQuotebtn" type="Boolean" default="false"/>
+    <aura:attribute name="openpop" type="Boolean" default="false"/>
+    <aura:attribute name="dispalyNewQuoteButton" type="Boolean" default="true"/>
+    <aura:attribute name="defaultMCNList" type="List" />
+    <aura:attribute name="motorolaCustomerNumber" type="String" />
+    <aura:attribute name="mcnId" type="String" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <aura:if isTrue="{!and(v.showQuotebtn, v.dispalyNewQuoteButton)}">
+        <div class="slds-float_right slds-p-right_medium">
+            <lightning:button variant="neutral" label="New Quote" onclick="{!c.open}"/>
+        </div>
+    </aura:if> 
+    <aura:if isTrue="{!v.openpop}">
+        <!--modal code starts-->      
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" iconName="utility:close"  size="large" variant="bare" onclick="{!c.close}"/>
+                </header> 
+                <aura:if isTrue="{!v.accountRecType=='SoldToAccount'}">
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <c:MRCPQ_MCNList recordId= "{!v.recordId}" accountRecType="{!v.accountRecType}" isPartnerUser="{!v.isPartnerUser}"/>
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{!v.accountRecType=='Prospect'}">
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <c:MRCPQ_ProceedToQuote aura:id="cmsDetailID"  accountId="{!v.recordId}" mcnId="{!v.recordId}" accountRecType="{!v.accountRecType}" isPartnerUser="{!v.isPartnerUser}"/>
+                    </div>
+                </aura:if>
+                <footer class="slds-modal__footer">
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--modal close-->
+    </aura:if>
+    <c:auraPubSub aura:id="pubsub" onready="{!c.handlePubsubReady}"/>
+
+</aura:component>

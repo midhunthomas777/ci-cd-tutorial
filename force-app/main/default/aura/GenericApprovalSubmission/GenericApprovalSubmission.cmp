@@ -1,0 +1,14 @@
+<aura:component controller="GlobalUtility" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="recId" type="String"/>
+    <aura:attribute name="recordTypeId" type="String" />
+    <aura:attribute name="region" type="String" />
+    <aura:attribute name="functionality" type="String" />
+    <aura:attribute name="loadSpinner" type ="Boolean" default="true"/>
+    <aura:attribute name="customApprovalComment" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:registerEvent name="GenericApprovalSubmissionEvent" type="c:GenericApprovalSubmissionEvent"/>
+    
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="large" aura:id="mySpinner"/>
+    </aura:if>
+</aura:component>

@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION" description="This Event designed to pass Table
+                                            current Page List values" >
+	<aura:attribute name="paginationListValues" type="List"/>
+</aura:event>

@@ -1,0 +1,51 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc. All rights reserved.
+  -
+  -->
+
+<aura:component controller="Peak_OnboardingController">
+    <aura:registerEvent name="pageChange" type="c:Peak_OnboardingChangePage"/>
+    <aura:attribute name="showUserSpecificGroups" type="Boolean" default="false" />
+    <aura:attribute name="groupsMessage" type="String"/>
+    <aura:attribute name="groupsHeader" type="String"/>
+    <aura:attribute name="groupsAction" type="String"/>
+    <aura:attribute name="showGroupDescription" type="Boolean" default="true" />
+    <aura:attribute name="groupIDs" type="String" />
+    <aura:attribute name="groups" type="List" />
+    <aura:attribute name="buttonColor" type="String" default="#ff8201"/>
+    <aura:handler name="init" action="{!c.init}" value="{!this}"/>
+
+    <c:Peak_OnboardingSlide class="groups"
+                            title="{!v.groupsHeader}"
+                            description="{!v.groupsMessage}"
+                            subText="{!v.groupsAction}"
+                            primaryButtonLabel="Save &amp; Next"
+                            primaryButtonColor="{!v.buttonColor}"
+                            primaryOnClick="{!c.goToNext}"
+                            backButtonLabel="Go Back"
+                            backOnClick="{!c.goBack}"
+    >
+        <lightning:layout multipleRows="true"
+                          class="slds-text-align_center"
+                          pullToBoundary="medium"
+                          verticalAlign="stretch"
+                          horizontalAlign="center"
+        >
+            <aura:if isTrue="{!not(empty(v.groups))}">
+                <aura:iteration var="group" items="{!v.groups}">
+                    <c:Peak_OnboardingGroupCard id="{!group.id}"
+                                                name="{!group.name}"
+                                                description="{!group.description}"
+                                                showGroupDescription="{!v.showGroupDescription}"
+                                                joined="{!group.following}"
+                                                notificationSetting="{!group.notificationFrequency}"
+                                                onRemove="{!c.handleGroupRemove}"
+                                                onJoin="{!c.handleGroupJoin}"
+                                                onChange="{!c.handleGroupNotificationChange}"
+                    />
+                </aura:iteration>
+            </aura:if>
+        </lightning:layout>
+    </c:Peak_OnboardingSlide>
+
+</aura:component>

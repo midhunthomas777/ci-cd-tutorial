@@ -1,0 +1,5 @@
+<aura:component >
+    Faculty : Midhun Thomas <br/>
+    Mode  : ClassRoom <br/>
+    Start Date =14th july <br/>
+</aura:component>

@@ -1,0 +1,43 @@
+/*
+ * Copyright (c) 2019. 7Summits Inc.
+ */
+.THIS .idea {
+    overflow:hidden;
+    height: 100%;
+}
+
+.THIS .idea__content:first-child {
+    padding-left: 0;
+}
+
+.THIS .idea__votes {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.THIS .idea_has-image .owner-label {
+    position:absolute;
+    bottom:30px;
+}
+
+@media screen and (max-width:767px) {
+    .THIS .name {
+        height:auto;
+        line-height:normal;
+        margin:5px 0px;
+    }
+    .THIS .showingImage .owner-label {
+        position:static;
+    }
+
+    .THIS .spacer {
+        margin-bottom:0px;
+    }
+}
+
+@media screen and (min-width:768px) {
+    .THIS .idea-points {
+        display: flex;
+        justify-content: flex-end;
+    }
+}

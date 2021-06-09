@@ -1,0 +1,113 @@
+<aura:component controller="DTSFPART_CommonComponentsController" implements="forceCommunity:themeLayout" access="global" description="Partner Portal Community Theme">
+    <aura:attribute name="search"               type="Aura.Component[]" required="false"/>
+    <aura:attribute name="profileMenu"          type="Aura.Component[]" required="false"/>
+    <aura:attribute name="navBar"               type="Aura.Component[]" required="false"/>
+    <aura:attribute name="navigationBar"        type="Aura.Component[]" required="false"/>
+    <aura:attribute name="header"               type="Aura.Component[]" required="false"/>
+    <aura:attribute name="templateFeatureBar"   type="Aura.Component[]" required="false"/>
+    <aura:attribute name="templateFooter"       type="Aura.Component[]" required="false"/>
+    <aura:attribute name="breadcrumbs"          type="Aura.Component[]" required="false"/>
+    <!-- Use this region for DTSFPART_CommunityGlobalHeader component only -->
+    <aura:attribute name="globalHeader"         type="Aura.Component[]" required="false"/>
+    <!-- Use this region for hidden Quick Actions only -->    
+    <aura:attribute name="quickActions"         type="Aura.Component[]" required="false"/>
+
+    <aura:attribute name="quickActionsLabel"    type="Boolean" default="false" />
+    <!-- Builder settings -->
+    <aura:attribute name="tealiumLibraryUrl"    type="String" default="" />
+    <aura:attribute name="dynatraceUrl"         type="String" default="" />
+    <aura:attribute name="communityMode"        type="String" default="" />
+    <aura:attribute name="mode"                 type="String" default="" description="Controls if runs Partner Hub or Customer Hub" />
+    <aura:attribute name="cssClass"             type="String" default="" />
+    <aura:attribute name="combinedCssClass"     type="String" default="motorola-theme" />
+    <aura:attribute name="occUrl"               type="String" default="https://shop.motorolasolutions.com" />
+    <aura:attribute name="aemUrl"               type="String" default="https://aem.motorolasolutions.com" />
+    <aura:attribute name="businessonlineUrl"    type="String" default="https://businessonline.motorolasolutions.com" />
+    <aura:attribute name="mulesoftCredentials"  type="String" default="Mulesoft_OAuth" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <!-- Include global styles for Partner Community -->
+    <ltng:require styles="{!$Resource.DTSFPART_PartnerCommunity + '/main.css'}" />    
+
+    <!-- Include settings component -->
+    <c:communitySettings
+        occUrl="{!v.occUrl}"
+        aemUrl="{!v.aemUrl}"
+        businessonlineUrl="{!v.businessonlineUrl}"
+        mulesoftCredentials="{!v.mulesoftCredentials}"
+        communityMode="{!v.communityMode}"
+        viewType="{!$Site.context.viewType}"
+    ></c:communitySettings>
+    <c:currentUserHelper aura:id="currentUser"></c:currentUserHelper>
+
+    <!-- Include dynatrace -->
+    <c:DTSFPART_DynatraceEntry dynatraceUrl="{!v.dynatraceUrl}" />
+    <!-- Include Tealium -->
+    <c:DTSFPART_CommunityTealium tealiumLibraryUrl="{!v.tealiumLibraryUrl}" mode="{!v.communityMode}" aura:id="tealium"/>
+
+    <div class="{!v.combinedCssClass}">
+        <nav class="header"
+            data-uet-event="msiSFCommunitiesDataTransfer"
+            data-uet-restriction="private"
+            data-uet-link-hierarchy-root="top navigation"
+            data-uet-page-area="1" 
+            data-uet-cname-root="Global Header"
+        > 
+            {!v.globalHeader}
+            {!v.navigationBar}
+        </nav>
+        <div class="header-region">
+            {!v.header}
+        </div>
+
+        <section class="moto-theme__body">
+            <div class="slds-container_x-large slds-p-vertical_medium moto-theme__header">
+                <div class="slds-grid slds-wrap slds-grid_vertical-align-center">
+                    <div class="slds-col moto-col_breadcrumbs">
+                        {!v.breadcrumbs}
+                    </div>
+                    <div class="slds-col moto-col_utilities">
+                        <div class="slds-grid slds-grid_align-end slds-grid_vertical-align-center slds-gutters slds-wrap">
+                            <div class="slds-col moto-col_feature-bar">
+                                {!v.templateFeatureBar}
+                            </div>
+                            <div class="slds-col moto-col_notifications">
+                                <forceCommunity:notifications />
+                            </div>
+                            <div class="slds-col moto-col_current-user-account">
+                                <c:currentUserAccount></c:currentUserAccount>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="moto-theme__body-container">
+                {!v.body}
+            </div>
+
+            <div class="moto-theme__quick-actions">
+                <aura:if isTrue="{!v.quickActionsLabel}">
+                    <p class="slds-text-color_destructive slds-text-align_center">WARNING</p>
+                </aura:if>                
+                {!v.quickActions}
+                <aura:if isTrue="{!v.quickActionsLabel}">
+                    <p class="slds-text-align_center">Quick Actions - use this region only for hidden components.</p>
+                </aura:if>
+            </div>
+
+            <div class="moto-theme__template-footer">
+                {!v.templateFooter}                
+            </div>
+
+        </section>
+
+    </div>
+
+    <aura:html tag="style">
+        .interactions-enabled nav.header {
+            position: static;
+        }
+    </aura:html>
+
+</aura:component>

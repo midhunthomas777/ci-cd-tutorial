@@ -1,0 +1,5 @@
+<aura:component controller="EloquaProfilerCtrl" implements="force:lightningQuickAction,force:hasRecordId" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="redirectURL" type="String"/>
+</aura:component>

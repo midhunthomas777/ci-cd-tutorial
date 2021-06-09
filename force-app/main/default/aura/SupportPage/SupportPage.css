@@ -1,0 +1,55 @@
+.THIS {
+	padding-bottom: t(spacingSmall);
+}
+
+.THIS button {
+    outline: none;
+    height: t(squareIconMediumBoundaryAlt);
+    cursor: pointer;
+    border-radius: t(borderRadiusXLarge);
+    border: 0;
+    font-size: t(fontSizeSmall);
+    margin-bottom: t(spacingSmall);
+}
+
+/*
+.THIS button:hover {
+	background-color:#232323;
+    color: #FFFFFF;
+} */
+
+.THIS .moto-form-container {
+    text-align: center;
+
+}
+.THIS .moto-body-section {
+    text-align: center;
+    width: 88%;
+    margin: 0 auto t(spacingLarge) auto;
+}
+.THIS .moto-body-section span {
+	font-size: t(fontSizeSmall);;
+}
+.THIS .moto-dot-item {
+    background-color: #D4D4D4;;
+    width: t(buttonSizeXLarge);
+    height: t(buttonSizeXLarge);
+    border-radius: t(borderRadiusCircle);
+    margin: t(spacingLarge) 0 t(spacingSmall) 0;
+}
+/*@media(max-width: 1023px) { 
+    .THIS button {
+        width: 80%;
+    }
+}*/
+
+.THIS .moto-download-button{
+    background-color:#FFFFFF;
+    color: #232323;
+    border: 0.5px solid #c7c3c3;  
+}
+
+.THIS .moto-form-button{
+    background-color:#232323;
+    color: #FFFFFF;   
+}

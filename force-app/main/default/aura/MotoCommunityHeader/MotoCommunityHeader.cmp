@@ -1,0 +1,66 @@
+<aura:component controller="MotoCommunityHeaderController" implements="forceCommunity:availableForAllPageTypes,forceCommunity:searchInterface,forceCommunity:profileMenuInterface" access="global">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="rootPath" type="String"/>
+    <aura:attribute name="currentUser" type="Object"/>
+    <aura:attribute name="name" type="String" default="community" access="global" /> <!-- default="communityCoveo" -->
+    <aura:attribute name="searchHub" type="String" default="communityCoveo" access="global" />
+    <aura:attribute name="searchPageName" type="String" default="global-search/%40uri" access="global" />
+    <aura:attribute name="options" type="String[]" default="" />
+    <aura:attribute name="supportUrl" type="String" default="supportpage" />
+    <aura:attribute name="showSearch" type="Boolean" default="true" />
+    <aura:attribute name="showChat" type="Boolean" default="false" />
+    <aura:attribute name="showUserMenu" type="Boolean" default="true" />
+    <aura:attribute name="showUserMenuAdminAccount" type="Boolean" default="true" />
+    <aura:attribute name="showUserMenuAccountPreferences" type="Boolean" default="false" />
+    <aura:attribute name="showUserMenuAdminRelatedContacts" type="Boolean" default="true" />
+    <aura:attribute name="showUserMenuResetPassword" type="Boolean" default="true" />
+    <aura:attribute name="loginUrl" type="String" default="loginUrl" />
+    <aura:attribute name="logoutUrl" type="String" default="logoutUrl" />
+    
+    <lightning:navigation aura:id="navService"/>
+    
+    <div class="moto-sales360-container">
+        <div class="slds-grid slds-wrap moto-sales360-header-container" style="padding: 1% 0;">
+            <div class=" moto-leftnav-container  slds-size_1-of-2 slds-large-size_1-of-3">
+                <a href="{!v.rootPath}">
+                    <img src="{!$Resource.MsiUniversalAssets + '/assets/logo.svg'}" alt="Motorola Solutions logo" class="moto-logo"/>
+                </a>
+            </div>
+            <div class="moto-searchbar-container slds-size_1-of-1 slds-large-size_1-of-3 slds-large-order_2  slds-order_3">
+                <aura:if isTrue="{!v.showSearch}">
+                    <c:MotoCommunityGlobalSearch />
+                </aura:if>
+            </div>
+            <div class="slds-size_1-of-2 slds-large-size_1-of-3 slds-large-order_3  slds-order_2">
+                <div class="moto-button-group">
+                    <aura:if isTrue="{!v.showChat}">
+                        <a href="https://messenger.providesupport.com/messenger/0xpbq9zbratfk1a2m07pk5ihll.html" target="_blank">
+                            <img class="moto-icon-item" src="{!$Resource.MsiUniversalAssets + '/assets/chat_icon.png'}" alt="chat icon"/>
+                        </a>
+                    </aura:if>
+                    <a href="javascript:void(0)" onclick="{!c.handlePhoneIconClick}">
+                        <img class="moto-icon-item" src="{!$Resource.MsiUniversalAssets + '/assets/phone_icon.png'}" alt="phoneicon"/>
+                    </a>
+                    <aura:if isTrue="{!v.currentUser.firstName}">
+                        <span class="moto-welcome-user">Welcome Back: </span>
+                        <lightning:buttonMenu
+                                              label="{!v.currentUser.firstName}"
+                                              class="moto-nav-account-button"
+                                              menuAlignment="right"
+                                              aura:id="trigger"
+                                              variant="bare">
+                            <aura:iteration items="{!v.options}" var="itemLabel">
+                                <lightning:menuItem label="{!itemLabel}" onactive="{!c.handleMenuItems}" class="overwrite-menu-font"/>
+                            </aura:iteration>
+                        </lightning:buttonMenu>
+                        
+                        <aura:set attribute="else">
+                            <lightning:button label="Sign In" variant="base" class="moto-nav-account-button" onclick="{!c.handleSignIn}" />
+                        </aura:set>
+                    </aura:if>
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,41 @@
+<aura:component controller="QuoteSubAgenciesHierarchyController" implements="flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="recordId" type="String" access ="global" />
+    <aura:attribute name="gridColumns" type="List" />
+    <aura:attribute name="gridData" type="Object" access = "global"/>
+    <aura:attribute name="gridExpandedRows" type="List" />
+    
+    <lightning:layout>
+        <lightning:layoutItem padding="horizontal-small" size="12">
+            <div class="slds-page-header">
+                <div class="slds-page-header__row">
+                    <div class="slds-page-header__col-title">
+                        <div class="slds-media">
+                            <div class="slds-media__figure">
+                                <lightning:icon iconName="action:quote" size="x-small" 
+                                                alternativeText="Quote Hierarchy" />
+                            </div>
+                            <div class="slds-media__body slds-m-top_x-small">
+                                <div class="slds-page-header__name">
+                                    <div class="slds-page-header__name-title">
+                                        <h1> <b><span class="slds-page-header__name-title">Quote Hierarchy</span></b></h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </lightning:layoutItem>
+    </lightning:layout>
+    
+    <lightning:layout> 
+        <lightning:layoutItem padding="horizontal-small" size="12">
+            <!--<div class="slds-scrollable" style="height:15rem;width:50rem"> SF-2598-->
+                <lightning:treeGrid columns="{!v.gridColumns}" data="{!v.gridData}" hideCheckboxColumn="true"
+                                    keyField="name" aura:id="mytree" expandedRows="{!v.gridExpandedRows}"/>
+            <!--</div> SF-2598-->
+        </lightning:layoutItem>
+    </lightning:layout>
+    
+</aura:component>

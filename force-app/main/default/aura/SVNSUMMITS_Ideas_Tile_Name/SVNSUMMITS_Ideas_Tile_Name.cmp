@@ -1,0 +1,66 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<aura:component description="SVNSUMMITS_Ideas_Detail_Name"
+                extends="c:SVNSUMMITS_Ideas_Base"
+                access="public">
+
+    <aura:attribute name="baseModel"        type="String"   access="global"/>
+    <aura:attribute name="idea"             type="Map"      access="public"/>
+    <aura:attribute name="sitePath"         type="String"   access="global"/>
+    <aura:attribute name="sitePrefix"       type="String"   access="global"/>
+    <aura:attribute name="ideaDetailURL"    type="String" default="/idea/"      access="global"/>
+    <aura:attribute name="ideaUrl"          type="String" access="public"/>
+
+    <aura:attribute name="headingLines"             type="String"  default=""    access="global"/>
+    <aura:attribute name="displayPostDateAuthor"    type="Boolean" default="true" access="global"/>
+    <aura:attribute name="displayStatus"            type="Boolean" default="true" access="global"/>
+    <aura:attribute name="isNicknameDisplayEnabled" type="Boolean" default="true" access="global"/>
+
+    <aura:attribute name="userProfileURL"           type="String"/>
+    <aura:attribute name="ideaUserName"             type="String"/>
+    <aura:attribute name="topicURL"                 type="String"/>
+
+    <aura:handler name="baseReady" event="c:SVNSUMMITS_BaseReady" action="{!c.init}"/>
+
+    <lightning:navigation aura:id="tileNameNavigation"/>
+
+    <div class="idea__details">
+        <div class="idea__meta slds-truncate">
+            <aura:if isTrue="{!and(v.displayStatus, v.idea.Status)}">
+                <span class="idea__status">
+                    {!v.idea.Status}
+                </span>
+            </aura:if>
+
+            <!-- Topic  -->
+            <aura:if isTrue="{!v.idea.Related_Topic_Name__c}">
+                <span class="idea__topics">
+                    <lightning:formattedUrl value="{!v.idea.topicLink}" label="{!v.idea.Related_Topic_Name__c}"/>
+                </span>
+            </aura:if>
+        </div>
+
+        <!-- Title -->
+        <c:SVNSUMMITS_Ideas_Heading tag="h3"
+                                    size="small"
+                                    class="idea__name slds-m-vertical_xx-small"
+                                    style="{!if(v.headingLines, '-webkit-line-clamp:'+ v.headingLines + ';', '')}"
+        >
+            <a title="{!v.idea.Title}"
+               href="{!v.ideaUrl}"
+               data-id="{!v.idea.Id}"
+               class="idea__name-link">{!v.idea.Title}</a>
+        </c:SVNSUMMITS_Ideas_Heading>
+
+        <!-- Author -->
+        <aura:if isTrue="{!v.displayPostDateAuthor}">
+            <div class="idea__owner-label slds-text-heading_label-normal slds-truncate">
+                <lightning:formattedText value="{!v.idea.fromNow + ' '}" />
+                <lightning:formattedText value="{!$Label.c.ss_idea_label_by + ' '}" />
+                <lightning:formattedUrl value="{!v.userProfileURL}"
+                                        label="{!v.ideaUserName}" />
+            </div>
+        </aura:if>
+    </div>
+</aura:component>

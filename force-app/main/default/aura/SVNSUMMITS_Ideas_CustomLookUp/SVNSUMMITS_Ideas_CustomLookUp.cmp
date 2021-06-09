@@ -1,0 +1,92 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<aura:component description="SVNSUMMITS_Ideas_CustomLookUp"
+                controller="SVNSUMMITS_IdeaNewController"
+                extends="c:SVNSUMMITS_Ideas_Base"
+                access="global">
+
+    <!-- Internal Attributes -->
+    <aura:attribute name="objectType"           type="String"   default="User"      access="public"/>
+    <aura:attribute name="listOfSearchRecords"  type="Object"                       access="public"/>
+    <aura:attribute name="searchKeyWord"        type="String"   default=""          access="public"/>
+    <aura:attribute name="selectedRecord"       type="String"                       access="public"/>
+    <aura:attribute name="showDropdown"         type="Boolean"  default="false"     access="public"/>
+    <aura:attribute name="selectedUser"         type="Map"                          access="public"/>
+    <aura:attribute name="disableInput"         type="Boolean"  default="false"     access="public"/>
+    <aura:attribute name="selectedUserId"       type="String"   default=""          access="public"/>
+    <aura:attribute name="isNewIdea"            type="Boolean"  default="true"      access="public"/>
+    <aura:attribute name="isEditing"            type="Boolean"  default="false"     access="public"/>
+    <aura:attribute name="showCross"            type="Boolean"  default="true"      access="public"/>
+    <aura:attribute name="searchLabel"          type="String"   default=""          access="public"/>
+
+    <!-- Base -->
+    <aura:attribute name="baseModel"            type="String"   access="global"/>
+
+    <!-- Declare events handlers -->
+    <aura:handler name="oSelectedRecordEvent" event="c:SVNSUMMITS_Ideas_CustomLookSelectedRec"
+                  action="{!c.handleComponentEvent}"/>
+    <!-- Init handler -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+
+    <!-- Custom lookup Field -->
+    <div onmouseleave="{!c.onblur}" aura:id="searchRes" class="slds-form-element slds-lookup slds-is-close"
+         data-select="single">
+
+        <!-- This part is for display search bar for lookup -->
+        <div class="slds-form-element__control">
+
+            <div class="slds-input-has-icon slds-input-has-icon--right">
+                <aura:if isTrue="{!v.showCross}">
+                    <lightning:icon class="slds-input__icon slds-show"
+                                    iconName="utility:search"
+                                    size="xx-small"
+                                    alternativeText="search"/>
+                </aura:if>
+
+                <!-- This markup is for when an record is selected -->
+                <aura:if isTrue="{!v.objectType == 'User'}">
+                    <div aura:id="lookup-pill" class="slds-pill-container slds-hide">
+                        <aura:if isTrue="{!or(v.isNewIdea, v.isEditing)}">
+                            <lightning:pill class="pillSize"
+                                            label="{! v.selectedUser.FirstName + ' ' +  v.selectedUser.LastName}"
+                                            name="{! v.selectedUser.FirstName + ' ' +  v.selectedUser.LastName}"
+                                            onremove="{!c.clear}"/>
+
+                            <aura:set attribute="else">
+                                <lightning:pill class="{!v.showCross  ? 'pillSize ' : 'pillSize_grow rem-c'}"
+                                                label="{! v.selectedUser.FirstName + ' ' +  v.selectedUser.LastName}"
+                                                name="{! v.selectedUser.FirstName + ' ' +  v.selectedUser.LastName}"/>
+                            </aura:set>
+                        </aura:if>
+                    </div>
+                </aura:if>
+
+                <div aura:id="lookupField" class="slds-show">
+                    <lightning:input type="text"
+                                     label="{!v.searchLabel}"
+                                     placeholder="{!$Label.c.ss_idea_label_Search}"
+                                     value="{!v.searchKeyWord}"
+                                     disabled="{!or(v.disableInput, not(v.isNewIdea))}"
+                                     onfocus="{!c.onfocus}"
+                                     onchange="{!c.onfocus}">
+                    </lightning:input>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!--This part is for Display type head lookup result List-->
+        <ul style="min-height:40px;margin-top:0px !important" class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid
+                      slds-lookup__menu slds" role="listbox">
+            <lightning:spinner class="slds-hide" variant="brand" size="small" aura:id="mySpinner"/>
+            <aura:iteration items="{!v.listOfSearchRecords}" var="singleRec">
+                <c:SVNSUMMITS_Ideas_CustomLookUpDropdown oRecord="{!singleRec}" objectType="{!v.objectType}" />
+            </aura:iteration>
+        </ul>
+
+    </div>
+
+</aura:component>

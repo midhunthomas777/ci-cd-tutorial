@@ -1,0 +1,49 @@
+<!-- Copyright ©2019 7Summits Inc. All rights reserved. -->
+
+<aura:component description="SVNSUMMITS_Ideas_Feeds"
+                implements="force:hasRecordId"
+                controller="SVNSUMMITS_Ideas_FeedPublishController"
+                access="global">
+
+    <!--Internal Attributes-->
+    <aura:attribute name="recordId"      type="String"/>
+    <aura:attribute name="idea"          type="Map"                     access="global"/>
+    <aura:attribute name="showFeed"      type="Boolean" default="true"  access="global"/>
+    <aura:attribute name="totalRecords"  type="integer" default="0"/>
+
+    <!--Label Attributes-->
+    <aura:attribute name="title"         type="String"  default=""      access="global"/>
+
+    <!--Init Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <!--BODY-->
+    <lightning:layout class="slds-p-around--small"
+                      multipleRows="true">
+
+        <!--Title-->
+        <aura:if isTrue="{!v.title != ''}">
+            <lightning:layoutItem size="12">
+                <c:SVNSUMMITS_Ideas_Heading tag="h2" size="medium">
+                    <lightning:formattedText value="{!v.title}"/>
+                </c:SVNSUMMITS_Ideas_Heading>
+            </lightning:layoutItem>
+        </aura:if>
+
+        <!--Idea Publisher-->
+        <aura:if isTrue="{!v.showPublisher}">
+            <lightning:layoutItem size="12">
+                <c:SVNSUMMITS_Ideas_FeedPublisher idea="{!v.idea}"/>
+            </lightning:layoutItem>
+        </aura:if>
+
+        <!--Idea Feed-->
+        <aura:if isTrue="{!v.showFeed}">
+            <lightning:layoutItem size="12"
+                                  class="slds-p-top_large">
+                <c:SVNSUMMITS_Ideas_FeedItem idea="{!v.idea}"/>
+            </lightning:layoutItem>
+        </aura:if>
+    </lightning:layout>
+
+</aura:component>

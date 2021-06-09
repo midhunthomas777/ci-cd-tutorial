@@ -1,0 +1,25 @@
+<aura:component controller="MotoCustomerAuthBannerController" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,forceCommunity:availableForAllPageTypes" access="global" extensible="true">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+  <aura:attribute name="accountName" type="string" default="..."/>
+  <aura:attribute name="bgImage" type="String" default="/css/s/sfsites/c/resource/CustomerCommunityAssets/images/home/auth-banner.jpg" access="global"/>
+
+  <aura:html tag="style">
+    .moto-container {
+      background-image:
+        linear-gradient(84deg, #000000, rgba(0, 0, 0, 0.07) 102%),
+        url('{!v.bgImage}');
+    }
+  </aura:html>
+  <div class="moto-container">
+    <div class="slds-container_x-large moto-banner-container">
+      <div class="slds-grid slds-wrap">
+        <div class="slds-size_1-of-1 slds-small-size_6-of-12 moto-banner-head">
+          <div>
+            <h1 class="moto-banner-head-title">{!v.accountName}</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</aura:component>
+<!--<section class="slds-container_x-large slds-container_center slds-p-bottom_xx-large slds-p-horizontal_medium">-->

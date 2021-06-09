@@ -1,0 +1,38 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc. All rights reserved.
+  -
+  -->
+
+<aura:component >
+    <aura:attribute name="toursMessage" type="String"/>
+    <aura:attribute name="toursHeader" type="String"/>
+    <aura:attribute name="displayTours" type="Boolean" default="true"/>
+    <aura:attribute name="displayDone" type="Boolean" default="false"/>
+    <aura:attribute name="doneMessage" type="String"/>
+    <aura:attribute name="buttonColor" type="String" default="#ff8201"/>
+    <aura:attribute name="videoType1" access="global" type="String" default="YouTube" />
+    <aura:attribute name="VideoURL1" access="global" type="String" default="" />
+    <aura:attribute name="VideoTitle1" access="global" type="String" default="First Video" />
+    <aura:attribute name="VideoDescription1" access="global" type="String" default="Some great first content!" />
+
+    <aura:registerEvent name="pageChange" type="c:Peak_OnboardingChangePage"/>
+
+    <aura:if isTrue="{!v.displayTours}">
+        <c:Peak_OnboardingSlide class="tours"
+                                title="{!v.toursHeader}"
+                                description="{!v.toursMessage}"
+                                primaryButtonLabel="Got it!"
+                                primaryButtonColor="{!v.buttonColor}"
+                                primaryOnClick="{!c.goToNext}"
+                                backOnClick="{!c.goBack}"
+                                layout="horizontal"
+        >
+            <c:Peak_OnBoardingVideo type="{!v.videoType1}"
+                                    videoId="{!v.VideoURL1}"
+                                    title="{!v.VideoTitle1}"
+                                    description="{!v.VideoDescription1}"
+            />
+        </c:Peak_OnboardingSlide>
+    </aura:if>
+
+</aura:component>

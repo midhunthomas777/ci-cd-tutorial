@@ -1,0 +1,6 @@
+<aura:component  controller="AgentWorkItemController" implements="flexipage:availableForAllPageTypes" access="global" >
+    <aura:attribute name="userId" type="String" />
+    <lightning:omniToolkitAPI aura:id="omniToolkit" />  
+    <aura:handler event="lightning:omniChannelStatusChanged" action="{! c.onStatusChanged }"/>
+    <aura:handler event="lightning:omniChannelWorkloadChanged" action="{! c.onWorkloadChanged }"/>
+</aura:component>

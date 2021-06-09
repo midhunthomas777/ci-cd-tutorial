@@ -1,0 +1,10 @@
+<aura:component >
+	<div>
+        Last Name : <br/>
+        First Nmae : <br/>
+        Phone : <br/>
+        Email : <br/>
+    
+    
+    </div>
+</aura:component>

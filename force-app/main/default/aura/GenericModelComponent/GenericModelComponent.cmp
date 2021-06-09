@@ -1,0 +1,57 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:attribute access="public" name="class" type="String"/>
+    <aura:attribute access="public" name="classSize" type="String"/>
+    <aura:attribute access="public" name="roleType" type="String" default="dialog"/>
+    <aura:attribute access="public" name="headerClass" type="String"/>
+    <aura:attribute access="public" name="headerStyle" type="String"/>
+    <aura:attribute access="public" name="bodyClass" type="String"/>
+    <aura:attribute access="public" name="footerClass" type="String"/>
+    <aura:attribute access="public" name="header" type="Aura.Component[]"/>
+    <aura:attribute access="public" name="footer" type="Aura.Component[]"/>
+    <aura:attribute access="public" name="bodyComponent" type="Aura.Component[]"/>
+    <aura:attribute access="public" name="isbodyComponent" type="Boolean" default="false"/>
+    <aura:attribute access="public" name="bodyContent" type="String"/>
+    <aura:attribute access="public" name="cancelAction" type="Aura.Action" default="{!c.closeModal}"/>
+    <aura:attribute access="public" name="closeAction" type="Aura.Action" default="{!c.closeModal}"/>
+    <aura:attribute access="public" name="okAction" type="Aura.Action" default="{!c.closeModal}"/>
+    <aura:attribute access="public" name="cancelButtonLabel" type="String" default="Cancel"/>
+    <aura:attribute access="public" name="okButtonLabel" type="String" default="Ok"/>
+    <aura:attribute access="public" name="showCancelButton" type="Boolean" default="true"/>
+    <aura:attribute access="public" name="showCloseButton" type="Boolean" default="true"/>
+    <aura:attribute access="public" name="showOkButton" type="Boolean" default="true"/>
+    <aura:attribute access="public" name="textSize" type="String" default="medium"/>
+    <aura:method access="public" name="close" action="{!c.closeModal}"/>
+    <aura:method access="public" name="open" action="{!c.openModal}"/>
+	    
+    <div>
+        
+        <div aura:id="sldsModal" aria-hidden="false" role="{!v.roleType}" class="{!v.classSize}">
+            <div class="{!'slds-modal__container ' + if(not(empty(v.class)), v.class, '')}">
+				<div class="{!'slds-modal__header ' + if(not(empty(v.headerClass)), v.headerClass, '')}" style="{!v.headerStyle}">
+                     <h2 class="{'slds-text-heading--' + if(not(empty(v.textSize)), v.textSize, '')">{!v.header}</h2>
+                    <aura:if isTrue="{!v.showCloseButton}">
+                        <lightning:buttonIcon class="slds-modal__close" iconName="utility:close" size="medium" variant="bare-inverse" alternativeText="{!v.cancelButtonLabel}" onclick="{!v.closeAction}"/>
+                   
+                    </aura:if>
+                </div>
+                <div class="{!'slds-modal__content ' + if(not(empty(v.bodyClass)), v.bodyClass, '')}">
+                    {!v.body}
+                </div>
+                <div class="{!'slds-modal__footer ' + if(not(empty(v.footerClass)), v.footerClass, '')}">
+                    <aura:if isTrue="{!not(empty(v.footer))}">
+                        {!v.footer}
+                        <aura:set attribute="else">
+                            <aura:if isTrue="{!v.showOkButton}">
+                                <button class="slds-button slds-button--neutral" onclick="{!v.okAction}">{!v.okButtonLabel}</button>
+                            </aura:if>
+                            <aura:if isTrue="{!v.showCancelButton}">
+                                <button class="slds-button slds-button--neutral" onclick="{!v.cancelAction}">{!v.cancelButtonLabel}</button>
+                            </aura:if>
+                        </aura:set>
+                    </aura:if>
+                </div>
+            </div>
+        </div>
+        <div aura:id="sldsModalBackdrop" class="slds-modal-backdrop slds-modal-backdrop--open"></div>
+    </div>
+</aura:component>

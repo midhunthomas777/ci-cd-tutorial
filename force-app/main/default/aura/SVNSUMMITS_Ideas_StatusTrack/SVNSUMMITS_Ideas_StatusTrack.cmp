@@ -1,0 +1,55 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<aura:component controller="SVNSUMMITS_IdeaViewController"
+                implements="force:appHostable,forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes,force:hasRecordId,force:hasSObjectName"
+                extends="c:SVNSUMMITS_Ideas_Base"
+                access="global">
+
+	<aura:attribute name="debugMode"     type="Boolean" default="false" access="global"/>
+    <aura:attribute name="StatusAllowed" type="String"  default=""      access="global" />
+
+	<!-- Property Editor-->
+	<aura:attribute name="title"        type="String"   default="" access="global"/>
+	<aura:attribute name="zoneName"     type="String"   default="Internal Zone" required="true" access="global"/>
+	<aura:attribute name="opaqueBackground"     type="Boolean"  default="false" access="global"/>
+
+	<aura:attribute name="recordId"     type="String"   access="global"/>
+	<aura:attribute name="idea"         type="Map"      access="global"/>
+	<aura:attribute name="sObjectName"  type="String"   access="global"/> <!-- doesn't work :/ -->
+
+	<aura:attribute name="zoneId"       type="String"   default="" access="global"/>
+	<aura:attribute name="statusSet"    type="Map"      access="global"/>
+	<aura:attribute name="statusType"   type="String"   default="path" access="global"/>
+	<aura:attribute name="currentStep"  type="String"   default="" access="global"/>
+	<aura:attribute name="intCountWidth" type="Integer" access="global"/>
+
+	<aura:attribute name="baseModel"    type="String"                   access="global"/>
+	<aura:handler   name="baseReady"    event="c:SVNSUMMITS_BaseReady"  action="{!c.onInit}"/>
+
+	<aura:if isTrue="{!and(v.idea.Id, v.zoneId != '')}">
+		<lightning:layout multipleRows="true"
+		                  class="{!v.opaqueBackground ? 'slds-card' : ''}"
+		                  >
+			<aura:if isTrue="{!v.title != ''}">
+				<lightning:layoutItem size="12" padding="around-small">
+					<c:SVNSUMMITS_Ideas_Heading tag="h2" size="medium">
+						{!v.title}
+					</c:SVNSUMMITS_Ideas_Heading>
+				</lightning:layoutItem>
+			</aura:if>
+
+			<lightning:layoutItem size="12"
+			                      padding="around-small">
+				<lightning:progressIndicator type="{!v.statusType}"
+				                             currentStep="{!v.currentStep}"
+				                             variant="shaded">
+					<aura:iteration items="{!v.statusSet}" var="status" indexVar="step">
+						<lightning:progressStep label="{!status}"
+						                        value="{!status}"/>
+					</aura:iteration>
+				</lightning:progressIndicator>
+			</lightning:layoutItem>
+		</lightning:layout>
+	</aura:if>
+</aura:component>

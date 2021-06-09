@@ -1,0 +1,188 @@
+<!--
+  - Copyright (c) 2018. 7Summits Inc.
+  -->
+
+<!--
+ - Created by francoiskorb on 8/9/18.
+ -->
+
+<aura:component description="Match_DataWizard"
+                implements="forceCommunity:availableForAllPageTypes,force:hasRecordId,lightning:isUrlAddressable,flexipage:availableForAllPageTypes"
+                access="global"
+                controller="Match_UserAttributeWizard"
+                extends="c:Match_Base">
+	<aura:handler name="init" action="{!c.init}" value="{!this}"/>
+
+	<!-- ******************** -->
+	<!-- Configurable Attributes -->
+	<!-- ******************** -->
+	<aura:attribute type="String"   name="wizardLabel"      access="global"/>
+	<aura:attribute type="String"   name="targetObject"     access="global"/>
+	<aura:attribute type="String"   name="attributeTypes"   access="global"/>
+	<aura:attribute type="String"   name="fieldName"        access="global"/>
+	<aura:attribute type="String"   name="fieldValue"       access="global"/>
+	<aura:attribute type="Integer"  name="min"              access="global"/>
+	<aura:attribute type="Integer"  name="max"              access="global"/>
+	<aura:attribute type="String"   name="successMessage"   access="global"/>
+	<aura:attribute type="String"   name="buttonLabel"      access="global"/>
+	<aura:attribute type="String"   name="textAreaText"     access="global"/>
+	<aura:attribute type="String"   name="imageURL"         access="global"/>
+
+	<!-- attributes -->
+	<aura:attribute name="mapOfAttributes" type="List"/>
+	<aura:attribute name="currentAttributeType" type="String"/>
+	<aura:attribute name="currentAttributeList" type="List"/>
+	<aura:attribute name="listOptions" type="List" default="[]"/>
+	<aura:attribute name="defaultOptions" type="List"/>
+	<aura:attribute name="currentIndex" type="Integer"/>
+	<aura:attribute name="totalAttributeTypes" type="Integer"/>
+	<aura:attribute name="recordId" type="Id"/>
+	<aura:attribute name="screenIndex" type="Integer" default="0"/>
+	<aura:attribute name="listOfTypes" type="List"/>
+	<aura:attribute name="summary" type="List" access="PRIVATE"/>
+
+	<aura:attribute name="summaryHeader"            type="String"                  access="global"/>
+	<aura:attribute name="showCriticalSelection"    type="Boolean" default="false" access="global"/>
+	<aura:attribute name="showIntroScreen"          type="Boolean" default="false" access="global"/>
+
+
+	<!-- ******************** -->
+	<!-- Starting page starts here -->
+	<!-- ******************** -->
+
+	<aura:if isTrue="{!v.screenIndex  == 1}">
+		<div class="slds-m-around_large">
+			<!-- ******************** -->
+			<!-- Page Header -->
+			<!-- ******************** -->
+
+			<div class="slds-text-heading--large slds-m-bottom_large"> {!v.wizardLabel} </div>
+
+			<div class="slds-grid slds-wrap slds-gutters slds-m-bottom_large">
+				<!-- ******************** -->
+				<!-- Image -->
+				<!-- ******************** -->
+				<div class="slds-col slds-size_1-of-3 ">
+					<div class="slds-card fixed-height slds-large-show">
+						<img src="{!v.imageURL}"/>
+					</div>
+
+				</div>
+
+				<!-- ******************** -->
+				<!-- Text Area -->
+				<!-- ******************** -->
+				<div class="slds-col slds-large-size--2-of-3 slds-size_3-of-3">
+					<div class="slds-card fixed-height ">
+						<lightning:formattedRichText value="{!v.textAreaText}"></lightning:formattedRichText>
+					</div>
+
+				</div>
+			</div>
+
+			<!-- ******************** -->
+			<!-- Get Started Button -->
+			<!-- ******************** -->
+			<div class="slds-float_right">
+				<lightning:button label="{!v.buttonLabel}" title="{!v.buttonLabel}" onclick="{!c.goToWizard}"/>
+			</div>
+		</div>
+	</aura:if>
+
+	<!-- ******************** -->
+	<!-- Starting page ends here -->
+	<!-- ******************** -->
+
+
+	<!-- ******************** -->
+	<!-- Choose attributes page starts here  -->
+	<!-- ******************** -->
+	<aura:if isTrue="{!v.screenIndex  == 2}">
+		<div class="slds-m-around_large">
+			<div class="slds-text-heading--large slds-m-bottom_medium"> {!v.wizardLabel} </div>
+			<label class=" slds-text_bold">Attribute Type {!v.currentIndex+1} of {!v.totalAttributeTypes}
+				: {!v.currentAttributeType}</label>
+			<div class="slds-col slds-size_1-of-3 slds-m-top_large">
+				<!-- ******************** -->
+				<!-- Picklist -->
+				<!-- ******************** -->
+				<lightning:dualListbox aura:id="skillSelectionPicklist"
+				                       name="Select Options"
+				                       label="{!'SELECT OPTIONS (AT LEAST '+v.min+' AT MOST '+v.max+' )'}"
+				                       sourceLabel="Available Options"
+				                       selectedLabel="Selected Options"
+				                       options="{!v.listOptions}"
+				                       value="{!v.defaultOptions}"
+				                       min="{!v.min}"
+				                       max="{!v.max}"
+				                       class="dualList"
+				                       onchange="{! c.handleChange }"/>
+			</div>
+
+			<div class="slds-m-top_large">
+				<!-- ******************** -->
+				<!-- Buttons -->
+				<!-- ******************** -->
+				<lightning:button variant="neutral" label="Back" onclick="{!c.goToPreviousType}"
+				                  disabled="{!v.currentIndex==0}"/>
+				<aura:if isTrue="{!v.currentIndex+1 != v.totalAttributeTypes}">
+					<lightning:button class="slds-float_right" variant="brand" label="Next"
+					                  onclick="{!c.goToNextType}"/>
+					<aura:set attribute="else">
+						<lightning:button class="slds-float_right" variant="brand" label="Next"
+						                  onclick="{!c.goToSummary}"/>
+					</aura:set>
+				</aura:if>
+
+
+			</div>
+
+		</div>
+	</aura:if>
+	<!-- ******************** -->
+	<!-- Choose attributes page ends here  -->
+	<!-- ******************** -->
+
+
+	<!-- ******************** -->
+	<!-- Summary page starts here  -->
+	<!-- ******************** -->
+	<aura:if isTrue="{!v.screenIndex  == 3}">
+		<h2>{!v.summaryHeader}</h2>
+
+		<aura:iteration items="{!v.mapOfAttributes}" var="categoryWithAttributes">
+			<p class="slds-m-top_large">{!categoryWithAttributes.category}</p>
+			<aura:iteration items="{!categoryWithAttributes.listOfAttributes}" var="attribute">
+				<aura:if isTrue="{!attribute.isSelected}">
+					<aura:if isTrue="{!v.showCriticalSelection}">
+						<p class="slds-m-left_large">
+							<lightning:input type="checkbox" label="{!attribute.attribute.Name}"
+							                 checked="{!attribute.isCritical}"/>
+						</p>
+						<aura:set attribute="else">
+							<p class="slds-m-left_large">{!attribute.attribute.Name}</p>
+						</aura:set>
+					</aura:if>
+				</aura:if>
+
+			</aura:iteration>
+		</aura:iteration>
+		<div class="slds-m-top_large">
+			<!-- ******************** -->
+			<!-- Buttons -->
+			<!-- ******************** -->
+			<lightning:button variant="neutral" label="Back" onclick="{!c.goBackToPicklist}"/>
+			<lightning:button class="slds-float_right" variant="brand" label="Save" onclick="{!c.saveRecords}"/>
+		</div>
+
+	</aura:if>
+	<!-- ******************** -->
+	<!-- Summary page ends here  -->
+	<!-- ******************** -->
+
+	<aura:if isTrue="{!v.screenIndex  == 4}">
+		<p>
+			<lightning:formattedRichText value="{!v.successMessage}"></lightning:formattedRichText>
+		</p>
+	</aura:if>
+</aura:component>

@@ -1,0 +1,19 @@
+<!-- 
+This component started off being called from a Lead Action. 
+Transitioning to a Flow Action.
+Given a Lead ID, invokes the custom conversion process.
+ -->
+<aura:component controller="SearchBeforeCreateCtrl"
+                implements="force:lightningQuickAction,lightning:availableForFlowActions" 
+                access="global">
+	<aura:attribute name="recordId" type="String" access="global"/>
+	<aura:attribute name="result" type="String" access="global"/> 
+    <aura:attribute name="salesProcess" type="String" access="global"/>
+    <aura:attribute name="recordTypeId" type="String" access="global" default="01280000000M0qO"/>
+    <!-- Added by satish -->
+    <aura:attribute name="responseMessage" type="String" access="global"/>
+    <aura:attribute name="responseIsSuccess" type="Boolean" access="global"/>
+    <aura:attribute name="convertedAccountId" type="String" access="global"/>
+	<aura:attribute name="convertedOpportunityId" type="String" access="global"/>
+    <aura:attribute name="convertedContactId" type="String" access="global"/>
+</aura:component>

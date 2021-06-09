@@ -1,0 +1,134 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc. All rights reserved.
+  -
+  -->
+
+<aura:component description="Peak_OnBoardingProgress" access="global">
+    <aura:attribute name="completedSteps" type="Object" access="global"/>
+    <aura:attribute name="progressHeading" type="String" default="Getting Started Guide" access="global"/>
+    <aura:attribute name="progressMessage" type="String" default="With this guide, you can tailor your experience to take full advantage of everything the community has to offer. Just a few quick steps and you will be on your way."
+                    access="global"/>
+
+    <aura:attribute name="user" type="User" access="global"/>
+
+    <aura:attribute name="step1Label" type="String" access="global"/>
+    <aura:attribute name="step2Label" type="String" access="global"/>
+    <aura:attribute name="step3Label" type="String" access="global"/>
+    <aura:attribute name="step4Label" type="String" access="global"/>
+    <aura:attribute name="step5Label" type="String" access="global"/>
+    <aura:attribute name="step6Label" type="String" access="global"/>
+    <aura:attribute name="step7Label" type="String" access="global"/>
+    <aura:attribute name="step8Label" type="String" access="global"/>
+
+    <aura:attribute name="showStep1" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="showStep2" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="showStep3" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="showStep4" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="showStep5" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="showStep6" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="showStep7" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="showStep8" type="Boolean" default="true" access="global"/>
+
+    <aura:attribute name="step1Number" type="String" access="global"/>
+    <aura:attribute name="step2Number" type="String" access="global"/>
+    <aura:attribute name="step3Number" type="String" access="global"/>
+    <aura:attribute name="step4Number" type="String" access="global"/>
+    <aura:attribute name="step5Number" type="String" access="global"/>
+    <aura:attribute name="step6Number" type="String" access="global"/>
+    <aura:attribute name="step7Number" type="String" access="global"/>
+    <aura:attribute name="step8Number" type="String" access="global"/>
+
+    <aura:attribute name="useTopicMetadata" type="Boolean" access="global"/>
+    <aura:attribute name="topicSlides" type="List" access="global"/>
+    <aura:attribute name="topicSlideIndex" type="Integer" access="global" default="0"/>
+
+    <aura:registerEvent name="onclick" type="c:Peak_OnboardingChangePage" />
+
+    <lightning:layout multipleRows="true">
+        <lightning:layoutItem size="12" class="slds-box_border">
+            <div class="slds-p-around_small">
+                <div class="slds-text-align_left slds-p-around_medium">
+                    <h2 class="slds-text-heading_small">{!v.progressHeading}</h2>
+                    <aura:if isTrue="{!v.progressMessage}">
+                        <p>{!v.progressMessage}</p>
+                    </aura:if>
+                </div>
+
+                <ul class="onboarding-progress__list">
+                    <c:Peak_OnboardingProgressStep show="{!v.showStep1}"
+                                                   label="{!v.step1Label}"
+                                                   pageNumber="1"
+                                                   completed="{!v.user.Completed_Welcome_Slide__c}"
+                                                   pageName="Welcome"
+                                                   onclick="{!c.handlePageChange}"
+                    />
+                    <c:Peak_OnboardingProgressStep show="{!v.showStep2}"
+                                                   label="{!v.step2Label}"
+                                                   pageNumber="2"
+                                                   completed="{!v.user.Completed_Profile_Slide__c}"
+                                                   pageName="Profile"
+                                                   onclick="{!c.handlePageChange}"
+                    />
+                    <c:Peak_OnboardingProgressStep show="{!v.showStep3}"
+                                                   label="{!v.step3Label}"
+                                                   pageNumber="3"
+                                                   completed="{!v.user.Completed_Additional_User_Data__c}"
+                                                   pageName="Additional"
+                                                   onclick="{!c.handlePageChange}"
+                    />
+                    <aura:if isTrue="{!v.useTopicMetadata}">
+                        <aura:iteration var="topicSlide" items="{!v.topicSlides}" indexVar="slideIndex">
+                            <c:Peak_OnboardingProgressStep show="{!v.showStep4}"
+                                                           label="{!topicSlide.parentLabel}"
+                                                           pageNumber="{!(slideIndex + 4)+''}"
+                                                           completed="{!or(greaterthan(v.topicSlideIndex, slideIndex), v.user.Completed_Topics_Slide__c)}"
+                                                           pageName="Topic"
+                                                           onclick="{!c.handlePageChange}"
+                            />
+                        </aura:iteration>
+                        <aura:set attribute="else">
+                            <c:Peak_OnboardingProgressStep show="{!v.showStep4}"
+                                                           label="{!v.step4Label}"
+                                                           pageNumber="4"
+                                                           completed="{!v.user.Completed_Topics_Slide__c}"
+                                                           pageName="Topic"
+                                                           onclick="{!c.handlePageChange}"
+                            />
+                        </aura:set>
+                    </aura:if>
+                    <c:Peak_OnboardingProgressStep show="{!v.showStep5}"
+                                                   label="{!v.step5Label}"
+                                                   pageNumber="9"
+                                                   completed="{!v.user.Completed_Groups_Slide__c}"
+                                                   pageName="Group"
+                                                   onclick="{!c.handlePageChange}"
+                    />
+                    <c:Peak_OnboardingProgressStep show="{!v.showStep6}"
+                                                   label="{!v.step6Label}"
+                                                   pageNumber="10"
+                                                   completed="{!v.user.Completed_Notification_Slide__c}"
+                                                   pageName="Notification"
+                                                   onclick="{!c.handlePageChange}"
+                    />
+                    <c:Peak_OnboardingProgressStep show="{!v.showStep7}"
+                                                   label="{!v.step7Label}"
+                                                   pageNumber="11"
+                                                   completed="{!v.user.Completed_Tours_Slide__c}"
+                                                   pageName="Tours"
+                                                   onclick="{!c.handlePageChange}"
+                    />
+                    <c:Peak_OnboardingProgressStep show="{!v.showStep8}"
+                                                   label="{!v.step8Label}"
+                                                   pageNumber="12"
+                                                   completed="{!v.user.Onboarding_Complete__c}"
+                                                   pageName="Done"
+                                                   onclick="{!c.handlePageChange}"
+                    />
+                </ul>
+
+            </div>
+
+        </lightning:layoutItem>
+    </lightning:layout>
+
+</aura:component>

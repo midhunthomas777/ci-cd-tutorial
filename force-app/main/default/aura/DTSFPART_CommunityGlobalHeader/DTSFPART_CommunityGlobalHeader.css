@@ -1,0 +1,13 @@
+.THIS .header-search > div {
+    width: 100%;
+}
+
+.THIS a:hover, .THIS a:focus {
+    text-decoration: none;
+}
+
+@media screen and (min-width: 1280px) {
+    .THIS .header-search > .header-search-wrapper > div {
+        width: 100%;
+    }
+}

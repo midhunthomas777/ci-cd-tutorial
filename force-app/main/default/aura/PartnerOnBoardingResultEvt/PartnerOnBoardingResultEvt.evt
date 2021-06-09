@@ -1,0 +1,3 @@
+<aura:event type="APPLICATION" description="To Store All Pages Data" >
+    <aura:attribute name="SecondPageResult" type="Object"/>
+</aura:event>

@@ -1,0 +1,167 @@
+<aura:component controller="DynamicQueryGenerator"
+    implements="lightning:actionOverride,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,lightning:availableForFlowScreens,lightning:availableForFlowActions"
+    access="global">
+    <aura:attribute name="selectedRecId" type="String" />
+    <aura:attribute name="additionalFields" type="String" />
+    <aura:attribute name="childRelnFieldName" type="String" default="parentId" />
+    <aura:attribute name="maxRowSelection" type="Integer" default="1" />
+    <aura:attribute name="loadSpinner" type="Boolean" default="true" />
+    <aura:attribute name="showPagination" type="Boolean" default="true" />
+    <aura:attribute name="columns" type="List" />
+    <aura:attribute name="resultList" type="List" />
+    <aura:attribute name="unfilteredResultList" type="List" />
+    <aura:attribute name="PaginationList" type="List" />
+    <aura:attribute name="startPage" type="Integer" />
+    <aura:attribute name="endPage" type="Integer" />
+    <aura:attribute name="totalRecords" type="Integer" />
+    <aura:attribute name="pageSize" type="Integer" default="5" />
+    <aura:attribute name="pageValue" type="Integer" />
+    <aura:attribute name="sortedBy" type="String" default="Name" />
+    <aura:attribute name="sortedDirection" type="String" default="ASC" />
+    <aura:attribute name="totalRecordsCount" type="Integer" />
+    <aura:attribute name="totalPagesCount" type="integer" />
+    <aura:attribute name="selectedCount" type="integer" default="0" description="selected Records Count" />
+    <aura:attribute name="currentPage" type="integer" default="1" />
+    <aura:attribute name="loadNavigationBtns" type="Boolean" default="true" />
+
+    <aura:attribute name="inlineErrors" type="Boolean" default="true" />
+
+    <aura:attribute name="fieldAPIs" type="List" />
+    <aura:attribute name="objectName" type="String" default="Account" />
+    <aura:attribute name="andFilters" type="List" />
+    <aura:attribute name="orFilters" type="List" />
+    <aura:attribute name="andORFilters" type="String" default="AND" />
+    <aura:attribute name="sortField" type="String" default="Name" />
+    <aura:attribute name="sortOrder" type="String" default="ASC" />
+    <aura:attribute name="inlineEditing" type="Boolean" default="false" />
+    <aura:attribute name="isValidated" type="Boolean" />
+
+    <aura:attribute name="enableClientSideSearch" type="Boolean" default="false" />
+    <aura:attribute name="clientSideSearchPlaceholder" type="String" default="" />
+    <aura:attribute name="searchText" type="String" default="" />
+
+    <aura:attribute name="hideSelection" type="Boolean" default="false" />
+    <aura:attribute name="showPageSize" type="Boolean" default="false" />
+
+    <aura:attribute name="errorMsg" type="String" />
+
+    <!-- export component attribute -->
+    <aura:attribute name="showExport" type="Boolean" default="false" />
+    <aura:attribute name="exportBtnPosition" type="String" default="left" />
+    <aura:attribute name="exportBtnIconPosition" type="String" default="left" />
+    <aura:attribute name="exportBtnLabel" type="String" default="Export" />
+    <aura:attribute name="exportBtnValue" type="String" default="Export" />
+
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="large" aura:id="mySpinner" />
+    </aura:if>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:registerEvent name="DynamicDataTableEvent" type="c:DynamicDataTableEvent" />
+    <aura:handler event="c:DynamicDataTableValidation" action="{!c.isValidated}" />
+
+    <aura:attribute name="selectedPageSize" type="String" default="{!v.pageSize}" />
+    <aura:attribute name="lstPageSize" type="List" default="10,20,30,40,60" />
+
+    <aura:handler name="change" value="{!v.selectedPageSize}" action="{!c.changePageSize}" />
+    <lightning:workspaceAPI aura:id="workspace" />
+
+    <aura:if isTrue="{!v.enableClientSideSearch}">
+        <lightning:layout verticalAlign="center" class="x-large search-container">
+            <lightning:layoutItem flexibility="auto,no-grow" padding="around-small">
+                <lightning:input type="search" label="Search" placeholder="{!v.clientSideSearchPlaceholder}"
+                    onchange="{!c.handleSearch}" value="{!v.searchText}" class="moto-input-item" />
+            </lightning:layoutItem>
+        </lightning:layout>
+    </aura:if>
+    <aura:if isTrue="{!v.showPageSize}">
+        <lightning:layout verticalAlign="center" class="x-large">
+            <lightning:layoutItem size="12" flexibility="auto,no-grow" padding="around-small" class="align-right">
+                <label class="rows-per-page-label">Show&nbsp;</label>
+                <ui:inputSelect class="slds-select moto-select-item rows-per-page" required="true"
+                    labelClass="slds-form-element__label" value="{!v.selectedPageSize}">
+                    <aura:iteration items="{!v.lstPageSize}" var="ps">
+                        <option value="{!ps}" text="{!ps}"></option>
+                    </aura:iteration>
+                </ui:inputSelect>
+                <label class="rows-per-page-label">&nbsp;entries per page</label>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </aura:if>
+    <aura:if isTrue="{!and(not(empty(v.errorMsg)),v.inlineErrors)}">
+        <c:AlertMessages Message="{!v.errorMsg}" type="error" />
+    </aura:if>
+    <aura:if isTrue="{!not(empty(v.PaginationList))}">
+        <aura:if isTrue="{!v.showExport}">
+            <lightning:layout verticalAlign="center" class="x-large">
+                <lightning:layoutItem size="12" flexibility="auto,no-grow" padding="around-small">
+                    <c:exportDataToExcel label="{!v.exportBtnLabel}" value="{!v.exportBtnValue}"
+                        iconName="utility:download" iconPosition="{!v.exportBtnIconPosition}"
+                        buttonPosition="{!v.exportBtnPosition}" records="{!v.resultList}"
+                        columns="{!v.columns}">
+                    </c:exportDataToExcel>
+                </lightning:layoutItem>
+            </lightning:layout>
+        </aura:if>
+        <aura:if isTrue="{!v.inlineEditing}">
+            <lightning:datatable aura:id="dynamicTableId" onsave="{!c.onSave}" oncancel="{!c.cancel}" class="cols"
+                columns="{! v.columns }" data="{! v.PaginationList }" keyField="Id"
+                maxRowSelection="{! v.maxRowSelection }" onrowselection="{!c.getRecordDetails}"
+                hideCheckboxColumn="{!v.hideSelection}" oncellchange="{!c.onCellChange}" sortedBy="{!v.sortedBy}"
+                sortedDirection="{!v.sortedDirection}" onsort="{!c.sortColumn}" />
+            <aura:set attribute="else">
+                <lightning:datatable aura:id="dynamicTableId" class="cols" columns="{! v.columns }"
+                    data="{! v.PaginationList }" keyField="Id" maxRowSelection="{! v.maxRowSelection }"
+                    onrowselection="{!c.getRecordDetails}" hideCheckboxColumn="{!v.hideSelection}"
+                    sortedBy="{!v.sortedBy}" sortedDirection="{!v.sortedDirection}" onsort="{!c.sortColumn}" />
+            </aura:set>
+        </aura:if>
+        <div class="slds-p-vertical_xx-small"></div>
+        <aura:if isTrue="{!v.showPagination}">
+            <div class="c-container">
+                <lightning:layout class="slds-grid--vertical-align-center">
+                    <lightning:layoutItem size="2">
+                        <div>
+                            <b>Total:
+                                <lightning:formattedNumber value="{!v.totalRecords}" /></b>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="1" padding="around-small">
+                        <div class="slds-p-vertical_xx-small"></div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6" padding="around-small">
+                        <aura:if isTrue="{!v.loadNavigationBtns}">
+                            <lightning:buttonGroup class="slds-align_absolute-center slds-m-top_xx-small">
+                                <!--  Pagination Buttons Start -->
+
+                                <div class="slds-align_absolute-center">
+                                    <lightning:button label="Previous" disabled="{!v.startPage == 0}"
+                                        onclick="{!c.navigation}" variant="base" iconName="utility:back"
+                                        name="previous" />
+                                    <span class="slds-badge slds-badge_lightest"
+                                        style="margin-right: 10px;margin-left: 10px; border:none">
+                                        Page {!v.currentPage} of {!v.totalPagesCount}
+                                    </span>
+                                    <lightning:button label="Next" disabled="{!(v.endPage + 1) >= v.totalRecords}"
+                                        onclick="{!c.navigation}" variant="base" iconName="utility:forward"
+                                        iconPosition="right" name="next" />
+                                </div>
+                                <!--  Pagination Buttons End -->
+                            </lightning:buttonGroup>
+                        </aura:if>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="1" padding="around-small">
+                        <div class="slds-p-vertical_xx-small"></div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="2" class="align-right">
+                        <aura:if isTrue="{!v.showPageSize}">
+                            <aura:if isTrue="{!v.totalPagesCount > 1}">
+                                <lightning:input type="text" label="Jump To:" class="moto-input-item jump-to"
+                                    value="{!v.pageValue}" onchange="{!c.handleJump}" />
+                            </aura:if>
+                        </aura:if>
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </div>
+        </aura:if>
+    </aura:if>
+</aura:component>

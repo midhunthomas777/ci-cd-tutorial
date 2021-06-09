@@ -1,0 +1,70 @@
+<aura:component controller="EInvoiceController" implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" >
+    
+    <aura:attribute name="userEmail" type="String"/>
+    <aura:attribute name="userCoreId" type="String"/>
+    <aura:attribute name="customNumber" type="String"/>
+    <aura:attribute name="requestType" type="String"/>
+    <aura:attribute name="isButtonVisible" type="Boolean" default="false"/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="false"/>
+    <aura:attribute name="userTheme" type="String" default="Theme4d" />
+    <aura:attribute name="isCommunity" type="Boolean" default="false" />
+    <aura:attribute name="errorMsg" type="String" />
+    <aura:attribute name="successMsg" type="String" />
+    
+    <aura:method name="getcustomerDetails" action="{!c.getcustomerDetails}">
+        <aura:attribute name="customNum" type="String"/>
+        <aura:attribute name="requestType" type="String"/>
+    </aura:method>
+    <aura:method name="callTrackingMethod" action="{!c.createTracking}"/>
+    
+    <aura:if isTrue="{!and(not(isCommunity),v.userTheme == 'Theme3')}"> 
+        <aura:if isTrue="{!not(empty(v.errorMsg))}"> 
+            <c:AlertMessages Message="{!v.errorMsg}" type="error"/>
+        </aura:if>
+        <aura:if isTrue="{!not(empty(v.successMsg))}"> 
+            <c:AlertMessages Message="{!v.successMsg}" type="success"/>
+        </aura:if>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="medium" aura:id="mySpinner"/>
+    </aura:if>    
+    <div class="c-container">
+        <lightning:layout>
+            <lightning:layoutItem flexibility="auto" padding="around-small">
+                <aura:if isTrue="{!not(empty(v.userEmail))}">
+                    <lightning:input type="email" name="requester" disabled="true"
+                                     label="Requester Email" variant="label-inline"
+                                     value="{!v.userEmail}"/>
+                    
+                    <aura:set attribute="else">
+                        <lightning:input type="email" name="requester" required="true" aura:id="reqEmailId"
+                                         label="Requester Email" variant="label-inline"
+                                         messageWhenValueMissing="Please enter your Motorola Email" />
+                    </aura:set>
+                </aura:if>
+                
+            </lightning:layoutItem>
+            <lightning:layoutItem flexibility="auto" padding="around-small">
+                <aura:if isTrue="{!not(empty(v.userCoreId))}">
+                    <lightning:input type="text" name="coreId" variant="label-inline"
+                                     label="Core Id" value="{!v.userCoreId}"
+                                     disabled="true"/>
+                    
+                    <aura:set attribute="else">
+                        <lightning:input type="text" name="coreId" required="true" aura:id="reqCoreId"
+                                         label="Core Id" variant="label-inline"
+                                         messageWhenValueMissing="Please enter your Core Id" />
+                    </aura:set>
+                </aura:if>
+                
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div>
+        
+    <aura:if isTrue="{!v.isButtonVisible}">
+        <lightning:button class="slds-m-top_x-small" variant="brand" label="Submit" 
+                          value="submitTracking" onclick="{!c.createTracking}"/>
+    </aura:if>
+    
+</aura:component>

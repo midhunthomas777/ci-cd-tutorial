@@ -1,0 +1,16 @@
+<aura:component controller="CloneCaseController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
+    <aura:attribute name="showError" type="string" />
+    <aura:attribute name="showSuccess" type="string" />
+    <aura:attribute name="FinalMsg" type="string" />
+    <aura:attribute name="loadSpinner" type="boolean" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner alternativeText="Loading" variant="brand" size="small"/>
+    </aura:if>
+    <aura:if isTrue="{!not(empty(v.showError))}">
+    	<c:AlertMessages type="error" Message="{!v.showError}" alertStyle="margin-top:15%;"/>
+    </aura:if>
+    <aura:if isTrue="{!not(empty(v.FinalMsg))}">
+        <c:AlertMessages type="error" Message="{!v.FinalMsg}" alertStyle="margin-top:15%;"/>
+    </aura:if>  
+</aura:component>

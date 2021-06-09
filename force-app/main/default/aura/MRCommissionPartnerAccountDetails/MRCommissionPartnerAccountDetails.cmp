@@ -1,0 +1,49 @@
+<aura:component controller="MRCommissionPartnerAccountDetailsCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="quoteId" type="String" />
+    <aura:attribute name="selectedpartnerId" type="String" />
+    <aura:attribute name="partnerErrorMsg" type="boolean" default="false"/>
+    <aura:attribute access="private" type="List" name="selection" default="[]"/>
+    <aura:registerEvent name="MRCommissionPartnerDetailEvent" type="c:MRCommissionPartnerDetailEvent"/>
+    <aura:handler event="c:selectedRecordIdEvent" action="{!c.getPartnerAccountId}"/> 
+    <div>
+        <div class="slds-grid slds-gutters" style="margin-right: -21.75rem;">
+            <div class="slds-col slds-size_5-of-12">
+                <c:Lookup aura:id="lookup" selection="{!v.selection}" onSearch="{!c.lookupSearch}" 
+                          label="Search" placeholder="Search Partner" />
+            </div>
+            
+            <div class="slds-col slds-size_3-of-12" style="margin-top: 23px;">
+                <lightning:button variant="brand" label="Next" onclick="{!c.openCalcDetail}" />
+            </div>
+            
+        </div> 
+    </div>
+   
+     <c:ModalComponent aura:id="Validation"
+                      roleType="alertdialog"
+                      classSize="slds-modal slds-modal--prompt"
+                      headerClass="slds-theme--error slds-theme--alert-texture"
+                      headerStyle="background-color:DodgerBlue;"
+                      bodyClass="slds-p-around__medium slds-text-align--center"
+                      showCloseButton="true"
+                      showCancelButton="false"
+                      okAction="{!c.closeAlertBox}"
+                      okButtonLabel="Cancel"
+                      footerClass="slds-theme--default">
+        <aura:set attribute="header">
+            <h6 class="slds-text-heading--medium" id="prompt-heading-id">
+                <span>
+                    <c:svgIcon class="slds-icon slds-icon--small slds-m-right--small slds-col slds-no-flex" 
+                               svgPath="/partnercommunity/resource/slds214/assets/icons/utility-sprite/svg/symbols.svg#warning" 
+                               category="utility" 
+                               size="medium" 
+                               name="warning" />
+                </span>
+                <b>{!$Label.c.Modal_Opportunity_Header_Message}</b>
+            </h6>
+            <!-- Body is created Dynamically -->
+        </aura:set>
+    </c:ModalComponent> 
+    
+</aura:component>

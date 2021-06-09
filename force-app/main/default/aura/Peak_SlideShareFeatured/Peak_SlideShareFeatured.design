@@ -1,0 +1,14 @@
+<design:component label="7S SlideShare Featured Posts">
+    <design:attribute name="title" label="Heading Title"/>
+    <design:attribute name="subTitle" label="Subheading"/>
+    <design:attribute name="extLink" label="Subheading Link URL"/>
+    <design:attribute name="align" label="Header Alignment" datasource="left,center,right"/>
+    
+    <design:attribute name="postURLs" label="SlideShare Presentation URLs [comma separated]"/>
+    
+    <design:attribute name="linkTitle" label="Link Title to Presentation?"/>
+    <design:attribute name="hidePostedBy" label="Hide Posted By?"/>
+    <design:attribute name="hideDescriptions" label="Hide Presentation Title?"/>
+    
+    <design:attribute name="postsPerRow" label="Presentations Per Row" datasource="1,2,3,4,5,6" description="When viewed on a mobile device, the row count will be stacked vertically."/>
+</design:component>

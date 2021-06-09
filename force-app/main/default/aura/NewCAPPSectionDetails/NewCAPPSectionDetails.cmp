@@ -1,0 +1,79 @@
+<aura:component access="global">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="value" type="List" default="[]"/>
+    <aura:attribute name="key" type="String"/>
+    <aura:attribute name="finalMap" type="Map"/>
+    <aura:attribute name="recordLevelHeading" type="String"/>
+    <aura:attribute name="cappRecordType" type="String"/>
+    <aura:attribute name="controllingFieldsMap" type="Map"/>
+    <aura:attribute name="isSystemHeadingDisplay" type="Boolean" default="true"/>
+    <aura:attribute name="urlTarget" type="String" default="_self"/>
+    <aura:attribute name="currentRecordId" type="String"/>
+    <aura:attribute name="competitorRecTypeId" type="String" default="" description="Competitor Record Type Id"/>
+    
+    <aura:if isTrue="{!not(empty(v.finalMap))}">
+        <aura:if isTrue="{!v.recordLevelHeading == 'System-Level Fields'}">
+            <aura:if isTrue="{!v.isSystemHeadingDisplay}">
+                <div class="slds-section slds-is-open" aura:id="SLF">
+                    <h3 class="slds-section__title slds-m-left_small slds-m-right_small">
+                        <button class="slds-button slds-section__title-action">
+                            <lightning:icon iconName="utility:switch" size="x-small"
+                                            class="slds-section__title-action-icon slds-button__icon_left"/>
+                            <span class="slds-truncate" title="{!v.recordLevelHeading}">{!v.recordLevelHeading}</span>
+                        </button>
+                    </h3>
+                    <div class="slds-section__content">
+                        <aura:iteration items="{!v.finalMap}" var="result">
+                            <c:NewCAPPFields value="{!result.value}" key="{!result.key}"
+                                             controllingFieldsMap="{!v.controllingFieldsMap}"
+                                             recordLevelHeading="{!v.recordLevelHeading}" 
+                                             sobjectName="Customer_Portfolio_Presence__c"
+                                             cappRecordType="{!v.cappRecordType}" 
+                                             urlTarget="{!v.urlTarget}"
+                                             currentRecordId="{!v.currentRecordId}"
+                               	 			 competitorRecTypeId="{!v.competitorRecTypeId}"/>
+                        </aura:iteration>
+                    </div>
+                </div>
+                <aura:set attribute="else">
+                    <aura:iteration items="{!v.finalMap}" var="result">
+                        <c:NewCAPPFields value="{!result.value}" key="{!result.key}"
+                                         controllingFieldsMap="{!v.controllingFieldsMap}"
+                                         recordLevelHeading="{!v.recordLevelHeading}" 
+                                         sobjectName="Customer_Portfolio_Presence__c"
+                                         cappRecordType="{!v.cappRecordType}" 
+                                         urlTarget="{!v.urlTarget}"
+                                         currentRecordId="{!v.currentRecordId}"
+                                         competitorRecTypeId="{!v.competitorRecTypeId}"/>
+                    </aura:iteration>
+                </aura:set>
+            </aura:if>
+            <aura:set attribute="else">
+                <div class="slds-section slds-is-open slds-m-left_small slds-m-right_small" aura:id="ASSF">
+                    <h3 class="slds-section__title">
+                        <button class="slds-button slds-section__title-action" onclick="{!c.toggleSection}" data-auraId="ASSF">
+                            <lightning:icon iconName="utility:switch" size="x-small"
+                                            class="slds-section__title-action-icon slds-button__icon_left"/>
+                            <span class="slds-truncate" title="{!v.recordLevelHeading}">{!v.recordLevelHeading}</span>
+                        </button>
+                    </h3>
+                    <div class="slds-section__content">
+                        <aura:iteration items="{!v.finalMap}" var="result">
+                            <div class="slds-box slds-theme_default slds-m-bottom_small slds-theme_shade accountSiteBoxCSS">
+                                <c:NewCAPPFields value="{!result.value}" key="{!result.key}"
+                                                 controllingFieldsMap="{!v.controllingFieldsMap}"
+                                                 recordLevelHeading="{!v.recordLevelHeading}" 
+                                                 sobjectName="System_Relationship__c"
+                                                 cappRecordType="{!v.cappRecordType}" 
+                                                 urlTarget="{!v.urlTarget}"
+                                                 currentRecordId="{!v.currentRecordId}"
+                                                 competitorRecTypeId="{!v.competitorRecTypeId}"/>
+                            </div>
+                        </aura:iteration>
+                    </div>
+                </div>
+            </aura:set>
+        </aura:if>
+    </aura:if>
+</aura:component>

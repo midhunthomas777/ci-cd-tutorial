@@ -1,0 +1,123 @@
+<aura:component controller="SearchBeforeCreateCtrl" implements="force:appHostable,lightning:availableForFlowScreens,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="countryList" type="List"/>
+    <aura:attribute name="stateList" type="List"/>
+    <aura:attribute name="stateDisabled" type="Boolean" default="true"/>
+    <aura:attribute name="title" type="String" default="Account Search"/>
+    <aura:attribute name="searchTitle" type="String" default="Search Result"/>
+    <aura:attribute name="showSpinner" type="Boolean" default="true" />
+    <aura:attribute name="isAccountSearched" type="Boolean" default="false" />
+    <aura:attribute name="routeToMarket" type="String" />
+    <aura:attribute name="accountName" type="String" />
+    <aura:attribute name="countryName" type="String" />
+    <aura:attribute name="stateName" type="String" />
+    <aura:attribute name="cityName" type="String" />
+    <aura:attribute name="streetName" type="String" />
+    <aura:attribute name="territory" type="String" />
+    <aura:attribute name="region" type="String" />
+    <aura:attribute name="postalCode" type="String" />
+    <aura:attribute name="countryISOCode" type="String" />
+    <aura:attribute name="stateCode" type="String" />
+    <aura:attribute name="userTheme" type="String" />
+    <aura:attribute name="countryCode" type="String" />
+    <aura:attribute name="accRecordTypeId" type="String" />
+    
+    <lightning:navigation aura:id="navLink"/>
+    <aura:if isTrue="{!v.showSpinner}">
+        <lightning:spinner />
+    </aura:if>
+    <lightning:card>
+        <aura:set attribute="title">
+            <lightning:icon iconName="standard:account" size="small"/>
+            <span class="slds-m-left_x-small">{!v.title}</span>
+        </aura:set>
+        
+        <lightning:recordEditForm onsubmit="{!c.callSearchBeforeCreateTable}" onload="{!c.handleLoad}" 
+                                  objectApiName="Account" onsuccess="{!c.handleSuccess}"
+                                  onerror="{!c.handleError}">
+            <!--div class="slds-m-around_small slds-float_right searchBtnPlacement">
+                        <lightning:button variant="brand" type="submit" name="Search" label="Search"/>
+                    </div-->
+            <div id="stdError">
+                <lightning:messages/>
+            </div>
+            
+            <!--div class="slds-box slds-theme_info">
+                
+            </div-->
+            <div class="c-container">
+                <lightning:layout multipleRows="true">
+                    <lightning:layoutItem size="3" flexibility="no-grow" padding="horizontal-small">
+                        <lightning:inputField aura:id="name" required="true" fieldName="Name" variant="label-stacked"/>
+                    </lightning:layoutItem>
+                    <!--lightning:layoutItem size="3" flexibility="no-grow" padding="around-small">
+                                <lightning:inputField fieldName="Industry" variant="label-stacked"/>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="3" flexibility="no-grow" padding="around-small">
+                                <lightning:inputField fieldName="Segment__c" variant="label-stacked"/>
+                            </lightning:layoutItem-->
+                    <lightning:layoutItem size="3" flexibility="no-grow" padding="horizontal-small">
+                        <lightning:select label="Country" aura:id="country" required="true"
+                                          onchange="{!c.validateStatePicklist}" 
+                                          messageWhenValueMissing="Please Select the Country.">
+                            <option text="--None--" value=""></option>
+                            <option text="United States" value="US"></option>
+
+                            <aura:iteration items="{!v.countryList}" var="cont">
+                                <option text="{!cont.label}" value="{!cont.value}"></option>
+                            </aura:iteration>
+                        </lightning:select>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="3" flexibility="no-grow" padding="horizontal-small">
+                        <lightning:select label="State" aura:id="state" required="true"
+                                          disabled="{!v.stateDisabled}" 
+                                          messageWhenValueMissing="Please Select the State.">
+                            <option text="--None--" value=""></option>
+                            <aura:iteration items="{!v.stateList}" var="state">
+                                <option text="{!state.label}" value="{!state.value}"></option>
+                            </aura:iteration>
+                        </lightning:select>
+                    </lightning:layoutItem>
+                    <!--lightning:layoutItem size="3" flexibility="no-grow" padding="around-small">
+                                <lightning:inputField fieldName="Region__c" variant="label-stacked"/>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="3" flexibility="no-grow" padding="around-small">
+                                <lightning:inputField fieldName="Territory__c" variant="label-stacked"/>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="3" flexibility="no-grow" padding="around-small">
+                                <lightning:inputField fieldName="Federal_Division__c" variant="label-stacked"/>
+                            </lightning:layoutItem-->
+                    <lightning:layoutItem size="3" flexibility="no-grow" padding="horizontal-small">
+                        <lightning:input type="text" label="City" required="true" 
+                                         aura:id="city" placeholder="Eg. Chicago"/>
+                    </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:layout  multipleRows="true">
+                        <lightning:layoutItem size="3" flexibility="no-grow" padding="horizontal-small">
+                            <lightning:input type="text" label="Billing Street" aura:id="street" 
+                                             placeholder="Eg. 123 Main St"/>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="3" flexibility="no-grow" padding="horizontal-small">
+                            <lightning:inputField aura:id="postalCode" fieldName="BillingPostalCode" variant="label-stacked"/>
+                        </lightning:layoutItem>
+                        <!--lightning:layoutItem size="3" flexibility="no-grow" padding="around-small">
+                                <lightning:inputField fieldName="Motorola_Customer_Number__c" variant="label-stacked"/>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="3" flexibility="no-grow" padding="horizontal-small">
+                            <lightning:inputField fieldName="Primary_Route_to_Market__c" aura:id ="rtm" required="true" variant="label-stacked" onchange ="{!c.handleChange}"/>
+                        </lightning:layoutItem-->              
+                </lightning:layout>
+            </div>
+            
+            <div class="slds-m-around_small ">
+                <lightning:button variant="brand" type="submit" name="Search" label="Search"/>
+            </div>
+        </lightning:recordEditForm>
+    </lightning:card>
+    <aura:if isTrue="{!v.isAccountSearched}">
+        <c:SearchBeforeCreateTable aura:id="child" accountName= "{!v.accountName}" countryName= "{!v.countryName}" stateName= "{!v.stateName}" 
+                                   cityName= "{!v.cityName}" streetName= "{!v.streetName}" postalCode= "{!v.postalCode}" territory ="{!v.territory}"
+                                   region="{!v.region}"  userTheme="{!v.userTheme}" accRecordTypeId ="{!v.accRecordTypeId}" countryISOCode= "{!v.countryCode}"
+                                   stateCode="{!v.stateCode}" />
+    </aura:if>
+</aura:component>

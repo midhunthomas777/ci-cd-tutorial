@@ -1,0 +1,36 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<aura:component description="SVNSUMMITS_Ideas_Points">
+    <aura:attribute name="points"           type="String" access="global" />
+    <aura:attribute name="formattedPoints"  type="String" access="global" />
+    <aura:attribute name="labelPoints"      type="String" access="global" default="{!$Label.c.ss_idea_label_points}" />
+
+    <aura:attribute name="size"             type="Integer"  default="" access="global" />
+    <aura:attribute name="smallDeviceSize"  type="Integer"  default="" access="global" />
+    <aura:attribute name="mediumDeviceSize" type="Integer"  default="" access="global" />
+    <aura:attribute name="largeDeviceSize"  type="Integer"  default="" access="global" />
+
+    <aura:attribute name="formatPoints"     type="Boolean"  default="true" access="global" />
+
+    <aura:attribute name="variant" type="String" default="" access="global" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.formatPoints}" />
+    <aura:handler name="change" value="{!v.points}" action="{!c.formatPoints}" />
+
+    <lightning:layoutItem class="idea-points"
+                          size="{!v.size}"
+                          smallDeviceSize="{!v.smallDeviceSize}"
+                          mediumDeviceSize="{!v.mediumDeviceSize}"
+                          largeDeviceSize="{!v.largeDeviceSize}"
+                          flexibility="no-grow"
+    >
+        <div>
+            <span class="idea-points__value">
+                {!v.formatPoints ? ( v.formattedPoints ? v.formattedPoints : '0' ) : v.points}
+            </span>
+            <span class="idea-points__label">&nbsp;{!v.labelPoints}</span>
+        </div>
+    </lightning:layoutItem>
+
+</aura:component>

@@ -1,0 +1,38 @@
+<aura:component access="global" controller="NewCAPPController">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="fieldSetMap" type="Map"/>
+    <aura:attribute name="value" type="Map"/>
+    <aura:attribute name="key" type="String"/>
+    <aura:attribute name="currentObjName" type="String"/>
+    <aura:attribute name="currentRecordId" type="String"/>
+    <aura:attribute name="urlTarget" type="String" default="_blank"/>
+    <aura:attribute name="sectionsWithFields" type="Map"/>
+    <aura:attribute name="controllingFieldsMap" type="Map"/>
+    <aura:attribute name="competitorRecTypeId" type="String" default="" description="Competitor Record Type Id"/>
+    
+    <aura:iteration items="{!v.value}" var="children">
+        <ui:message title="{!children.key}" severity="info" 
+                    class="slds-text-title_caps slds-align_absolute-center slds-m-top_small slds-text-title_bold" />
+        <div class="c-container">
+            <c:NewCAPPCreation finalMap="{!v.sectionsWithFields}" key="{!children.key}"
+                               currentObjName="{!v.currentObjName}" tabName="{!v.key}"
+                               currentRecordId="{!v.currentRecordId}" urlTarget="{!v.urlTarget}"
+                               controllingFieldsMap="{!v.controllingFieldsMap}"
+                               competitorRecTypeId="{!v.competitorRecTypeId}"/>
+        </div>
+        
+        <div class="c-container">
+            <aura:if isTrue="{!not(empty(children.value))}"> 
+                <c:NewCAPPRecords finalMap="{!v.fieldSetMap}" key="{!children.key}" aura:id="recordsCmp"
+                                  urlTarget="{!v.urlTarget}" controllingFieldsMap="{!v.controllingFieldsMap}"
+                                  currentRecordId="{!v.currentRecordId}" competitorRecTypeId="{!v.competitorRecTypeId}"/>
+                <aura:set attribute="else">
+                    <div class="slds-align_absolute-center">
+                        This {!v.currentObjName} has no {!children.key} CAPPs associated with it.
+                    </div>
+                </aura:set>
+            </aura:if>
+        </div>
+    </aura:iteration>
+</aura:component>

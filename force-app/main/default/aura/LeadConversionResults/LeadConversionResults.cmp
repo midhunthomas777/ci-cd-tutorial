@@ -1,0 +1,41 @@
+<aura:component implements="force:appHostable,force:hasRecordId,lightning:availableForFlowActions,lightning:availableForFlowScreens" access="global">
+    
+    <aura:attribute name="url" type="String"/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="false"/>
+    <lightning:workspaceAPI aura:id="workspace"/>
+
+    <!-- Input Parameters -->
+    <aura:attribute name="convertedAccountId" type="String" access="global"/>
+    <aura:attribute name="convertedOpptyId" type="String" access="global"/>
+    <aura:attribute name="convertedContactId" type="String" access="global"/>
+    <!-- Spinner -->
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="small" aura:id="mySpinner"/>
+    </aura:if>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <div class="c-container">
+        <lightning:layout multipleRows="true">
+            <lightning:layoutItem size="12" padding="around-small">
+                <c:FlowHeader iconName="standard:lead" iconSize="medium" heading="Lead Converted Successfully!" />
+            </lightning:layoutItem>        
+            <lightning:layoutItem size="12" padding="around-small">
+                <aura:if isTrue="{!not(empty(v.convertedAccountId))}">
+                    <c:HighlightedPanel recordId="{!v.convertedAccountId}" showLink="true" fieldSetName="LeadConversionPanel" iconName="standard:account"/>
+                </aura:if>
+            </lightning:layoutItem>
+            <lightning:layoutItem size="12" padding="around-small">
+                <aura:if isTrue="{!not(empty(v.convertedContactId))}">
+                    <c:HighlightedPanel recordId="{!v.convertedContactId}" showLink="true" fieldSetName="LeadConversionPanel" iconName="standard:contact"/>
+                </aura:if>
+            </lightning:layoutItem>
+            <lightning:layoutItem size="12" padding="around-small">
+                <aura:if isTrue="{!not(empty(v.convertedOpptyId))}">
+                    <c:HighlightedPanel recordId="{!v.convertedOpptyId}" showLink="true" fieldSetName="LeadConversionPanel"/>
+                </aura:if>
+            </lightning:layoutItem>
+            <lightning:layoutItem flexibility="auto, no-grow" padding="around-small">
+                <lightning:button variant="brand" label="Finish" title="Finish" onclick="{!c.finishClick}" />
+            </lightning:layoutItem>        
+        </lightning:layout>
+    </div>
+</aura:component>

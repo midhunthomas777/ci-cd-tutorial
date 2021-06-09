@@ -1,0 +1,71 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+
+<aura:component description="SS_TwitterFeed"
+                implements="lightning:availableForFlowScreens,flexipage:availableForAllPageTypes,force:appHostable,forceCommunity:availableForAllPageTypes,force:hasRecordId"
+                access="global"
+                controller="TwitterFeedController">
+
+	<aura:attribute name="heading"      type="String"   default="Tweets"        access="global"/>
+	<aura:attribute name="align"        type="string"   default="left"          access="global"/>
+	<aura:attribute name="size"         type="String"   default="medium"        access="global"/>
+	<aura:attribute name="tag"          type="string"   default="H2 - Section Heading"/>
+	<aura:attribute name="headingClass" type="String"/>
+
+	<aura:attribute name="handle"       type="String"   default="7SummitsInc"   access="global"/>
+	<aura:attribute name="handleObject" type="String"   default=""              access="global"/>
+	<aura:attribute name="handleField"  type="String"   default=""              access="global"/>
+
+	<aura:attribute name="showReplies"  type="Boolean"  default="true"          access="global"/>
+	<aura:attribute name="theme"        type="String"   default="light"         access="global"/>
+	<aura:attribute name="tweetLimit"   type="String"   default=""              access="global"/>
+	<aura:attribute name="linkColor"    type="String"   default="820bbb"        access="global"/>
+	<aura:attribute name="borderColor"  type="String"   default=""              access="global"/>
+	<aura:attribute name="height"       type="String"   default="600"           access="global"/>
+	<aura:attribute name="showHandle"   type="Boolean"  default="true"          access="global"/>
+	<aura:attribute name="hasBorder"    type="Boolean"  default="false"         access="global"/>
+
+	<aura:attribute name="domain"       type="String"   default=""              access="global"/>
+	<aura:attribute name="sitePath"     type="String"   default=""              access="global"/>
+	<aura:attribute name="nameSpace"    type="String"   default=""              access="private"/>
+
+	<aura:handler   name="init"         value="{!this}" action="{!c.doInit}"/>
+	<aura:attribute name="isInit"       type="Boolean"  default="false"/>
+
+	<aura:if isTrue="{!v.isInit}">
+		<lightning:card title="">
+			<!--<aura:set attribute="footer">-->
+			<!--<div class="slds-align_absolute-center">-->
+			<!--Powered by&nbsp;<a href="http://www.7summitsinc.com/">7Summits</a>-->
+			<!--</div>-->
+			<!--</aura:set>-->
+			<section>
+				<aura:if isTrue="{! or(v.heading, v.showHandle)}">
+					<aura:html tag="{!v.tag}" class="{!v.headingClass}">
+						<aura:if isTrue="{!v.heading}">
+							<aura:unescapedHtml value="{!v.heading + ' '}"/>
+						</aura:if>
+
+						<aura:if isTrue="{!v.showHandle}">
+							<a href="{!'http://twitter.com/' + v.handle}">@{!v.handle}</a>
+						</aura:if>
+					</aura:html>
+
+				</aura:if>
+
+				<div class="twitter-wrap">
+					<iframe data-border="{!v.hasBorder}" frameborder="0" height="{!v.height}"
+					        src="{! v.domain + v.sitePath + '/apex/'+ v.nameSpace + 'SSTwitter'
+					        + '?handle=' + v.handle
+					        + '&amp;showReplies=' + v.showReplies
+					        + '&amp;theme=' + v.theme
+					        + '&amp;tweetLimit=' + v.tweetLimit
+					        + '&amp;linkColor=' + v.linkColor
+					        + '&amp;borderColor=' + v.borderColor
+					        + '&amp;height=' + v.height}"/>
+				</div>
+			</section>
+		</lightning:card>
+	</aura:if>
+</aura:component>

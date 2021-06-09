@@ -1,0 +1,14 @@
+<aura:component controller="PartnershipRecordGoogleDriveCtrl" implements="flexipage:availableForAllPageTypes,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
+    <div class="c-container">
+        <lightning:layout>
+            <lightning:layoutItem flexibility="auto" padding="around-small">
+                <div class="custom-box"> {!$Label.c.Download_Warning} </div>
+            </lightning:layoutItem>
+            <lightning:layoutItem flexibility="auto" padding="around-small">
+                <div class="custom-box">
+                    <lightning:button variant="brand" label="Download"  title="Download" onclick="{! c.handleClick }" />
+                </div>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div>
+</aura:component>

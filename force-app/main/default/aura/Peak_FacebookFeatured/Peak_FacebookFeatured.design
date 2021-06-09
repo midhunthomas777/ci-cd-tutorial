@@ -1,0 +1,21 @@
+<design:component label="7S Facebook Featured Posts">
+    <design:attribute name="title" label="Heading Title"/>
+    <design:attribute name="subTitle" label="Subheading"/>
+    <design:attribute name="extLink" label="Subheading Link URL"/>
+    <design:attribute name="align" label="Header Alignment" datasource="left,center,right"/>
+    
+    <design:attribute name="post1href" label="Post 1: URL"/>
+    <design:attribute name="post1height" label="Post 1: Height (px)"/>
+    <design:attribute name="post1full" label="Post 1: Show full text?"/>
+    
+    <design:attribute name="post2href" label="Post 2: URL"/>
+    <design:attribute name="post2height" label="Post 2: Height (px)"/>
+    <design:attribute name="post2full" label="Post 2: Show full text?"/>
+    
+    <design:attribute name="post3href" label="Post 3: URL"/>
+    <design:attribute name="post3height" label="Post 3: Height (px)"/>
+    <design:attribute name="post3full" label="Post 3: Show full text?"/>
+
+    <design:attribute name="useMetaData" label="Use custom metadata type values for content" description="If checked, use values from configured custom metadata type record and ignore all content/post IDs in property editor." />
+    <design:attribute name="record" label="Record Name for the post URLs" description="Only applicable if using custom metadata type values for content."/>
+</design:component>

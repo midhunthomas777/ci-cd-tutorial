@@ -1,0 +1,29 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global" >
+    <aura:attribute name="opportunityRecord" type="Object"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+    <aura:attribute name="errorMsg" type="String"/>
+    <aura:attribute name="recordTypeId" type="String"/>
+    <aura:attribute name="showSpinner" type ="Boolean" default="true"/>
+    <aura:if isTrue="{!v.showSpinner}">
+        <lightning:spinner />
+    </aura:if>
+    <aura:if isTrue="{!not(empty(v.errorMsg))}"> 
+        <c:AlertMessages Message="{!v.errorMsg}" type="error"/>
+    </aura:if>
+    <force:recordData aura:id="opportunityRecordLoader"
+                      recordId="{!v.recordId}"
+                      fields="RecordTypeId,New_Currency__c"
+                      targetFields="{!v.opportunityRecord}"
+                      targetError="{!v.recordLoadError}"
+                      mode="VIEW"
+                      recordUpdated="{!c.updatedRecord}"
+                      />
+    <lightning:recordEditForm aura:id="editForm" recordId="{!v.recordId}" recordTypeId="{!v.recordTypeId}" objectApiName="Opportunity" onload="{!c.handleLoad}" onsubmit="{!c.handleSubmit}" onsuccess="{!c.handleSuccess}" onerror="{!c.handleError}">
+        <lightning:messages/>
+        <lightning:inputField aura:id="oldCurrency" fieldName="CurrencyIsoCode" disabled="true"/>
+        <lightning:inputField aura:id="newCurrency" fieldName="New_Currency__c"/>
+        <div class="slds-align_absolute-center">
+            <lightning:button variant="brand" type="submit" name="Next" label="Save" />
+        </div>
+    </lightning:recordEditForm>
+</aura:component>

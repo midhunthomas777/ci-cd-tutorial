@@ -1,0 +1,19 @@
+.THIS .slds-pill__label{
+    white-space: normal;
+}
+.THIS .customRequired{
+    font-weight: 400; 
+} 
+.THIS .customRequired:before{    
+    content: "*";
+    margin: 0 0.125rem 0 0.125rem;
+    color: rgb(194, 57, 52);
+    float: left; 
+} 
+.THIS .none{
+    display:none; 
+}
+.THIS .normal{
+    font-weight: normal;
+    font-weight: 400;
+}

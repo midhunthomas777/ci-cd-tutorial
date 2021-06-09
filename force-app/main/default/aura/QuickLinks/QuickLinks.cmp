@@ -1,0 +1,44 @@
+<aura:component controller= "QuickLinksController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+        <aura:attribute name="toolLinks" type="List"/>
+        <aura:attribute name="externalLinks" type="List"/>
+        <aura:attribute name="loadSpinner" type ="Boolean" default="true"/>
+        <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+        <aura:if isTrue="{!v.loadSpinner}">
+            <lightning:spinner alternativeText="Loading.." size="medium" />
+        </aura:if>
+        <aura:if isTrue="{!!v.loadSpinner}">
+            <div>
+                <lightning:accordion aura:id="accordion" allowMultipleSectionsOpen="true" >
+                    <lightning:accordionSection name="external" label="External Links">
+                        <aura:iteration items="{!v.externalLinks}" var="actualData">
+                            <lightning:tile class="slds-p-around_small">
+                                <aura:set attribute="media">
+                                    <lightning:icon iconName="{!actualData.Icon__c}"/>
+                                </aura:set>
+                                <dl class="slds-dl_horizontal">
+                                    <dt class="slds-dl_horizontal__label">
+                                        <a href="{!actualData.URL__c}" target="_blank">{!actualData.Link_Label__c}</a> 
+                                    </dt>
+                                </dl>
+                            </lightning:tile>
+                        </aura:iteration>
+                    </lightning:accordionSection>
+                    <lightning:accordionSection name="tool" label="Tools">
+                        <aura:iteration items="{!v.toolLinks}" var="actualData">
+                            <lightning:tile class="slds-p-around_small">
+                                <aura:set attribute="media">
+                                    <lightning:icon iconName="{!actualData.Icon__c}"/>
+                                </aura:set>
+                                <dl class="slds-dl_horizontal">
+                                    <dt class="slds-dl_horizontal__label">
+                                        <a href="{!actualData.URL__c}" target="_blank">{!actualData.Link_Label__c}</a> 
+                                    </dt>
+                                </dl>
+                            </lightning:tile>
+                        </aura:iteration>
+                    </lightning:accordionSection>
+                </lightning:accordion>
+            </div>
+            
+        </aura:if> 
+    </aura:component>

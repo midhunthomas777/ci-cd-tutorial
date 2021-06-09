@@ -1,0 +1,57 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+
+<aura:component description="SVNSUMMITS_Ideas_Filter_AccIdeasMultFter"
+                controller="SVNSUMMITS_IdeaFiltersController"
+                extends="c:SVNSUMMITS_Ideas_Base" access="global">
+
+    <!--Internal Attributes-->
+    <aura:attribute name="baseModel" type="String" access="global"/>
+    <aura:attribute name="debugMode" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="listId" type="String" default="List1" access="global"/>
+    <aura:attribute name="filterValue" type="String" default="false" access="global"/>
+    <aura:attribute name="requireSelectionAccountIdeasFilter" type="Boolean" default="false" access="global"/>
+
+    <!-- Filter Attributes -->
+    <aura:attribute name="myCompaniesIdeas" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="myCompaniesVotedIdeas" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="myCompaniesCommentedIdeas" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="myCompaniesSubscribedIdeas" type="Boolean" default="true" access="global"/>
+
+    <!-- Label Attributes-->
+    <aura:attribute name="myIdeasLabel" type="String" default="{!$Label.c.ss_idea_label_myCompanyIdeas}"/>
+    <aura:attribute name="myVotedIdeasLabel" type="String" default="{!$Label.c.ss_idea_label_myCompanyVotedIdeas}"/>
+    <aura:attribute name="myCommentedIdeasLabel" type="String" default="{!$Label.c.ss_idea_label_myCompanyCommentedIdeas}"/>
+    <aura:attribute name="mySubscribedIdeasLabel" type="String" default="{!$Label.c.ss_idea_label_myCompanySubscribedIdeas}"/>
+    <aura:attribute name="myIdeasStaticLabel" type="String" default="{!$Label.c.ss_idea_label_AccountIdeasFilter}"/>
+
+    <!-- Init Handler -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+
+    <!-- Body -->
+    <div class="my-ideas">
+        <lightning:select label=""
+                          value="{!v.filterValue}"
+                          onchange="{!c.handleSelectedFilter}"
+                          variant="label-hidden">
+            <aura:if isTrue="{!not(v.requireSelectionAccountIdeasFilter)}">
+                <option value="">{!v.myIdeasStaticLabel}</option>
+            </aura:if>
+            <aura:if isTrue="{!v.myCompaniesIdeas}">
+                <option value="{!v.myIdeasLabel}" label="{!v.myIdeasLabel}">{!v.myIdeasLabel}</option>
+            </aura:if>
+            <aura:if isTrue="{!v.myCompaniesVotedIdeas}">
+                <option value="{!v.myVotedIdeasLabel}" label="{!v.myVotedIdeasLabel}">{!v.myVotedIdeasLabel}</option>
+            </aura:if>
+            <aura:if isTrue="{!v.myCompaniesCommentedIdeas}">
+                <option value="{!v.myCommentedIdeasLabel}" label="{!v.myCommentedIdeasLabel}">{!v.myCommentedIdeasLabel}</option>
+            </aura:if>
+            <aura:if isTrue="{!v.myCompaniesSubscribedIdeas}">
+                <option value="{!v.mySubscribedIdeasLabel}" label="{!v.mySubscribedIdeasLabel}">{!v.mySubscribedIdeasLabel}</option>
+            </aura:if>
+        </lightning:select>
+    </div>
+
+</aura:component>

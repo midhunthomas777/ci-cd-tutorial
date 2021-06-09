@@ -1,0 +1,5 @@
+<aura:event type="APPLICATION" description="To Pass Details from ChangeMCNOnOpportunity to New Opportunity Component" >
+    <aura:attribute name="motorolaCustomerNumber" type="String"/>
+    <aura:attribute name="mcnId" type="String"/>
+
+</aura:event>

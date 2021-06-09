@@ -1,0 +1,6 @@
+<aura:component >
+    <b>  Last Name</b> <br/>
+    First name <br/>
+    Phone <br/>
+     
+</aura:component>

@@ -1,0 +1,71 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+
+<aura:component description="SVNSUMMITS_Ideas_QuestionToIdea"
+                controller="SVNSUMMITS_IdeaNewController"
+                implements="force:appHostable,forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes,force:hasRecordId,force:lightningQuickAction,lightning:availableForFlowScreens"
+                access="global">
+
+    <!-- Internal Attributes-->
+    <aura:attribute name="recordId" type="String" access="global"/>
+    <aura:attribute name="currIdea" type="Map" default="{'sobjectType' : 'Idea', 'Title': ''}" access="global"/>
+
+    <!--Boolean Attributes-->
+    <aura:attribute name="createIdeaClick"      type="Boolean"  default="false"/>
+    <aura:attribute name="useTopics"            type="Boolean"  default="true"  access="global"/>
+    <aura:attribute name="allowCategories"      type="Boolean"  default="true"  access="global"/>
+    <aura:attribute name="topicRequired"        type="Boolean"  default="false" access="global" />
+	<aura:attribute name="showRequestedBy" 	    type="Boolean"  default="true"  access="global"/>
+    <aura:attribute name="isNewIdea"            type="Boolean"  default="false" access="global" />
+    <aura:attribute name="selectedUserId"       type="String"   default=""      access="global"/>
+    <aura:attribute name="selectedUser" 		type="User"                     access="global"/>
+    <aura:attribute name="showCross"            type="Boolean"  default="false" access="global"  />
+
+    <!--Init Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+
+    <!--Label Attributes-->
+    <aura:attribute name="labelModalClose"           type="String" access="global" default="{!$Label.c.ss_idea_label_Close}"/>
+    <aura:attribute name="questionToIdeaButtonLabel" type="String" default="Convert Idea from Question" access="global"/>
+    <aura:attribute name="zoneName"                  type="String" default="ideas7s"  access="global" required="true"/>
+    <aura:attribute name="ideaListURL"               type="String" default="/ideas/"  access="global" required="true"/>
+
+
+    <!--Body-->
+    <aura:if isTrue="{!v.createIdeaClick}">
+        <div>
+            <section class="slds-modal slds-fade-in-open slds-modal_medium" aria-hidden="false" role="dialog">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__header">
+                        <button class="slds-button slds-button--icon-inverse slds-modal__close"
+                                onclick="{!c.closeIdeaPage}">
+                            <lightning:icon iconName="utility:close" size="medium" alternativeText="Close"
+                                            title="{!v.labelModalClose}" variant="inverse"/>
+                            <span class="slds-assistive-text">{!v.labelModalClose}</span>
+                        </button>
+                        <h3 class="slds-text-heading--medium"></h3>
+                    </div>
+                    <div class="slds-modal__content createIdeaBox slds-p-around_small">
+                        <c:SVNSUMMITS_Ideas_New zoneName="{!v.zoneName}" ideaListURL="{!v.ideaListURL}"
+                                                useTopics="{!v.useTopics}" createIdeaClick="{!v.createIdeaClick}"
+                                                currIdea="{!v.currIdea}" allowCategories="{!v.allowCategories}"
+                                                topicRequired="{!v.topicRequired}" isNewIdea="{!v.isNewIdea}"
+                                                showRequestedBy="{!v.showRequestedBy}" selectedUser="{!v.selectedUser}"
+                                                selectedUserId="{!v.selectedUserId}" showCross="{!v.showCross}"
+                        />
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+
+        <aura:set attribute="else">
+            <div class="slds-size_1-of-1">
+                <lightning:button name="{!v.questionToIdeaButtonLabel}" label="{!v.questionToIdeaButtonLabel}"
+                                  onclick="{!c.handleConvertToIdeaCancel}" class="btn-full-width"/>
+            </div>
+        </aura:set>
+    </aura:if>
+
+</aura:component>

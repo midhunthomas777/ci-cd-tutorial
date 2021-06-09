@@ -1,0 +1,6 @@
+<aura:component >
+    Name: Midhun <br/>
+    Age: 34 <br/>
+    City: Banglore <br/>
+    Location :BTM <br/>
+</aura:component>

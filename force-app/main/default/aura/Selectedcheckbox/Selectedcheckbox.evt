@@ -1,0 +1,5 @@
+<aura:event type="APPLICATION" description="Event template" >
+    <aura:attribute name="Pass_Selcted_count" type="String" />   
+    <aura:attribute name="Pass_Selcted_MCN" type="String" />
+    <aura:attribute name="account" type="Account"/>
+</aura:event>

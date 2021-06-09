@@ -1,0 +1,26 @@
+<!--
+  - Copyright (c) 2018. 7Summits Inc.
+  -->
+
+<!--
+ - Created by francois korb on 6/11/18.
+ -->
+
+<aura:component description="Match_Filter_Select"
+                extends="c:Match_Base">
+
+	<aura:registerEvent name="filterSubEvent" type="c:Match_Filter_SubEvent"/>
+
+	<aura:attribute name="filterItem"   type="Map"    default="" access="public"/>
+	<aura:attribute name="searchString" type="String" default="" access="private"/>
+
+	<lightning:layout >
+		<lightning:layoutItem size="12">
+			<lightning:combobox label="{!v.filterItem.label}"
+			                    name="select"
+			                    value="{!v.searchString}"
+			                    options="{!v.filterItem.entries}"
+								onchange="{!c.onFilterChange}"/>
+		</lightning:layoutItem>
+	</lightning:layout>
+</aura:component>

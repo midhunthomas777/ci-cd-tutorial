@@ -1,0 +1,75 @@
+<aura:component controller="MRCPQ_MCNListController" implements="lightning:actionOverride,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,lightning:availableForFlowScreens,lightning:availableForFlowActions" access="global">
+    <aura:html tag="style">  
+        .slds-modal__container{max-width: 70rem !important;width:90% !important;}
+    </aura:html>
+    <aura:attribute name="recordId" type="String" access="global"/>
+    <aura:attribute name="mcnId" type="String" />
+    <aura:attribute name="accountRecType" type="String" />
+    <aura:attribute name="accountId" type="String"/>  
+    <aura:attribute name="motorolaCustomerNumber" type="String"/>
+    <aura:attribute name="isAccount" type="String" />
+    <aura:attribute name="showCommissionInfo" type="boolean" default="false"/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="false"/>
+    <aura:attribute name="maxRowSelection" type="Integer" default="1"/>
+    <!-- Attribute Declration For Pagination -->
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="AccountData" type="Object"/>
+    <aura:attribute name="PaginationList" type="account"/>
+    <aura:attribute name="startPage" type="Integer" />
+    <aura:attribute name="endPage" type="Integer"/>
+    <aura:attribute name="totalRecords" type="Integer"/>
+    <aura:attribute name="pageSize" type="Integer" default="5"/>
+    <aura:attribute name="isPartnerUser" type="Boolean" default="false" />
+    <aura:attribute name="SelectedAccount" type="Map" default="{}"/> 
+    <aura:attribute name="currentPage" type="Integer" />
+    <aura:attribute name="userTheme" type ="String"/>
+    <aura:attribute name="quoteId" type = "String" />
+    <aura:attribute name="oppoAccId" type ="String"/><!--SF-2509-->
+    <aura:attribute name="recordInfo" type="Object"/><!--SF-2509-->
+    <aura:attribute name="oppId" type ="String"/><!--SF-2509-->
+    <aura:attribute name="selectedRows" type="account"/><!--SF-2712-->
+    {!V.fromEditQuote}
+    <!--<aura:registerEvent name="loadReturnMCNEvent" type="c:returnMCN"/> --><!-- SF-2759 -->
+    <aura:attribute name="fromEditQuote" type="Boolean" default="false"/> <!-- SF-2759 -->
+    <aura:attribute name="showProceedQuoteEdit" type="boolean" default="false"/>
+    <!--SF-2509 SF-2712-->
+    <force:recordData aura:id="recordLoader" recordId="{!v.recordId}" 
+                      fields="AccountId,CDH_Account__c"
+                      recordUpdated="{!c.handleRecordUpdated}"
+                      targetFields="{!v.recordInfo}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="small" aura:id="mySpinner"/>
+    </aura:if>
+    <div id="displayMCNList">
+        <lightning:datatable aura:id="accountTable" class="cols" columns="{! v.columns }" data="{! v.PaginationList }" keyField="Id" 
+                             maxRowSelection="{! v.maxRowSelection }" onrowselection="{!c.openMCNDetails}" selectedRows="{!v.selectedRows}"/>
+        <lightning:buttonGroup class="slds-align_absolute-center slds-m-top_xx-small">
+            <lightning:button label="Previous" disabled="{!v.startPage == 0}" onclick="{!c.previous}" iconName='utility:back'/>
+            <lightning:button label="Next" disabled="{!v.endPage >= v.totalRecords}" onclick="{!c.next}" variant="brand" iconName='utility:forward' iconPosition='right'/>
+        </lightning:buttonGroup>
+    </div>
+    <!--<div class="custom-box">
+                        <lightning:button variant="brand" label="Edit Quote MCN" onclick="{!c.editquote}"/>
+                    </div>-->
+    
+    <div class="slds-m-top_small">
+  		showProceedQuoteEdit - {!v.showProceedQuoteEdit} 
+        <aura:If isTrue="{!v.showProceedQuoteEdit}"> 
+             
+            <c:MRCPQ_ProceedEditQuote aura:id="editQuoteDetailID" mcnNumber="{!v.motorolaCustomerNumber}" 
+                                    accountId="{!v.accountId}" mcnId="{!v.mcnId}"  recordId = "{!v.recordId}"
+                                    userTheme="{!v.userTheme}"/>
+        </aura:If>
+    </div>
+    
+    <div class="slds-m-top_small">
+       	showCommissionInfo - {!v.showCommissionInfo}
+        <aura:If isTrue="{!v.showCommissionInfo}"> 
+            <c:MRCPQ_ProceedToQuote aura:id="cmsDetailID" motorolaCustomerNumber="{!v.motorolaCustomerNumber}" 
+                                    accountId="{!v.accountId}" mcnId="{!v.mcnId}" accountRecType="{!v.accountRecType}" 
+                                    isPartnerUser="{!v.isPartnerUser}" userTheme="{!v.userTheme}" oppId="{!v.oppId}" quoteId="{!v.quoteId}" />
+        </aura:If>
+    </div> 
+</aura:component>

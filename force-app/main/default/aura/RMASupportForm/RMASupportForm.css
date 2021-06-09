@@ -1,0 +1,123 @@
+.THIS .moto-form-container {
+    margin-top: t(spacingLarge);
+}
+.THIS .moto-form-container {
+	width: 66%;
+    margin:auto;
+}
+.THIS .moto-form-title {
+    font-size: t(fontSizeXxLarge);
+}
+.THIS .moto-rma-header {
+    font-size: t(fontSizeXLarge);
+    line-height: t(largeLineHeight);
+    text-align: center;
+    color: #343434;
+    margin: t(spacingMedium) 0 t(spacingMedium) 0;
+}
+.THIS .moto-midsection-container {
+    background-color: #FAFAFA;
+    padding-top: t(spacingXxxSmall);
+    padding-bottom: t(spacingSmall);
+}
+.THIS .moto-parts-container {
+    width: 80%;
+    margin: auto;
+}
+.THIS .moto-upperparts-grid {
+  	display: grid;
+    grid-template-columns: 1fr 5fr 5fr 5fr;
+}
+.THIS .moto-lowerparts-grid{
+  	display: grid;
+    grid-template-columns: 1fr 15fr;
+}
+.THIS .moto-lowerparts-revgrid, .THIS .moto-review-lowerparts-grid  {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+.THIS .moto-problem-item {
+    padding: t(spacingXxxSmall) t(spacingSmall) 0 64px;
+}
+.THIS .moto-additem-grid {
+    display: grid;
+    grid-template-columns: 1fr 3fr 12fr;
+    padding-bottom: t(spacingSmall);
+}
+.THIS .moto-form-item {
+	padding: t(spacingXxxSmall) t(spacingSmall) 0 t(spacingSmall);
+}
+.THIS .moto-submit-buttons {
+	background-color:#FFFFFF;
+    outline: none;
+    height: t(squareIconMediumBoundaryAlt);
+    width: t(sizeXxSmall);
+    cursor: pointer;
+    color: #232323;
+    border-radius: t(borderRadiusXLarge);
+    font-size: t(fontSizeSmall);
+    margin: t(spacingMedium) t(spacingMedium) t(spacingSmall) 0;
+    border: 1px solid #D4D4D4;
+}
+.THIS .moto-submit-buttons:hover {
+    background-color:#232323;
+    border: 1px solid #232323;
+    color: #FFFFFF;
+}
+.THIS .moto-form-label {
+    font-size: t(fontSizeSmall);
+    line-height: t(largeLineHeight);
+    margin-bottom: t(spacingXxxSmall);
+}
+.THIS .moto-trash-button, .THIS .moto-trash-review-button {
+	padding-top: t(spacingXLarge);
+}
+.THIS .moto-problem-input .slds-form-element__control .slds-textarea {
+    height: t(squareIconLargeBoundaryAlt);
+    margin-bottom: t(spacingSmall);
+}
+.THIS .moto-index-item {
+    margin-left: t(spacingXSmall);
+    font-size: t(fontSizeSmall);
+    line-height: t(largeLineHeight);
+}
+
+
+@media(max-width: 1023px) { 
+    .THIS .moto-form-container {
+        width: 100%;
+        margin:auto;   
+    }
+    .THIS .moto-parts-container {
+        width: 100%;
+        margin: auto;
+    }
+    .THIS .moto-upperparts-grid  {
+        grid-template-columns: 1fr;
+    }
+    .THIS .moto-lowerparts-grid {
+        padding-left: t(spacingSmall);
+    }
+    .THIS .moto-review-lowerparts-grid {
+        padding-left: 0;
+    }
+    .THIS .moto-additem-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        text-align: left; 
+    }
+    .THIS .moto-item-label {
+        padding-left: t(spacingSmall);
+        display: flex;
+    }
+    .THIS .moto-index-item {
+        margin-top: t(spacingXxSmall);
+        margin-left: 0;
+    }
+    .THIS .moto-trash-review-button{
+        height: 0;
+    }
+    .THIS .moto-problem-item {
+        padding: t(spacingXxxSmall) t(spacingSmall) 0 t(spacingSmall);
+    }
+}

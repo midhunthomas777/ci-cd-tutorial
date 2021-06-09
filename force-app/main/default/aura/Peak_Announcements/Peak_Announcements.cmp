@@ -1,0 +1,97 @@
+<!--
+ - Created by emaleesoddy on 8/8/17.
+ -->
+
+<aura:component controller="Peak_AnnouncementsController"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes"
+                extends="c:Peak_Base"
+                access="global">
+
+    <!-- TODO: In Future, update slickCarousel to lightning:carousel -->
+
+    <ltng:require
+            styles="{!join(',', $Resource.slickCarousel + '/slick.css', $Resource.slickCarousel + '/slick-theme.css', $Resource.slickCarousel + '/icons.css')}"
+            scripts="{!join(',', $Resource.jquery331, $Resource.slickCarousel + '/slick.min.js')}"
+            afterScriptsLoaded="{!c.doInit}"/>
+
+    <aura:attribute name="isInit" type="Boolean" default="false" />
+    <aura:attribute name="numberOfResults" type="String" default="5" access="global" />
+    <aura:attribute name="peakResponse" type="Peak_Response" default="" />
+
+    <aura:attribute name="useCarousel" type="Boolean" default="true" access="global" />
+    <aura:attribute name="displayChannel" type="String" default="Default" access="global" />
+    <aura:attribute name="displayType" type="String" default="All" access="global" />
+    <aura:attribute name="showTitle" type="Boolean" default="true" access="global" />
+    <aura:attribute name="showAuthor" type="Boolean" default="false" access="global" />
+    <aura:attribute name="showDate" type="Boolean" default="false" access="global" />
+    <aura:attribute name="showIcon" type="Boolean" default="true" access="global" />
+
+    <aura:attribute name="hiddenAnnouncements" type="String" />
+    <aura:attribute name="networkId" type="String" default="0" />
+
+    <aura:attribute name="CustomClassName" type="String" default="" access="global" />
+
+    <section class="{!v.CustomClassName}">
+        <aura:if isTrue="{!v.isInit}">
+
+            <section class="{!if(and(v.useCarousel, v.peakResponse.results.length > 1), 'carousel')}" aura:id="carousel">
+                <aura:iteration items="{!v.peakResponse.results}" var="announcement">
+
+                    <div class="{!'slds-notification-container' + if(!v.useCarousel, ' slds-m-bottom_small')}" id="{!'announcement-' + announcement.Id}">
+                        <div aria-live="assertive" aria-atomic="true" class="slds-assistive-text">{!announcement.Name}</div>
+                        <section class="{!'slds-notification ' + announcement.Announcement_Type__c}" role="dialog">
+                            <div class="slds-notification__body">
+                                <div class="slds-notification__target slds-media">
+
+                                    <aura:if isTrue="{!v.showIcon}">
+                                        <div class="slds-align_absolute-center">
+                                            <!--TODO: restore lightning:icon when Salesforce resolves conflict issues-->
+                                            <!--<lightning:icon size="small" iconName="{!'utility:' + announcement.Announcement_Type__c}" alternativeText="" class="slds-media__figure" />-->
+                                            <div class="{!'slds-m-right_x-small icon-' + announcement.Announcement_Type__c}">
+                                                <span class="slds-assistive-text">{!announcement.Announcement_Type__c}</span>
+                                            </div>
+                                        </div>
+                                    </aura:if>
+
+                                    <div class="slds-media__body">
+                                        <aura:if isTrue="{!v.showTitle}">
+                                            <h4>{!announcement.Name}</h4>
+                                        </aura:if>
+                                        <p>
+                                            <span class="slds-m-right_xx-small">{!announcement.Announcement_Body__c}</span>
+                                            <aura:if isTrue="{!and(announcement.Announcement_URL__c, announcement.Announcement_Call_to_Action__c)}">
+                                                <lightning:button variant="base" value="{!announcement.Announcement_URL__c}" label="{!announcement.Announcement_Call_to_Action__c}" onclick="{!c.navigate}" />
+                                            </aura:if>
+                                        </p>
+                                        <aura:if isTrue="{!v.showAuthor || v.showDate}">
+                                            <div class="slds-text-body_small">
+                                                Posted
+                                                <aura:if isTrue="{!v.showAuthor}">{!' by ' + announcement.Owner.Name}</aura:if>
+                                                <aura:if isTrue="{!v.showDate}"> on <lightning:formattedDateTime value="{!announcement.Start_Date_Time__c}" />.</aura:if>
+                                            </div>
+                                        </aura:if>
+                                    </div>
+
+                                </div>
+
+                                <aura:if isTrue="{!announcement.Announcement_Dismissible__c}">
+                                    <!--TODO: restore lightning:icon when Salesforce resolves conflict issues-->
+                                    <!--<lightning:buttonIcon iconName="utility:close" size="medium" variant="container" class="slds-notification__close" alternativeText="Dismiss" value="{!announcement.Id}" onclick="{!c.dismissAnnouncement}" />-->
+                                    <lightning:button class="icon-close slds-notification__close" variant="base" value="{!announcement.Id}" onclick="{!c.dismissAnnouncement}" />
+                                </aura:if>
+                            </div>
+                        </section>
+                    </div>
+
+                </aura:iteration>
+            </section>
+            <div class="slds-m-bottom_medium"></div>
+            <aura:set attribute="else">
+                <div class="stencils">
+                    <div class="stencil heading3"></div>
+                    <div class="stencil paragraph"></div>
+                </div>
+            </aura:set>
+        </aura:if>
+    </section>
+</aura:component>

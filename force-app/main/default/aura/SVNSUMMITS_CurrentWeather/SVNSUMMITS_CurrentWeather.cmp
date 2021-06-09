@@ -1,0 +1,87 @@
+<!--
+  - Copyright (c) 2018. 7Summits Inc.
+  -->
+
+<aura:component controller="WeatherController"
+                implements="forceCommunity:availableForAllPageTypes,force:hasRecordId,flexipage:availableForAllPageTypes"
+                access="global">
+
+	<aura:attribute name="title"            type="String"   default="Current Weather" access="global"/>
+	<aura:attribute name="units"            type="Boolean"  default="false" access="global"/>
+	<aura:attribute name="displayCondition" type="Boolean"  default="true"  access="global"/>
+	<aura:attribute name="WeatherAPI"       type="String"   default="Weatherbit.io" access="global"/>
+	<aura:attribute name="LoadOption"       type="String"   default="IP Location"   access="global"/>
+	<aura:attribute name="specifiedLocation" type="String"  default=""  access="global"/>
+	<aura:attribute name="specifiedLanguage" type="String"  default=""  access="global"/>
+	<aura:attribute name="WeatherAPIKey"    type="String"   default=""  access="global"/>
+	<aura:attribute name="IPAPIKey"         type="String"   default=""  access="global"/>
+	<aura:attribute name="attributeName"    type="String"   default=""  access="global"/>
+
+	<aura:attribute name="weatherLoaded"    type="Boolean" default="false"/>
+	<aura:attribute name="weatherData"      type="Map"/>
+	<aura:attribute name="locationData"     type="Map"/>
+	<aura:attribute name="isWeatherUnderground" type="Boolean"/>
+	<aura:attribute name="isErrorInAPI"     type="Boolean" default="false"/>
+
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	<aura:if isTrue="{!v.isErrorInAPI == false}">
+		<lightning:card>
+			<aura:set attribute="title">
+				{!v.title}
+			</aura:set>
+			<lightning:layout verticalAlign="center" multipleRows="true" horizontalAlign="center">
+				<aura:if isTrue="{!v.isWeatherUnderground}">
+					<lightning:layoutItem flexibility="auto" size="6">
+						<div align="center" class="slds-m-top_medium">
+							{!v.weatherData.current_observation.display_location.full}
+						</div>
+						<div align="center" class="slds-m-top_small">
+							<aura:if isTrue="{!v.units}">
+								{!v.weatherData.current_observation.temp_c} °C
+								<aura:set attribute="else">
+									{!v.weatherData.current_observation.temp_f} °F
+								</aura:set>
+							</aura:if>
+						</div>
+					</lightning:layoutItem>
+					<aura:if isTrue="{!v.displayCondition}">
+						<lightning:layoutItem flexibility="auto" size="6">
+							<div align="center" class="slds-m-top_xx-small">
+								<img src="{!v.weatherData.current_observation.icon_url}" height="40" width="40"/>
+							</div>
+							<div align="center" class="slds-m-top_xxx-small">
+								{!v.weatherData.current_observation.weather}
+							</div>
+						</lightning:layoutItem>
+					</aura:if>
+					<aura:set attribute="else">
+						<lightning:layoutItem flexibility="auto" size="6">
+							<div align="center" class="slds-m-top_medium">
+								{!v.weatherData.data[0].city_name}, {!v.weatherData.data[0].state_code}
+							</div>
+							<div align="center" class="slds-m-top_small">
+								<aura:if isTrue="{!v.units}">
+									{!v.weatherData.data[0].temp} °C
+									<aura:set attribute="else">
+										{!v.weatherData.data[0].temp} °F
+									</aura:set>
+								</aura:if>
+							</div>
+						</lightning:layoutItem>
+						<aura:if isTrue="{!v.displayCondition}">
+							<lightning:layoutItem flexibility="auto" size="6">
+								<div align="center" class="slds-m-top_xx-small">
+									<img src="{!'https://www.weatherbit.io/static/img/icons/'+v.weatherData.data[0].weather.icon+'.png'}"
+									     height="40" width="40"/>
+								</div>
+								<div align="center" class="slds-m-top_xxx-small">
+									{!v.weatherData.data[0].weather.description}
+								</div>
+							</lightning:layoutItem>
+						</aura:if>
+					</aura:set>
+				</aura:if>
+			</lightning:layout>
+		</lightning:card>
+	</aura:if>
+</aura:component>

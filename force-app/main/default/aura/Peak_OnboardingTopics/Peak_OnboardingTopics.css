@@ -1,0 +1,11 @@
+/**
+ * Created by triciaigoe on 2019-08-16.
+ */
+
+.THIS .onboarding-topic-list {
+    text-align: left;
+}
+.THIS .lightning-pill .slds-button {
+    font-size: unset !important;
+    padding: unset !important;
+}

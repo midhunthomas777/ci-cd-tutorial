@@ -1,0 +1,39 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global">
+  <lightning:accordion
+      allowMultipleSectionsOpen="true"
+  >
+      <lightning:accordionSection name="About Us" label="ABOUT US">
+          <aura:set attribute="body">
+            <p><a href="https://www.motorolasolutions.com/en_us/about.html">About Motorola Solutions</a></p>
+            <p><a href="https://newsroom.motorolasolutions.com/executive-biographies/board-directors?_ga=2.46470511.95391844.1583616995-281614115.1582858121">Board of Directors</a></p>
+            <p><a href="https://www.motorolasolutions.com/en_us/about/company-overview.html">Company Overview</a></p>
+            <p><a href="https://newsroom.motorolasolutions.com/executive-biographies/executive-committee?_ga=2.46470511.95391844.1583616995-281614115.1582858121">Executive Committee</a></p>
+            <p><a href="https://www.motorolasolutions.com/en_us/about/suppliers.html#taboverview">Suppliers</a></p>
+            <p><a href="https://www.motorolasolutions.com/en_us/about/trust-center.html">Trust Center</a></p>
+            <p><a href="https://www.motorolasolutions.com/en_us/about/company-overview/ventures.html">Ventures</a></p>
+            <p><a href="https://www.motorolasolutions.com/en_us/about/privacy-policy.html#californiaresidents">Do Not Sell My Personal Information</a></p>
+          </aura:set>
+      </lightning:accordionSection>
+      <lightning:accordionSection name="Careers" label="CAREERS">
+            <p><a href="https://www.motorolasolutions.com/en_us/about/careers.html">Careers</a></p>
+            <p><a href="https://www.motorolasolutions.com/en_us/about/careers.html#phnnav_internship-program">Internship Program</a></p>
+      </lightning:accordionSection>
+      <lightning:accordionSection name="Community" label="COMMUNITY">
+            <p><a href="https://blog.motorolasolutions.com/en_us/?_ga=2.50551777.95391844.1583616995-281614115.1582858121">Blog</a></p>
+            <p><a href="https://www.motorolasolutions.com/en_us/communities.html">User Groups</a></p>
+      </lightning:accordionSection>
+      <lightning:accordionSection name="Investor Relations" label="INVESTOR RELATIONS">
+            <p><a href="https://investors.motorolasolutions.com/?_ga=2.12391420.95391844.1583616995-281614115.1582858121">Investor Relations</a></p>
+            <p><a href="https://investors.motorolasolutions.com/CommitteeComposition?_ga=2.12391420.95391844.1583616995-281614115.1582858121">Corporate Governance</a></p>  
+            <p><a href="https://investors.motorolasolutions.com/EventsandPresentations?_ga=2.12391420.95391844.1583616995-281614115.1582858121">Events &amp; Presentations</a></p>
+            <p><a href="https://investors.motorolasolutions.com/QuarterlyResults?_ga=2.12391420.95391844.1583616995-281614115.1582858121">Financial Information</a></p>
+            <p><a href="https://investors.motorolasolutions.com/StockInformation?_ga=2.12391420.95391844.1583616995-281614115.1582858121">Stock Information</a></p>
+      </lightning:accordionSection>
+      <lightning:accordionSection name="Newsroom" label="NEWSROOM">
+            <p><a href="https://newsroom.motorolasolutions.com/news?_ga=2.7541370.95391844.1583616995-281614115.1582858121">Newsroom</a></p>
+            <p><a href="https://www.motorolasolutions.com/en_us/about/events.html">Events</a></p>
+            <p><a href="https://newsroom.motorolasolutions.com/media-contacts?_ga=2.217743070.95391844.1583616995-281614115.1582858121">Media Contacts</a></p>
+            <p><a href="https://newsroom.motorolasolutions.com/news?_ga=2.217743070.95391844.1583616995-281614115.1582858121">News Releases</a></p>
+      </lightning:accordionSection>
+  </lightning:accordion>
+</aura:component>

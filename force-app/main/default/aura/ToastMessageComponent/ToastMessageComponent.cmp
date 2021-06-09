@@ -1,0 +1,21 @@
+<aura:component controller="ToastMessageComponentController"
+                implements="force:appHostable,force:hasSObjectName,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="ObjRec" type="Object" default="{!v.sObjectName}"/>
+    <aura:attribute name="recordError" type="String"/>
+    <aura:attribute name="recordId" type="Id" /> 
+    <aura:attribute name="toastType" type="String"/>
+    <aura:attribute name="toastMode" type="String"/>
+    <aura:attribute name="message" type="String"/>
+    <aura:attribute name="displayToast" type="Boolean"/>
+    <aura:attribute name="displayDecisionField" type="String"/>
+    <aura:attribute name="objectField" type="String"/>
+    
+    <force:recordData aura:id="recordHandler"
+                      recordId="{!v.recordId}"
+                      targetRecord="{!v.record}"
+                      targetFields="{!v.ObjRec}"
+                      layoutType = "FULL"
+                      targetError="{!v.recordError}"
+                      recordUpdated="{!c.handleRecordUpdated}"/>
+</aura:component>

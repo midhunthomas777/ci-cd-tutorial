@@ -1,0 +1,17 @@
+<design:component label="7S Spacer">
+    <design:attribute name="size"
+                      label="Spacing Size"
+                      dataSource="xxx-small,xx-small,x-small,small,medium,large,x-large,xx-large"
+    />
+    <design:attribute name="exactSize"
+                      label="Exact Spacing Size"
+                      description="If used, will override 'size' value with exact px, rem, or other dimensions. Space will be added both above and below border if used."
+    />
+    <design:attribute name="showBorder"
+                      label="Show Border"
+    />
+    <design:attribute name="removeSpacing"
+                      label="Remove Default Component Spacing"
+                      description="When checked, this will account for removing the default spacing between components in communities of 1.5rem for the spacer."
+    />
+</design:component>

@@ -1,0 +1,111 @@
+<aura:component controller="Peak_VideoGalleryPlusController" description="Display multiple videos from YouTube and Vimeo and configure related display settings in a single component." access="global" implements="lightning:availableForFlowScreens,force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes">
+
+    <aura:attribute name="Title" access="global" type="String" default="Video Gallery" />
+    <aura:attribute name="moreText" access="global" type="String" default="See more videos like this!" />
+
+    <aura:attribute name="vimeoUsername" access="global" type="String" default="" />
+    <aura:attribute name="youtubeUsername" access="global" type="String" default="" />
+    <aura:attribute name="youtubeChannelId" access="global" type="String" default="" />
+    <aura:attribute name="youtubePlaylistId" access="global" type="String" default="" />
+
+    <aura:attribute name="numberOfVideos" access="global" type="String" default="9" />
+    <aura:attribute name="apiKey" access="global" type="String" default="" />
+    <aura:attribute name="order" access="global" type="String" default="date" />
+
+    <aura:attribute name="hideDescriptions" access="global" type="Boolean" default="false" />
+    <aura:attribute name="descriptionLineLength" access="global" type="String" default="3" />
+    <aura:attribute name="hasBorder" access="global" type="Boolean" default="false" />
+    <aura:attribute name="videosPerRow" access="global" type="String" default="3" />
+    <aura:attribute name="align" access="global" type="String" default="center" />
+
+    <aura:attribute name="carouselMode" access="global" type="Boolean" default="true" />
+
+    <aura:attribute name="Videos" access="global" type="String[]" default="[]" />
+    <aura:attribute name="activeVideos" access="global" type="String[]" default="[]" />
+    <aura:attribute name="currentVideoPosition" access="global" type="String" default="0" />
+
+    <aura:attribute name="error" access="global" type="String" default="none" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <lightning:card title=""
+                    class="slds-p-around--small">
+    <section class="slds-container_x-large slds-container_center">
+        <h2 class="{!'slds-text-heading_medium slds-text-align_'+v.align}">{!v.Title}
+                <br />
+                <aura:if isTrue="{!not(empty(v.moreText))}">
+                    <small>
+                        <aura:if isTrue="{!not(empty(v.vimeoUsername))}">
+                            <a target="_blank" href="{!'https://vimeo.com/'+v.vimeoUsername}">{!v.moreText}</a>
+                        </aura:if>
+                        <aura:if isTrue="{!not(empty(v.youtubeUsername))}">
+                            <a target="_blank" href="{!'https://www.youtube.com/user/'+v.youtubeUsername}">{!v.moreText}</a>
+                        </aura:if>
+                        <aura:if isTrue="{!not(empty(v.youtubeChannelId))}">
+                            <a target="_blank" href="{!'https://www.youtube.com/channel/'+v.youtubeChannelId}">{!v.moreText}</a>
+                        </aura:if>
+                        <aura:if isTrue="{!not(empty(v.youtubePlaylistId))}">
+                            <a target="_blank" href="{!'https://www.youtube.com/playlist?list='+v.youtubePlaylistId}">{!v.moreText}</a>
+                        </aura:if>
+                    </small>
+                    <br />
+                </aura:if>
+            </h2>
+
+        <div class="videoMaster slds-grid slds-wrap slds-grid_pull-padded no-medium-pull slds-grid_vertical-stretch">
+            <aura:if isTrue="{!v.error != 'none'}">
+                <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error slds-m-top--large" role="alert">
+                    <h2>{!v.error}</h2>
+                </div>
+            </aura:if>
+
+            <aura:if isTrue="{!v.error == 'none'}">
+                <aura:if isTrue="{!v.carouselMode}">
+                    <button class="slds-button hidden" onclick="{!c.slideLeft}" aura:id="previousButton" id="previous">
+                        <lightning:icon iconName="utility:left" size="medium" />
+                    </button>
+
+                    <button class="slds-button hidden" onclick="{!c.slideRight}" aura:id="nextButton" id="next">
+                        <lightning:icon iconName="utility:right" size="medium" />
+                    </button>
+                </aura:if>
+
+                <aura:iteration items="{!v.activeVideos}" var="video">
+                    <aura:if isTrue="{!video.id.kind != 'youtube#channel'}">
+                        <div class="{!'videoCol slds-p-horizontal_small slds-size--1-of-1 slds-p-vertical_medium hasBorder slds-medium-size_1-of-'+v.videosPerRow}">
+                            <article data-hasBorder="{!v.hasBorder}">
+                                <aura:if isTrue="{!not(empty(v.vimeoUsername))}">
+                                    <div class="video-wrap" aura:id="videoWrap">
+                                        <iframe class="fade" src="{!'https://player.vimeo.com/video/'+video.id+'?title=0&amp;byline=0&amp;portrait=0'}" frameborder="0"></iframe>
+                                    </div>
+                                    <div class="fade slds-text-heading_small slds-p-top_small">{!video.title}</div>
+                                    <aura:if isTrue="{!v.hideDescriptions != true}">
+                                        <div class="fade slds-text-body_regular description" style="{!'-webkit-line-clamp:'+v.descriptionLineLength}">{!video.description}</div>
+                                    </aura:if>
+                                    <aura:set attribute="else">
+                                        <div class="video-wrap" aura:id="videoWrap">
+                                            <aura:if isTrue="{!video.id.kind == 'youtube#playlist'}">
+                                                <iframe class="fade" src="{!'https://www.youtube.com/embed/?listType=playlist&amp;list='+video.id.playlistId+'&amp;rel=0&amp;showinfo=0'}" frameborder="0"></iframe>
+                                            </aura:if>
+                                            <aura:if isTrue="{!video.id.kind == 'youtube#video'}">
+                                                <iframe class="fade" src="{!'https://www.youtube.com/embed/'+video.id.videoId+'?rel=0&amp;showinfo=0'}" frameborder="0"></iframe>
+                                            </aura:if>
+                                            <aura:if isTrue="{!video.kind == 'youtube#playlistItem'}">
+                                                <iframe class="fade" src="{!'https://www.youtube.com/embed/'+video.snippet.resourceId.videoId+'?rel=0&amp;showinfo=0'}" frameborder="0"></iframe>
+                                            </aura:if>
+                                        </div>
+                                        <div class="fade slds-text-heading_small slds-p-top_small">{!video.snippet.title}</div>
+                                        <aura:if isTrue="{!v.hideDescriptions != true}">
+                                            <div class="fade slds-text-body_regular description" style="{!'-webkit-line-clamp:'+v.descriptionLineLength}">{!video.snippet.description}</div>
+                                        </aura:if>
+                                    </aura:set>
+                                </aura:if>
+                            </article>
+                        </div>
+                    </aura:if>
+                </aura:iteration>
+            </aura:if>
+        </div>
+    </section>
+    </lightning:card>
+</aura:component>

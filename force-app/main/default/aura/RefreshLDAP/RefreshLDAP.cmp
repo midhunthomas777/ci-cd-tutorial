@@ -1,0 +1,17 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasSObjectName,force:hasRecordId,force:lightningQuickActionWithoutHeader" controller="refreshLDAPController">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="ldapId" type="String"/>
+    
+    <lightning:notificationsLibrary aura:id="notifLib"/>
+    
+    <lightning:layout>
+        <lightning:layoutItem flexibility="auto" padding="around-small">
+            <p>The LDAP ID <b>{!v.ldapId}</b> appears on this Contact.</p>
+            <p>Empower attributes for this LDAP ID will be refreshed.</p>
+        </lightning:layoutItem>
+        <lightning:layoutItem flexibility="auto" padding="around-small">
+            <lightning:button variant="brand" label="Refresh LDAP Attributes" onclick="{!c.refreshLDAPAttributes}"/>
+        </lightning:layoutItem>
+    </lightning:layout>	
+    
+</aura:component>

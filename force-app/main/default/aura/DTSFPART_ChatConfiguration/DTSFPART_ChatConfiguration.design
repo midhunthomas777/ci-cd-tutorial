@@ -1,0 +1,5 @@
+<design:component label="Chat Configuration">
+    <design:attribute name="pagesApiNames" label="Pages without Chat Popup" default="" description="Popup will be not display on listed pages. Provide comma separated Page API values or Object API."></design:attribute>
+    <design:attribute name="chatConfigName" label="Chat Configuration" description="Set name of CustomMetadata to select for Char Configuration." default="NAPC" />
+    <design:attribute name="offlineSupportUrl" label="Obsolete"/>
+</design:component>

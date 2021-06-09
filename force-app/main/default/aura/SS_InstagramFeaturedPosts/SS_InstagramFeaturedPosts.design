@@ -1,0 +1,34 @@
+<design:component label="7S Instagram Featured Posts">
+	<design:attribute name="title"
+	                  label="Heading Title"/>
+	<design:attribute name="subTitle"
+	                  label="Subheading"/>
+	<design:attribute name="extLink"
+	                  label="Subheading Link URL"/>
+	<design:attribute name="align"
+	                  label="Header Alignment"
+	                  datasource="left,center,right"/>
+
+	<design:attribute name="postURLs"
+	                  label="Instagram Post URLs [comma separated]"
+	                  description="Each URL in the list must end in a forward slash '/' without anything after the slash."/>
+	<design:attribute name="useMetaData"
+	                  label="Use custom metadata type values for content"
+	                  description="If checked, use values from configured custom metadata type record and ignore all content/post IDs in property editor."/>
+	<design:attribute name="record"
+	                  label="Record Name for the post URLs"
+	                  description="Only applicable if using custom metadata type values for content."/>
+
+	<design:attribute name="hideDescriptions"
+	                  label="Hide All Descriptions"
+	                  description="Check this setting to hide all descriptions, even if the description fields are populated."/>
+	<design:attribute name="hidePostedBy"
+	                  label="Hide 'Posted By'?"/>
+	<design:attribute name="descriptionLineLength"
+	                  label="Maximum Description Lines"
+	                  description="The maximum number of lines of the description text to be displayed."/>
+	<design:attribute name="postsPerRow"
+	                  label="Posts Per Row"
+	                  datasource="1,2,3,4,5,6"
+	                  description="When viewed on a mobile device, the row count will be stacked vertically."/>
+</design:component>

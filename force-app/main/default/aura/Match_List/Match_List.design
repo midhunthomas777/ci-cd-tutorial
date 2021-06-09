@@ -1,0 +1,91 @@
+<!--
+  - Copyright (c) 2018  7Summits Inc.
+  -->
+
+<!--
+ - Created by francois korb on 3/20/18.
+ -->
+
+<design:component label="7S Match List">
+	<design:attribute name="settingName"
+	                  label="Scenario Name"
+	                  description="Specify the Match Settings Name to use for this scenario"/>
+	<design:attribute name="useUserId"
+	                  label="Use Current User as target record"
+	                  description="Enable to use the current user ID as target Id when scenario source is the User object"/>
+	<design:attribute name="showHeading"
+	                  label="Show List Heading"
+	                  description="Show the Match Settings Label as a heading for the list"/>
+	<design:attribute name="headingIcon"
+	                  label="Heading Icon"
+	                  description="Show an icon in the header from the SLDS icon set - leave blank if not required. Ex.: utility:table"/>
+	<design:attribute name="firstColumnIcon"
+	                  label="First Column Icon"
+	                  description="Enter an SLDS icon name to show in the 1st column, leave blank if note required. Ex.: standard:avatar"/>
+	<design:attribute name="showSelect"
+	                  label="Show Target List"
+	                  description="Enable to show the target selection list"/>
+	<design:attribute name="showConfidence"
+	                  label="Show Confidence"
+	                  description="Show confidence column"/>
+	<design:attribute name="showRequired"
+	                  label="Show Required"
+	                  description="Show required column"/>
+	<design:attribute name="showRating"
+	                  label="Show Rating"
+	                  description="Show rating column"/>
+	<design:attribute name="showAction"
+	                  label="Show Actions"
+	                  description="Enable action menu on each row"/>
+	<design:attribute name="viewLabel"
+	                  label="View Action label"
+	                  description="Set view action label to navigate to selected record"/>
+	<design:attribute name="showFlow"
+	                  label="Show Flow Action"
+	                  description="Enable flow action defined in source custom metadata definition"/>
+	<design:attribute name="pageSize"
+	                  label="Items per Page"
+	                  description="This is the number of items that will be loaded per page"/>
+
+	<!-- Pagination -->
+	<design:attribute name="paginationPosition"
+	                  label="Pagination Location"
+	                  description="Where the pagination will display in relation to the list"
+	                  dataSource="None, Top, Bottom, Top, Both"/>
+	<design:attribute name="paginationAlignment"
+	                  label="Pagination Alignment"
+	                  description="Pagination buttons horizontal alignment"
+	                  dataSource="start, center, end"/>
+
+	<!-- Custom silent filters -->
+	<design:attribute name="customFilter1"
+	                  label="Filter 1: Filter Name"
+	                  description="Custom filter 1 name as defined for this scenario"/>
+	<design:attribute name="customValue1"
+	                  label="Filter 1: Value"
+	                  description="Specify the value for custom filter 1 to apply"/>
+	<design:attribute name="customFilter2"
+	                  label="Filter 2: Filter Name"
+	                  description="Custom filter 2 name as defined for this scenario"/>
+	<design:attribute name="customValue2"
+	                  label="Filter 2: Value"
+	                  description="Specify the value for custom filter 2 to apply"/>
+	<design:attribute name="customFilter3"
+	                  label="Filter 3: Filter Name"
+	                  description="Custom filter 3 name as defined for this scenario"/>
+	<design:attribute name="customValue3"
+	                  label="Filter 3: Value"
+	                  description="Specify the value for custom filter 3 to apply"/>
+	<design:attribute name="customFilter4"
+	                  label="Filter 4: Filter Name"
+	                  description="Custom filter 4 name as defined for this scenario"/>
+	<design:attribute name="customValue4"
+	                  label="Filter 4: Value"
+	                  description="Specify the value for custom filter 4 to apply"/>
+	<design:attribute name="customFilter5"
+	                  label="Filter 5: Filter Name"
+	                  description="Custom filter 5 name as defined for this scenario"/>
+	<design:attribute name="customValue5"
+	                  label="Filter 5: Value"
+	                  description="Specify the value for custom filter 5 to apply"/>
+</design:component>

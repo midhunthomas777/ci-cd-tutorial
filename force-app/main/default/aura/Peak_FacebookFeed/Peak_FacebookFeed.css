@@ -1,0 +1,8 @@
+.THIS iframe{
+    max-width: 340px;
+    border: none;
+    overflow: hidden;
+    padding-top: 14px;
+    margin: 0 auto;
+    display: block;
+}

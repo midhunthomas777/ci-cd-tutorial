@@ -1,0 +1,27 @@
+<!--
+ - Created by kentheberling on 5/23/18.
+ -->
+
+<aura:component description="Peak_IconHeadline" implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" extends="c:Peak_Base">
+    <aura:attribute name="title" type="String" default="Headline Title" access="global" />
+    <aura:attribute name="titleAlignment" type="string" default="left"  access="global"/>
+    <aura:attribute name="icon" type="String" default="utility:settings" access="global" />
+    <aura:attribute name="helpText" type="String" default="Some additional info here!" access="global" />
+
+    <lightning:layout verticalAlign="start" class="peakcomponent peak-iconheadline">
+        <lightning:layoutItem class="slds-m-right_small">
+            <lightning:icon class="" iconName="{!v.icon}" size="small"/>
+        </lightning:layoutItem>
+        <lightning:layoutItem class="slds-m-right_small">
+            <c:Peak_HTML_Headings class="peak-iconheadline__title" align="{!v.titleAlignment}">
+                <c:Peak_Base labelText="{!v.title}" />
+            </c:Peak_HTML_Headings>
+        </lightning:layoutItem>
+        <lightning:layoutItem>
+            <aura:if isTrue="{!v.helpText != ''}">
+                <c:Peak_Tooltip nubbinLocation="left" message="{!v.helpText}" saveText="{!v.saveText}" actionName="testTooltipFunction"/>
+            </aura:if>
+        </lightning:layoutItem>
+    </lightning:layout>
+
+</aura:component>

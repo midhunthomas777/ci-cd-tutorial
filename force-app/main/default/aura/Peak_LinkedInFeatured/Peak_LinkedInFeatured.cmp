@@ -1,0 +1,60 @@
+<aura:component controller="Peak_LinkedInController"
+                access="global"
+                implements="lightning:availableForFlowScreens,force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes">
+
+	<aura:attribute name="postURLs" access="global" type="String"
+	                default="6411942536339820544,6407322848192450560,6448598494562258944"/>
+	<aura:attribute name="posts" access="global" type="String[]" default="[]"/>
+	<aura:attribute name="error" access="global" type="String"/>
+
+	<aura:attribute name="postsPerRow" access="global" type="String" default="3"/>
+	<aura:attribute name="height" access="global" type="String" default="550"/>
+
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+	<aura:attribute name="title" access="global" type="String" default="Featured LinkedIn Posts"/>
+	<aura:attribute name="subTitle" access="global" type="String" default="Join In The Fun!"/>
+	<aura:attribute name="extLink" access="global" type="String" default="http://7summitsinc.com/"/>
+	<aura:attribute name="align" access="global" type="String" default="center"/>
+
+	<aura:attribute name="useMetaData" access="global" type="Boolean" default="false"/>
+	<aura:attribute name="record" access="global" type="String" default=""/>
+
+	<lightning:card title="">
+		<!-- <aura:set attribute="footer"> -->
+		<!-- <div class="slds-align_absolute-center"> -->
+		<!-- Powered by&nbsp; -->
+		<!-- <a href="http://www.7summitsinc.com/">7Summits</a> -->
+		<!-- </div> -->
+		<!-- </aura:set> -->
+		<section>
+			<h2 class="{!'slds-text-heading_medium slds-p-vertical_medium slds-text-align_'+v.align}">{!v.title}
+				<br/>
+				<aura:if isTrue="{!v.subTitle != ''}">
+					<small>
+						<aura:if isTrue="{!v.extLink != ''}">
+							<a href="{!v.extLink}" target="_blank">
+								{!v.subTitle}
+							</a>
+
+							<aura:set attribute="else">
+								{!v.subTitle}
+							</aura:set>
+						</aura:if>
+					</small>
+				</aura:if>
+			</h2>
+
+			<lightning:layout multipleRows="true" verticalAlign="stretch">
+				<aura:iteration items="{!v.posts}" var="post">
+					<lightning:layoutItem class="{!'slds-col slds-size_1-of-1 slds-medium-size_1-of-'+v.postsPerRow}"
+					                      flexibility="grow" padding="around-small">
+						<iframe src="{!'https://www.linkedin.com/embed/feed/update/'+post}" height="{!v.height}"
+						        width="504" frameborder="0" allowfullscreen=""></iframe>
+					</lightning:layoutItem>
+				</aura:iteration>
+			</lightning:layout>
+
+		</section>
+	</lightning:card>
+</aura:component>

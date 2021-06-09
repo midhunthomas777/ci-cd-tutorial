@@ -1,0 +1,57 @@
+<!--
+  - Copyright (c) 2020. 7Summits Inc.
+  -->
+
+<design:component label="7S Map Navigation">
+	<design:attribute name="location"
+	                  label="Location"
+	                  description="Enter the desired map location - required when not used on a record page. Leave blank when placed on a record to use record data (address or geo location) for location."/>
+	<design:attribute name="destination"
+	                  label="Destination"
+	                  description="Enter a destination to get a map with directions from Location to Destination"/>
+	<design:attribute name="mode"
+	                  label="Directions Mode"
+	                  datasource="driving,walking,bicycling,transit,flying"/>
+	<design:attribute name="units"
+	                  label="Directions Units"
+	                  datasource="imperial,metric,auto"/>
+	<design:attribute name="maptype"
+	                  label="Map Views Type"
+	                  datasource="roadmap,satellite"/>
+	<design:attribute name="streetView"
+	                  label="Street view"
+	                  description="Enable to show the map in street view. This option requires a geo location or a valid geo field name."/>
+	<design:attribute name="zoom"
+	                  label="Location Zoom Size"
+	                  description="Set the initial zoom level of the map. Accepted values range from 0 (the whole world) to 21 (individual buildings). The upper limit can vary depending on the map data available at the selected location." />
+	<design:attribute name="height"
+	                  label="Component Height (px)"
+	                  description="Define the map height in pixels."/>
+
+	<design:attribute name="StreetAttributeName"
+	                  label="Street attribute Name"
+	                  description="Field name that contains the address street value on the current record."/>
+	<design:attribute name="CityAttributeName"
+	                  label="City attribute Name"
+	                  description="Field name that contains the address city value on the current record."/>
+	<design:attribute name="StateAttributeName"
+	                  label="State attribute Name"
+	                  description="Field name that contains the address state value on the current record."/>
+	<design:attribute name="PostalCodeAttributeName"
+	                  label="Postal Code attribute Name"
+	                  description="Field name that contains the address zip/postal code value on the current record."/>
+	<design:attribute name="CountryAttributeName"
+	                  label="Country attribute Name"
+	                  description="Field name that contains the address country value on the current record."/>
+	<design:attribute name="geoLocationName"
+	                  label="Geo Location Field Name"
+	                  description="Field name that contains the geo location (latitude,longitude) on the current record. If this field is defined, other address fields are ignored."/>
+
+	<design:attribute name="apiKey"
+	                  label="Google Maps API Key"
+	                  description="To use the Maps Embed API, you must provide the a free API key when making a request to the API."/>
+
+	<design:attribute name="dataErrorMessage"
+	                  label="Data Error message"
+	                  description="Error message displayed when address information is insufficient to get a map"/>
+</design:component>

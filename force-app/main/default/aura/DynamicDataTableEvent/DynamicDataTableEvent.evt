@@ -1,0 +1,10 @@
+<aura:event type="APPLICATION" description="To capture slected Id from dynamic data Table component" >
+    <aura:attribute name="selectedRecord" type="Object"/>
+    <aura:attribute name="editedRecords" type="Object"/>
+    <aura:attribute name="isValidated" type="Boolean"/>
+    <aura:attribute name="cellRecord" type="Object"/>
+    <aura:attribute name="errorMsg" type="String"/>
+    <aura:attribute name="callRecordId" type="String"/>
+    <aura:attribute name="row" type="Object" />
+    <aura:attribute name="resultList" type="List"/>
+</aura:event>

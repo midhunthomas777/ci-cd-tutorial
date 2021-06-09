@@ -1,0 +1,14 @@
+<aura:component description="Peak_Spacer" implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="size" type="String" default="medium" access="global" />
+    <aura:attribute name="exactSize" type="String" default="" access="global" />
+    <aura:attribute name="showBorder" type="Boolean" default="false" access="global" />
+    <aura:attribute name="removeSpacing" type="Boolean" default="false" access="global" />
+
+    <div class="{!'peak-spacer ' + if(v.showBorder, 'slds-p-vertical_' + v.size, 'slds-p-top_' + v.size) + if(v.removeSpacing, ' peak-spacer_no-additional-spacing', '')}"
+         style="{!if(v.exactSize, 'padding-top: ' + v.exactSize + ';' + if(v.showBorder, 'padding-bottom: ' + v.exactSize + ';'), '')}"
+    >
+        <aura:if isTrue="{!v.showBorder}">
+            <div class="slds-border_bottom"></div>
+        </aura:if>
+    </div>
+</aura:component>

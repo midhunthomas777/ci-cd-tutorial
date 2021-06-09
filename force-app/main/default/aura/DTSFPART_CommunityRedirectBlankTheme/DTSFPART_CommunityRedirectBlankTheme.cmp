@@ -1,0 +1,10 @@
+<aura:component implements="forceCommunity:themeLayout" access="global" description="Partner Portal Redirect Community Theme">
+
+    <aura:attribute name="header"   type="Aura.Component[]" required="false"/>
+    <aura:attribute name="footer"   type="Aura.Component[]" required="false"/>
+
+    <div>{!v.header}</div>
+    <div>{!v.body}</div>
+    <div>{!v.footer}</div>
+
+</aura:component>

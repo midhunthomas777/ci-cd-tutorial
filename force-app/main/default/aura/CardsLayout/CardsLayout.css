@@ -1,0 +1,25 @@
+.THIS {}
+
+.THIS.card-container {
+    padding-top: 64px;
+    padding-bottom: 104px;
+}
+
+.THIS.extended-cards,
+.THIS.basic-cards{
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+
+@media (min-width: 64em) {
+    .THIS .card {
+        max-width: 350px;
+    }
+}
+
+@media (max-width: 48em) {
+    .THIS.card-container {
+        padding-top: 40px;
+        padding-bottom: 60px;
+    }
+}

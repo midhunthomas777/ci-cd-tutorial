@@ -1,0 +1,34 @@
+<!--
+ Copyright (c) 2019. 7Summits Inc.
+-->
+<design:component label="7S Map Single" >
+    
+    <design:attribute name="mapTitle" label="Title" description="Title to be displayed for the map.  If blank, no title will be displayed"/>
+    <design:attribute name="showTitle" label="Show Title" description= "Select to display a title for the map"/>
+    <design:attribute name="titleAlignment"  label="Title Alignment" datasource="Left,Center,Right" default="Center" description="Alignment for the title.  Options are Left, Center or Right"/>
+    <design:attribute name="titleSize"  label="Title Text Size" datasource="Small,Medium,Large" default="Medium" description="Enter the size of title text"/>
+    <design:attribute name="showFooter" label="Show Footer" description="Footer with 'Open in Google Maps' link that opens an external window to display the selected marker location in Google Maps"/>
+    <design:attribute name="zoomLevel" label="Zoom Level" description="Enter the default zoom level for the map"/>
+    <design:attribute name="addressName" label="Address Name" description="Address name to be displayed with the map marker.  If blank, no address name will be displayed"/>
+    <design:attribute name="street" label="Street" description="Street address for the location"/>
+    <design:attribute name="city" label="City" description="City for the location"/>
+    <design:attribute name="state" label="State" description="State/Region for the location" />
+    <design:attribute name="postalCode" label="Postal/Zip Code" description="Postal/Zip code for the location" />
+    <design:attribute name="country" label="Country" description="Country for the location" />
+    <design:attribute name="longitude" label="Longitude" description="Longitude for the location" />
+    <design:attribute name="latitude" label="Latitude" description="Latitude for the location" />
+    
+    <design:attribute name="street_Api" label="Street API Name" description="API Name mapping  when used on a record page"/>
+    <design:attribute name="city_Api" label="City API Name" description="API Name mapping  when used on a record page" />
+    <design:attribute name="state_Api" label="State API Name" description="API Name mapping  when used on a record page" />
+    <design:attribute name="postalCode_Api" label="Postal/Zip API Name" description="API Name mapping  when used on a record page" />
+    <design:attribute name="country_Api" label="Country API Name" description="API Name mapping  when used on a record page" />
+    <design:attribute name="longitude_Api" label="Longitude API Name" description="API Name mapping  when used on a record page" />
+    <design:attribute name="latitude_Api" label="Latitude API Name" description="API Name mapping  when used on a record page" />
+    
+    <design:attribute name="errorIcon" label="Error Icon Name" description="Icon value to be displayed for error message."/>
+    <design:attribute name="fieldErrorValue" label="Message For Invalid Field Name" description="Error message to be displayed when invalid field api name is entered."/>
+    <design:attribute name="invalidAddressValue" label="Message For Invalid Address" description="Error message to be displayed when there is invalid address."/>
+    
+    
+</design:component>

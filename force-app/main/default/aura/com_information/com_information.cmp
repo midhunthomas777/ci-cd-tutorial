@@ -1,0 +1,9 @@
+<aura:component >
+	<div>
+         StudentName: <br/>
+        Studentclass: <br/>
+        StudentHome:<br/>
+        
+    
+    </div>
+</aura:component>

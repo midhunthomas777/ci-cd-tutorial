@@ -1,0 +1,50 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<!--
+ - Created by francois korb on 9/21/16.
+ -->
+
+<aura:component description="SVNSUMMITS_Ideas_Filter_Sort"
+                controller="SVNSUMMITS_IdeaFiltersController"
+                extends="c:SVNSUMMITS_Ideas_Base"
+                access="global">
+
+	<aura:attribute name="baseModel"    type="String"  access="global"/>
+
+	<aura:attribute name="debugMode"    type="Boolean" default="false" access="global"/>
+	<aura:attribute name="listId"       type="String"  default="List1" access="global"/>
+
+	<aura:attribute name="sortBy"       type="String"  default="Popular Ideas" access="global"/>
+
+	<aura:handler event="c:SVNSUMMITS_Ideas_Filter_Sort_Event" action="{!c.setInitialSort}"/>
+	<aura:handler name="init" value="{!this}" action="{!c.initializeFilters}"/>
+
+	<aura:registerEvent name="appEvent" type="c:SVNSUMMITS_Ideas_Filters_Event"/>
+
+	<lightning:select label="sort"
+					  value="{!v.sortBy}"
+					  onchange="{!c.handleSortChange}"
+					  variant="label-hidden">
+		<option value="Popular Ideas"
+				selected="{!v.sortBy == 'Popular Ideas'}"
+				label="{!$Label.c.ss_idea_label_PopularIdeas}">
+			{!$Label.c.ss_idea_label_PopularIdeas}
+		</option>
+		<option value="Recent Ideas"
+				selected="{!v.sortBy == 'Recent Ideas'}"
+				label="{!$Label.c.ss_idea_label_RecentIdeas}">
+			{!$Label.c.ss_idea_label_RecentIdeas}
+		</option>
+		<option value="Top All-Time"
+				selected="{!v.sortBy == 'Top All-Time'}"
+				label="{!$Label.c.ss_idea_label_TopAllTime}">
+			{!$Label.c.ss_idea_label_TopAllTime}
+		</option>
+		<option value="Recent Comments"
+				selected="{!v.sortBy == 'Recent Comments'}"
+				label="{!$Label.c.ss_idea_label_RecentComments}">
+			{!$Label.c.ss_idea_label_RecentComments}
+		</option>
+	</lightning:select>
+</aura:component>

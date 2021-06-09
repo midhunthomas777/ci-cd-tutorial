@@ -1,0 +1,13 @@
+<design:component label="7S Facebook Page Feed">
+    <design:attribute name="title" label="Heading Title"/>
+    <design:attribute name="subTitle" label="Subheading"/>
+    <design:attribute name="align" label="Header Alignment" datasource="left,center,right"/>
+    
+    <design:attribute name="href" label="Page URL"/>
+    <design:attribute name="height" label="Component Height (px)"/>
+    <design:attribute name="tabs" label="Display" datasource="timeline,events,messages"/>
+    <design:attribute name="hide_cover" label="Hide cover photo?"/>
+    <design:attribute name="show_facepile" label="Show people who like this page?"/>
+    <design:attribute name="hide_cta" label="Hide page CTA?"/>
+    <design:attribute name="small_header" label="Use small header?"/>
+</design:component>

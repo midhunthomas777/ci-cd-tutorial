@@ -1,0 +1,39 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc. All rights reserved.
+  -
+  -->
+
+<aura:component controller="Peak_OnboardingController">
+
+    <aura:registerEvent name="pageChange" type="c:Peak_OnboardingChangePage"/>
+    <aura:attribute name="notificationText" type="String"/>
+    <aura:attribute name="notificationMessage" type="String"/>
+    <aura:attribute name="notificationHeader" type="String"/>
+    <aura:attribute name="notificationAction" type="String"/>
+    <aura:attribute name="getNotifications" type="Boolean" default="false"/>
+    <aura:attribute name="buttonColor" type="String" default="#ff8201"/>
+    <aura:attribute name="pageNumber" type="String" access="global" default="6"/>
+
+    <c:Peak_OnboardingSlide class="notifications"
+                            title="{!v.notificationHeader}"
+                            description="{!v.notificationMessage}"
+                            subText="{!v.notificationAction}"
+                            primaryButtonLabel="Save &amp; Next"
+                            primaryButtonColor="{!v.buttonColor}"
+                            primaryOnClick="{!c.goToNext}"
+                            backButtonLabel="Go Back"
+                            backOnClick="{!c.goBack}"
+    >
+        <div class="slds-form notificationButtons">
+            <fieldset class="slds-form-element">
+                <lightning:input type="checkbox"
+                                 label="{!v.notificationText}"
+                                 onchange="{!c.notificationChange}"
+                                 checked="true"
+                                 class="onboarding-notifications__optin"
+                />
+            </fieldset>
+        </div>
+    </c:Peak_OnboardingSlide>
+
+</aura:component>

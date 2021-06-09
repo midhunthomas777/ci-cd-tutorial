@@ -1,0 +1,37 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<design:component label="7S Ideas Vote">
+    <design:attribute name="zoneName"
+                      label="Zone Name"
+                      description="Ideas Zone Name" />
+
+    <design:attribute name="opaqueBackground"
+                      label = "Opaque background"
+                      description="Enable to show an opaque background"/>
+
+    <design:attribute name="showPoints"
+                      label="Show number of points"
+                      description="Show number of points for this idea"/>
+    <design:attribute name="showStage"
+                      label="Show Status of the Idea"
+                      description="Ideas stage"/>
+
+    <design:attribute name="showAccountLimitHeaderText"
+                      label="Display Account Limit Header Text"
+                      description="Show the Account Limit Header text" />
+
+    <design:attribute name="headerText"
+                      label="Header Text for Account Voting Limit"
+                      description="Edit the header text"/>
+
+    <design:attribute name="currentLimit"
+                      label="Current Limit Title"
+                      description="Show current limit title" />
+
+    <design:attribute name="totalLimit"
+                      label="Total Limit Title"
+                      description="Show total limit title" />
+
+
+</design:component>

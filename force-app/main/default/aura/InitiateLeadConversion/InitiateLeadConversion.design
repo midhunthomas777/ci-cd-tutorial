@@ -1,0 +1,12 @@
+<design:component>
+	<design:attribute name="recordId" label="Lead ID" />
+   	<design:attribute name="result" label="Result" />
+    <design:attribute name="salesProcess" label="Sales Process" />
+    <design:attribute name="recordTypeId" label="Record Type Id"/>
+    <!-- Added by satish -->
+    <design:attribute name="convertedAccountId" label="Converted Account Id" />
+	<design:attribute name="convertedOpportunityId" label="Converted Opp Id" />
+    <design:attribute name="convertedContactId" label="Converted Contact Id" />
+    <design:attribute name="responseMessage" label="Response Message" />
+    <design:attribute name="responseIsSuccess" label="Response Status" />
+</design:component>

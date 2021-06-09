@@ -1,0 +1,18 @@
+<aura:component
+  implements="lightning:actionOverride,force:hasRecordId,lightning:hasPageReference,lightning:isUrlAddressable"
+>
+  <lightning:workspaceAPI aura:id="workspace" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+  <aura:html tag="style">
+    .cuf-content { padding: 0 0 !important; } .slds-p-around--medium,
+    .slds-p-around_medium { padding: 0 !important; } .slds-modal__content {
+    overflow-y: hidden !important; height: unset !important; max-height: unset
+    !important; } .actionBody { max-width: 899px; margin: auto; }
+  </aura:html>
+
+  <c:contactMCNPermissionsActionModal
+    recordId="{!v.recordId}"
+    mode="new"
+    onclose="{!c.handleModalClose}"
+  ></c:contactMCNPermissionsActionModal>
+</aura:component>

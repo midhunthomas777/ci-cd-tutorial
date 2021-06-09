@@ -1,0 +1,65 @@
+<aura:component access="global" implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:lightningQuickAction">	
+    
+    <aura:attribute name="RevenueInstance" type="Revenue__c"  />
+    <aura:attribute name="rowIndex" type="String"/>
+    <aura:attribute name="errorMsg" type="String"/>
+    <aura:attribute name="revenueMonths" type="List"/>
+    <aura:attribute name="revenueYears" type="List"/>
+    <aura:attribute name="oppCloseDate" type="String"/>
+    <aura:attribute name="oppFiscalMonth" type="String"/>
+    <aura:attribute name="oliUnitPrice" type="String"/>
+    <aura:attribute name="firstItem" type="Boolean" default='false'/>
+    <aura:attribute name="selectedMonthDisabled" type="Boolean" default='true'/>
+    <aura:attribute name="errMsg" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- Register 2 Lightning Event for handle add or Delete rows on Parent Component  --> 
+    
+    <aura:registerEvent name="DeleteRowEvt" type="c:DeleteRowEvt"/> 
+    <aura:registerEvent name="AddRowEvt" type="c:AddNewRowEvt"/> 
+    <aura:registerEvent name="validateRevenueInsert" type="c:validateRevenueInsert"/> 
+    
+    <aura:if isTrue="{!not(empty(v.errorMsg))}">
+        <c:AlertMessages Message="{!v.errorMsg}" type="error"/>
+    </aura:if>
+    <div class="slds-grid slds-gutters slds-m-top_x-small">
+        <div class="slds-col slds-size_1-of-4">
+            <ui:inputText aura:id="revYear" label="Revenue Year" class="slds-input" value="{!v.RevenueInstance.Revenue_Year__c}" required="true" maxlength="4" keyup="{!c.validateYear}" updateOn="keyup"/> 
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <ui:inputSelect aura:id="revMonth" label="Revenue Month" class="slds-select" required="true" disabled="{!v.selectedMonthDisabled}"
+                            value="{!v.RevenueInstance.Revenue_Month__c}" change="{!c.changeMonth}">
+                <!--disabled="{!v.selectedMonthDisabled}"-->
+                <option value="-None-" text="-None-"></option>              
+                <aura:iteration items="{!v.revenueMonths}" var="loc" indexVar="index"> <!--SF-2176 -->
+                    <!--aura:if isTrue="{!and(v.rowIndex == 0,!v.selectedMonthDisabled)}"-->
+                     <aura:if isTrue="{!v.firstItem}">
+                        <option value="{!loc}" selected ="{!v.oppFiscalMonth == loc }" text="{!loc}"> </option> 
+                        <aura:set attribute="else">
+                             <option value="{!loc}" text="{!loc}">  </option>     
+                        </aura:set>
+                    </aura:if>
+                    <!--aura:if isTrue="{!v.rowIndex != 0}">
+                            <option value="{!loc}" text="{!loc}">  </option>     
+                    </aura:if-->
+                </aura:iteration>
+            </ui:inputSelect>   
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <ui:inputNumber aura:id="revAmount" label="Revenue Amount" class="slds-input" value="{!v.RevenueInstance.Revenue_Amount__c}"  required="true" /> 
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+            <aura:if isTrue="{!v.rowIndex != 0}">
+                <div  class="slds-p-top_medium"> 
+                    <lightning:buttonIcon iconName="utility:new" variant="brand" onclick="{!c.AddNewRow}" alternativeText="Add Row" />
+                    <lightning:buttonIcon  iconName="utility:delete" variant="destructive" onclick="{!c.removeRow}" alternativeText="Remove Row"/>
+                </div>
+                <aura:set attribute="else">
+                    <div  class="slds-p-top_medium">  
+                        <lightning:buttonIcon iconName="utility:new" variant="brand" onclick="{!c.AddNewRow}" alternativeText="Add Row" />
+                    </div> 
+                </aura:set>
+            </aura:if> 
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,25 @@
+.THIS .slds-dueling-list__column_responsive {
+    min-width: 45%;
+}
+.THIS .slds-dueling-list__column_responsive .slds-dueling-list__options {
+    min-width: 100%;
+}
+.THIS .customRequired{
+    font-weight: 400; 
+}
+.THIS .customRequired:before{    
+    content: "*";
+    margin: 0 0.125rem 0 0.125rem;
+    color: rgb(194, 57, 52);
+    float: left;
+}
+.THIS .uiMessage.info {
+    border-color: #fff;
+    background-color: #36a0fe;
+}
+.THIS .uiMessage{
+    color: #fff;
+}
+.THIS .slds-form-element__label{
+    font-weight: bold;
+}

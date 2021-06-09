@@ -1,0 +1,25 @@
+<aura:component controller="APIPartnerOnBoardingRedirectionCtrl" implements="force:lightningQuickAction,lightning:availableForFlowActions,lightning:availableForFlowScreens,forceCommunity:availableForAllPageTypes" 
+                access="GLOBAL">
+    <aura:attribute name="errorMsg" type ="String"/>
+    <aura:attribute name="recordId" type ="String"/>
+    <aura:attribute name="signupURL" type ="String"/>
+    <aura:attribute name="isAvailable" type ="boolean" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <div class="slds-grid slds-gutters slds-box" id="accessPage">
+        <div class="slds-col slds-border_right">
+            <h2 class="header">{!$Label.c.Fill_Application}</h2><br/>
+            <lightning:input aura:id="accessCode" type="text" name="Access Code" label="{!$Label.c.PartnerOnBoardingAccessCode}" required="true"/>
+            <div class="slds-p-vertical_small"></div>
+            <aura:if isTrue="{!not(empty(v.errorMsg))}"> 
+                <c:AlertMessages Message="{!v.errorMsg}" type="error"/>
+            </aura:if>
+            <div class="slds-p-vertical_small"></div>
+            <lightning:button class="slds-align_absolute-center" variant="brand" label="{!$Label.c.Find_Record}" onclick="{!c.handleSave}"/>
+              
+            </div>
+        <div class="slds-col slds-align_absolute-center">
+            <h2 class="header">{!$Label.c.New_Partner}</h2>
+            <a href = "{!v.signupURL}">{!$Label.c.Sign_Up}</a>
+        </div>
+    </div>
+</aura:component>

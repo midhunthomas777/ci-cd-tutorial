@@ -1,0 +1,12 @@
+/**
+ * Created by jonbalza on 2019-09-06.
+ */
+.THIS .onboarding-group-card {
+    height: 100%;
+    background: #f9f9f9;
+    border-radius: token(borderRadiusMedium);
+}
+
+.THIS .onboarding-group-card__actions {
+    margin-top: auto;
+}

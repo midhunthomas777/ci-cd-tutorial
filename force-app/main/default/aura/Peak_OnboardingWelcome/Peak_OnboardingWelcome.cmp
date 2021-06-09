@@ -1,0 +1,20 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc. All rights reserved.
+  -
+  -->
+
+<aura:component description="Peak_OnboardingWelcome">
+    <aura:registerEvent name="pageChange" type="c:Peak_OnboardingChangePage"/>
+    <aura:attribute name="welcomeMessage" type="String"/>
+    <aura:attribute name="welcomeHeader" type="String"/>
+    <aura:attribute name="buttonColor" type="String" default="#ff8201"/>
+
+    <c:Peak_OnboardingSlide class="welcome"
+                            title="{!v.welcomeHeader}"
+                            description="{!v.welcomeMessage}"
+                            primaryButtonLabel="Let's Go!"
+                            primaryButtonColor="{!v.buttonColor}"
+                            primaryOnClick="{!c.goToNext}"
+                            backButtonLabel=""
+    />
+</aura:component>

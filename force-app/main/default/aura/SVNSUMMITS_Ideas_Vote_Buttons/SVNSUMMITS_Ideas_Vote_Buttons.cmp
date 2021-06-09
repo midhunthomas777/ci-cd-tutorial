@@ -1,0 +1,84 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<aura:component description="SVNSUMMITS_Ideas_Vote_Buttons"
+                controller="SVNSUMMITS_IdeaListController"
+                extends="c:SVNSUMMITS_Ideas_Base">
+
+    <aura:attribute name="ideaId" type="Id" default="" />
+    <aura:attribute name="enableVote" type="Boolean" default="true" access="public"/>
+    <aura:attribute name="userHasVoted" type="Boolean" default="false" />
+    <aura:attribute name="userVoteType" type="String" default="" />
+    <aura:attribute name="disableDownVoting" type="Boolean" default="true" />
+    <aura:attribute name="reduceButtonLabels" type="Boolean" default="true" />
+    <aura:attribute name="isVoting" type="Boolean" default="false" />
+
+    <aura:attribute name="labelVote"        type="String" default="{!$Label.c.ss_idea_label_UpVote}" />
+    <aura:attribute name="labelVoting"      type="String" default="{!$Label.c.ss_idea_label_UpVoting}" />
+    <aura:attribute name="labelVoted"       type="String" default="{!$Label.c.ss_idea_label_UpVoted}" />
+    <aura:attribute name="labelDownVote"    type="String" default="{!$Label.c.ss_idea_label_DownVote}" />
+    <aura:attribute name="labelDownVoted"   type="String" default="{!$Label.c.ss_idea_label_DownVoted}" />
+
+    <aura:registerEvent name="onVote"     type="c:SVNSUMMITS_Ideas_Vote_Event" />
+    <aura:registerEvent name="onDownVote" type="c:SVNSUMMITS_Ideas_Vote_Event" />
+
+    <!--Internal Attributes-->
+	<aura:attribute name="currentVoteCount" 	  	  type="Integer" default="0" 	 access="global" />
+	<aura:attribute name="totalVoteCount" 	 		  type="Integer" default="0" 	 access="global" />
+	<aura:attribute name="isClickedFromListPage" 	  type="Boolean" default="true"  access="global"/>
+    <aura:attribute name="accountVoteLimitReached"    type="Boolean" default="false" access="global" />
+    <aura:attribute name="accountLimitReachedMessage" type="String"  access="global"
+                    default="{!$Label.c.ss_idea_label_accountVotingLimit}"/>
+
+    <!--Body-->
+    <div class="ideas-vote-buttons">
+        <aura:if isTrue="{!v.isVoting}">
+            <lightning:button disabled="true"
+                              label="{!v.labelVoting}"
+                              variant="brand"
+            />
+            <aura:set attribute="else">
+                <aura:if isTrue="{!v.userHasVoted}">
+                    <!-- If user has voted -->
+                    <lightning:button disabled="true"
+                                      iconName="{!if(and(equals(v.userVoteType, 'Down'), not(v.disableDownVoting)), 'utility:dislike', 'utility:like')}"
+                                      label="{!if(and(equals(v.userVoteType, 'Down'), not(v.disableDownVoting)), v.labelDownVoted, v.labelVoted)}"
+                                      variant="brand"
+                    />
+                    <aura:set attribute="else">
+                        <aura:if isTrue="{!v.reduceButtonLabels}">
+                            <!-- if we're displaying a condensed view with no labels -->
+                            <lightning:buttonIcon iconName="utility:like"
+                                                  alternativeText="{!v.labelVote}"
+                                                  onclick="{!c.handleVote}"
+                                                  variant="border"
+                                                  class="ideas-vote-buttons__button"
+                                                  disabled="{!or (not(v.enableVote), v.accountVoteLimitReached)}"
+                            />
+                            <aura:set attribute="else">
+                                <!-- Standard full View -->
+                                <lightning:button iconName="utility:like"
+                                                  label="{!v.labelVote}"
+                                                  onclick="{!c.handleVote}"
+                                                  variant="neutral"
+                                                  class="ideas-vote-buttons__button"
+                                                  disabled="{! or (not(v.enableVote), v.accountVoteLimitReached)}"
+                                />
+                            </aura:set>
+                        </aura:if>
+                        <aura:if isTrue="{!not(v.disableDownVoting)}">
+                            <lightning:buttonIcon iconName="utility:dislike"
+                                                  alternativeText="{!v.labelDownVote}"
+                                                  onclick="{!c.handleDownVote}"
+                                                  variant="border"
+                                                  class="ideas-vote-buttons__button"
+                                                  disabled="{! or(not(v.enableVote), v.accountVoteLimitReached)}"
+                            />
+                        </aura:if>
+                    </aura:set>
+                </aura:if>
+            </aura:set>
+        </aura:if>
+    </div>
+
+</aura:component>

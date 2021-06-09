@@ -1,0 +1,32 @@
+<!--
+  - Copyright (c) 2018. 7Summits Inc.
+  -->
+
+<design:component label="7S Current Weather">
+	<design:attribute name="title"
+	                  label="Title"
+	                  description="Change the title of the component"/>
+	<design:attribute name="units"
+	                  label="Display in Celsius"
+	                  default="false"
+	                  description="Display the temperature in either Fahrenheit or Celsius"/>
+	<design:attribute name="displayCondition"
+	                  label="Display the Condition"
+	                  description="displays the current weather condition "/>
+	<design:attribute name="LoadOption"
+	                  label="Source used for Location"
+	                  datasource="User Record,IP Location,Organization Address,Record,Specified Zip/Postal Code"
+	                  description="Change the method used to determine the user's location"/>
+	<design:attribute name="specifiedLocation"
+	                  label="Specified Location"
+	                  description="Use this if Source is: Specified Zip/Postal Code. Enter comma-delimited postal code and country. Country not required if US. For example, '27601' is acceptable for a US zip code. 'WC2N 5DU,UK' is acceptable for London"/>
+	<design:attribute name="specifiedLanguage"
+	                  label="Specified Language"
+	                  description="Enter a two-character language specifier, as specified on https://www.weatherbit.io/api/weather-current. Default is 'en' English if blank."/>
+	<design:attribute name="WeatherAPIKey"
+	                  label="Weatherbit.io API Key"
+	                  description="The API Key required to access the Weatherbit.io service."/>
+	<design:attribute name="attributeName"
+	                  label="Address Field Name"
+	                  description="Name of Compound Address Field (e.g., BillingAddress)"/>
+</design:component>

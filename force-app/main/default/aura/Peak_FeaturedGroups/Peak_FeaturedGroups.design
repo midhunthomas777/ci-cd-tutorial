@@ -1,0 +1,16 @@
+<!--
+ - Created by brianpoulsen on 12/4/17.
+ -->
+
+<design:component label="7S Featured Groups">
+    <design:attribute name="title" label="Component title" description="This is the text that will be displayed as the component title. If blank, this title will not display." />
+    <design:attribute name="introText" label="Component Intro Text" description="This is a paragraph of text displayed after the title. If blank, this text will not display." />
+    <design:attribute name="showDescription" label="Show Group Description?" />
+    <design:attribute name="showMembers" label="Show Group Member Count?" />
+
+    <design:attribute name="RecommendedGroups" label="Featured Group IDs" description="Comma-separated list of Group IDs"/>
+    <design:attribute name="GroupsUrl" label="Groups URL"/>
+
+    <design:attribute name="CustomClassName" label="Custom Class Name" description="Custom CSS class name. Usually remains blank." />
+    <design:attribute name="CustomIdName" label="Custom ID Name" description="Custom, distinct CSS ID name. Usually remains blank." />
+</design:component>

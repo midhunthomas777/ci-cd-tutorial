@@ -1,0 +1,390 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc. All rights reserved.
+  -
+  -->
+
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:hasRecordId"
+                controller="Peak_OnboardingController"
+                access="global">
+
+    <aura:attribute name="recordId" type="String" access="global"/>
+    <aura:attribute name="userId" type="String" access="global"/>
+    <aura:attribute name="isInit" type="Boolean" access="global" default="true"/>
+
+    <aura:attribute name="displayMode" type="String" default="Show Progress On Page" access="global" />
+    <aura:attribute name="progressHeading" type="String" default="Getting Started with the Community" access="global"/>
+    <aura:attribute name="progressMessage" type="String" default="With this guide, you can tailor your experience to take full advantage of everything the community has to offer. Just a few quick steps and you will be on your way." access="global"/>
+    <aura:attribute name="showProgressWhenComplete" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="usedOnProfilePage" type="Boolean" default="false" access="global"/>
+
+    <aura:attribute name="displayOnboarding" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="displaySteps" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="displayBye" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="headerText" type="String" default="Community Getting Started Guide"  access="global"/>
+    <aura:attribute name="user" type="User"/>
+    <aura:attribute name="page" type="String" default="1" access="global"/>
+    <aura:attribute name="progressAndLabelColor" type="String" default="#01a5b5" access="global" />
+    <aura:attribute name="buttonColor" type="String" default="#ff8201" access="global"/>
+    <aura:attribute name="step1Label" type="String" default="Welcome" access="global"/>
+    <aura:attribute name="step2Label" type="String" default="Profile" access="global"/>
+    <aura:attribute name="step3Label" type="String" default="Additional Information" access="global"/>
+    <aura:attribute name="step4Label" type="String" default="Topics" access="global"/>
+    <aura:attribute name="step5Label" type="String" default="Groups" access="global"/>
+    <aura:attribute name="step6Label" type="String" default="Notifications" access="global"/>
+    <aura:attribute name="step7Label" type="String" default="Tour" access="global"/>
+    <aura:attribute name="step8Label" type="String" default="Completed" access="global"/>
+    <aura:attribute name="showStep1" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="showStep2" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="showStep3" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="showStep4" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="showStep5" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="showStep6" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="showStep7" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="showStep8" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="welcomeHeader" type="String" default="Welcome to the Community!" access="global"/>
+    <aura:attribute name="welcomeMessage" type="String" access="global"/>
+    <aura:attribute name="profileMessage" type="String" access="global"/>
+    <aura:attribute name="profileHeader" type="String" default="Name Change &amp; Profile Visibility" access="global"/>
+    <aura:attribute name="profileAction" type="String" default="Display my name as:" access="global"/>
+    <aura:attribute name="showTitle" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="showCompany" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="showEmail" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="showMobile" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="showNickname" type="Boolean" default="false" access="global"/>
+    <!--
+    TODO: Dynamic query builder for custom fields
+    <aura:attribute name="showRegion" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="showIndustry" type="Boolean" default="false" access="global"/>
+-->
+    <aura:attribute name="showAboutMe" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="showAvatarUpload" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="acceptableAvatarFileTypes" type="String" default=".jpg,.png" access="global"/>
+    <aura:attribute name="notificationHeader" type="String" default="Email Notification Opt-in" access="global"/>
+    <aura:attribute name="notificationMessage" type="String" default="Select the checkbox to receive email notifications for community activity you're interested in, such as mentions, joined groups, or topics you follow." access="global"/>
+    <aura:attribute name="notificationAction" type="String" default="Deselecting will override any email notification settings you may have previously set for topics and collaboration groups." access="global"/>
+    <aura:attribute name="notificationText" type="String" default="I would like to receive community email notifications" access="global"/>
+    <aura:attribute name="useTopicMetadata" type="Boolean" access="global"/>
+    <aura:attribute name="topicSlides" type="List" access="global"/>
+    <aura:attribute name="currentSlide" type="Object" access="global"/>
+    <aura:attribute name="numberOfTopicSlides" type="String" access="global"/>
+    <aura:attribute name="topicSlideIndex" type="Integer" access="global" default="0"/>
+    <aura:attribute name="linearNavigationOnly" type="Boolean" access="global"/>
+    <aura:attribute name="topicsMessage" type="String" access="global"/>
+    <aura:attribute name="topicsHeader" type="String" default="TOPICS" access="global"/>
+    <aura:attribute name="topicsAction" type="String" default="Select any of the topics below:" access="global"/>
+    <aura:attribute name="groupsMessage" type="String" access="global"/>
+    <aura:attribute name="groupsHeader" type="String" default="Collaborate Groups" access="global"/>
+    <aura:attribute name="groupsAction" type="String" default="Select one or more groups to join:" access="global"/>
+    <aura:attribute name="showUserSpecificGroups" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="toursMessage" type="String" access="global"/>
+    <aura:attribute name="toursHeader" type="String" default="Video Tour" access="global"/>
+    <aura:attribute name="videoType1" type="String" default="YouTube"  access="global"/>
+    <aura:attribute name="VideoURL1" type="String" default=""  access="global"/>
+    <aura:attribute name="VideoTitle1" type="String" default="First Video"  access="global"/>
+    <aura:attribute name="VideoDescription1" type="String" default="Some great first content!"  access="global"/>
+    <aura:attribute name="doneMessage" type="String" access="global"/>
+    <aura:attribute name="doneHeader" type="String" default="Done!" access="global"/>
+    <aura:attribute name="doneAction" type="String" default="What's next?" access="global"/>
+    <aura:attribute name="action1Icon" type="String" default="utility:identity" access="global"/>
+    <aura:attribute name="action1Text" type="String" default="View my profile" access="global"/>
+    <aura:attribute name="action1Url" type="String" default="/s/profile/" access="global"/>
+    <aura:attribute name="action1Description" type="String" access="global"/>
+    <aura:attribute name="action1UseUserId" type="Boolean" default="true" access="global" />
+    <aura:attribute name="action2Icon" type="String" default="utility:settings" access="global"/>
+    <aura:attribute name="action2Text" type="String" default="Update my settings" access="global"/>
+    <aura:attribute name="action2Url" type="String" default="/s/settings/" access="global"/>
+    <aura:attribute name="action2Description" type="String" access="global"/>
+    <aura:attribute name="action2UseUserId" type="Boolean" default="true" access="global" />
+    <aura:attribute name="action3Icon" type="String" default="utility:comments" access="global"/>
+    <aura:attribute name="action3Text" type="String" default="View Q&#38;A forums" access="global"/>
+    <aura:attribute name="action3Url" type="String" default="/s/topiccatalog" access="global"/>
+    <aura:attribute name="action3Description" type="String" access="global"/>
+    <aura:attribute name="action3UseUserId" type="Boolean" access="global" />
+    <aura:attribute name="action4Icon" type="String" default="utility:groups" access="global"/>
+    <aura:attribute name="action4Text" type="String" default="Collaborate with others" access="global"/>
+    <aura:attribute name="action4Url" type="String" default="/s/groups" access="global"/>
+    <aura:attribute name="action4Description" type="String" access="global"/>
+    <aura:attribute name="action4UseUserId" type="Boolean" access="global" />
+    <aura:attribute name="byeForNowMessage" type="String" access="global"/>
+    <aura:attribute name="group1TopicLabel" type="String" default="Category" access="global"/>
+    <aura:attribute name="group2TopicLabel" type="String" default="Products" access="global"/>
+    <aura:attribute name="topics" type="String" access="global"/>
+    <aura:attribute name="topicsProduct" type="String" access="global"/>
+    <aura:attribute name="showGroupDescription" type="Boolean" default="true" />
+    <aura:attribute name="groupIDs" type="String" access="global" />
+    <aura:attribute name="groupSlideNumber" type="String" access="global"/>
+    <aura:attribute name="notificationSlideNumber" type="String" access="global"/>
+    <aura:attribute name="tourSlideNumber" type="String" access="global"/>
+    <aura:attribute name="doneSlideNumber" type="String" access="global"/>
+    <aura:attribute name="groupStyle" type="String" access="global"/>
+    <aura:attribute name="notificationStyle" type="String" access="global"/>
+    <aura:attribute name="tourStyle" type="String" access="global"/>
+    <aura:attribute name="doneStyle" type="String" access="global"/>
+    <aura:attribute name="totalSteps" type="Integer" default="0" access="global"/>
+    <aura:attribute name="additionalSlideHeader" type="String" access="global"/>
+    <aura:attribute name="additionalSlideMessage" type="String" access="global"/>
+    <aura:attribute name="additionalSlideLabel" type="String" access="global"/>
+    <aura:attribute name="additionalSlideUserFieldName1" type="String" access="global"/>
+    <aura:attribute name="additionalSlideUserFieldLabel1" type="String" access="global"/>
+    <aura:attribute name="additionalSlideUserFieldName2" type="String" access="global"/>
+    <aura:attribute name="additionalSlideUserFieldLabel2" type="String" access="global"/>
+    <aura:attribute name="isModalViewEnabled" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="displayTopics" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="displayGroups" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="displayTours" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="displayCompleted" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="displayNotifications" type="Boolean" default="false" access="global"/>
+
+    <aura:handler name="pageChange" event="c:Peak_OnboardingChangePage" action="{!c.handlePageChange}"/>
+    <aura:handler name="closeModal" event="c:Peak_OnboardingCloseModal" action="{!c.closeModalFinal}"/>
+    <aura:handler name="init" action="{!c.init}" value="{!this}"/>
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+
+    <aura:if isTrue="{!or(!v.usedOnProfilePage, and( v.usedOnProfilePage, equals(v.recordId, v.userId) ))}">
+        <aura:if isTrue="{!and(equals(v.displayMode, 'Show Progress On Page'), or(v.showProgressWhenComplete, notequals(v.user.Onboarding_Complete__c, true)))}">
+            <c:Peak_OnboardingProgress progressMessage="{!v.progressMessage}"
+                                       progressHeading="{!v.progressHeading}"
+                                       showStep1="{!v.showStep1}"
+                                       showStep2="{!v.showStep2}"
+                                       showStep3="{!v.showStep3}"
+                                       showStep4="{!v.showStep4}"
+                                       showStep5="{!v.showStep5}"
+                                       showStep6="{!v.showStep6}"
+                                       showStep7="{!v.showStep7}"
+                                       showStep8="{!v.showStep8}"
+                                       step1Label="{!v.step1Label}"
+                                       step2Label="{!v.step2Label}"
+                                       step3Label="{!v.step3Label}"
+                                       step4Label="{!v.step4Label}"
+                                       step5Label="{!v.step5Label}"
+                                       step6Label="{!v.step6Label}"
+                                       step7Label="{!v.step7Label}"
+                                       step8Label="{!v.step8Label}"
+                                       user="{!v.user}"
+                                       useTopicMetadata="{!v.useTopicMetadata}"
+                                       topicSlides="{!v.topicSlides}"
+                                       onclick="{!c.handleProgressClick}"
+            />
+        </aura:if>
+        <aura:if isTrue="{!v.displayOnboarding}">
+            <div role="dialog" tabindex="-1" aria-labelledby="header" class="{!if(v.isModalViewEnabled, 'slds-modal slds-fade-in-open slds-modal_medium peak-onboarding', 'peak-onboarding peak-onboarding_on-page')}">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__header slds-p-bottom_none">
+                        <!-- establishing different behavior for the 'X' in the top right.  It should either close the modal,
+                         close the modal and check the Onboarding_Complete___c field, or lead to the 'Bye' screen, which is what the users see before closing the modal entirely  -->
+                        <aura:if isTrue="{! v.isModalViewEnabled }">
+                            <aura:if isTrue="{!and(v.displaySteps, v.page!='8')}">
+                                <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close" onclick="{!c.toByeScreen}">
+                                    X
+                                    <span class="slds-assistive-text">Close</span>
+                                </button>
+                            </aura:if>
+                            <aura:if isTrue="{!and(v.displayBye, v.page!='8')}">
+                                <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close" onclick="{!c.closeModal}">
+                                    X
+                                    <span class="slds-assistive-text">Close</span>
+                                </button>
+                            </aura:if>
+                            <aura:if isTrue="{!v.page=='8'}">
+                                <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close" onclick="{!c.closeModalFinal}">
+                                    X
+                                    <span class="slds-assistive-text">Close</span>
+                                </button>
+                            </aura:if>
+                        </aura:if>
+                        <aura:if isTrue="{!v.headerText}">
+                            <h2 id="header" class="slds-text-heading_medium slds-p-right_large slds-p-bottom_small">{!v.headerText}</h2>
+                        </aura:if>
+                        <lightning:progressIndicator currentStep="{!v.page}" type="base" class="{! v.linearNavigationOnly ? 'pointerEvent' : ''}">
+                            <aura:if isTrue="{!v.showStep1}" >
+                                <li class="onboarding-progress__item">
+                                    <lightning:progressStep label="{!v.step1Label}" value="1" onclick="{!c.handleWelcomeClick}" />
+                                    <span class="onboarding-progress__item-label">{!v.step1Label}</span>
+                                </li>
+                            </aura:if>
+                            <aura:if isTrue="{!v.showStep2}" >
+                                <li class="onboarding-progress__item">
+                                    <lightning:progressStep label="{!v.step2Label}" value="2" onclick="{!c.handleProfileClick}" />
+                                    <span class="onboarding-progress__item-label profile">{!v.step2Label}</span>
+                                </li>
+                            </aura:if>
+                            <aura:if isTrue="{!v.showStep3}" >
+                                <li class="onboarding-progress__item">
+                                    <lightning:progressStep label="{!v.step3Label}" value="3" onclick="{!c.handleshowAdditionUserDataLabelClick}" />
+                                    <span class="onboarding-progress__item-label">{!v.step3Label}</span>
+                                </li>
+                            </aura:if>
+                            <aura:if isTrue="{!v.showStep4}" >
+                                <aura:if isTrue="{!v.useTopicMetadata}">
+                                    <aura:iteration var="topicSlide" items="{!v.topicSlides}" indexVar="slideIndex">
+                                        <li class="onboarding-progress__item">
+                                            <lightning:progressStep class="{!topicSlide.parentLabel}" label="{!topicSlide.parentLabel}" value="{!(slideIndex + 4)+''}" onclick="{!c.handleTopicsClick}" />
+                                            <span class="onboarding-progress__item-label topics">{!topicSlide.parentLabel}</span>
+                                        </li>
+                                    </aura:iteration>
+                                    <aura:set attribute="else">
+                                        <li class="onboarding-progress__item">
+                                            <lightning:progressStep label="{!v.step4Label}" value="4" onclick="{!c.handleTopicsClick}" />
+                                            <span class="onboarding-progress__item-label topics">{!v.step4Label}</span>
+                                        </li>
+                                    </aura:set>
+                                </aura:if>
+                            </aura:if>
+                            <aura:if isTrue="{!v.showStep5}" >
+                                <li class="onboarding-progress__item">
+                                    <lightning:progressStep label="{!v.step5Label}" value="9" onclick="{!c.handleGroupsClick}" />
+                                    <span class="onboarding-progress__item-label groups">{!v.step5Label}</span>
+                                </li>
+                            </aura:if>
+                            <aura:if isTrue="{!v.showStep6}" >
+                                <li class="onboarding-progress__item">
+                                    <lightning:progressStep label="{!v.step6Label}" value="10" onclick="{!c.handleNotificationClick}" />
+                                    <span class="onboarding-progress__item-label notifications">{!v.step6Label}</span>
+                                </li>
+                            </aura:if>
+                            <aura:if isTrue="{!v.showStep7}" >
+                                <li class="onboarding-progress__item">
+                                    <lightning:progressStep label="{!v.step7Label}" value="11" onclick="{!c.handleToursClick}" />
+                                    <span class="onboarding-progress__item-label tours">{!v.step7Label}</span>
+                                </li>
+                            </aura:if>
+                            <aura:if isTrue="{!v.showStep8}" >
+                                <li class="onboarding-progress__item">
+                                    <lightning:progressStep label="{!v.step8Label}" value="12" onclick="{!c.handleFinalizeClick}" />
+                                    <span class="onboarding-progress__item-label finalize">{!v.step8Label}</span>
+                                </li>
+                            </aura:if>
+                        </lightning:progressIndicator>
+
+                    </div>
+
+                    <div class="{!'slds-modal__content ' + if($Browser.formFactor == 'DESKTOP', 'slds-p-around_medium', 'slds-p-around--small')}">
+                        <!-- as the page attribute is changed a new slide should appear.
+                        the page attribute is changed by an event that's called within each child slide component -->
+                        <aura:if isTrue="{!v.displaySteps}">
+                            <aura:if isTrue="{!v.page == '1'}">
+                                <c:Peak_OnboardingWelcome welcomeHeader="{!v.welcomeHeader}"
+                                                          welcomeMessage="{!v.welcomeMessage}"
+                                                          buttonColor="{!v.buttonColor}"
+                                />
+                            </aura:if>
+                            <aura:if isTrue="{!v.page == '2'}">
+                                <c:Peak_OnboardingProfile profileMessage="{!v.profileMessage}"
+                                                          user="{!v.user}"
+                                                          buttonColor="{!v.buttonColor}"
+                                                          profileHeader="{!v.profileHeader}"
+                                                          profileAction="{!v.profileAction}"
+                                                          showTitle="{!v.showTitle}"
+                                                          showCompany="{!v.showCompany}"
+                                                          showEmail="{!v.showEmail}"
+                                                          showMobile="{!v.showMobile}"
+                                                          showNickname="{!v.showNickname}"
+                                                          showAboutMe="{!v.showAboutMe}"
+                                                          showAvatarUpload="{!v.showAvatarUpload}"
+                                />
+                            </aura:if>
+                            <aura:if isTrue="{!v.page == '3'}">
+                                <c:Peak_OnboardingAdditionalDetails buttonColor="{!v.buttonColor}"
+                                                                    additionalSlideHeader="{!v.additionalSlideHeader}"
+                                                                    additionalSlideMessage="{!v.additionalSlideMessage}"
+                                                                    additionalSlideLabel="{!v.additionalSlideLabel}"
+                                                                    additionalSlideUserFieldName1="{!v.additionalSlideUserFieldName1}"
+                                                                    additionalSlideUserFieldLabel1="{!v.additionalSlideUserFieldLabel1}"
+                                                                    additionalSlideUserFieldName2="{!v.additionalSlideUserFieldName2}"
+                                                                    additionalSlideUserFieldLabel2="{!v.additionalSlideUserFieldLabel2}"
+                                />
+                            </aura:if>
+                            <aura:if isTrue="{!or(v.displayTopics, v.page == '4')}">
+                                <aura:if isTrue="{!v.useTopicMetadata}">
+                                    <c:Peak_OnboardingTopics useTopicMetadata="{!v.useTopicMetadata}"
+                                                             topicSlides="{!v.topicSlides}"
+                                                             currentSlide="{!v.currentSlide}"
+                                                             buttonColor="{!v.buttonColor}"
+                                                             user="{!v.user}"
+                                    />
+                                    <aura:set attribute="else">
+                                        <c:Peak_OnboardingTopics topicsMessage="{!v.topicsMessage}"
+                                                                 topics1Ids="{!v.topics}"
+                                                                 topics2Ids="{!v.topicsProduct}"
+                                                                 useTopicMetadata="{!v.useTopicMetadata}"
+                                                                 topicSlides="{!v.topicSlides}"
+                                                                 buttonColor="{!v.buttonColor}"
+                                                                 topicsHeader="{!v.topicsHeader}"
+                                                                 topicsAction="{!v.topicsAction}"
+                                                                 group1TopicLabel="{!v.group1TopicLabel}"
+                                                                 group2TopicLabel="{!v.group2TopicLabel}"
+                                                                 user="{!v.user}"/>
+                                    </aura:set>
+                                </aura:if>
+                            </aura:if>
+                            <aura:if isTrue="{!v.page == '9'}">
+                                <c:Peak_OnboardingGroups groupsMessage="{!v.groupsMessage}"
+                                                         showUserSpecificGroups="{!v.showUserSpecificGroups}"
+                                                         showGroupDescription="{!v.showGroupDescription}"
+                                                         groupIDs="{!v.groupIDs}"
+                                                         buttonColor="{!v.buttonColor}"
+                                                         groupsHeader="{!v.groupsHeader}"
+                                                         groupsAction="{!v.groupsAction}"
+                                />
+
+                            </aura:if>
+                            <aura:if isTrue="{!v.page == '10'}">
+                                <c:Peak_OnboardingNotifications notificationMessage="{!v.notificationMessage}"
+                                                                buttonColor="{!v.buttonColor}"
+                                                                notificationHeader="{!v.notificationHeader}"
+                                                                notificationAction="{!v.notificationAction}"
+                                                                notificationText="{!v.notificationText}"
+                                />
+
+                            </aura:if>
+                            <aura:if isTrue="{!v.page == '11'}">
+                                <c:Peak_OnboardingTours toursMessage="{!v.toursMessage}"
+                                                        doneMessage="{!v.doneMessage}"
+                                                        buttonColor="{!v.buttonColor}"
+                                                        toursHeader="{!v.toursHeader}"
+                                                        videoType1="{!v.videoType1}"
+                                                        VideoURL1="{!v.VideoURL1}"
+                                                        VideoTitle1="{!v.VideoTitle1}"
+                                                        VideoDescription1="{!v.VideoDescription1}"
+                                />
+
+                            </aura:if>
+                            <aura:if isTrue="{!v.page == '12'}">
+                                <c:Peak_OnboardingDone doneMessage="{!v.doneMessage}"
+                                                       user="{!v.user}"
+                                                       buttonColor="{!v.buttonColor}"
+                                                       doneHeader="{!v.doneHeader}"
+                                                       doneAction="{!v.doneAction}"
+                                                       action1Icon="{!v.action1Icon}" action1Text="{!v.action1Text}" action1Description="{!v.action1Description}"
+                                                       action1Url="{!v.action1Url}" action1UseUserId="{!v.action1UseUserId}"
+                                                       action2Icon="{!v.action2Icon}" action2Text="{!v.action2Text}" action2Description="{!v.action2Description}"
+                                                       action2Url="{!v.action2Url}" action2UseUserId="{!v.action2UseUserId}"
+                                                       action3Icon="{!v.action3Icon}" action3Text="{!v.action3Text}" action3Description="{!v.action3Description}"
+                                                       action3Url="{!v.action3Url}" action3UseUserId="{!v.action3UseUserId}"
+                                                       action4Icon="{!v.action4Icon}" action4Text="{!v.action4Text}" action4Description="{!v.action4Description}"
+                                                       action4Url="{!v.action4Url}" action4UseUserId="{!v.action4UseUserId}"
+                                />
+                            </aura:if>
+                        </aura:if>
+
+
+                        <aura:if isTrue="{!v.displayBye}">
+                            <c:Peak_OnboardingSlide class="close-onboarding"
+                                                    title="Bye for now!"
+                                                    description="{!v.byeForNowMessage}"
+                                                    primaryButtonLabel="Close"
+                                                    primaryButtonColor="{!v.buttonColor}"
+                                                    primaryOnClick="{!c.closeModal}"
+                                                    backButtonLabel="Go Back"
+                                                    backOnClick="{!c.goBackToOnboarding}"
+                             />
+                        </aura:if>
+                    </div>
+
+                </div>
+            </div>
+
+        </aura:if>
+    </aura:if>
+
+</aura:component>

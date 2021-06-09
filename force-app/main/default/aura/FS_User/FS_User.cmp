@@ -1,0 +1,47 @@
+<!--Change Notes
+02 April 2020 - Updating force:recordData to include id field as noticed this is no longer included -->
+
+<aura:component controller="UserProvisioningHelper">
+    <aura:attribute name="userId" type="String"/>
+    <aura:attribute name="errorMessage" type="String"/>
+    <aura:attribute name="user" type="Object" default="null" />
+    <aura:attribute name="recordLoadError" type="String"/>
+    
+    <force:recordData aura:id="recordLoader"
+                      recordId="{!v.userId}"
+                      fields="Id,Name,Email,IsActive"
+                      targetFields="{!v.user}"
+                      targetError="{!v.recordLoadError}"
+                      />
+    <aura:if isTrue="{!v.user!= null }">
+        <lightning:card iconName="standard:user" title="{!v.user.Name}" >
+            <aura:set attribute="actions">
+                <lightning:button label="View User" variant="Neutral" onclick="{!c.viewUser}" />
+                <aura:if isTrue="{!v.user.IsActive}">
+                    <lightning:button label="Disable User" variant="destructive" onclick="{!c.disableUser}" /> 
+                </aura:if>
+            </aura:set>
+            <lightning:recordViewForm recordId="{!v.userId}" objectApiName="User">
+                <lightning:layout class="slds-wrap" > 
+                    <lightning:layoutItem size="12">
+                        <lightning:outputField fieldName="Email" />
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="12">
+                        <lightning:outputField fieldName="Username" />
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="12">
+                        <lightning:outputField fieldName="ProfileId" />
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="12">
+                        <lightning:outputField fieldName="IsActive" />
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </lightning:recordViewForm>
+        </lightning:card>
+    </aura:if>
+    <lightning:accordion aura:id="errorMessageAccordion" activeSectionName="errorMessageSection" class="slds-hide">
+        <lightning:accordionSection name="errorMessageSection" label="Error Message">
+            <lightning:textarea value="{!v.errorMessage}" disabled="true" label="" />
+        </lightning:accordionSection>
+    </lightning:accordion>
+</aura:component>

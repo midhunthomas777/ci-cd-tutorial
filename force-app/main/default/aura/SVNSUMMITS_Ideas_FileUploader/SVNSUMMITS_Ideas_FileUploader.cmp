@@ -1,0 +1,26 @@
+<!-- Copyright ©2019 7Summits Inc. All rights reserved. -->
+
+<aura:component description="SVNSUMMITS_Ideas_FileUploader"
+                implements="force:appHostable,forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes,force:hasRecordId,force:hasSObjectName"
+                access="global">
+
+    <!--Internal Attributes-->
+    <aura:attribute name="accept"       type="String"   access="global"/>
+    <aura:attribute name="recordId"     type="String"/>
+
+    <!--Boolean Attributes-->
+    <aura:attribute name="multiple"     type="Boolean"  default="true"      access="global"/>
+    <aura:attribute name="disabled"     type="Boolean"  default="false"     access="global"/>
+
+    <!--Events-->
+    <aura:registerEvent name="appIdea"  type="c:SVNSUMMITS_Ideas_FileUpload_Event"/>
+
+    <!--FIle Uploader-->
+    <lightning:fileUpload  name="fileUploader"
+                           label= "{!$Label.c.ss_idea_label_fileUploader}"
+                           multiple="{!v.multiple}"
+                           accept="{!v.accept}"
+                           disabled="{!v.disabled}"
+                           recordId="{!v.recordId}"
+                           onuploadfinished="{! c.handleUploadFinished }"/>
+</aura:component>

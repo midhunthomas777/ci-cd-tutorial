@@ -1,0 +1,26 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+
+<!--
+ - Created by ranja on 16-04-2019.
+ -->
+
+<design:component label="7S Ideas Voting Limit">
+
+    <design:attribute name="headerText"
+                      label="Title Text"
+                      description="Text for the Title" />
+
+    <design:attribute name="showHeaderText"
+                      label="Display Header Text"
+                      description="Show the Header text" />
+
+    <design:attribute name="currentLimit"
+                      label="Current Limit Title"
+                      description="Show current limit title" />
+
+    <design:attribute name="totalLimit"
+                      label="Total Limit Title"
+                      description="Show total limit title" />
+</design:component>

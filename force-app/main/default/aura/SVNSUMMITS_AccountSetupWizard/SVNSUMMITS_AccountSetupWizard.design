@@ -1,0 +1,25 @@
+<design:component>
+	<design:attribute name="wizardLabel" label="Wizard Header" description="Wizard intro page Label"/>
+    <design:attribute name="imageURL" label="Image URL" description="Wizard intro Image url"/>
+    <design:attribute name="textAreaText" label="Wizard Description" description="Wizard intro page Description"/>
+    <design:attribute name="buttonLabel" label="Wizard Page Button Label" description="Wizard intro page button label"/>
+    
+    <design:attribute name="accountPageLabel" label="Account Page Header Label" description="Label to show on Header"/>
+    <design:attribute name="accountPageDescription" label="Account Page Header Description" description="Description to show on header"/>
+    <design:attribute name="accountPageButtonLabel" label="account Page Button Label" description="Label to show on button"/>
+    <design:attribute name="accountPageIcon" label="account Page Header Icon" description="Icon to show on header"/>
+    
+    <design:attribute name="attachmentPageLabel" label="Documents Page Header Label" description="Label to show on Header"/>
+    <design:attribute name="attachmentPageDescription" label="Documents Page Header Description" description="Description to show on header"/>
+    <design:attribute name="attachmentPageButtonLabel" label="Documents Page Button Label" description="Label to show on button"/>
+    <design:attribute name="attachmentPageIcon" label="Documents Page Header Icon" description="Icon to show on header"/>
+    
+    <design:attribute name="consentPageLabel" label="Consent Page Header Label" description="Label to show on Header"/>
+    <design:attribute name="consentPageDescription" label="Consent Page Header Description" description="Description to show on header"/>
+    <design:attribute name="consentPageButtonLabel" label="Consent Page Button Label" description="Label to show on button"/>
+    <design:attribute name="consentPageIcon" label="Consent Page Header Icon" description="Icon to show on header"/>
+    
+    <design:attribute name="successPageLabel" label="Success Page Label" description="Label to show on success page"/>
+    <design:attribute name="successPageDescription" label="Success Page Description" description="Description to show on success page"/>
+    
+</design:component>

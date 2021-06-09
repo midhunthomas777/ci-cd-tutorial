@@ -1,0 +1,54 @@
+<aura:component controller="MRCPQ_MoveQuoteToOpportunityCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
+    <aura:html tag="style">
+        .slds-modal__container{max-width: 70rem !important;width:90% !important;}
+    </aura:html>
+    <lightning:spinner variant="brand" size="large" aura:id="Id_spinner" class="slds-hide" />
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="userTheme" type="String" />
+    <aura:attribute name="isPartnerUser" type="Boolean" default="true" />
+    <aura:attribute name="errorMessage" type="String"/>
+    <aura:attribute name="message" type="boolean" default="false" description="use for display no record found message"/>
+    
+    
+    <aura:attribute name="selectedOpportunityId" type="String" />
+    <aura:attribute access="private" type="List" name="selection" default="[]"/>
+    <aura:attribute name="getURL" type="String" />
+    <aura:attribute name="selectedRecordId" type="String"/>
+    <aura:attribute name="Quoterecord" type="Object" description="The record object to be displayed"/>
+    <aura:attribute name="QuoteRecordFields" type="Object" description="A simplified view record object to be displayed"/>
+    <aura:attribute name="recordError" type="String" description="An error message bound to force:recordData"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:selectedRecordIdEvent" action="{!c.getOpportunityId}"/>    
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}" 
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.Quoterecord}"
+                      targetFields="{!v.QuoteRecordFields }"
+                      mode="VIEW"/>
+    <div class="slds-grid slds-gutters">
+        <div class="slds-col slds-size_2-of-3 slds-align-middle">
+            <c:Lookup aura:id="lookup" accountId="{!v.QuoteRecordFields.BigMachines__Account__c}" 
+                      selection="{!v.selection}" onSearch="{!c.lookupSearch}" placeholder="Search Opportunity" />
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-align-middle">
+            <lightning:buttonGroup class="slds-align_absolute-center slds-m-top_xx-small">
+                <lightning:button variant="brand" label="Move Quote" onclick="{!c.movequote}" />
+                                    <lightning:button variant="brand"  disabled="{!!v.isPartnerUser}" label="New Opportunity" onclick="{!c.createnewopp}"/>
+               <!-- <aura:if isTrue="{!v.isPartnerUser}">
+                </aura:if>-->
+            </lightning:buttonGroup>
+        </div>
+    </div><br/><br/>
+    <aura:if isTrue="{!v.message}">
+        <div class="slds-notify_container slds-is-relative">
+            <div class="slds-notify slds-notify_toast slds-theme_error" role="alert">
+                <div class="slds-notify__content">
+                    <h2 class="slds-text-heading_small">{!v.errorMessage}</h2>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+</aura:component>

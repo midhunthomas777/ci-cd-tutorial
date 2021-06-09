@@ -1,0 +1,74 @@
+<!--
+ - Created by Melinda Grad on 8/1/18.
+   - Copyright (c) 2018. 7Summits Inc.
+ -->
+
+<aura:component description="Adventure_Base"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:hasRecordId"
+                extends="c:Adventure_Peak_Base"
+                access="global"
+                controller="Adventure_BaseController">
+
+	<!--Attributes-->
+	<aura:attribute name="peakContentObject" type="List"/>
+	<!--<aura:attribute name="adventureId" type="String"/>-->
+	<aura:attribute name="recordId" type="String" access="global"/>
+	<aura:attribute name="adventure" type="Map"/>
+	<aura:attribute name="adventureTitleImage" type="String"/>
+	<aura:attribute name="adventureHeaderImage" type="String"/>
+	<aura:attribute name="adventureBannerImage" type="String"/>
+
+	<aura:attribute name="titleTextSize" type="String" default="large" access="global"/>
+	<aura:attribute name="truncate" type="Boolean" default="false" access="global"/>
+	<aura:attribute name="showLinks" type="Boolean" default="true" access="global"/>
+
+	<aura:attribute name="customClass" type="String" default="" access="global"/>
+	<aura:attribute name="customId" type="String" default="" access="global"/>
+	<aura:attribute name="imagePosition" type="String" default="" access="global"/>
+
+	<aura:attribute name="adventureTitleTextColor" type="String" access="global"/>
+	<aura:attribute name="adventureStepTextColor" type="String"  access="global"/>
+	<aura:attribute name="adventureStepBackgroundColor" type="String" access="global"/>
+	<aura:attribute name="trailBackgroundColor" type="String" access="global"/>
+
+	<aura:attribute name="moduleHeight" type="Integer" default="100" access="global"/>
+
+	<aura:attribute name="showTrailOnMobile" type="Boolean" default="false" access="global"/>
+
+	<!--Handlers-->
+	<aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
+
+	<!--Adventure Title-->
+	<section class="{!'peak-component slds-is-relative ' + v.customClass}" id="{!v.customId}" aura:id="{!v.customId}">
+
+		<aura:if isTrue="{!v.peakContentObject != null}">
+			<section class="titleImage">
+				<lightning:layout horizontalAlign="center">
+					<!--<section class = "titleImage" style="{!'background-image:url(' + v.peakContentObject[0].adventure.Title_Image__c + ');'}">-->
+					<lightning:layoutItem class="slds-text-align_center">
+						<h1 class="{!'slds-text-heading_' + v.titleTextSize}"
+						    style="{!'background-image:url(' + if(v.adventureTitleImage != null, '/sfc/servlet.shepherd/version/download/' + v.adventureTitleImage, v.peakContentObject[0].adventure.Title_Image__c) + '); color:' + v.adventureTitleTextColor +'; padding:' + v.imagePosition + ';'}">{!v.adventure.Title__c}</h1>
+					</lightning:layoutItem>
+					<!--</section>-->
+				</lightning:layout>
+			</section>
+
+
+			<!--Adventure Steps-->
+			<lightning:layout>
+				<lightning:layoutItem size="12">
+					<c:Adventure_AdventureStep peakContentObject="{!v.peakContentObject}" adventure="{!v.adventure}"
+					                           moduleMinHeight="{!v.moduleHeight}"
+					                           adventureHeaderImage="{!v.adventureHeaderImage}"
+					                           adventureBannerImage="{!v.adventureBannerImage}" truncate="{!v.truncate}"
+					                           showLinks="{!v.showLinks}"
+					                           adventureStepTextColor="{!v.adventureStepTextColor}"
+					                           adventureStepBackgroundColor="{!v.adventureStepBackgroundColor}"
+					                           trailBackgroundColor="{!v.trailBackgroundColor}"
+					                           showTrailOnMobile="{!v.showTrailOnMobile}"/>
+				</lightning:layoutItem>
+			</lightning:layout>
+		</aura:if>
+	</section>
+</aura:component>

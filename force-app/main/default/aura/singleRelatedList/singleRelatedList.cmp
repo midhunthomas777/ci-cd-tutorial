@@ -1,0 +1,79 @@
+<aura:component  controller="SingleRelatedListController" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global">
+    <aura:attribute name="sobjectApiName" type="String" required="true" /> 
+    <aura:attribute name="recordId" type="String" /> 
+    <aura:attribute name="rowId" type="String" /> 
+     <aura:attribute name="redirectOnEdit" type="boolean" default="false"/>
+    <aura:attribute name="relatedFieldApiName" type="String" required="true"/>    
+    <aura:attribute name="numberOfRecords" type="Integer" default="6"/>    
+    <aura:attribute name="sortedBy" type="String" required="true"/>
+    <aura:attribute name="sortedDirection" type="String" default="ASC"/>    
+    <aura:attribute name="onRowActionHandler" type="Aura.Action"/>    
+    <aura:attribute name="customActions" type="List"/>    
+    <aura:attribute name="columns" type="List" />
+    <aura:attribute name="columnsWithActions" type="List" access="private"/>
+    <aura:attribute name="fields" type="String" required="true"/>
+    <aura:attribute name="records" type="Object" access="private"/>
+    <aura:attribute name="parentRelationshipApiName" type="String" access="private"/>    
+    <aura:attribute name="sobjectLabel" type="String" access="private"/>    
+    <aura:attribute name="sobjectLabelPlural" type="String" access="private"/>    
+    <aura:attribute name="numberOfRecordsForTitle" type="String" access="private"/>    
+    <aura:attribute name="iconName" type="String" access="private"/>  
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:handler name="change" value="{!v.columns}" action="{!c.handleColumnsChange }"/>
+	<aura:handler event="force:showToast" action="{!c.handleToastEvent}"/>  
+    
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+    <div class="c-container">
+        <lightning:card class="slds-card_boundary" iconName="{!v.iconName}">
+            <aura:set attribute="actions">
+                <lightning:button label="{!$Label.c.PONew}" onclick="{!c.handleCreateRecord}"/>
+            </aura:set>     
+            <aura:set attribute="title">
+                <b><!--a class="slds-card__header-link" onclick="{!c.handleGotoRelatedList}"-->{!(v.sobjectLabelPlural) + ' (' + (v.numberOfRecordsForTitle) + ')'}</b>
+            </aura:set>             
+            <aura:set attribute="footer">
+                <!--aura:if isTrue="{!not(empty(v.records))}">  
+                	<a onclick="{!c.handleGotoRelatedList}">View All</a>
+                </aura:if-->
+            </aura:set>                
+            <aura:if isTrue="{!not(empty(v.records))}">    
+                <p class="slds-p-horizontal_small">                  
+                    <lightning:datatable class="related-list"
+                                         columns="{!v.columnsWithActions }"
+                                         data="{!v.records }"
+                                         keyField="id"
+                                         onrowaction="{!c.handleRowAction }"
+                                         hideCheckboxColumn="true"
+                                         resizeColumnDisabled="true"/>                     
+                </p>               
+			</aura:if>
+            
+        </lightning:card>
+    </div>
+    <aura:if isTrue="{!v.redirectOnEdit}" >  
+        <div class="demo-only" style="height: 640px;">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" iconName="utility:close"  size="large" variant="bare" onclick="{!c.close}"/>
+                       <h2 id="header43" class="slds-text-heading--medium">{!$Label.c.POPartnerContact}</h2>
+                    </header> 
+                    <lightning:buttonIcon class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" iconName="utility:close"  size="large" variant="bare" onclick="{!c.close}"/>
+                    
+                    <div class="slds-modal__content slds-p-around_medium" >
+                        <div >
+                            <force:recordEdit recordId="{!v.rowId}" aura:id="edit"/>
+                              <!--lightning:button label="Save" onclick="{!c.save}"/-->
+                        </div> 
+                    </div>
+                    
+                    <footer class="slds-modal__footer" >
+                       <lightning:button variant="neutral" label="{!$Label.c.POCancel}" onclick="{!c.cancelEdit }" />
+                       <lightning:button label="{!$Label.c.POSave}" onclick="{!c.save}"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </aura:if>
+</aura:component>

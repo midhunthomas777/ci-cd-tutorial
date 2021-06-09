@@ -1,0 +1,364 @@
+<aura:component controller="MRCommissionOrderCalculatorCtrl" access="global" 
+                implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:lightningQuickAction">	
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="getURL" type="String" />
+    <aura:attribute name="partnerId" type="String" />
+    <aura:attribute name="accountId" type="String" />
+    <aura:attribute name="motorolaCustomerNumber" type="String" />
+    <aura:attribute name="isInternalUser" type="Boolean" />
+    <aura:attribute name="mcnId" type="String" />
+    
+    <aura:attribute name="isCCMR" type="Boolean" default="true" />
+    <aura:attribute name="aggregatevalues" type="String[]" />
+    <aura:attribute name="boxLeftFields" type="String[]" />
+    <aura:attribute name="boxRightFields" type="String[]" />
+    <aura:attribute name="systemLeftFields" type="String[]" />
+    <aura:attribute name="systemRightFields" type="String[]" />
+    <aura:attribute name="commandCenterLeftFields" type="String[]" />
+    <aura:attribute name="commandCenterRightFields" type="String[]" />
+    <aura:attribute name="softwareEnterpriseLeftFields" type="String[]" />
+    <aura:attribute name="softwareEnterpriseRightFields" type="String[]" />
+    <!--SF-1801-Service Only OrderType-->
+    <aura:attribute name="serviceOnlyLeftFields" type="String[]" />
+    <aura:attribute name="serviceOnlyRightFields" type="String[]" />
+    <aura:attribute name="showSpinner" type="Boolean" default="true" />
+    <aura:attribute name="editform" type="Boolean" default="true" />
+    <aura:attribute name="viewform" type="Boolean" default="false" />
+    
+    
+    
+    <aura:attribute name="detailWrap" type="Object"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:registerEvent name="MRCommissionOderCalculatorCloseEvent" type="c:MRCommissionOderCalculatorCloseEvent"/>
+    
+    <div class="slds-box" >
+        <aura:if isTrue="{!v.showSpinner}">
+            <lightning:spinner />
+        </aura:if>         
+        <aura:if isTrue="{!v.editform}">
+            <lightning:recordEditForm aura:id="inputMccForm" objectApiName="MR_Commission_Calculator__c" onsuccess="{!c.handleSuccess}" 
+                                      onload="{!c.handleLoad}" onsubmit="{!c.handleSubmit}" recordId="{!v.recordId}" onerror="{!c.handleError}">
+                
+                <lightning:messages />
+                <div class="slds-grid">
+                    <div class="slds-col">
+                        <div  class="slds-float_right">
+                            <lightning:button  variant="brand" type="submit" label="Calculate"/>  
+                            <aura:if isTrue="{!and (not(empty(v.recordId)),(v.isInternalUser))}">
+                                <lightning:button  variant="brand" label="Print PDF" onclick="{!c.doPrint}" />
+                            </aura:if>
+                        </div> 
+                    </div>
+                </div>
+                <!--class="slds-section slds-is-open" class="slds-box" class="slds-p-left_large slds-p-right_medium"-->    
+                <div class="slds-grid">
+                    <div class="slds-col slds-p-top_large">
+                        <div class="slds-grid slds-gutters" >   
+                            <div class="slds-col slds-size_2-of-4">
+                                <aura:iteration items="{!v.aggregatevalues}" var="obj">                                
+                                    <div class="slds-grid">
+                                        <div class="slds-col">
+                                            <b><lightning:inputField fieldName="{!obj}" aura:id="{!obj}"/></b>
+                                        </div>
+                                    </div>                                
+                                </aura:iteration>  
+                            </div> 
+                            <div class="slds-col slds-size_2-of-4">
+                                <div class="slds-grid">
+                                    <div class="slds-col">
+                                        <lightning:inputField fieldName="Comments__c" />
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>   
+                    </div>
+                </div>
+                <c:CollapsiblePanel header="Box">                      
+                    <div class="slds-p-left_large slds-p-right_medium">                        
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-2 ">
+                                <aura:iteration items="{!v.boxLeftFields}" var="obj">
+                                    <div class="slds-grid">
+                                        <div class="slds-col">
+                                            <lightning:inputField fieldName="{!obj}" aura:id="{!obj}" />   
+                                        </div>
+                                    </div>
+                                </aura:iteration>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <aura:iteration items="{!v.boxRightFields}" var="obj">
+                                    <div class="slds-grid">
+                                        <div class="slds-col">
+                                            <lightning:inputField fieldName="{!obj}" aura:id="{!obj}" disabled="true"/>                                 
+                                        </div>
+                                    </div>
+                                </aura:iteration>                           
+                            </div>
+                            
+                        </div>
+                    </div>                 
+                </c:CollapsiblePanel>            
+                <c:CollapsiblePanel header="System">
+                    <div class="slds-p-left_large slds-p-right_medium">
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-2 .slds-size_full">
+                                <aura:iteration items="{!v.systemLeftFields}" var="obj">
+                                    <div class="slds-grid">
+                                        <div class="slds-col">
+                                            <lightning:inputField fieldName="{!obj}" aura:id="{!obj}" /> 
+                                        </div>
+                                    </div>
+                                </aura:iteration>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <aura:iteration items="{!v.systemRightFields}" var="obj">
+                                    <div class="slds-grid">
+                                        <div class="slds-col">
+                                            <lightning:inputField fieldName="{!obj}" aura:id="{!obj}" disabled="true"/> 
+                                        </div>
+                                    </div>
+                                </aura:iteration>                    
+                            </div>
+                        </div>
+                    </div>
+                </c:CollapsiblePanel>                
+                <aura:if isTrue="{!v.isCCMR}">
+                    <c:CollapsiblePanel header="Command Center NG911">            
+                        <div class="slds-p-left_large slds-p-right_medium">
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <aura:iteration items="{!v.commandCenterLeftFields}" var="obj">
+                                        <div class="slds-grid">
+                                            <div class="slds-col">
+                                                <lightning:inputField fieldName="{!obj}" aura:id="{!obj}" /> 
+                                            </div>
+                                        </div>
+                                    </aura:iteration>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <aura:iteration items="{!v.commandCenterRightFields}" var="obj">
+                                        <div class="slds-grid">
+                                            <div class="slds-col">
+                                                <lightning:inputField fieldName="{!obj}" aura:id="{!obj}" disabled="true"/>                           
+                                            </div>
+                                        </div>
+                                    </aura:iteration>                    
+                                </div>
+                            </div>
+                        </div>
+                    </c:CollapsiblePanel>
+                </aura:if>
+                <c:CollapsiblePanel header="Referral"> 
+                    <div class="slds-p-left_large slds-p-right_medium">
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-2">
+                                <aura:iteration items="{!v.softwareEnterpriseLeftFields}" var="obj">
+                                    <div class="slds-grid">
+                                        <div class="slds-col">
+                                            <lightning:inputField fieldName="{!obj}" aura:id="{!obj}"/> 
+                                        </div>
+                                    </div>
+                                </aura:iteration>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <aura:iteration items="{!v.softwareEnterpriseRightFields}" var="obj">
+                                    <div class="slds-grid">
+                                        <div class="slds-col">
+                                            <lightning:inputField fieldName="{!obj}" aura:id="{!obj}" disabled="true"/>
+                                        </div>
+                                    </div>
+                                </aura:iteration>                    
+                            </div>
+                        </div>
+                    </div>
+                </c:CollapsiblePanel>
+                <c:CollapsiblePanel header="Stand-Alone Service"> 
+                    <div class="slds-p-left_large slds-p-right_medium">
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-2">
+                                <aura:iteration items="{!v.serviceOnlyLeftFields}" var="obj">
+                                    <div class="slds-grid">
+                                        <div class="slds-col">
+                                            <lightning:inputField fieldName="{!obj}" aura:id="{!obj}"/> 
+                                        </div>
+                                    </div>
+                                </aura:iteration>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <aura:iteration items="{!v.serviceOnlyRightFields}" var="obj">
+                                    <div class="slds-grid">
+                                        <div class="slds-col">
+                                            <lightning:inputField fieldName="{!obj}" aura:id="{!obj}" disabled="true"/>
+                                        </div>
+                                    </div>
+                                </aura:iteration>                    
+                            </div>
+                        </div>
+                    </div>
+                </c:CollapsiblePanel>                
+            </lightning:recordEditForm>  
+        </aura:if>
+        <aura:if isTrue="{!v.viewform}">
+            <lightning:recordViewForm recordId="{!v.recordId}" objectApiName="MR_Commission_Calculator__c">
+                <lightning:messages />
+                <div class="slds-grid">
+                    <div class="slds-col">
+                        <div  class="slds-float_right">
+                            <lightning:button  variant="brand" label="Change" onclick="{!c.Edit}" /> 
+                            <aura:if isTrue="{!and (not(empty(v.recordId)),(v.isInternalUser))}">
+                                <lightning:button  variant="brand" label="Print PDF" onclick="{!c.doPrint}" />
+                            </aura:if>
+                            
+                        </div>  
+                    </div>
+                </div>
+                <div class="slds-grid">
+                    <div class="slds-col slds-p-top_large">
+                        <div class="slds-grid slds-gutters" >   
+                            <div class="slds-col slds-size_2-of-4">
+                                <aura:iteration items="{!v.aggregatevalues}" var="obj">                            
+                                    <div class="slds-grid">
+                                        <div class="slds-col">
+                                            <b><lightning:outputfield fieldName="{!obj}" aura:id="{!obj}"/></b>
+                                        </div>
+                                    </div>                             
+                                </aura:iteration>
+                            </div>
+                            <div class="slds-col slds-size_2-of-4">
+                                <div class="slds-grid">
+                                    <div class="slds-col">
+                                        <lightning:outputfield fieldName="Comments__c" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>   
+                    </div>
+                </div>
+                <c:CollapsiblePanel header="Box" outbody="true"> 
+                    <div class="slds-p-left_large slds-p-right_medium">
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-2">                                
+                                <aura:iteration items="{!v.boxLeftFields}" var="obj">   
+                                    <div class="slds-grid">
+                                        <div class="slds-col">
+                                            <lightning:outputfield fieldName="{!obj}" aura:id="{!obj}" />   
+                                        </div>
+                                    </div>
+                                </aura:iteration>                                    
+                            </div>                            
+                            <div class="slds-col slds-size_1-of-2">                               
+                                <aura:iteration items="{!v.boxRightFields}" var="obj">        
+                                    <div class="slds-grid">
+                                        <div class="slds-col">
+                                            <lightning:outputfield fieldName="{!obj}" aura:id="{!obj}" disabled="true"/>                                        
+                                        </div>
+                                    </div>
+                                </aura:iteration>
+                            </div>
+                        </div>
+                    </div>
+                </c:CollapsiblePanel>            
+                <c:CollapsiblePanel header="System" outbody="true">
+                    <div class="slds-p-left_large slds-p-right_medium">
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-2">
+                                <aura:iteration items="{!v.systemLeftFields}" var="obj">
+                                    <div class="slds-grid">
+                                        <div class="slds-col">
+                                            <lightning:outputfield fieldName="{!obj}" aura:id="{!obj}" /> 
+                                        </div>
+                                    </div>
+                                </aura:iteration>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <aura:iteration items="{!v.systemRightFields}" var="obj">
+                                    <div class="slds-grid">
+                                        <div class="slds-col">
+                                            <lightning:outputfield fieldName="{!obj}" aura:id="{!obj}" disabled="true"/> 
+                                        </div>
+                                    </div>
+                                </aura:iteration>                    
+                            </div>
+                        </div>
+                    </div>
+                </c:CollapsiblePanel>
+                <aura:if isTrue="{!v.isCCMR}">
+                    <c:CollapsiblePanel header="Command Central NG911" outbody="true">            
+                        <div class="slds-p-left_large slds-p-right_medium">
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <aura:iteration items="{!v.commandCenterLeftFields}" var="obj">
+                                        <div class="slds-grid">
+                                            <div class="slds-col">
+                                                <lightning:outputfield fieldName="{!obj}" aura:id="{!obj}" /> 
+                                            </div>
+                                        </div>
+                                    </aura:iteration>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <aura:iteration items="{!v.commandCenterRightFields}" var="obj">
+                                        <div class="slds-grid">
+                                            <div class="slds-col">
+                                                <lightning:outputfield fieldName="{!obj}" aura:id="{!obj}" disabled="true"/>                           
+                                            </div>
+                                        </div>
+                                    </aura:iteration>                    
+                                </div>
+                            </div>
+                        </div>
+                    </c:CollapsiblePanel>
+                </aura:if>
+                <c:CollapsiblePanel header="Referral" outbody="true"> 
+                    <div class="slds-p-left_large slds-p-right_medium">
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-2">
+                                <aura:iteration items="{!v.softwareEnterpriseLeftFields}" var="obj">
+                                    <div class="slds-grid">
+                                        <div class="slds-col">
+                                            <lightning:outputfield fieldName="{!obj}" aura:id="{!obj}"/> 
+                                        </div>
+                                    </div>
+                                </aura:iteration>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <aura:iteration items="{!v.softwareEnterpriseRightFields}" var="obj">
+                                    <div class="slds-grid">
+                                        <div class="slds-col">
+                                            <lightning:outputfield fieldName="{!obj}" aura:id="{!obj}" disabled="true"/>
+                                        </div>
+                                    </div>
+                                </aura:iteration>                    
+                            </div>
+                        </div>
+                    </div>
+                </c:CollapsiblePanel> 
+                <c:CollapsiblePanel header="Stand-Alone Service" outbody="true"> 
+                    <div class="slds-p-left_large slds-p-right_medium">
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-2">
+                                <aura:iteration items="{!v.serviceOnlyLeftFields}" var="obj">
+                                    <div class="slds-grid">
+                                        <div class="slds-col">
+                                            <lightning:outputfield fieldName="{!obj}" aura:id="{!obj}"/> 
+                                        </div>
+                                    </div>
+                                </aura:iteration>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <aura:iteration items="{!v.serviceOnlyRightFields}" var="obj">
+                                    <div class="slds-grid">
+                                        <div class="slds-col">
+                                            <lightning:outputfield fieldName="{!obj}" aura:id="{!obj}" disabled="true"/>
+                                        </div>
+                                    </div>
+                                </aura:iteration>                    
+                            </div>
+                        </div>
+                    </div>
+                </c:CollapsiblePanel> 
+            </lightning:recordViewForm> 
+        </aura:if>
+    </div>
+
+    <c:tealiumTrigger aura:id="tealium-trigger" />
+</aura:component>

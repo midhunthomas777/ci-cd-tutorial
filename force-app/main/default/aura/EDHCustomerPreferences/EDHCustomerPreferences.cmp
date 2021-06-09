@@ -1,0 +1,519 @@
+<aura:component controller="EInvoiceController" implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="isOpen" type="Boolean" default="false"/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="false"/>
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="buttonIdentifier" type="String"/>
+    <aura:attribute name="modalHeading" type="String"/>
+    <aura:attribute name="finalizeBody" type="Boolean" default="false"/>
+    <aura:attribute name="showExistingData" type="Boolean" default="false"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="contactsColumn" type="List"/>
+    <aura:attribute name="CCEmailList" type="SObject[]" />
+    <aura:attribute name="customerName" type="String"/>
+    <aura:attribute name="addContactCustName" type="String"/>
+    <aura:attribute name="isGenericEmailNo" type="Boolean" default="false"/>
+    <aura:attribute name="flipAccountValue" type="String" default="Y"/>
+    <aura:attribute name="userEmail" type="String"/>
+    <aura:attribute name="userCoreId" type="String"/>
+    <aura:attribute name="genericAPDropdown" type="String"/>
+    <aura:attribute name="resultList" type="List"/>
+    <aura:attribute name="retainListDuplicate" type="List"/>
+    <aura:attribute name="resultListLength" type="Integer" default="10"/>
+    <aura:attribute name="retainList" type="List"/>
+    <aura:attribute name="retainListLength" type="Integer" default="10"/>
+    <aura:attribute name="addContactresult" type="List"/>
+    <aura:attribute name="addContactresultLength" type="Integer" default="10"/>
+    <aura:attribute name="ccErrorMsg" type="Boolean" default="true"/>
+    <aura:attribute name="ContactList" type="Sobject[]" /> 
+    <aura:attribute name="emailOptContacts" type="Sobject[]" /> 
+    <aura:attribute name="saveContactsData" type="List" />
+    <aura:attribute name="saveDeletionData" type="List" />
+    <aura:attribute name="genericSectionData" type="List" />
+    <aura:attribute name="finalContacts" type="List" />
+    <aura:attribute name="savedDeletedRows" type="List" /> 
+    <aura:attribute name="finalContactsLength" type="Integer" default="10" />
+    <aura:attribute name="saveContactsDataLength" type="Integer" default="10" />
+    <aura:attribute name="dropdownOptions" type="String[]" default="Select one,Yes,No"/>
+    <aura:attribute name="roles" type="String[]" default="Accounts Payable-All Areas Default,Accounts Payable-Hardware Default,Accounts Payable-Service Contracts,Accounts Payable-Time &amp; Material"/>
+    <aura:attribute name="GenericAPEmail" type="String"/>
+    <aura:attribute name="buttonlabel" type="String"/>
+    <aura:attribute name="isDelDisable" type="Boolean" default="true"/>
+    <aura:attribute name="isFinalReqDisable" type="Boolean" default="false"/>
+    <aura:attribute name="showGenericEmail" type="Boolean" default="false"/>
+    <aura:attribute name="showGenericEmailWithSite" type="Boolean" default="false"/>
+    <aura:attribute name="isDisableValidate" type="Boolean" default="true"/>
+    <aura:attribute name="isValidateDisable" type="Boolean" default="false"/>
+    
+    <aura:attribute name="uniqueSiteList" type="List" default="[]"/>
+    <aura:attribute name="uniqueEmails" type="List" default="[]"/>
+    <aura:attribute name="uniqueNames" type="List" default="[]"/>
+    <aura:attribute name="existingEmails" type="List" default="[]"/>
+    <aura:attribute name="sitesForContact" type="List" default="[]"/>
+    <aura:attribute name="emailsForContact" type="List" default="[]"/>
+    <aura:attribute name="customerData" type="List" default="[]"/>
+    <aura:attribute name="genericAPBillToSite" type="List"/>
+    <aura:attribute name="genericAPLength" type="Integer" default="10"/>
+    <aura:attribute name="isPartner" type="Boolean" default="false" />
+    <aura:attribute name="isSaveRequest" type="Boolean" default="false" />
+    <aura:attribute name="requesterEmail" type="String"/>
+    <aura:attribute name="requesterCoreId" type="String"/>
+    <aura:attribute name="isDeleteBody" type="Boolean" default="false"/>
+    <aura:attribute name="isDeleteOpen" type="Boolean" default="false"/>
+    
+    <aura:attribute name="selectedRecords" type="List" />
+    <aura:attribute name="selectedRecordsLength" type="Integer" default="10"/>
+    <aura:attribute name="selectedContacts" type="List" />
+    <aura:attribute name="selectedContactsLength" type="Integer" default="10"/>
+    <aura:attribute name="selectedRcdColumns" type="List" />
+    <aura:attribute name="disableDelete" type="boolean" default="true" />
+    <aura:attribute name="isDisableFinalize" type="boolean" default="true" />
+    <aura:attribute name="selTabId" type="String" default="tab1" />
+    <aura:attribute name="isEmailOptContact" type="boolean" default="false"/>
+    <aura:attribute name="userTheme" type="String" default="Theme4d" />
+    <aura:attribute name="isCommunity" type="Boolean" default="false" />
+    <aura:attribute name="errorMsg" type="String" />
+    <aura:attribute name="successMsg" type="String" />
+    <aura:attribute name="siteAddressMap" type="Map" default="{}"/>
+    
+    <aura:handler event="c:DynamicDataTableEvent" action="{!c.handleSelectedRows}"/>
+    <aura:handler name="DeleteRowEvt" event="c:DeleteRowEvt" action="{!c.removeRow}"/>
+    
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="medium" aura:id="mySpinner"/>
+    </aura:if>
+    <c:GeneratePageHeader iconName="action:announcement" iconSize="medium" 
+                          alternativeText="announcement" 
+                          headingName="This will not make direct changes to Greenfield"
+                          headingBody="subject to get approval from CMD team"/>
+    
+    <aura:if isTrue="{!and(not(isCommunity),v.userTheme == 'Theme3')}"> 
+        <aura:if isTrue="{!not(empty(v.errorMsg))}"> 
+            <c:AlertMessages Message="{!v.errorMsg}" type="error"/>
+        </aura:if>
+        <aura:if isTrue="{!not(empty(v.successMsg))}"> 
+            <c:AlertMessages Message="{!v.successMsg}" type="success"/>
+        </aura:if>
+    </aura:if>
+    
+    <div class="slds-box slds-box_small">
+        <lightning:tabset selectedTabId="{!v.selTabId}">
+            <lightning:tab label="Email Opt-In" id="tab1">
+                <div class="c-container">
+                    <lightning:layout verticalAlign="center" class="x-large">             
+                        <lightning:layoutItem padding="around-small">
+                            <lightning:input aura:id="customerNum" type="text"
+                                             label="Customer Number" messageWhenValueMissing="Please enter your Customer Number"
+                                             required="true"/>  
+                        </lightning:layoutItem>               
+                        <lightning:layoutItem padding="around-small" class="buttonHeight">
+                            <lightning:button label="Search" value="emailOPTTab" onclick="{!c.searchCustPref}" name="tab1"/>
+                        </lightning:layoutItem>
+                        <aura:if isTrue="{!v.showExistingData}">
+                            <lightning:layoutItem  padding="around-small" class="buttonHeight">
+                                <lightning:button variant="success" label="Finalize Saved Records" 
+                                                  disabled="{!v.isFinalReqDisable}" value="emailFinalizeTab"
+                                                  onclick="{!c.finalizeRequest}" />
+                            </lightning:layoutItem>
+                        </aura:if>
+                    </lightning:layout>                
+                </div>
+                <aura:if isTrue="{!not(empty(v.resultList))}">
+                    <div class="slds-p-around_medium">
+                        <h1 class="slds-text-heading_medium">{!v.customerName}
+                            <span class="slds-m-horizontal_small slds-text-heading_small clickHereText" onclick="{!c.decisionDetails}"> 
+                                (Click here to make a change to Customer Invoice Preference)
+                            </span>
+                        </h1>
+                    </div>
+                    <div class="slds-box slds-box_small slds-hide" aura:id="decisionSection">
+                        <lightning:select class="slds-form-element_horizontal" label="Does the Customer have a Generic AP email address for Invoicing?" aura:id="genericAP" onchange="{!c.changeGenericAP}" required="true">
+                            <aura:iteration items="{!v.dropdownOptions}" var="opt">
+                                <option value="{!opt}" text="{!opt}"></option>
+                            </aura:iteration>
+                        </lightning:select>
+                        
+                        <aura:if isTrue="{!v.isGenericEmailNo}">
+                            <c:CustomerDetails isButtonVisible="true" userEmail="{!v.userEmail}" 
+                                               userCoreId="{!v.userCoreId}" aura:id="customerComp"
+                                               userTheme="{!v.userTheme}" isCommunity="{!v.isCommunity}"/>
+                        </aura:if>
+                        <lightning:select class="slds-form-element_horizontal slds-hide" value="{!v.genericAPDropdown}"
+                                          label="Does the Customer have additional Generic AP email addresses for other Bill-to-Sites?" 
+                                          aura:id="additionalAP" onchange="{!c.changeAdditionalAP}" required="true">
+                            <aura:iteration items="{!v.dropdownOptions}" var="opt">
+                                <option value="{!opt}" text="{!opt}"></option>
+                            </aura:iteration>
+                        </lightning:select>
+                        <aura:if isTrue="{!v.showGenericEmailWithSite}">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Enter the Generic AP emails for every Bill-to-Site</label>
+                            </div>
+                            
+                            <div class="slds-grid slds-gutters slds-m-top_x-small">
+                                <div class="slds-col slds-size_1-of-7 slds-form-element__label">Site Number</div>
+                                <div class="slds-col slds-size_1-of-7 slds-form-element__label">Existing Contact or Other</div>
+                                <div class="slds-col slds-size_1-of-7 slds-form-element__label">First Name</div>
+                                <div class="slds-col slds-size_1-of-7 slds-form-element__label">Last Name</div>
+                                <div class="slds-col slds-size_1-of-7 slds-form-element__label">Existing Email or Other</div>
+                                <div class="slds-col slds-size_1-of-7 slds-form-element__label">Email Address</div>
+                                <div class="slds-col slds-size_1-of-7 slds-form-element__label">Recieves ALL Invoices</div>
+                            </div>  
+                            
+                            <aura:iteration items="{!v.genericAPBillToSite}" var="item" indexVar="index">
+                                <c:InvoicePreferenceSelection item="{!item}" index="{!index}" uniqueSiteList="{!v.uniqueSiteList}" 
+                                                              existingEmails="{!v.existingEmails}" uniqueEmails="{!v.uniqueEmails}"
+                                                              preferenceIdentifier="generic" roles="{!v.roles}" uniqueNames="{!v.uniqueNames}"/>
+                            </aura:iteration>
+                           
+                            <lightning:button class="slds-m-top_x-small" variant="brand" label="Validate Existing Data" 
+                                              value="validateBtn" disabled="{!v.isValidateDisable}" 
+                                              onclick="{!c.validateExisting}"/>
+                        </aura:if>
+                        <aura:if isTrue="{!v.showGenericEmail}">
+                            <div class="c-container">
+                                <lightning:layout>
+                                    <lightning:layoutItem flexibility="auto" padding="around-small">
+                                        <lightning:input type="email" aura:id="genericEmail" value="{!v.GenericAPEmail}"
+                                                         required="true" label="Enter the Generic AP Email for the account" 
+                                                         messageWhenValueMissing="Please Enter the Generic Email"/>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem flexibility="auto" padding="around-small">
+                                        <lightning:input type="text" aura:id="confirstname" 
+                                                         label="Enter the Contact First Name" required="true"                                            
+                                                         messageWhenValueMissing="Please Enter the Contact First Name"/>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem flexibility="auto" padding="around-small">
+                                        <lightning:input type="text" aura:id="conlastname" 
+                                                         required="true" label="Enter the Contact Last Name" 
+                                                         messageWhenValueMissing="Please Enter the Contact Last Name"/>
+                                    </lightning:layoutItem>
+                                </lightning:layout>
+                            </div>
+                            <lightning:button class="slds-m-top_x-small" variant="brand" label="Validate Existing Data" 
+                                              value="validateGenericBtn" onclick="{!c.validateExisting}"/>
+                        </aura:if>
+                        <aura:if isTrue="{!v.showExistingData}">
+                            <lightning:button variant="brand" value="emailOPTTabCont" label="Add New Contact" 
+                                              onclick="{!c.addNewContact}" class="slds-m-top_x-small"/>
+                            
+                            <lightning:button variant="destructive" label="Select Row(s) to Delete" 
+                                              disabled="{!v.isDelDisable}" class="slds-m-top_x-small"
+                                              onclick="{!c.deleteConfirmation}" />
+                            
+                            <div class="slds-m-top_small">
+                                <c:GenerateLightningDataTable columns="{!v.columns}" inlineEditing="false" resultList ="{!v.resultList}"
+                                                              hideSelection="false"  maxRowSelection ="{!v.resultListLength}" showPagination="false"
+                                                              pageSize="{!v.resultListLength}"/>
+                            </div>
+                        </aura:if>
+                    </div>
+                </aura:if>
+            </lightning:tab>
+            <lightning:tab label="Add/Delete Contacts" id="tab2">
+                <div class="c-container">
+                    <lightning:layout verticalAlign="center" class="x-large">             
+                        <lightning:layoutItem flexibility="auto" padding="around-small">
+                            <lightning:input aura:id="customerNumTab3" type="text"
+                                             label="Customer Number" messageWhenValueMissing="Please enter your Customer Number"
+                                             required="true"/>  
+                        </lightning:layoutItem>
+                        <lightning:layoutItem flexibility="auto" padding="around-small">
+                            <lightning:input aura:id="siteNum" label="Site Number" type="text"/> 
+                        </lightning:layoutItem>
+                        <lightning:layoutItem flexibility="auto" padding="around-small" class="buttonHeight">
+                            <lightning:button variant="brand" label="Search" value="addDeleteTab" onclick="{!c.searchCustPref}" name="tab3"/>
+                        </lightning:layoutItem>
+                        <aura:if isTrue="{!not(empty(v.sitesForContact))}">
+                            <lightning:layoutItem padding="around-small" class="buttonHeight">
+                                <lightning:button variant="brand" label="Add New Contact" onclick="{!c.addNewContact}" />
+                            </lightning:layoutItem>
+                        </aura:if>
+                        <lightning:layoutItem padding="around-small" class="buttonHeight">
+                            <lightning:button variant="destructive" label="Select Row(s) to Delete" disabled="{!v.disableDelete}" onclick="{!c.deleteConfirmation}" />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem flexibility="auto" padding="around-small" class="buttonHeight">
+                            <lightning:button variant="success" label="Finalize Saved Records" disabled="{!v.isDisableFinalize}" onclick="{!c.finalizeRequest}" />
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                </div>
+                <aura:if isTrue="{!not(empty(v.addContactresult))}">
+                    <div class="slds-p-around_medium">
+                        <h1 class="slds-text-heading_medium">{!v.addContactCustName}</h1>
+                    </div>
+                    <div class="c-container"> 
+                        <c:GenerateLightningDataTable columns="{!v.columns}" inlineEditing="false" resultList ="{!v.addContactresult}"
+                                                      hideSelection="false"  maxRowSelection ="{!v.addContactresultLength}" showPagination="false"
+                                                      pageSize="{!v.addContactresultLength}"/>
+                    </div>
+                </aura:if>
+            </lightning:tab>
+            <lightning:tab label="CC Email (COF Only)" id="tab3">
+                <div class="c-container">
+                    <lightning:layout verticalAlign="center" class="x-large">             
+                        <lightning:layoutItem padding="around-small">
+                            <lightning:input aura:id="customerNumTab4" type="text" 
+                                             label="Customer Number" messageWhenValueMissing="Please enter your Customer Number"
+                                             required="true"/>  
+                        </lightning:layoutItem>
+                        <lightning:layoutItem padding="around-small" class="buttonHeight">
+                            <lightning:button variant="brand" label="Search" value="ccEmailTab" onclick="{!c.searchCustPref}"/>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                </div>
+               
+                <aura:if isTrue="{!not(v.ccErrorMsg)}">
+                    <form class="slds-form--stacked"> 
+                        <aura:iteration items="{!v.CCEmailList}" var="CCEmail" indexVar="index">
+                            <lightning:layout verticalAlign="center" class="x-large">             
+                                <lightning:select value="{!CCEmail.P_SOURCE_SYSTEM}" aura:id="ordersource" label="Order/Invoice Source" required="true">
+                                    <option value="COF">COF</option>
+                                    <!--<option value="AR1">AR1</option>-->
+                                </lightning:select>             
+                                <lightning:layoutItem flexibility="auto" padding="around-small">
+                                    <lightning:input value="{!CCEmail.P_SOURCE_SYSTEM_REF}" aura:id="refNum" 
+                                                     label="Order/Invoce Ref#" type="text" required="true"
+                                                     messageWhenValueMissing="Please input Invoice Reference"/> 
+                                </lightning:layoutItem>
+                                <lightning:layoutItem flexibility="auto" padding="around-small">
+                                    <lightning:input value="{!CCEmail.P_CC_EMAIL}" aura:id="ccemail" 
+                                                     label="CC Email" type="email" required="true"
+                                                     messageWhenValueMissing="Please input CC Email"/> 
+                                </lightning:layoutItem>
+                                <lightning:layoutItem flexibility="auto" padding="around-small">
+                                    <lightning:input value="{!CCEmail.P_REQUESTOR_EMAIL}" aura:id="reqEmail"
+                                                     label="Requester Email" type="email" required="true"
+                                                     messageWhenValueMissing="Please input Requester Email"/> 
+                                </lightning:layoutItem>
+                                <lightning:layoutItem flexibility="auto" padding="around-small">
+                                    <lightning:input value="{!CCEmail.P_REQUESTOR_COREID}" aura:id="coreid" 
+                                                     label="Core ID" required="true"
+                                                     messageWhenValueMissing="Please input Core ID"/> 
+                                </lightning:layoutItem>
+                                <lightning:layoutItem flexibility="auto" padding="around-small" class="buttonHeight">
+                                    <lightning:button variant="brand" label="Submit" onclick="{!c.clickCreate}"/>
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                        </aura:iteration>
+                    </form>
+                </aura:if>
+                
+            </lightning:tab>
+        </lightning:tabset>
+    </div>
+    
+    <aura:html tag="style">  
+        .slds-modal__container{max-width: 75rem !important;width:90% !important;}
+    </aura:html>
+    
+    <aura:if isTrue="{!v.isOpen}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="width: 100%;">
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{!c.closeModal}"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.modalHeading}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <aura:if isTrue="{!and(not(v.isPartner),not(v.isSaveRequest))}">
+                        <div class="c-container">
+                            <lightning:layout>
+                                <lightning:layoutItem flexibility="auto" padding="around-small">
+                                    <aura:if isTrue="{!and(not(empty(v.userEmail)),not(empty(v.userCoreId)))}">
+                                        <lightning:input type="email" name="requester" disabled="true"
+                                                         label="Requester Email" variant="label-inline"
+                                                         value="{!v.userEmail}"/>
+                                        
+                                        <aura:set attribute="else">
+                                            <lightning:input type="email" name="requester" required="true" aura:id="req"
+                                                             label="Requester Email" variant="label-inline"
+                                                             messageWhenValueMissing="Please enter your Motorola Email" />
+                                        </aura:set>
+                                    </aura:if>
+                                    
+                                </lightning:layoutItem>
+                                <lightning:layoutItem flexibility="auto" padding="around-small">
+                                    <aura:if isTrue="{!and(not(empty(v.userEmail)),not(empty(v.userCoreId)))}">
+                                        <lightning:input type="text" name="coreId" variant="label-inline"
+                                                         label="Core Id" value="{!v.userCoreId}"
+                                                         disabled="true"/>
+                                        
+                                        <aura:set attribute="else">
+                                            <lightning:input type="text" name="coreId" required="true" aura:id="core"
+                                                             label="Core Id" variant="label-inline"
+                                                             messageWhenValueMissing="Please enter your Core Id" />
+                                        </aura:set>
+                                    </aura:if>
+                                    
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                        </div>
+                    </aura:if>
+                    <aura:if isTrue="{!and(not(v.isSaveRequest),v.selTabId == 'tab1')}">
+                        <div class="c-container">
+                            <lightning:layout>
+                                <lightning:layoutItem flexibility="auto" padding="around-small">
+                                    <lightning:select class="slds-form-element_horizontal" aura:id="flipAcc"
+                                                      label="Are there other Customer Numbers which should be setup for Email Invoicing?"
+                                                      required="true" onchange="{!c.changeFlipAccount}">
+                                        <option value="Y" text="Y"></option>
+                                        <option value="N" text="N"></option>
+                                    </lightning:select>
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                        </div>
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.selTabId == 'tab1',and(not(v.isSaveRequest),v.showGenericEmail))}">
+                        <div class="c-container">
+                            <lightning:layout>
+                                <lightning:layoutItem flexibility="auto" padding="around-small">
+                                    <lightning:input type="text" name="genericMail" value="{!v.GenericAPEmail}"
+                                                     label="Generic AP Email" variant="label-inline"
+                                                     disabled="true"/>
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                        </div>
+                    </aura:if>
+                    <aura:if isTrue="{!v.isDeleteBody}">
+                        <aura:if isTrue="{!v.selTabId == 'tab1'}">
+                            <c:GenerateLightningDataTable columns="{!v.contactsColumn}" inlineEditing="false" resultList ="{!v.selectedContacts}"
+                                                          hideSelection="true" loadNavigationBtns="false" showPagination="false"
+                                                          pageSize="{!v.selectedContactsLength}"/>
+                            
+                            <aura:set attribute="else">
+                                <c:GenerateLightningDataTable columns="{!v.contactsColumn}" inlineEditing="false" resultList ="{!v.selectedRecords}"
+                                                              hideSelection="true" loadNavigationBtns="false" showPagination="false"
+                                                              pageSize="{!v.selectedRecordsLength}"/>
+                            </aura:set>
+                        </aura:if>
+                        <aura:set attribute="else">                                    
+                            <aura:if isTrue="{!v.finalizeBody}">
+                                <aura:if isTrue="{!v.selTabId == 'tab1'}">
+                                    <aura:if isTrue="{!v.genericAPDropdown == 'Yes'}">
+                                        <div>
+                                            <c:GeneratePageHeader iconName="action:add_contact" iconSize="small" 
+                                                                  alternativeText="Primary e-Invoice Contact(s)" 
+                                                                  headingName="Primary e-Invoice Contact(s)"
+                                                                  alignBody="slds-m-top_x-small"/>
+                                            
+                                            <c:GenerateLightningDataTable columns="{!v.contactsColumn}" inlineEditing="false" resultList ="{!v.genericAPBillToSite}"
+                                                                          hideSelection="true" showPagination="false" pageSize="{!v.genericAPLength}"/>
+                                        </div>
+                                        <aura:set attribute="else">
+                                            <div>
+                                                <c:GeneratePageHeader iconName="action:add_contact" iconSize="small" 
+                                                                      alternativeText="Primary e-Invoice Contact(s)" 
+                                                                      headingName="Primary e-Invoice Contact(s)"
+                                                                      alignBody="slds-m-top_x-small"/>
+                                                
+                                                <c:GenerateLightningDataTable columns="{!v.contactsColumn}" inlineEditing="false" resultList ="{!v.genericSectionData}"
+                                                                              hideSelection="true" showPagination="false" pageSize="{!v.genericAPLength}"/>
+                                            </div>
+                                        </aura:set>
+                                    </aura:if>
+                                    <aura:if isTrue="{!not(empty(v.savedDeletedRows))}">
+                                        <div>
+                                            <c:GeneratePageHeader iconName="action:delete" iconSize="small" 
+                                                                  alternativeText="delete" 
+                                                                  headingName="Contacts to be deleted"
+                                                                  alignBody="slds-m-top_x-small"/>
+                                            
+                                            <c:GenerateLightningDataTable columns="{!v.contactsColumn}" inlineEditing="false" resultList ="{!v.savedDeletedRows}"
+                                                                          hideSelection="true" showPagination="false" pageSize="{!v.selectedContactsLength}"/>
+                                        </div>
+                                    </aura:if>
+                                    <aura:if isTrue="{!not(empty(v.finalContacts))}">
+                                        <div>
+                                            <c:GeneratePageHeader iconName="action:add_contact" iconSize="small" 
+                                                                  alternativeText="contact addition" 
+                                                                  headingName="New contacts"
+                                                                  alignBody="slds-m-top_x-small"/>
+                                            
+                                            <c:GenerateLightningDataTable columns="{!v.contactsColumn}" inlineEditing="false" resultList ="{!v.finalContacts}"
+                                                                          hideSelection="true" showPagination="false" pageSize="{!v.finalContactsLength}"/>
+                                        </div>
+                                    </aura:if>
+                                    <aura:if isTrue="{!not(empty(v.retainList))}">
+                                        <div>
+                                            <c:GeneratePageHeader iconName="action:add_contact" iconSize="small" 
+                                                                  alternativeText="retained contact" 
+                                                                  headingName="Retained Contacts"
+                                                                  alignBody="slds-m-top_x-small"/>
+                                            
+                                            <c:GenerateLightningDataTable columns="{!v.contactsColumn}" inlineEditing="false" resultList ="{!v.retainList}"
+                                                                          hideSelection="true" showPagination="false" pageSize="{!v.retainListLength}"/>
+                                        </div>
+                                    </aura:if>
+                                    <aura:set attribute="else">
+                                        <aura:if isTrue="{!not(empty(v.saveDeletionData))}">
+                                            <div>
+                                                <c:GeneratePageHeader iconName="action:delete" iconSize="small" 
+                                                                      alternativeText="delete" 
+                                                                      headingName="Contacts to be deleted"
+                                                                      alignBody="slds-m-top_x-small"/>
+                                                
+                                                <c:GenerateLightningDataTable columns="{!v.contactsColumn}" inlineEditing="false" resultList ="{!v.saveDeletionData}"
+                                                                              hideSelection="true" showPagination="false" pageSize="{!v.selectedRecordsLength}"/>
+                                            </div>
+                                        </aura:if>
+                                        <aura:if isTrue="{!not(empty(v.saveContactsData))}">
+                                            <div>
+                                                <c:GeneratePageHeader iconName="action:add_contact" iconSize="small" 
+                                                                      alternativeText="contact addition" 
+                                                                      headingName="New contacts"
+                                                                      alignBody="slds-m-top_x-small"/>
+                                                
+                                                <c:GenerateLightningDataTable columns="{!v.contactsColumn}" inlineEditing="false" resultList ="{!v.saveContactsData}"
+                                                                              hideSelection="true" showPagination="false" pageSize="{!v.saveContactsDataLength}"/>
+                                            </div>
+                                        </aura:if>
+                                    </aura:set>
+                                </aura:if>
+                                <aura:set attribute="else">
+                                    <aura:if isTrue="{!v.selTabId == 'tab1'}">
+                                        <aura:iteration items="{!v.emailOptContacts}" var="item" indexVar="index">
+                                            <c:AddNewContact ContactRecord="{!item}" rowIndex="{!index}" Sites="{!v.uniqueSiteList}" 
+                                                             roles="{!v.roles}" Emails="{!v.existingEmails}"
+                                                             tabIdentifier="emailOPTTab"/>
+                                        </aura:iteration>
+                                        <aura:set attribute="else">
+                                            <aura:iteration items="{!v.ContactList}" var="item" indexVar="index">
+                                                <c:AddNewContact ContactRecord="{!item}" rowIndex="{!index}" Sites="{!v.sitesForContact}" 
+                                                                 roles="{!v.roles}" Emails="{!v.emailsForContact}"
+                                                                 tabIdentifier="addDeleteTab"/>
+                                            </aura:iteration>
+                                        </aura:set>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </aura:set>
+                    </aura:if>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" 
+                                      label="Cancel"
+                                      title="Cancel"
+                                      onclick="{!c.closeModal}"/>
+                    <lightning:button variant="brand" 
+                                      label="{!v.buttonlabel}"
+                                      title="{!v.buttonlabel}"
+                                      name="{!v.buttonIdentifier}"
+                                      onclick="{!c.saveModalDetails}"/>
+                    <aura:if isTrue="{!and(not(v.isDeleteBody),not(v.finalizeBody))}">
+                        <lightning:button variant="brand" 
+                                          label="Add Row"
+                                          title="Add Row"
+                                          onclick="{!c.AddContacts}"/>
+                    </aura:if>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        
+    </aura:if>
+    
+</aura:component>

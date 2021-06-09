@@ -1,0 +1,27 @@
+<!--
+ - Copyright (c) 2018. 7Summits Inc.
+ - Created by 7Summits - Melinda Grad on 8/1/18.
+ -->
+
+<design:component label="Learning Adventure">
+
+    <design:attribute name="recordId" label="Adventure Id" description="This is the Id of the Adventure to be displayed"/>
+
+    <design:attribute name="titleTextSize" label="Adventure Title Size" description="This is the font size of the Adventure Title" dataSource="small,medium,large"/>
+    <design:attribute name="adventureTitleTextColor" label="Adventure Title Text Color" description="The font color of the Adventure Title "/>
+    <design:attribute name="imagePosition" label=" Adventure Title Image Position" description="Enter values to change the position on the image behind the Adventure title. Values will be applied in following order: top, right, bottom, left "/>
+
+    <design:attribute name="trailBackgroundColor" label=" Adventure Trail Background Color" description="The background color behind the Adventure Step trail"/>
+
+    <design:attribute name="adventureStepTextColor" label="Adventure Step Text Color" description="The font color of the Adventure Step subtitle and description"/>
+    <design:attribute name="adventureStepBackgroundColor" label="Adventure Step Background Color" description="The background color behind the Adventure Step subtitle and description"/>
+
+    <design:attribute name="truncate" label="Truncate Step Module Title" description="Select to truncate long Step Module titles"/>
+    <design:attribute name="showLinks" label="Show Step Module Links" description="Select to show additional Step Module links"/>
+    <design:attribute name="showTrailOnMobile" label="Show Trail Line on Mobile" description="Select to show Trail Line on mobile devices"/>
+
+    <design:attribute name="moduleHeight"  label="Module height" description="Set the module height"/>
+
+    <design:attribute name="customClass" label="Custom Class Name" description="Custom CSS class name. Usually remains blank." />
+    <design:attribute name="customId" label="Custom ID Name" description="Custom, distinct CSS ID name. Usually remains blank." />
+</design:component>

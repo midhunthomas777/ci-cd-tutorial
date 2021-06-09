@@ -1,0 +1,187 @@
+<!--
+ * Copyright (c) 2019. 7Summits Inc.
+-->
+<aura:component controller="x7sMetricReportController"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global">
+
+	<!-- 7S Logo -->
+	<!-- ltng:require styles="{!join(',', $Resource.x7sMetricResources)}"/>
+	<aura:attribute name="summitLogo"   type="String" default="{!$Resource.x7sMetricResources + '/7s_blue.png'}"/>
+	<aura:attribute name="logoSize"     type="String" default="42"/ -->
+
+	<!--  Design attributes  -->
+	<aura:attribute name="metrictoDisplay" type="String" access="global"/>
+	<aura:attribute name="title1" type="String" access="global"/>
+	<aura:attribute name="titleAlignment" type="String" access="global"/>
+	<aura:attribute name="titleSize" type="String" access="global"/>
+	<aura:attribute name="isBold" type="Boolean" default="false" access="global"/>
+
+	<aura:attribute name="reportAPIName1" type="String" access="global"/>
+	<aura:attribute name="useFieldAPI1" type="Boolean" default="false" access="global"/>
+	<aura:attribute name="fieldName1" type="String" access="global"/>
+	<aura:attribute name="label1" type="String" access="global"/>
+
+	<aura:attribute name="iconName1" type="String" access="global"/>
+	<aura:attribute name="iconHoverText1" type="String" access="global"/>
+	<aura:attribute name="iconColor1" type="String" access="global"/>
+
+	<aura:attribute name="showLeftButton1" type="Boolean" default="false" access="global"/>
+	<aura:attribute name="labelForLeftButton1" type="String" access="global"/>
+	<aura:attribute name="urlForLeftButton1" type="String" access="global"/>
+
+	<aura:attribute name="showRightButton1" type="Boolean" default="false" access="global"/>
+	<aura:attribute name="labelForRightButton1" type="String" access="global"/>
+	<aura:attribute name="urlForRightButton1" type="String" access="global"/>
+
+	<aura:attribute name="title2" type="String" access="global"/>
+
+	<aura:attribute name="reportAPIName2" type="String" access="global"/>
+	<aura:attribute name="useFieldAPI2" type="Boolean" default="false" access="global"/>
+	<aura:attribute name="fieldName2" type="String" access="global"/>
+	<aura:attribute name="label2" type="String" access="global"/>
+
+	<aura:attribute name="iconName2" type="String" access="global"/>
+	<aura:attribute name="iconHoverText2" type="String" access="global"/>
+	<aura:attribute name="iconColor2" type="String" access="global"/>
+
+	<aura:attribute name="showLeftButton2" type="Boolean" default="false" access="global"/>
+	<aura:attribute name="labelForLeftButton2" type="String" access="global"/>
+	<aura:attribute name="urlForLeftButton2" type="String" access="global"/>
+
+	<aura:attribute name="showRightButton2" type="Boolean" default="false" access="global"/>
+	<aura:attribute name="labelForRightButton2" type="String" access="global"/>
+	<aura:attribute name="urlForRightButton2" type="String" access="global"/>
+
+	<aura:attribute name="title3" type="String" access="global"/>
+
+	<aura:attribute name="reportAPIName3" type="String" access="global"/>
+	<aura:attribute name="useFieldAPI3" type="Boolean" default="false" access="global"/>
+	<aura:attribute name="fieldName3" type="String" access="global"/>
+	<aura:attribute name="label3" type="String" access="global"/>
+
+	<aura:attribute name="iconName3" type="String" access="global"/>
+	<aura:attribute name="iconHoverText3" type="String" access="global"/>
+	<aura:attribute name="iconColor3" type="String" access="global"/>
+
+	<aura:attribute name="showLeftButton3" type="Boolean" default="false" access="global"/>
+	<aura:attribute name="labelForLeftButton3" type="String" access="global"/>
+	<aura:attribute name="urlForLeftButton3" type="String" access="global"/>
+
+	<aura:attribute name="showRightButton3" type="Boolean" default="false" access="global"/>
+	<aura:attribute name="labelForRightButton3" type="String" access="global"/>
+	<aura:attribute name="urlForRightButton3" type="String" access="global"/>
+
+	<aura:attribute name="title4" type="String" access="global"/>
+
+	<aura:attribute name="reportAPIName4" type="String" access="global"/>
+	<aura:attribute name="useFieldAPI4" type="Boolean" default="false" access="global"/>
+	<aura:attribute name="fieldName4" type="String" access="global"/>
+	<aura:attribute name="label4" type="String" access="global"/>
+
+	<aura:attribute name="iconName4" type="String" access="global"/>
+	<aura:attribute name="iconHoverText4" type="String" access="global"/>
+	<aura:attribute name="iconColor4" type="String" access="global"/>
+
+	<aura:attribute name="showLeftButton4" type="Boolean" default="false" access="global"/>
+	<aura:attribute name="labelForLeftButton4" type="String" access="global"/>
+	<aura:attribute name="urlForLeftButton4" type="String" access="global"/>
+
+	<aura:attribute name="showRightButton4" type="Boolean" default="false" access="global"/>
+	<aura:attribute name="labelForRightButton4" type="String" access="global"/>
+	<aura:attribute name="urlForRightButton4" type="String" access="global"/>
+	<!--  End of design attributes  -->
+
+	<!-- attributes -->
+	<aura:attribute name="displayList" type="String"/>
+
+	<aura:attribute name="metricValue1" type="String"/>
+	<aura:attribute name="metricValueType1" type="String"/>
+	<aura:attribute name="metricValue2" type="String"/>
+	<aura:attribute name="metricValueType2" type="String"/>
+	<aura:attribute name="metricValue3" type="String"/>
+	<aura:attribute name="metricValueType3" type="String"/>
+	<aura:attribute name="metricValue4" type="String"/>
+	<aura:attribute name="metricValueType4" type="String"/>
+	<!-- handlers-->
+	<aura:handler name="init" value="{! this }" action="{! c.init }"/>
+
+
+	<div class="c-container">
+		<lightning:layout multipleRows="true"
+		                  pullToBoundary="small"
+		                  verticalAlign="stretch">
+
+			<!-- <lightning:layoutItem size="12"
+			                      padding="horizontal-small">
+				<div style="{! 'background-position:right; background-size:' + v.logoSize +
+					       'px; background-repeat:no-repeat; background-image:url(' + v.summitLogo + ')'}">
+					&nbsp;
+				</div>
+			</lightning:layoutItem> -->
+
+			<aura:iteration items="{!v.displayList}" var="item">
+				<aura:if isTrue="{!item == 1}">
+					<c:x7sMetricLayout title="{!v.title1}" titleAlignment="{!v.titleAlignment}"
+					                   titleSize="{!v.titleSize}"
+					                   metricValue="{!v.metricValue1}" metricValueType="{!v.metricValueType1}"
+					                   metricLabel="{!v.label1}"
+					                   iconName="{!v.iconName1}" iconHoverText="{!v.iconHoverText1}"
+					                   iconColor="{!v.iconColor1}"
+					                   showLeftButton="{!v.showLeftButton1}"
+					                   labelForLeftButton="{!v.labelForLeftButton1}"
+					                   urlForLeftButton="{!v.urlForLeftButton1}"
+					                   showRightButton="{!v.showRightButton1}"
+					                   labelForRightButton="{!v.labelForRightButton1}"
+					                   urlForRightButton="{!v.urlForRightButton1}"
+					                   isBold="{!v.isBold}"/>
+				</aura:if>
+				<aura:if isTrue="{!item == 2}">
+					<c:x7sMetricLayout title="{!v.title2}" titleAlignment="{!v.titleAlignment}"
+					                   titleSize="{!v.titleSize}"
+					                   metricValue="{!v.metricValue2}" metricValueType="{!v.metricValueType2}"
+					                   metricLabel="{!v.label2}"
+					                   iconName="{!v.iconName2}" iconHoverText="{!v.iconHoverText2}"
+					                   iconColor="{!v.iconColor2}"
+					                   showLeftButton="{!v.showLeftButton2}"
+					                   labelForLeftButton="{!v.labelForLeftButton2}"
+					                   urlForLeftButton="{!v.urlForLeftButton2}"
+					                   showRightButton="{!v.showRightButton2}"
+					                   labelForRightButton="{!v.labelForRightButton2}"
+					                   urlForRightButton="{!v.urlForRightButton2}"
+					                   isBold="{!v.isBold}"/>
+				</aura:if>
+				<aura:if isTrue="{!item == 3}">
+					<c:x7sMetricLayout title="{!v.title3}" titleAlignment="{!v.titleAlignment}"
+					                   titleSize="{!v.titleSize}"
+					                   metricValue="{!v.metricValue3}" metricValueType="{!v.metricValueType3}"
+					                   metricLabel="{!v.label3}"
+					                   iconName="{!v.iconName3}" iconHoverText="{!v.iconHoverText3}"
+					                   iconColor="{!v.iconColor3}"
+					                   showLeftButton="{!v.showLeftButton3}"
+					                   labelForLeftButton="{!v.labelForLeftButton3}"
+					                   urlForLeftButton="{!v.urlForLeftButton3}"
+					                   showRightButton="{!v.showRightButton3}"
+					                   labelForRightButton="{!v.labelForRightButton3}"
+					                   urlForRightButton="{!v.urlForRightButton3}"
+					                   isBold="{!v.isBold}"/>
+				</aura:if>
+				<aura:if isTrue="{!item == 4}">
+					<c:x7sMetricLayout title="{!v.title4}" titleAlignment="{!v.titleAlignment}"
+					                   titleSize="{!v.titleSize}"
+					                   metricValue="{!v.metricValue4}" metricValueType="{!v.metricValueType4}"
+					                   metricLabel="{!v.label4}"
+					                   iconName="{!v.iconName4}" iconHoverText="{!v.iconHoverText4}"
+					                   iconColor="{!v.iconColor4}"
+					                   showLeftButton="{!v.showLeftButton4}"
+					                   labelForLeftButton="{!v.labelForLeftButton4}"
+					                   urlForLeftButton="{!v.urlForLeftButton4}"
+					                   showRightButton="{!v.showRightButton4}"
+					                   labelForRightButton="{!v.labelForRightButton4}"
+					                   urlForRightButton="{!v.urlForRightButton4}"
+					                   isBold="{!v.isBold}"/>
+				</aura:if>
+			</aura:iteration>
+		</lightning:layout>
+	</div>
+</aura:component>

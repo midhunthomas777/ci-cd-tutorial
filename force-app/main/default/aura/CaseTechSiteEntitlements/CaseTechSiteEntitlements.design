@@ -1,0 +1,3 @@
+<design:component>
+	<design:attribute name="decision" label="Serial or Site Id" dataSource="SITE,SERIAL"/>
+</design:component>

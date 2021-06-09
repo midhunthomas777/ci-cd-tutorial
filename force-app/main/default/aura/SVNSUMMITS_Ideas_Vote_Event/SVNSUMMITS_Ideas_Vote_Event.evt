@@ -1,0 +1,13 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+
+<!--
+ - Created by jonbalza on 2019-01-25.
+ -->
+
+<aura:event type="COMPONENT" description="SVNSUMMITS_Ideas_Vote_Event">
+    <aura:attribute name="ideaId"       type="Id"       access="global" />
+    <aura:attribute name="voteType"     type="String"   access="global" />
+    <aura:attribute name="voteCount"    type="String"   access="global"/>
+</aura:event>

@@ -1,0 +1,32 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<aura:event description="SVNSUMMITS_Ideas_Filters_Event"
+			type="APPLICATION"
+            access="global">
+
+	<!-- IDENTIFY THE RELATED LIST -->
+	<aura:attribute name="listId"               	type="String" 	default="" 	access="global"/>
+
+	<aura:attribute name="searchString"         	type="String"  	default=""  access="global"/>
+	<aura:attribute name="searchByCategories"   	type="String"  	default=""  access="global"/>
+	<aura:attribute name="searchByTopics"       	type="String"  	default=""  access="global"/>
+	<aura:attribute name="searchByStatus"       	type="String"  	default=""  access="global"/>
+	<aura:attribute name="searchByThemes"       	type="String"  	default=""  access="global"/>
+	<aura:attribute name="sortBy"               	type="String"  	default=""  access="global"/>
+
+	<!-- Ideas Filters -->
+	<aura:attribute name="searchMyIdeas"        	type="String"  	default=""  access="global"/>
+	<aura:attribute name="searchMyVotedIdeas"	 	type="String"	default=""  access="global"/>
+	<aura:attribute name="searchMyCommentedIdeas" 	type="String" 	default="" 	access="global"/>
+	<aura:attribute name="searchMySubscribedIdeas" type="String" 	default="" 	access="global"/>
+
+	<!-- Account Filters -->
+	<aura:attribute name="searchMyCompanyIdeas" 			type="String" 	default=""  access="global" />
+	<aura:attribute name="searchMyCompanyVotedIdeas" 		type="String" 	default=""  access="global" />
+	<aura:attribute name="searchMyCompanyCommentedIdeas" 	type="String" 	default=""  access="global" />
+	<aura:attribute name="searchMyCompanySubscribedIdeas" 	type="String" 	default=""  access="global" />
+
+
+	<aura:attribute name="searchMode"           	type="Boolean" default="false" access="global"/>
+</aura:event>

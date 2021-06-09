@@ -1,0 +1,39 @@
+<aura:component controller="DTSFPART_CreateAPBLineItemsCtrl" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,lightning:actionOverride" access="global" >
+
+   <aura:attribute name="recordId" type="String" />
+   <aura:attribute name="isLoggedInFromComm" type="Boolean" default="false" description="Determines whether the user logged in from Coummunity or not"/>
+   
+   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+   <aura:html tag="style">
+      .slds-modal__container {
+      height : auto;
+      width: 100%;
+      max-width: 50rem;
+      padding : 0px
+      }
+      .cuf-content {
+      padding: 0 0rem !important;
+      max-height: 90vh;
+      overflow-y: auto;
+      }
+      .slds-p-around--medium {
+      padding: 0rem !important;
+      }
+      .slds-modal__content {
+      overflow-y:hidden !important;
+      height:unset !important;
+      max-height:unset !important;
+      }
+      .slds-modal__close {
+      display:none;
+      }
+      .slds-modal {
+      display: flex;
+      align-items: center;
+      }
+   </aura:html>
+   
+   <c:apbPurchaseAndConfigAction aura:id="createLineItemsCmp" apbId="{!v.recordId}" isLoggedInFromComm="{!v.isLoggedInFromComm}" onclose="{!c.closeModal}"/>
+
+</aura:component>

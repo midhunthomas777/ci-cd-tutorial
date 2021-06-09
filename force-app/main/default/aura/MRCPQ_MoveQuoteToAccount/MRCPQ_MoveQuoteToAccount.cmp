@@ -1,0 +1,111 @@
+<aura:component controller="MRCPQ_MoveQuoteToAccountCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionwithoutheader" access="global" >   
+    <aura:html tag="style">
+        .slds-modal__container{max-width: 70rem !important;width:90% !important;}
+    </aura:html>
+    <!-- CREATE ATTRIBUTE/VARIABLE-->
+    <aura:attribute name="searchKeyword" type="String" description="use for store user search input"/>
+    <aura:attribute name="Message" type="boolean" default="false" description="use for display no record found message"/>
+    <aura:attribute name="TotalNumberOfRecord" type="integer" default="0" description="use for display Number of records"/>
+    <aura:attribute name="maxRowSelection" type="Integer" default="1"/>
+    <aura:attribute name="displayMCNList" type="boolean" default="false"/>
+    
+    <!-- Parent Pagination Attribute -->
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="searchResult" type="Object" description="use for store and display account list return from server"/>
+    <aura:attribute name="PaginationList" type="List"/>
+    <aura:attribute name="startPage" type="Integer" />
+    <aura:attribute name="endPage" type="Integer"/>
+    <aura:attribute name="totalRecords" type="Integer"/>
+    <aura:attribute name="pageSize" type="Integer" default="5"/>
+    
+    <!-- Child Pagination Attribute -->
+    <aura:attribute name="childColumns" type="List"/>
+    <aura:attribute name="childrenResult" type="Object"/>
+    <aura:attribute name="childPaginationList" type="List"/>
+    <aura:attribute name="childstartPage" type="Integer" />
+    <aura:attribute name="childendPage" type="Integer"/>
+    <aura:attribute name="childtotalRecords" type="Integer"/>
+    <aura:attribute name="childpageSize" type="Integer" default="5"/>
+    
+    <aura:attribute name="disChil" type="String"/>
+    
+    <aura:attribute name="mcnDisplayMessage" type="boolean" default="false"/>
+    <aura:attribute name="mcnMessage" type="boolean" default="false" description="use for display no record found message"/>
+    <aura:attribute name="moveQuoteBoolean" type="boolean" default="true" description="use for display no record found message"/>
+    <aura:attribute name="selectedParent" type="String"/>
+    <aura:attribute name="selectedChild" type="String"/>
+    <!-- <aura:attribute name="QuoteId" type="String" default="{!v.recordId}"/>-->
+    <aura:attribute name="userTheme" type ="String"/>
+    <aura:attribute name="errorMessage" type="String"/>
+    
+    
+    <!-- SHOW LOADING SPINNER--> 
+    <lightning:spinner variant="brand" size="large" aura:id="Id_spinner" class="slds-hide" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="slds-grid slds-gutters" style="height:50px">
+        <div class="slds-col slds-size_2-of-3 slds-align-middle">
+            <lightning:input value="{!v.searchKeyword}"
+                             required="true"
+                             placeholder="Enter Name of the Account.."
+                             aura:id="searchField"
+                             label="Account Name"/>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-align-middle" style="height:10px;">
+            <lightning:buttonGroup>
+                <lightning:button onclick="{!c.Search}"
+                                  variant="brand"
+                                  label="Search"
+                                  iconName="utility:search" /> 
+                <lightning:button label="Move Quote" disabled="{!!v.moveQuoteBoolean}" variant="brand" iconName="utility:move" iconPosition='right' onclick="{!c.MoveQuote}"/>
+                <lightning:button label="Go Back" variant="brand" iconPosition='right' onclick="{!c.goBack}"/>
+            </lightning:buttonGroup>
+        </div>
+    </div>
+    <div class="slds-p-top_small"></div>
+    <!-- ERROR MESSAGE IF NOT RECORDS FOUND--> 
+    <aura:if isTrue="{!v.Message}">
+        <div class="slds-notify_container slds-is-relative">
+            <div class="slds-notify slds-notify_toast slds-theme_error" role="alert">
+                <div class="slds-notify__content">
+                    <h2 class="slds-text-heading_small">{!v.errorMessage}</h2>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    <div class="slds-p-top_small"></div>
+    <aura:if isTrue="{!v.displayMCNList}">
+        <div>
+            <lightning:datatable aura:id="accountTable" class="cols" columns="{! v.columns }" data="{! v.PaginationList }" keyField="Id" 
+                                 maxRowSelection="{! v.maxRowSelection }" onrowselection="{!c.displayChildren}"/>
+            <lightning:buttonGroup class="slds-align_absolute-center slds-m-top_xx-small">
+                <lightning:button label="Previous" disabled="{!v.startPage == 0}" onclick="{!c.previous}" iconName='utility:back'/>
+                <lightning:button label="Next" disabled="{!v.endPage >= v.totalRecords}" onclick="{!c.next}" variant="brand" iconName='utility:forward' iconPosition='right'/>
+            </lightning:buttonGroup>
+        </div>
+    </aura:if>
+    <div id="displayChild">
+        <aura:if isTrue="{!v.mcnMessage}">
+            <div class="slds-notify_container slds-is-relative">
+                <div class="slds-notify slds-notify_toast slds-theme_error" role="alert">
+                    <div class="slds-notify__content">
+                        <h2 class="slds-text-heading_small">There are no Child Records for the Selected Customer/Prospect Account</h2>
+                    </div>
+                </div>
+            </div>
+        </aura:if>
+        <div>
+            <aura:if isTrue="{!v.mcnDisplayMessage}">
+                <br></br>
+                <br></br>
+                <b><h1>Motorola Customer Number Accounts</h1></b>
+                <lightning:datatable aura:id="mcnTable" class="cols" columns="{! v.childColumns }" data="{! v.childPaginationList }" keyField="Id" 
+                                     maxRowSelection="{! v.maxRowSelection }" onrowselection="{!c.mcnOperation}"/>
+                <lightning:buttonGroup class="slds-align_absolute-center slds-m-top_xx-small">
+                    <lightning:button label="Previous" disabled="{!v.childstartPage == 0}" onclick="{!c.mcnPrevious}" iconName='utility:back'/>
+                    <lightning:button label="Next" disabled="{!v.childendPage >= v.childtotalRecords}" onclick="{!c.mcnNext}" variant="brand" iconName='utility:forward' iconPosition='right'/>
+                </lightning:buttonGroup>
+            </aura:if>
+        </div> 
+    </div>
+</aura:component>

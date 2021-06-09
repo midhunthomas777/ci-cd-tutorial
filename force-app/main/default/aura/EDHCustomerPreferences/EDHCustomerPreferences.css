@@ -1,0 +1,30 @@
+.THIS .table-test thead th span { 
+    background-color: #16325c; 
+    color: white
+}
+.THIS .buttonHeight {
+    height: 33px;
+}
+.THIS.toggle {
+    display: none;
+}
+.THIS .heading {
+    cursor: pointer !important;
+}
+.THIS .selectInput .slds-form-element__label{
+    display: none !important;
+}
+.THIS .clickHereText{
+    padding:0.2rem;
+    cursor:pointer;
+    color:#fff;
+    background:#16325c;
+}
+
+.THIS .row_width {
+    text-align: center;
+}
+
+.THIS .individualDropdown {
+    margin-bottom: 1.5rem !important;
+}

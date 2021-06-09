@@ -1,0 +1,31 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+
+<!--
+ - Created by francoiskorb on 2019-04-02.
+ -->
+
+<aura:component description="SVNSUMMITS_Ideas_Tile_Author"
+                extends="c:SVNSUMMITS_Ideas_Base"
+                access="public">
+
+	<aura:attribute name="baseModel"        type="String"   access="global"/>
+
+	<aura:attribute name="idea"             type="Map"      access="public"/>
+	<aura:attribute name="sitePath"         type="String"   access="public"/>
+	<aura:attribute name="showNickName"     type="Boolean"  default="true" access="global"/>
+
+	<aura:attribute name="userProfileURL"   type="String"/>
+	<aura:attribute name="ideaUserName"     type="String"/>
+
+	<aura:handler   name="change"           value="{!v.idea}"  action="{!c.init}"/>
+
+	<lightning:layoutItem size="12"
+	                      class="slds-text-heading--label-normal slds-truncate">
+		<lightning:formattedText value="{!v.idea.fromNow + ' '}"/>
+		<lightning:formattedText value="{!$Label.c.ss_idea_label_by + ' '}"/>
+		<lightning:formattedUrl value="{!v.userProfileURL}"
+		                        label="{!v.ideaUserName}"/>
+	</lightning:layoutItem>
+</aura:component>

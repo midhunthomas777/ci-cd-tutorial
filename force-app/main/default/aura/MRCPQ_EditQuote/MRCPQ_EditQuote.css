@@ -1,0 +1,8 @@
+.THIS {
+  background-color: #ffffff;
+  height: 350px;
+}
+
+.THIS .slds-grid_full {
+  height: 100%;
+}

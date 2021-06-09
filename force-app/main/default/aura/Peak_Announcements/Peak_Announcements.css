@@ -1,0 +1,113 @@
+/**
+ * Expedition_Pack - Front-end assets used for the 7Summits Expedition Pack
+ * @version 1.0.0
+ * @author 7Summits
+ *
+ * COMPILED FILE DO NOT DIRECTLY EDIT
+ */
+.THIS .stencils {
+  padding: token(spacingSmall);
+  opacity: 0.5;
+  border: 1px solid token(borderColor);
+  border-radius: token(borderRadiusMedium);
+}
+.THIS .stencils .stencil {
+  width: 100%;
+  border-radius: token(borderRadiusMedium);
+  background: token(borderColor);
+}
+.THIS .stencils .stencil:nth-child(2) {
+  opacity: 0.75;
+}
+.THIS .stencils .stencil:nth-child(3) {
+  opacity: 0.5;
+}
+.THIS .stencils .stencil:nth-child(n + 3) {
+  opacity: 0.25;
+}
+.THIS .stencils .stencil.heading1 {
+  max-width: 500px;
+  height: 2rem;
+  margin-bottom: token(spacingSmall);
+}
+.THIS .stencils .stencil.heading2 {
+  max-width: 300px;
+  height: 1.5rem;
+  margin-bottom: token(spacingSmall);
+}
+.THIS .stencils .stencil.heading3 {
+  max-width: 300px;
+  height: 1.25rem;
+  margin-bottom: token(spacingSmall);
+}
+.THIS .stencils .stencil.heading4 {
+  max-width: 200px;
+  height: 1.125rem;
+  margin-bottom: token(spacingSmall);
+}
+.THIS .stencils .stencil.paragraph {
+  height: 0.875rem;
+  margin-bottom: token(spacingXSmall);
+}
+.THIS .slick-dots li button:before,
+.THIS .slick-next:before,
+.THIS .slick-prev:before {
+  color: token(colorTextLink);
+}
+.THIS .carousel {
+  visibility: hidden;
+}
+.THIS .carousel.slick-initialized {
+  visibility: visible;
+}
+.THIS .slds-notification-container {
+  position: relative;
+  z-index: inherit;
+  top: auto;
+  right: auto;
+  width: auto;
+  padding: 0;
+}
+.THIS .slds-notification {
+  width: 100%;
+  box-shadow: none;
+}
+.THIS .slds-notification.error {
+  border-color: #f2a199;
+  background-color: #fdedea;
+}
+.THIS .slds-notification.error .slds-media__figure svg {
+  fill: #f2a199;
+}
+.THIS .slds-notification.warning {
+  border-color: #f8e38e;
+  background-color: #ffffdc;
+}
+.THIS .slds-notification.warning .slds-media__figure svg {
+  fill: #f8e38e;
+}
+.THIS .slds-notification.info {
+  border-color: #bee6ff;
+  background-color: #f5fcff;
+}
+.THIS .slds-notification.info .slds-media__figure svg {
+  fill: #bee6ff;
+}
+.THIS .slds-notification__target {
+  background-color: transparent;
+}
+.THIS .slds-media__body h4 {
+  line-height: normal;
+}
+.THIS .slds-media__body p .slds-button {
+  line-height: initial;
+  border: 0;
+}
+.THIS [class^='icon-'],
+.THIS [class*=' icon-'] {
+  font-size: 1rem;
+}
+.THIS .slds-notification__close {
+  top: 0.5rem;
+  right: 0.5rem;
+}

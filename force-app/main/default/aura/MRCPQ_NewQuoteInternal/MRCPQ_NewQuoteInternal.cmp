@@ -1,0 +1,49 @@
+<aura:component controller="MRCPQ_ProceedToQuoteController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,lightning:isUrlAddressable,lightning:hasPageReference" access="global" >
+    <aura:attribute name="showError" type="boolean" default="false"/>
+    <aura:attribute name="singleMCN" type="boolean" default="false"/>
+    <aura:attribute name="multipleMCN" type="boolean" default="false"/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="false"/>
+    <aura:attribute name="cpqSiteId" type ="String"/>
+    <aura:attribute name="mcnId" type="String"/>
+    <aura:attribute name="oppAccId" type="String"/>
+    <aura:attribute name="oppoAccId" type="String"/><!--SF-2509-->
+    <aura:attribute name="recordInfo" type="Object"/><!--SF-2509-->
+    <aura:attribute name="oppMCN" type ="Boolean" default="false"/><!--SF-2509-->
+    <aura:attribute name="userTheme" type ="String"/>
+    <aura:attribute name="pOppoId" type ="String"/>
+    <aura:attribute name="errorMessage" type ="String"/>
+    
+    <!--Added below attributes for Spillman and Vesta Quote Creation M&A Project-->
+    <aura:attribute name="isValidOppData" type ="Boolean" default="true"/>
+    <aura:attribute name="productFamiliesList" type ="List"/>
+    <aura:attribute name="subAccountsData" type ="List"/>
+    <aura:attribute name="hostAccountFTE" type ="Integer"/>
+    <!--End-->
+    
+    <aura:html tag="style">  
+        .slds-modal__container{max-width: 70rem !important;width:90% !important;}
+    </aura:html>
+    <lightning:messages/>  
+        <!--SF-2509-->
+    <force:recordData aura:id="recordLoader" recordId="{!v.recordId}" 
+                      fields="AccountId"
+                      recordUpdated="{!c.handleRecordUpdated}"
+                      targetFields="{!v.recordInfo}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner alternativeText="Loading" variant="brand" size="small"/>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.showError}">
+        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" style="margin-top:50px;" role="alert">
+            <span class="slds-assistive-text">warning</span>
+            <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="Description of icon when needed"></span>
+             <h2>{!v.errorMessage}</h2>
+        </div>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.multipleMCN}">        
+        <c:MRCPQ_MCNList recordId="{!v.recordId}" userTheme="{!v.userTheme}" oppoAccId="{!v.oppoAccId}"/>
+    </aura:if>
+</aura:component>

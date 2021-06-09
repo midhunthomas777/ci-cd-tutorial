@@ -1,0 +1,18 @@
+<aura:component description="DTSFPART_ChatConfiguration" 
+                controller="DTSFPART_ChatRoutingController"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,lightning:availableForFlowScreens" 
+                access="global">
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:attribute name="pagesApiNames"         type="String"  default=""/>
+    <aura:attribute name="offlineSupportUrl"     type="String"  default="https://www.motorolasolutions.com/en_us/contact-us-form.html"></aura:attribute>
+    <aura:attribute name="chatConfigName"        type="String"  default="NAPC" />
+    <aura:attribute name="displayPopupAfterTime" type="Integer" default="20" description="Time in seconds"/>
+    <aura:attribute name="wasPopupDisplayed"     type="Boolean" default="false"/>
+
+    <c:communityChatPopup pagesApiNames="{!v.pagesApiNames}"></c:communityChatPopup>
+
+    <c:auraPubSub aura:id="pubsub" onready="{!c.handlePubsubReady}"/>
+    
+</aura:component>

@@ -1,0 +1,5 @@
+<!-- Copyright ©2019 7Summits Inc. All rights reserved. -->
+
+<aura:event type="COMPONENT" description="SVNSUMMITS_Ideas_CustomLookSelectedRec">
+    <aura:attribute name="selectedUser" type="User" access="global" />
+</aura:event>

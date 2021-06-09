@@ -1,0 +1,10 @@
+<aura:component >
+    <aura:attribute type="String" name="currentStep" />
+    <div class="slds-m-vertical_medium">
+        <lightning:progressIndicator currentStep="{!v.currentStep}" type="path" hasError="false" variant="base">
+            <lightning:progressStep label="Account and contact details" value="step1"/>
+            <lightning:progressStep label="Attach Documents" value="step2"/>
+            <lightning:progressStep label="Provide Consent" value="step3"/>
+        </lightning:progressIndicator>
+    </div>
+</aura:component>

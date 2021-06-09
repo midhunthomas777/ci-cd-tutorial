@@ -1,0 +1,101 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<design:component label="7S Ideas Header">
+	<design:attribute name="zoneName"
+	                  label="Zone Name:"
+	                  description="Enter the zone name"/>
+	<design:attribute name="listId"
+	                  label="Related List identifier"
+	                  description="Enter the related Ideas List identifier to ensure correct total count"/>
+
+	<design:attribute name="iconName"
+	                  label="Component Icon"
+	                  description="Enter the SLDS full icon name (category:name). Leave blank to hide."/>
+	<design:attribute name="ideaTitle"
+	                  label="Ideas Header"
+	                  description="Enter Title to display in header with a maximum of 16 characters."/>
+	<design:attribute name="newIdeaLabel"
+	                  label="Button text to submit New Idea"
+	                  description="Enter the text to display on button for submitting new idea"/>
+	<design:attribute name="newIdeaURL"
+	                  label="Link to submit New Idea"
+	                  description="Enter the link where users would be routed to submit new idea. Leave blank to hide the button."/>
+	<design:attribute name="opaqueBackground"
+	                  label = "Opaque background"
+	                  description="Enable to show an opaque background"/>
+
+	<design:attribute name="showNumberOfIdeas"
+	                  label="Show Number of Ideas"
+	                  description="Enable or disable number of ideas."/>
+
+	<design:attribute name="showFilter"
+	                  label="Show/hide Ideas filters"
+	                  description="Enable to show the filters"/>
+
+	<design:attribute name="showTopicFilter"
+	                  label="Show Topic Filter"
+	                  description="Show Topic Filter"/>
+	<design:attribute name="showCategoryFilter"
+	                  label="Show Category Filter"
+	                  description="Show Category Filter"/>
+	<design:attribute name="showStatusFilter"
+	                  label="Show Status Filter"
+	                  description="Show Status Filter"/>
+	<design:attribute name="showThemesFilter"
+	                  label="Show Themes Filter"
+	                  description="Show Themes Filter"/>
+
+	<design:attribute name="showViewSelector"
+	                  label="Show View Selector"
+	                  description="Show List/Grid View selector"/>
+	<design:attribute name="showSortByFilter"
+	                  label="Show Sort Order Selector"
+	                  description="Show SortBy Filter"/>
+
+	<design:attribute name="showMyIdeas"
+					  label="Show My Ideas Filter"
+					  description="Show My Ideas Filter"/>
+
+	<design:attribute name="showVoteByMeFilter"
+					  label="Show Ideas Voted By Me Filter"
+					  description="Show Ideas Voted By Me Filter"/>
+
+	<design:attribute name="showIdeasCommentedByMeFilter"
+					  label="Show Ideas Commented By Me Filter"
+					  description="Show Ideas Commented By Me Filter"/>
+
+	<design:attribute name="showIdeasSubscribedByMeFilter"
+					  label="Show Ideas Subscribed By Me Filter"
+					  description="Show Ideas Subscribed By Me Filter"/>
+
+	<design:attribute name="myCompaniesIdeas"
+					  label="Show My company’s Ideas Filter"
+					  description="Show My company’s Ideas Filter"/>
+
+	<design:attribute name="myCompaniesVotedIdeas"
+					  label="Show Ideas my company has voted on Filter"
+					  description="Show Ideas my company has voted on Filter"/>
+
+	<design:attribute name="myCompaniesCommentedIdeas"
+					  label="Show Ideas my company has commented on Filter"
+					  description="Show Ideas my company has commented on Filter"/>
+
+	<design:attribute name="myCompaniesSubscribedIdeas"
+					  label="Show Ideas my company has subscribed to Filter"
+					  description="Show Ideas my company has subscribed to Filter"/>
+
+	<design:attribute name="requireSelectionIdeasFilter"
+					  label="Require Selection in My Ideas Picklist"
+					  description="Require Selection in My Ideas Picklist"/>
+
+	<design:attribute name='TopicValue'
+	                  label='Topic Values'
+	                  description='Enter a CSV list of topics to limit the topic selection'/>
+	<design:attribute name='StatusValue'
+	                  label='Status Values'
+	                  description='To limit the displayed status values, enter a comma separated list of status values from the zone. Leave blank to show all statuses in the zone'/>
+	<design:attribute name='CatValue'
+	                  label='Category Values'
+	                  description='To limit the displayed category values, enter a comma separated list of category values from the zone. Leave blank to show all categories in the zone'/>
+</design:component>

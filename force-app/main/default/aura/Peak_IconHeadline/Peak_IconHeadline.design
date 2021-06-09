@@ -1,0 +1,10 @@
+<!--
+ - Created by kentheberling on 5/23/18.
+ -->
+
+<design:component label="7S Icon Headline">
+    <design:attribute name="title" label="Title"/>
+    <design:attribute name="titleAlignment" datasource="left, center, right" label="Title Alignment"/>
+    <design:attribute name="icon" label="Icon" description="Choose from https://www.lightningdesignsystem.com/icons/" />
+    <design:attribute name="helpText" label="Help Text" description="Help text in a tooltip" />
+</design:component>

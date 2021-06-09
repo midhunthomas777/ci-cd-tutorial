@@ -1,0 +1,174 @@
+/*Footer Container*/
+.THIS {
+    background-color: #111111;
+}
+.THIS .moto-footer-container {
+    margin:auto;
+    padding-bottom: 2rem;
+    width:77%;
+    min-height:t(sizeXSmall);
+}
+
+/* Upper Section */
+.THIS .moto-upper-section {
+    border-bottom: .01rem solid #707070;
+    padding-top: t(spacingLarge);
+    padding-bottom: t(spacingLarge);
+    margin-bottom: t(spacingXLarge);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.THIS .moto-left-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+}
+.THIS .moto-icons-container {
+    width: 40%;
+    background-color: #111111;
+}
+.THIS .moto-icons-container div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.THIS .moto-icons-container div span {
+    font-size: t(fontSizeMedium);
+    color: #CCCCCC;
+}
+.THIS .moto-icons-container div a img {
+    width: t(squareIconSmallBoundary);
+    margin-left:t(spacingSmall);
+    background-color:rgb(170, 170, 170);
+    cursor: pointer;
+}
+.THIS .moto-icons-container div a img:hover {
+    background-color: #FFFFFF;
+}
+
+/* nav section */
+.THIS .moto-tabnav-container{
+    display: block;
+}
+.THIS .moto-tabnav-section {
+    float: left;
+    padding-bottom: t(spacingSmall);
+}
+.THIS .moto-tabnav-section span{
+    margin-top: t(spacingXLarge);
+    font-size:t(fontSizeMedium);
+    font-weight: bold;
+    color: #CCCCCC;
+}
+.THIS .moto-tabnav-section ul{
+    padding-top: t(spacingLarge);
+}
+.THIS .moto-tabnav-section ul li{
+    padding:t(spacingSmall) 0 t(spacingSmall) 0;
+}
+.THIS .moto-tabnav-section ul li a {
+    font-size: t(fontSizeMedium);
+    color: #CCCCCC;
+}
+.THIS .moto-tabnav-section ul li a:hover{
+    text-decoration: underline;
+    cursor: pointer;
+    color: #FFFFFF;
+}
+.THIS .moto-mobile-container {
+    width: 100%;
+    display: none;
+}
+
+/* Trademark statement section */
+.THIS .moto-sales360-trademark-section {
+    display: flex;
+    text-align: center;
+    width: 100%;
+    margin-top: t(spacingLarge);
+    padding-top: t(spacingXLarge);
+    border-top: .01rem solid #707070;
+}
+.THIS .moto-sales360-trademark-section span { 
+    width: 90%;
+    font-size: t(fontSizeXSmall);
+    margin: auto;
+    text-align: center;
+    color: #CCCCCC;
+}
+
+
+/* bottom section of footer */
+.THIS .moto-sales360-bottom-section {
+    margin-top: t(spacingXxLarge);
+    padding-bottom: t(spacingSmall);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.THIS .moto-sales360-copyright {
+    text-align: left;
+}
+.THIS .moto-sales360-copyright span, .THIS .moto-sales360-bottom-tabs span a , .THIS .moto-sales360-language a{
+    font-size: t(fontSizeXSmall);
+    color: #CCCCCC;
+}
+.THIS .moto-sales360-bottom-tabs {
+    text-align: center;
+}
+.THIS .moto-sales360-bottom-tabs span a {
+    margin: 0 t(spacingSmall) 0 t(spacingSmall);
+    cursor: pointer;
+}
+.THIS .moto-sales360-bottom-tabs span a:hover, .THIS .moto-sales360-language a span:hover {
+    color: #FFFFFF;
+}
+.THIS .moto-sales360-language {
+    text-align: right;
+}
+.THIS .moto-sales360-language img{
+    background-color: #CCCCCC;
+    width: t(squareIconSmallBoundary);
+    margin-right: t(spacingSmall);
+}
+.THIS .moto-sales360-lanugage img:hover {
+    background-color: #FFFFFF;
+}
+@media(max-width: 1023px) { 
+    .THIS .moto-footer-container {
+        width: 95%;
+    }
+    .THIS .moto-upper-section {
+        display: block;
+        text-align: center;
+        border-bottom: 0;
+    }
+    .THIS .moto-icons-container {
+        width: 100%;
+    }
+    .THIS .moto-icons-container div {
+        justify-content: center;
+    }
+    .THIS .moto-conversation-item {
+        padding-bottom: t(spacingSmall);
+    }
+    .THIS .moto-sales360-copyright, .THIS .moto-sales360-language {
+        text-align: center;
+        padding:  t(spacingSmall) 0 t(spacingSmall) 0;
+    }
+    .THIS .moto-sales360-trademark-section {
+        margin-top: 0;
+        border-top: .01rem solid #CCCCCC;
+    }
+    .THIS .moto-sales360-trademark-section span  {
+        width: 100%;
+        padding:  t(spacingSmall) 0  t(spacingSmall) 0;
+    }
+    .THIS .moto-tabnav-section{
+        display: none;
+    }
+    .THIS .moto-mobile-container {
+        display: block;
+    }
+}

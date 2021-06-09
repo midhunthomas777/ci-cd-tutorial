@@ -1,0 +1,13 @@
+<aura:component>
+	<aura:attribute name="svgPath"
+	                default="" type="String"
+	                description="the path for the icon in the static resource, this will be use in a SVG use tag"/>
+	<aura:attribute name="numOfItems" type="Integer"/>
+	<aura:attribute name="assistiveText" default="" type="String" description="Description name of icon"/>
+	<aura:attribute name="containerClass" default="" type="String" description="Container class name for span container of icon" />
+	<aura:handler event="c:Adventure_AnimateEvent" action="{!c.handleAnimateEvent}"/>
+
+	<span aura:id="container" id="pathContainer" class="{!v.containerClass}">
+    <span aura:id="assistiveText" class="slds-assistive-text">{!v.assistiveText}</span>
+  </span>
+</aura:component>

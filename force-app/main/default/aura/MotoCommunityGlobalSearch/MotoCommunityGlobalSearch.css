@@ -1,0 +1,45 @@
+.THIS.global-search {
+    border-radius: 21px;
+  	box-shadow: 0 10px 20px 0 rgba(35, 35, 35, 0.16);
+    font-family: Arial;
+    font-size: 1rem;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.63;
+    letter-spacing: normal;
+    text-align: left;
+    color: #343434;
+}
+
+.THIS.global-search-alert {
+    color: #c23934;
+    font-family: Arial;
+    font-size: 0.8rem;
+}
+
+.THIS .slds-button {
+  width: 100%;
+  height: 100%;
+  border-radius: 21px;
+  background-color: #343434;
+}
+
+.THIS .slds-input {
+  margin: 5px;
+  border: none;
+  background-color: #ffffff;
+}
+
+.THIS .slds-input:focus, .THIS .slds-input:active {
+     border-color: rgb(216, 221, 230);
+     box-shadow: none;
+}
+
+/* This is for focus on entire box - fixing needed to properly apply
+.THIS.global-search:focus, .THIS.global-search:active {
+    outline: 0;
+    border-color: rgb(21, 137, 238); /* This is the blue color of the border 
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 10px 20px 0 #0070d2; /* This is the blue color of the shadow 
+} */

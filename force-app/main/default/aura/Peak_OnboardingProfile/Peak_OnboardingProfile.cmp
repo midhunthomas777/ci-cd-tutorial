@@ -1,0 +1,178 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc. All rights reserved.
+  -
+  -->
+
+<aura:component controller="Peak_OnboardingController" implements="force:appHostable">
+
+    <aura:registerEvent name="pageChange" type="c:Peak_OnboardingChangePage"/>
+    <aura:attribute name="recordId" type="String" description="Record to which the files should be attached" />
+    <aura:attribute name="regionList" type="List"/>
+    <aura:attribute name="industryList" type="List"/>
+    <aura:attribute name="profileHeader" type="String"/>
+    <aura:attribute name="profileMessage" type="String"/>
+    <aura:attribute name="profileAction" type="String"/>
+    <aura:attribute name="user" type="User"/>
+    <aura:attribute name="error" type="String" />
+    <aura:attribute name="buttonColor" type="String" default="#ff8201"/>
+    <aura:attribute name="showTitle" type="Boolean" />
+    <aura:attribute name="showCompany" type="Boolean" />
+    <aura:attribute name="showEmail" type="Boolean" />
+    <aura:attribute name="showMobile" type="Boolean" />
+    <aura:attribute name="showNickname" type="Boolean" />
+    <!--
+    TODO: Dynamic query builder for custom fields
+    <aura:attribute name="showRegion" type="Boolean" />
+    <aura:attribute name="showIndustry" type="Boolean" />
+-->
+    <aura:attribute name="showAboutMe" type="Boolean" />
+    <aura:attribute name="showAvatarUpload" type="Boolean" />
+    <aura:attribute name="acceptableAvatarFileTypes" type="String"/>
+
+    <aura:handler name="init" action="{!c.init}" value="{!this}"/>
+
+    <c:Peak_OnboardingSlide class="profile"
+                            title="{!v.profileHeader}"
+                            description="{!v.profileMessage}"
+                            subText="{!v.profileAction}"
+                            primaryButtonColor="{!v.buttonColor}"
+                            primaryOnClick="{!c.goToNext}"
+                            backOnClick="{!c.goBack}"
+    >
+        <aura:if isTrue="{!v.error}">
+            <div class="slds-theme--error">{!v.error}</div>
+        </aura:if>
+        <lightning:layout class="onboarding-profile__layout" multipleRows="true" pullToBoundary="small" horizontalAlign="center">
+            <lightning:layoutItem class="inputWrapper" size="12" padding="around-small">
+                <lightning:layout multipleRows="true" pullToBoundary="small">
+                    <lightning:layoutItem size="6" padding="horizontal-small">
+                        <lightning:input
+                                name="fName"
+                                label="First Name"
+                                value="{!v.user.FirstName}"
+                                placeholder="{!v.user.FirstName}"
+                                required="true"
+                                pattern="[0-9a-zA-Z ]+"
+                                messageWhenPatternMismatch="Special characters are not allowed"
+                        />
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="6" padding="horizontal-small">
+                        <lightning:input
+                                name="lName"
+                                label="Last Name"
+                                value="{!v.user.LastName}"
+                                placeholder="{!v.user.LastName}"
+                                required="true"
+                                pattern="[0-9a-zA-Z ]+"
+                                messageWhenPatternMismatch="Special characters are not allowed"
+                        />
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </lightning:layoutItem>
+            <lightning:layoutItem class="inputWrapper" size="12" padding="around-small">
+                <lightning:layout multipleRows="true" pullToBoundary="small" horizontalAlign="center">
+                    <aura:if isTrue="{!v.showTitle}">
+                        <lightning:layoutItem size="12" mediumDeviceSize="6" padding="horizontal-small">
+                            <lightning:input
+                                    name="title"
+                                    label="Title"
+                                    value="{!v.user.Title}"
+                                    placeholder="{!v.user.Title}"
+                                    required="false"
+                                    pattern="[0-9a-zA-Z ]+"
+                                    messageWhenPatternMismatch="Special characters are not allowed"
+                            />
+                        </lightning:layoutItem>
+                    </aura:if>
+                    <aura:if isTrue="{!v.showCompany}">
+                        <lightning:layoutItem size="12" mediumDeviceSize="6" padding="horizontal-small">
+                            <lightning:input
+                                    name="company"
+                                    label="Company"
+                                    value="{!v.user.CompanyName}"
+                                    placeholder="{!v.user.CompanyName}"
+                                    required="false"
+                                    pattern="[0-9a-zA-Z]+"
+                                    messageWhenPatternMismatch="Special characters are not allowed"
+                            />
+                        </lightning:layoutItem>
+                    </aura:if>
+                    <aura:if isTrue="{!v.showEmail}">
+                        <lightning:layoutItem size="12" mediumDeviceSize="6" padding="horizontal-small">
+                            <lightning:input
+                                    name="email"
+                                    label="Email"
+                                    value="{!v.user.Email}"
+                                    placeholder="{!v.user.Email}"
+                                    required="true"
+                                    type="email"
+                            />
+                        </lightning:layoutItem>
+                    </aura:if>
+                    <aura:if isTrue="{!v.showMobile}">
+                        <lightning:layoutItem size="12" mediumDeviceSize="6" padding="horizontal-small">
+                            <lightning:input
+                                    name="mobile"
+                                    label="Mobile"
+                                    value="{!v.user.MobilePhone}"
+                                    placeholder="{!v.user.MobilePhone}"
+                                    required="false"
+                                    type="tel"
+                            />
+                        </lightning:layoutItem>
+                    </aura:if>
+                    <aura:if isTrue="{!v.showNickname}">
+                        <lightning:layoutItem size="12" mediumDeviceSize="6" padding="horizontal-small">
+                            <lightning:input
+                                    name="nickname"
+                                    label="Nickname"
+                                    value="{!v.user.CommunityNickname}"
+                                    placeholder="{!v.user.CommunityNickname}"
+                                    required="false"
+                            />
+                        </lightning:layoutItem>
+                    </aura:if>
+<!--
+    TODO: Dynamic query builder for custom fields
+                    <aura:if isTrue="{!v.showRegion}">
+                        <lightning:layoutItem size="12" mediumDeviceSize="6" padding="horizontal-small">
+                            <lightning:select aura:id="regionPicklist" value="{!v.user.Region__c}" name="regionPicklist" label="Region">
+                                <option value="">&#45;&#45;None&#45;&#45;</option>
+                                <aura:iteration items="{!v.regionList}" var="region">
+                                    <option text="{!region}" value="{!region}" selected="{!region == v.user.Region__c}" />
+                                </aura:iteration>
+                            </lightning:select>
+                        </lightning:layoutItem>
+                    </aura:if>
+-->
+                    <aura:if isTrue="{!v.showAboutMe}">
+                        <lightning:layoutItem size="12" mediumDeviceSize="6" padding="horizontal-small">
+                            <lightning:input
+                                    name="aboutme"
+                                    label="About Me"
+                                    value="{!v.user.AboutMe}"
+                                    placeholder="{!v.user.AboutMe}"
+                                    required="false"
+                            />
+                        </lightning:layoutItem>
+                    </aura:if>
+                </lightning:layout>
+            </lightning:layoutItem>
+
+            <aura:if isTrue="{!or(v.showAvatarUpload,acceptableAvatarFileTypes)}">
+                <lightning:layoutItem size="12" class="inputWrapper" padding="around-small">
+                    <aura:if isTrue="{!v.showAvatarUpload}">
+                        <lightning:fileUpload
+                                label="Profile Picture Upload"
+                                name="avatarUpload"
+                                multiple="true"
+                                accept="{!v.acceptableAvatarFileTypes}"
+                                recordId="{!v.recordId}"
+                                onuploadfinished="{!c.handleUploadFinished}" />
+                    </aura:if>
+                </lightning:layoutItem>
+            </aura:if>
+        </lightning:layout>
+    </c:Peak_OnboardingSlide>
+
+</aura:component>

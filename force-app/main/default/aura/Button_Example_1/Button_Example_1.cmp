@@ -1,0 +1,9 @@
+<aura:component >
+  <lightning:button label="Submit"/>
+   <lightning:button label="Title" Title="title" /> 
+    <lightning:button label="Cancel" iconName="standard:account" iconPosition="right" />
+
+
+    
+    
+</aura:component>

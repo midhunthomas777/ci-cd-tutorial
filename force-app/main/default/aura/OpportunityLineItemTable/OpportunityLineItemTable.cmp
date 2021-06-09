@@ -1,0 +1,37 @@
+<aura:component controller="OpportunityLineItemTableCtrl" access="global" implements="lightning:availableForFlowScreens,lightning:actionOverride,force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,force:lightningQuickActionWithoutHeader,lightning:isUrlAddressable">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="oldOpportunityId" type="String"/>
+    <aura:attribute name="errorMsg" type ="String"/>
+    <aura:attribute name="productList" type="List"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="childObjectsNames" type="List"/>
+    <aura:attribute name="isRenewalDisabled" type="Boolean" default="false"/>
+    <aura:attribute name="loadSpinner" type="Boolean" default="false"/>
+    <aura:attribute name="metaMessages" type="Map"/>
+    
+    <lightning:navigation aura:id="navService"/>
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="large" aura:id="mySpinner"/>
+    </aura:if>
+    
+    <aura:if isTrue="{!not(empty(v.errorMsg))}">
+        <div class="slds-box slds-align_absolute-center">
+            <c:AlertMessages Message="{!v.errorMsg}" type="error"/>
+        </div>
+    </aura:if>
+    
+    <aura:if isTrue="{!not(empty(v.productList))}">
+        <div class="slds-box slds-align_absolute-center">        
+            <lightning:datatable aura:id="tableId" columns="{!v.columns}" suppressBottomBar="true"
+                                 data="{!v.productList}" hideCheckboxColumn="true" keyField="Id"
+                                 oncellchange="{!c.onCellChange}" onrowaction="{!c.onRowAction}"
+                                 showRowNumberColumn="false"/>
+        </div>
+    </aura:if>
+    <div class="slds-box slds-align_absolute-center">
+        <lightning:button variant="brand" label="Cancel" onclick="{!c.redirectToOpportunity}"/> 
+        <lightning:button variant="brand" label="Renewal Opportunity" disabled="{!v.isRenewalDisabled}"
+                          onclick="{!c.validateProducts}"/> 
+    </div>
+</aura:component>

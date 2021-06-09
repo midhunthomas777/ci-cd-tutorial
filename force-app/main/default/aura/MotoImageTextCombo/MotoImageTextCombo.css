@@ -1,0 +1,35 @@
+.THIS {
+}
+.THIS .moto-image-container {
+  width: 120%;
+  position: relative;
+  left: -10%;
+}
+.THIS .moto-body-container {
+  padding-top: t(spacingLarge);
+}
+.THIS .moto-body-container h1{ 
+  font-size: t(fontSizeXLarge);
+  font-weight: t(fontWeightBold);
+  margin-bottom: t(spacingLarge);
+}
+.THIS .moto-body-container span {
+  font-size: t(fontSizeMedium);
+}
+.THIS .moto-body-container p{
+  margin-top: t(spacingMedium);
+}
+
+.THIS .moto-body-container p a{
+  color: #005eb8;
+  font-size: t(fontSizeMedium);
+}
+
+@media(max-width: 479px) {
+  .THIS .moto-body-container h1{ 
+    font-size: t(fontSizeMedium);
+  }
+  .THIS .moto-body-container span, .THIS .moto-body-container p a{
+    font-size: t(fontSizeSmall);
+  }
+}

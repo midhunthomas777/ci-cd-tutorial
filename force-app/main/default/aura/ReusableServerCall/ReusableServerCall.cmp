@@ -1,0 +1,9 @@
+<aura:component controller="CommunitiesWithoutSharingClass" abstract="true">
+    <aura:attribute name="loadingSpinner" type="Boolean" default='false'/> 
+    
+    <aura:If isTrue="{!v.loadingSpinner}">
+            <lightning:spinner variant="brand" aura:id="mySpinner" />
+    </aura:If>
+
+    {!v.body} 
+</aura:component>

@@ -1,0 +1,31 @@
+<aura:component description="Peak_TopicsFollowed" implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" controller="Peak_TopicsFollowedController" access="global">
+    <aura:handler name="init" action="{!c.doInit}" value="this" />
+
+    <aura:attribute name="title" type="String" default="Topics I Follow"  access="global"/>
+
+    <aura:attribute name="followedTopics" type="List" />
+    <aura:attribute name="recordsToShow" type="String" default="10" access="global" />
+
+    <div>
+        <aura:if isTrue="{!v.title}">
+            <c:Peak_HTML_Headings class="peak-featured-topics__heading"
+            >
+                <c:Peak_Base labelText="{!v.title}" />
+            </c:Peak_HTML_Headings>
+        </aura:if>
+        <lightning:layout pullToBoundary="small">
+            <aura:if isTrue="{!v.followedTopics.length > 0}">
+                <aura:iteration items="{!v.followedTopics}" var="topic">
+                    <lightning:layoutItem padding="around-small">
+                        <lightning:button variant="neutral" label="{!topic.Name}" value="{!topic.Id}" onclick="{!c.navigateToTopic}" />
+                    </lightning:layoutItem>
+                </aura:iteration>
+                <aura:set attribute="else">
+                    <lightning:layoutItem padding="around-small">
+                        <span>You aren't following any topics! Go follow some topics and you'll see them here.</span>
+                    </lightning:layoutItem>
+                </aura:set>
+            </aura:if>
+        </lightning:layout>
+    </div>
+</aura:component>

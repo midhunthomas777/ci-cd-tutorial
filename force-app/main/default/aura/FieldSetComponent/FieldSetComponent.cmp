@@ -1,0 +1,40 @@
+<aura:component controller="FieldSetController" implements="flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName">
+    <aura:attribute name="parentId" type="String"/>
+    <aura:attribute name="objectAPIName" type="String"/>
+    <aura:attribute name="objectAPINameLC" type="String"/>
+    <aura:attribute name="fields" type="List" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="fieldNames" type="String[]" default="['Name']"/>
+    <!-- Design Attributes -->
+    <aura:attribute name="parentApiName" type="String"/>
+    <aura:attribute name="onSameObject" type="Boolean" default="false"/>
+    <aura:attribute name="fieldSetName" type="String" default="Enter field set name" required="true" />
+    <aura:if isTrue="{!not(empty(v.fields))}">
+        <lightning:recordViewForm recordId="{!v.onSameObject ? v.parentId : v.recordId}" objectApiName="{!v.objectAPIName}">
+            <div class="slds-page-header">
+                <div class="slds-grid">
+                    <div class="slds-col slds-has-flexi-truncate">
+                        <div class="slds-media slds-no-space slds-grow">
+                            <div class="slds-media__figure">
+                                <lightning:icon iconName="{!'standard:' + v.objectAPINameLC}" size="medium"/>
+                            </div>
+                            <div class="slds-media__body">
+                                <p class="slds-text-title--caps slds-line-height--reset">{!v.objectAPIName}</p>
+                                <h3 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate">{!v.objectAPIName} Details</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="c-container">
+                <lightning:layout multipleRows="true">
+                    <aura:iteration items="{!v.fields}" var="obj">
+                        <lightning:layoutItem size="6" padding="around-small">
+                            <lightning:outputfield fieldName="{!obj}" />
+                        </lightning:layoutItem>
+                    </aura:iteration>
+                </lightning:layout>
+            </div>
+        </lightning:recordViewForm>
+    </aura:if>
+</aura:component>

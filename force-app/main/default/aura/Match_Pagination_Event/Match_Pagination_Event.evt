@@ -1,0 +1,11 @@
+<!--
+  - Copyright (c) 2018. 7Summits Inc.
+  -->
+
+<!--
+ - Created by francois korb on 6/25/18.
+ -->
+
+<aura:event type="APPLICATION" description="Match_Pagination_Event">
+	<aura:attribute name="buttonClicked" type="String"/>
+</aura:event>

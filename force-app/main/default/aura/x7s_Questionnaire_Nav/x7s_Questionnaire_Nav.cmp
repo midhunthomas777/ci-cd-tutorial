@@ -1,0 +1,65 @@
+<aura:component implements="lightning:availableForFlowScreens" access="global" >
+   <!-- Get the question from the flow -->    
+   <aura:attribute name="scriptText" type="String" required="true" />
+
+    <!-- Get the guidance text for an agent from the flow -->    
+   <aura:attribute name="guidanceText" type="String" />
+
+    <!-- Pass the value of the selected option back to the flow -->
+   <aura:attribute name="value" type="String" />
+   <aura:attribute name="selectedValue" type="String" default=""/>
+
+   <!-- Determine whether to show the script text in the flow -->
+   <aura:attribute name="showGuidanceText" type="Boolean" default="false"/>
+
+   <!-- Pass in the question responses as the button text -->   
+   <aura:attribute name="answer1" type="String" />
+   <aura:attribute name="answer2" type="String" />
+   <aura:attribute name="answer3" type="String" />
+   <aura:attribute name="answer4" type="String" />
+
+   <!-- Determine whether to show responses 3 and 4 -->   
+   <aura:attribute name="answer3Populated" type="Boolean" />
+   <aura:attribute name="answer4Populated" type="Boolean" />
+   
+   <!-- Pass in SLDS icon -->
+   <aura:attribute name="slds_icon" type="String" default="utility:question_mark"/> 
+    
+   <!-- Displays script to guide the agent's call -->
+   <div class="script-container">
+      <div class="slds-card__header slds-grid slds-p-bottom_small slds-m-bottom_none">
+         <div class="slds-media slds-media_center slds-has-flexi-truncate" >
+            <div class="slds-media__figure slds-align-top">
+               <h2><lightning:icon iconName="{!v.slds_icon}"
+                  title="Questionnaire Question" /></h2>
+            </div>
+            <div class="slds-media__body">
+                  <ui:outputRichText class="script" value="{!v.scriptText}"/>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- Buttons for the user or agent (according to the customer’s response) to click  -->
+   <div class="slds-p-top_large slds-p-bottom_large">
+      <p><aura:if isTrue="{!v.showGuidanceText}"><lightning:formattedText value="{!v.guidanceText}" 
+         class="slds-text-body_small" /></aura:if></p>
+      <lightning:buttongroup >
+        <div aura:id="actionButtonBar">
+          <lightning:button label="{!v.answer1}" aura:id="Choice_1" 
+            variant="neutral" onclick="{!c.handleChange}"/>
+          <lightning:button label="{!v.answer2}" aura:id="Choice_2" 
+            variant="neutral" onclick="{!c.handleChange}"/>
+         <aura:if isTrue="{!v.answer3Populated}">
+            <lightning:button label="{!v.answer3}" aura:id="Choice_3" 
+            variant="neutral" onclick="{!c.handleChange}"/>
+         </aura:if>
+         <aura:if isTrue="{!v.answer4Populated}">
+            <lightning:button label="{!v.answer4}" aura:id="Choice_4" 
+            variant="neutral" onclick="{!c.handleChange}"/>
+         </aura:if>
+       </div>
+     </lightning:buttongroup>
+   </div>
+   <br />
+   <!-- <div align="right">Powered by&nbsp;<a href="http://www.7summitsinc.com/"><img src="{!$Resource.x7s_7Summits_Blue_Logo}"/></a></div> -->
+</aura:component>

@@ -1,0 +1,86 @@
+<!--
+ * Copyright (c) 2019. 7Summits Inc.
+-->
+<design:component label="7S Metric Report">
+    <design:attribute name="titleAlignment" label="Metric Title Alignment" datasource="Left,Center,Right" default="Left" description="Select the alignment for the metric title text. This setting applies to all metrics displayed in the component."/>
+    <design:attribute name="titleSize" label="Metric Title Size" datasource="Small,Medium,Large" default="Medium" description="Size of the title text"/>
+    <design:attribute name="metrictoDisplay" label="Total Metrics" datasource="1,2,3,4" default="1" description="Select the total number of metrics to display with this component"/>
+    
+    <design:attribute name="isBold" label="Bold Values"  description="If checked, numeric values will appear bold for all metrics in this component"/>
+    
+    <design:attribute name="title1" label="Metric 1 Title" description="Title displayed at the top of the metric. If empty, no title will be displayed"/>
+    
+    <design:attribute name="reportAPIName1" label="Metric 1 Report API Name" description="API Name for the report containing the metric data"/>
+    <design:attribute name="useFieldAPI1" label="Metric 1 Use Field API Name" description="Enable to interpret the field name as an API. If empty, the field label will be used"/>
+    <design:attribute name="fieldName1" label="Metric 1 Field Name" description="API name or label for the field containing data to be displayed"/>
+    <design:attribute name="label1" label="Metric 1 Label" description="Label displayed beneath the metric value"/>
+    
+    <design:attribute name="iconName1" label="Metric 1 Icon" description="SLDS Icon to display to the right of the metric value" default="action:check"/>
+    <design:attribute name="iconHoverText1" label="Metric 1 Icon Tooltip" description="Text to display when a user hovers over the metric icon"/>
+    <design:attribute name="iconColor1" label="Metric 1 Icon Color" description="Hex color for the icon"/>
+    
+    <design:attribute name="showLeftButton1" label="Show Metric 1 Link 1" description="Select to display link 1."/>
+    <design:attribute name="labelForLeftButton1" label="Metric 1 Link 1 Label" description="Label displayed for  link 1."/>
+    <design:attribute name="urlForLeftButton1" label="Metric 1 Link 1 URL" description="URL to to access when link 1 is clicked."/>
+    
+    <design:attribute name="showRightButton1" label="Show Metric 1 Link 2" description="Select to display link 2."/>
+    <design:attribute name="labelForRightButton1" label="Metric 1 Link 2 Label" description="Label displayed for link 2."/>
+    <design:attribute name="urlForRightButton1" label="Metric 1 Link 2 URL" description="URL to to access when link 2 is clicked."/>
+    
+    <design:attribute name="title2" label="Metric 2 Title" description="Title displayed at the top of the metric. If empty, no title will be displayed"/>
+    
+    <design:attribute name="reportAPIName2" label="Metric 2 Report API Name" description="API Name for the report containing the metric data"/>
+    <design:attribute name="useFieldAPI2" label="Metric 2 Use Field API Name" description="Enable to interpret the field name as an API. If empty, the field label will be used"/>
+    <design:attribute name="fieldName2" label="Metric 2 Field Name" description="API name or label for the field containing data to be displayed"/>
+    <design:attribute name="label2" label="Metric 2 Label" description="Label displayed beneath the metric value"/>
+    
+    <design:attribute name="iconName2" label="Metric 2 Icon" description="SLDS Icon to display to the right of the metric value" default="action:check"/>
+    <design:attribute name="iconHoverText2" label="Metric 2 Icon Tooltip" description="Text to display when a user hovers over the metric icon"/>
+    <design:attribute name="iconColor2" label="Metric 2 Icon Color" description="Hex color for the icon"/>
+    
+    <design:attribute name="showLeftButton2" label="Show Metric 2 Link 1" description="Select to display link 1."/>
+    <design:attribute name="labelForLeftButton2" label="Metric 2 Link 1 Label" description="Label displayed for  link 1."/>
+    <design:attribute name="urlForLeftButton2" label="Metric 2 Link 1 URL" description="URL to to access when link 1 is clicked."/>
+    
+    <design:attribute name="showRightButton2" label="Show Metric 2 Link 2" description="Select to display link 2."/>
+    <design:attribute name="labelForRightButton2" label="Metric 2 Link 2 Label" description="Label displayed for link 2."/>
+    <design:attribute name="urlForRightButton2" label="Metric 2 Link 2 URL" description="URL to to access when link 2 is clicked."/>
+    
+    <design:attribute name="title3" label="Metric 3 Title" description="Title displayed at the top of the metric. If empty, no title will be displayed"/>
+    
+    <design:attribute name="reportAPIName3" label="Metric 3 Report API Name" description="API Name for the report containing the metric data"/>
+    <design:attribute name="useFieldAPI3" label="Metric 3 Use Field API Name" description="Enable to interpret the field name as an API. If empty, the field label will be used"/>
+    <design:attribute name="fieldName3" label="Metric 3 Field Name" description="API name or label for the field containing data to be displayed"/>
+    <design:attribute name="label3" label="Metric 3 Label" description="Label displayed beneath the metric value"/>
+    
+    <design:attribute name="iconName3" label="Metric 3 Icon" description="SLDS Icon to display to the right of the metric value" default="action:check"/>
+    <design:attribute name="iconHoverText3" label="Metric 3 Icon Tooltip" description="Text to display when a user hovers over the metric icon"/>
+    <design:attribute name="iconColor3" label="Metric 3 Icon Color" description="Hex color for the icon"/>
+    
+    <design:attribute name="showLeftButton3" label="Show Metric 3 Link 1" description="Select to display link 1."/>
+    <design:attribute name="labelForLeftButton3" label="Metric 3 Link 1 Label" description="Label displayed for  link 1."/>
+    <design:attribute name="urlForLeftButton3" label="Metric 3 Link 1 URL" description="URL to to access when link 1 is clicked."/>
+    
+    <design:attribute name="showRightButton3" label="Show Metric 3 Link 2" description="Select to display link 2."/>
+    <design:attribute name="labelForRightButton3" label="Metric 3 Link 2 Label" description="Label displayed for link 2."/>
+    <design:attribute name="urlForRightButton3" label="Metric 3 Link 2 URL" description="URL to to access when link 2 is clicked."/>
+    
+    <design:attribute name="title4" label="Metric 4 Title" description="Title displayed at the top of the metric. If empty, no title will be displayed"/>
+    
+    <design:attribute name="reportAPIName4" label="Metric 4 Report API Name" description="API Name for the report containing the metric data"/>
+    <design:attribute name="useFieldAPI4" label="Metric 4 Use Field API Name" description="Enable to interpret the field name as an API. If empty, the field label will be used"/>
+    <design:attribute name="fieldName4" label="Metric 4 Field Name" description="API name or label for the field containing data to be displayed"/>
+    <design:attribute name="label4" label="Metric 4 Label" description="Label displayed beneath the metric value"/>
+    
+    <design:attribute name="iconName4" label="Metric 4 Icon" description="SLDS Icon to display to the right of the metric value" default="action:check"/>
+    <design:attribute name="iconHoverText4" label="Metric 4 Icon Tooltip" description="Text to display when a user hovers over the metric icon"/>
+    <design:attribute name="iconColor4" label="Metric 4 Icon Color" description="Hex color for the icon"/>
+    
+    <design:attribute name="showLeftButton4" label="Show Metric 4 Link 1" description="Select to display link 1."/>
+    <design:attribute name="labelForLeftButton4" label="Metric 4 Link 1 Label" description="Label displayed for  link 1."/>
+    <design:attribute name="urlForLeftButton4" label="Metric 4 Link 1 URL" description="URL to to access when link 1 is clicked."/>
+    
+    <design:attribute name="showRightButton4" label="Show Metric 4 Link 2" description="Select to display link 2."/>
+    <design:attribute name="labelForRightButton4" label="Metric 4 Link 2 Label" description="Label displayed for link 2."/>
+    <design:attribute name="urlForRightButton4" label="Metric 4 Link 2 URL" description="URL to to access when link 2 is clicked."/>
+</design:component>

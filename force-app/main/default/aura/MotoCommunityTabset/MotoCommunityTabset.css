@@ -1,0 +1,45 @@
+.THIS .tabNavStyle {
+    background: transparent;
+}
+.THIS .tabNavStyle .slds-tabs_default__nav {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: none;
+}
+.THIS .tabItem .slds-tabs_default__item {
+    align-self: center; 
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    min-width: 114px;
+    height: 42px;
+    background: #f2f2f2;
+    margin-right: 1px;
+    font-size: 12px;
+    line-height: 1.5;
+    letter-spacing: 2px;
+    color: #343434;
+    text-transform: uppercase;
+}
+
+.THIS .tabItem .slds-tabs_default__item::after {
+    background-color: none;
+    height: 0rem;
+}
+
+.THIS .tabItem .slds-tabs_default__item:hover {
+    background: #ffffff;
+    color: inherit;
+}
+
+.THIS .tabItem .slds-tabs_default__item.slds-is-active {
+    background: #ffffff;
+}
+.THIS .tabItem .slds-tabs_default__link:focus {
+    text-decoration: none;
+}

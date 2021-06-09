@@ -1,0 +1,37 @@
+<!-- Displays a single group listing -->
+<aura:component description="Peak_GroupAvatarTile">
+    <aura:attribute name="showDescription" type="Boolean" default="true" access="global" />
+    <aura:attribute name="showMembers" type="Boolean" default="true" access="global" />
+
+    <aura:attribute name="inGroup" type="Boolean" default="false" />
+    <aura:attribute name="group" type="CollaborationGroup"  />
+
+    <div class="peak-group">
+        <lightning:layout horizontalAlign="spread" pullToBoundary="small">
+            <lightning:layoutItem flexibility="auto" padding="around-small" class="peak-group__avatar">
+                <a data-id="{!v.group.Id}"
+                   onclick="{!c.groupClick}"
+                   class="peak-group__avatar-link"
+                   style="{!'background-image: url(' + v.group.SmallPhotoUrl + ');'}"
+                   title="{!v.group.Name}"
+                ></a>
+            </lightning:layoutItem>
+            <lightning:layoutItem flexibility="grow" padding="around-small" class="peak-group__meta">
+                <h3 class="peak-group__name slds-text-heading_small">
+                    <a data-id="{!v.group.Id}" onclick="{!c.groupClick}">{!v.group.Name}</a>
+                </h3>
+                <aura:if isTrue="{!v.showDescription}">
+                    <p class="peak-group__description slds-text-body_small">{!v.group.Description}</p>
+                </aura:if>
+                <aura:if isTrue="{!v.showMembers}">
+                    <p class="peak-group__members slds-text-body_small slds-text-color_weak">
+                        <lightning:icon iconName="{!if(equals(v.group.MemberCount, 1), 'utility:user', 'utility:groups')}"
+                                        class="peak-group__members-icon slds-m-right_xxx-small"
+                                        size="xx-small" /> {!v.group.MemberCount + ' ' + if(equals(v.group.MemberCount, 1), $Label.c.X7S_Member, $Label.c.X7S_Members)}
+                    </p>
+                </aura:if>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div>
+
+</aura:component>

@@ -1,0 +1,6 @@
+<aura:component
+  implements="forceCommunity:availableForAllPageTypes"
+  access="global"
+>
+  <c:auraPubSub aura:id="pubsub" onready="{!c.handlePubsubReady}" />
+</aura:component>

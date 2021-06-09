@@ -1,0 +1,62 @@
+<aura:component access="global" implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:lightningQuickAction">	
+    
+    <aura:attribute name="ContactRecord" type="sObject"  />
+    <aura:attribute name="rowIndex" type="String"/>
+    <aura:attribute name="roles" type="String[]" />
+    <aura:attribute name="Sites" type="List" default="[]"/>
+    <aura:attribute name="Emails" type="List" default="[]"/>
+    <aura:attribute name="tabIdentifier" type="String"/>
+    <aura:attribute name="isEmailDisable" type="Boolean" default="true"/>
+    
+    <aura:registerEvent name="DeleteRowEvt" type="c:DeleteRowEvt"/>
+    
+    <div class="slds-grid slds-gutters slds-m-top_x-small">
+        <div class="slds-col slds-size_1-of-7">
+            <lightning:select value="{!v.ContactRecord.P_CUSTOMER_SITE}" label="Site Number" required="true">
+                <aura:iteration items="{!v.Sites}" var="opt">
+                    <option value="{!opt.BILL_TO_SITE_NUMBER}" text="{!opt.BILL_TO_SITE_NUMBER}"></option>
+                </aura:iteration>
+            </lightning:select>
+        </div>
+        <div class="slds-col slds-size_1-of-7">
+            <lightning:select name="{!'addContact-'+v.rowIndex}" label="Contact Email" 
+                              value="{!v.ContactRecord.email}" onchange="{!c.getEmailValue}"
+                              required="true" aura:Id="contactEmail"
+                              messageWhenValueMissing="Please Select an Email"
+                              title="{!v.ContactRecord.email}">
+                <aura:iteration items="{!v.Emails}" var="opt">
+                    <option value="{!opt.CONTACT_EMAIL_ADDRESS}" text="{!opt.CONTACT_EMAIL_ADDRESS}"></option>
+                </aura:iteration>
+            </lightning:select>
+        </div>
+        <div class="slds-col slds-size_1-of-7">
+            <lightning:input label="Contact Email" disabled="{!v.isEmailDisable}" 
+                             value="{!v.ContactRecord.emailInput}" type="Email"
+                             required="true" aura:Id="emailInput" 
+                             messageWhenValueMissing="Please Enter an Email"
+                             title="{!v.ContactRecord.emailInput}"/> 
+        </div>
+       
+        <div class="slds-col slds-size_1-of-7">
+            <lightning:input value="{!v.ContactRecord.P_CONTACT_FIRST_NAME}" type="text" label="First Name" 
+                             required="true" aura:id="firstName"
+                             messageWhenValueMissing="Please Enter Contact First Name" />
+        </div>
+        <div class="slds-col slds-size_1-of-7">
+            <lightning:input value="{!v.ContactRecord.P_CONTACT_LAST_NAME}" type="text" label="Last Name" 
+                             required="true" aura:id="lastName"
+                             messageWhenValueMissing="Please Enter Contact last Name" />
+        </div>
+        <div class="slds-col slds-size_1-of-7 columnForRole">
+            <lightning:select value="{!v.ContactRecord.P_CONTACT_ROLE}" title="{!v.ContactRecord.P_CONTACT_ROLE}" label="Roles" required="true">
+                <aura:iteration items="{!v.roles}" var="opt">
+                    <option value="{!opt}" text="{!opt}"></option>
+                </aura:iteration>
+            </lightning:select>
+        </div>
+        <div class="slds-col slds-m-top_large">
+            <lightning:buttonIcon value="{!'removeRow-'+ v.rowIndex}" iconName="utility:delete" variant="border" onclick="{!c.handleSelect}" alternativeText="Remove Row"/>
+        </div>
+    </div>
+    
+</aura:component>

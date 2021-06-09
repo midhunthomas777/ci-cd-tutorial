@@ -1,0 +1,35 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                controller="x7sMediaFileURLController"
+                access="global" >
+    <aura:attribute name="versionId" type="String" />
+    <!-- design attributes -->
+    <aura:attribute name="title" type="String" default="Copy Content Version URL" access="global"/>
+    <aura:attribute name="titleSize" type="String" default="Large" access="global"/>
+    <aura:attribute name="titleAlignment" type="String" default="Left" access="global"/>
+    <aura:attribute name="bodyText" type="String" default="" access="global"/>
+    <aura:attribute name="customIcon" type="String" default="utility:copy" access="global"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <lightning:card class="slds-p-left_small ">
+        <c:x7sHeading  tag="h1" size="{!v.titleSize}" align="{!v.titleAlignment}">
+            <lightning:formattedText class="{!'slds-text-heading--'+v.titleSize}" size="{!v.titleSize}"
+                                     value="{!v.title}"/>
+        </c:x7sHeading>
+        <div class="slds-grid slds-wrap slds-align_absolute-center">
+            <div  class="slds-col slds-size_11-of-12">
+                	<span>
+                        <lightning:formattedText value="{!v.bodyText}"/>
+                	</span>
+            </div>
+            <div  class="slds-col slds-size_1-of-12 slds-float_right">
+                <span>
+                    <lightning:buttonIcon iconName="{!v.customIcon}"
+                                          onclick="{!c.copyValue}"
+                                          size="large" 
+                                          variant="bare" 
+                                          alternativeText="Copy to Clip board" iconClass="dark"/>
+                </span>
+            </div>
+        </div>
+    </lightning:card>    
+</aura:component>

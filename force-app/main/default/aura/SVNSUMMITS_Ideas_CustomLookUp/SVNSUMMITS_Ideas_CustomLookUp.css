@@ -1,0 +1,14 @@
+.THIS {
+}
+
+.THIS .pillSize {
+    width: 97%;
+}
+
+.THIS .rem-c .slds-pill__remove {
+    display : none;
+}
+
+.THIS .pillSize_grow {
+    width: 100%
+}

@@ -1,0 +1,23 @@
+<!--
+ - Created by melindagrad on 8/13/18.
+   Copyright (c) 2018. 7Summits Inc.
+ -->
+
+<design:component label="Learning Adventure Footer">
+    <design:attribute name="label1" label="Label 1" />
+    <design:attribute name="link1" label="Link 1" />
+    <design:attribute name="icon1" label="Icon 1"/>
+
+    <design:attribute name="label2" label="Label 2" />
+    <design:attribute name="link2" label="Link 2" />
+    <design:attribute name="icon2" label="Icon 2"/>
+
+    <design:attribute name="label3" label="Label 3" />
+    <design:attribute name="link3" label="Link 3" />
+    <design:attribute name="icon3" label="Icon 3"/>
+
+    <design:attribute name="label4" label="Label 4" />
+    <design:attribute name="link4" label="Link 4" />
+    <design:attribute name="icon4" label="Icon 4"/>
+
+</design:component>

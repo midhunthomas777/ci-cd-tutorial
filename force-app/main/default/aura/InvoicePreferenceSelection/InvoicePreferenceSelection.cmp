@@ -1,0 +1,62 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" >
+    
+    <aura:attribute name="item" type="Object" />
+    <aura:attribute name="index" type="String"/>
+    <aura:attribute name="isGenericEmailDisable" type="boolean" default="true" />
+    <aura:attribute name="isContactNameDisabled" type="boolean" default="true" />
+    <aura:attribute name="preferenceIdentifier" type="String"/>
+    <aura:attribute name="uniqueSiteList" type="List" default="[]"/>
+    <aura:attribute name="uniqueEmails" type="List" default="[]"/>
+    <aura:attribute name="uniqueNames" type="List" default="[]"/>
+    <aura:attribute name="existingEmails" type="List" default="[]"/>
+    <aura:attribute name="roles" type="String[]" />
+    
+    <div class="slds-grid slds-gutters slds-m-top_x-small">
+        <aura:if isTrue="{!v.preferenceIdentifier == 'generic'}">
+            <div class="slds-col slds-size_1-of-7 slds-list_horizontal">
+                <aura:if isTrue="{!v.item.existing == ''}">
+                    <lightning:input class="selectInput" title="{!v.item.Address}" disabled="true" value="{!v.item.P_CUSTOMER_SITE}" type="text"/>
+                    <!--lightning:helptext content="test" /-->
+                </aura:if>
+            </div>
+            <div class="slds-col slds-size_1-of-7">
+                <lightning:select name="{!'generic-name-'+v.index}" required="true" class="selectInput" value="{!v.item.contactName}" onchange="{!c.getValue}">
+                    <aura:iteration items="{!v.uniqueNames}" var="opt">
+                        <option value="{!opt.BILL_TO_SITE_CONTACT_NAME}" text="{!opt.BILL_TO_SITE_CONTACT_NAME}"></option>
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+            <div class="slds-col slds-size_1-of-7">
+                <lightning:input class="selectInput" placeholder="first Name"
+                                 type="text" disabled="{!v.isContactNameDisabled}" 
+                                 value="{!v.item.firstName}" required="true"/> 
+            </div>
+            <div class="slds-col slds-size_1-of-7">
+                <lightning:input class="selectInput" placeholder="last Name"
+                                 type="text" disabled="{!v.isContactNameDisabled}" 
+                                 value="{!v.item.lastName}" required="true"/> 
+            </div>
+            <div class="slds-col slds-size_1-of-7" >
+                <lightning:select name="{!'generic-email-'+v.index}" required="true" class="selectInput" value="{!v.item.email}" onchange="{!c.getValue}">
+                    <aura:iteration items="{!v.existingEmails}" var="opt">
+                        <option value="{!opt.CONTACT_EMAIL_ADDRESS}" text="{!opt.CONTACT_EMAIL_ADDRESS}"></option>
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+            <div class="slds-col slds-size_1-of-7" >
+                <lightning:input class="selectInput" required="true" 
+                                 disabled="{!v.isGenericEmailDisable}" 
+                                 aura:id="inputId" name="{!v.index}" 
+                                 placeholder="Enter Email Manually" 
+                                 value="{!v.item.emailInput}" type="Email"/> 
+            </div>
+            <div class="slds-col slds-size_1-of-7" >
+                <aura:if isTrue="{!v.item.existing == ''}">
+                    <lightning:input class="selectInput" disabled="true" 
+                                     value="{!v.item.P_CONTACT_ROLE}" type="text"
+                                     title="{!v.item.P_CONTACT_ROLE}"/> 
+                </aura:if>
+            </div>
+        </aura:if>
+    </div>    
+</aura:component>

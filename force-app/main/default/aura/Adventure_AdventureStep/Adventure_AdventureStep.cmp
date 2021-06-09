@@ -1,0 +1,126 @@
+<!--
+ - Created by melindagrad on 8/1/18.
+ - Copyright (c) 2018. 7Summits Inc.
+ -->
+
+<aura:component description="Adventure_AdventureStep" extends="c:Adventure_Peak_Base">
+
+    <!--attributes-->
+    <aura:attribute name="isInit" type="Boolean" default="false"/>
+    <aura:attribute name="peakContentObject" type="List"/>
+    <aura:attribute name="currentStep" type="String"/>
+    <aura:attribute name="headerMinHeight" type="Integer" default="109"/>
+    <aura:attribute name="headerOffset" type="Integer" default="96"/>
+    <aura:attribute name="moduleMinHeight" type="Integer" default="100" access="public"/>
+    <aura:attribute name="currentIndex" type="Integer" default="0"/>
+    <aura:attribute name="currentName" type="Integer"/>
+    <aura:attribute name="currentHeaderHeight" type="Integer"/>
+    <aura:attribute name="currentHeaderOffset" type="Integer"/>
+    <aura:attribute name="currentModuleHeight" type="Integer"/>
+    <aura:attribute name="headerHeights" type="List"/>
+    <aura:attribute name="adventure" type="Object"/>
+    <aura:attribute name="adventureHeaderImage" type="String"/>
+    <aura:attribute name="adventureBannerImage" type="String"/>
+    <aura:attribute name="moduleHeights" type="List"/>
+    <aura:attribute name="adventureStepTextColor" type="String"/>
+    <aura:attribute name="adventureStepBackgroundColor" type="String"/>
+    <aura:attribute name="trailBackgroundColor" type="String"/>
+    <aura:attribute name="dottedPath" type="Object"/>
+    <aura:attribute name="filledPath" type="List"/>
+    <aura:attribute name="coordinates" type="List"/>
+    <aura:attribute name="showTrailOnMobile" type="Boolean"/>
+
+
+
+    <aura:attribute name="truncate" type="Boolean"/>
+    <aura:attribute name="showLinks" type="Boolean"/>
+
+    <!--<aura:handler name="init" action="{!c.init}" value="{!this}"/>-->
+    <aura:handler name="change" value="{!v.peakContentObject}" action="{!c.init}"/>
+    <aura:handler name="renderEvent" event="c:Adventure_RenderEvent" action="{!c.handleRenderEvent}" />
+    <aura:registerEvent name="animateEvent" type="c:Adventure_AnimateEvent"/>
+
+    <aura:if isTrue="{!v.isInit}">
+        <lightning:layout >
+            <lightning:layoutItem padding="" size="12" class="">
+
+                <!--Adventure Trail Background Image-->
+                <section class="adventure-banner" style="{!'background-image:url(' + if(v.adventureBannerImage != null, '/sfc/servlet.shepherd/version/download/' + v.adventureBannerImage, v.peakContentObject[0].adventure.Banner_Image__c) + ');background-position:' + v.currentIndex * -10 + 'px center;background-color:' + v.trailBackgroundColor +';'}">
+                    <lightning:layout verticalAlign="stretch" multipleRows="true" class="slds-is-relative">
+                        <aura:iteration items="{!v.peakContentObject[0].adventureStepWrapper}" var="step" indexVar="index">
+                            <lightning:layoutItem class="{!'adventure-step slds-p-vertical_small slds-size_1-of-' + v.peakContentObject[0].adventureStepWrapper.length}">
+                                <a href="javascript:void(0)" onclick="{!c.showModules}" data-value="{!step.id}" data-index="{!index}" data-name="{!step.stepName}" class="{!'step-link slds-is-relative' + if(v.currentStep == step.id, ' active', '')}">
+                                    <lightning:layout class="slds-grid_vertical">
+                                        <aura:if isTrue="{!index == 0}">
+                                            <lightning:layoutItem padding="" size="" class="{!'path slds-is-absolute path-'+ v.peakContentObject[0].adventureStepWrapper.length + if(!v.showTrailOnMobile, ' hide-mobile', '')}">
+                                                <!--<lightning:icon src="{!$Resource.adventureLightning +'/images/path' + v.peakContentObject[0].adventureStepWrapper.length + '.svg#main'}" iconName="utility:warning" size="" alternativeText=""/>-->
+                                                <!--<lightning:icon src="{!$Resource.adventureLightning +'/images/path.svg#main'}" iconName="utility:warning" size="" alternativeText=""/>-->
+                                                <c:Adventure_SVG svgPath="{!$Resource.adventureLightning +'/images/path' + v.peakContentObject[0].adventureStepWrapper.length + '.svg#main'}" numOfItems="{!v.peakContentObject[0].adventureStepWrapper.length}"/>
+                                            </lightning:layoutItem>
+                                        </aura:if>
+                                        <lightning:layoutItem padding="" class="dot slds-is-relative slds-text-align_center">
+
+                                            <!--Adventure Step Icon Images-->
+                                            <aura:if isTrue="{!or(step.contentDocumentLinks[0].ContentDocument.LatestPublishedVersionId != null,step.iconImage != null)}">
+                                                <div style="{!'background-image:url(' + if(step.contentDocumentLinks[0].ContentDocument.LatestPublishedVersionId != null, '/sfc/servlet.shepherd/version/download/' + step.contentDocumentLinks[0].ContentDocument.LatestPublishedVersionId, step.iconImage) +');'}"> </div>
+                                                <aura:set attribute="else">
+                                                    <div style="{!'background-image:url(/resource/adventureLightning/images/step-icon.png'}"> </div>
+                                                </aura:set>
+                                            </aura:if>
+                                        </lightning:layoutItem>
+                                        <lightning:layoutItem padding="horizontal-small" class="step-button slds-text-align_center">
+                                            <lightning:button variant="neutral" label="{!step.stepName}" value="{!step.id}" class="slds-truncate"/>
+                                        </lightning:layoutItem>
+                                    </lightning:layout>
+                                </a>
+                            </lightning:layoutItem>
+                        </aura:iteration>
+                        <lightning:layoutItem padding="" size="12" class="step-selected slds-text-align_center">
+                                {!v.currentName}
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                </section>
+
+                <!--Adventure Step Banner Image-->
+                <section aura:id="step-header" class="stepTitle" style="{!'background-image:url(' + if(v.adventureHeaderImage != null, '/sfc/servlet.shepherd/version/download/' + v.adventureHeaderImage, v.peakContentObject[0].adventure.Header_Image__c) + ');min-height:' + v.headerMinHeight + 'px;height:' + v.currentHeaderHeight + 'px;background-color:' + v.adventureStepBackgroundColor +';'}">
+                    <div class="slider-track slds-is-relative  slide-container">
+                        <aura:iteration items="{!v.peakContentObject[0].adventureStepWrapper}" var="step" indexVar="index">
+                            <div aura:id="header-slide" class="{!'slide slds-is-absolute' + if(step.id != v.currentStep, ' slide-hidden', '') + if(step.id gt v.currentStep, ' slide-next', '') + if(step.id lt v.currentStep, ' slide-prev', '')}" style="{!'left:' + v.currentHeaderOffset + 'px;padding-right:' + v.currentHeaderOffset + 'px'}">
+                                <div aura:id="step-header_content">
+                                    <c:Adventure_StepHeader step="{!step}" lastStep="{!index == v.peakContentObject[0].adventureStepWrapper.length - 1}" adventureStepTextColor="{!v.adventureStepTextColor}"/>
+                                </div>
+                            </div>
+                        </aura:iteration>
+                    </div>
+                </section>
+                <section aura:id="step-module" class="stepModuleList" style="{!'min-height:' + v.moduleMinHeight + 'px;height:' + v.currentModuleHeight + 'px'}">
+                    <div class="slider-track slds-is-relative slide-container">
+                        <aura:iteration items="{!v.peakContentObject[0].adventureStepWrapper}" var="step" indexVar="index">
+                            <div aura:id="module-slide" class="{!'slide slds-is-absolute' + if(step.id != v.currentStep, ' slide-hidden', '') + if(step.id gt v.currentStep, ' slide-next', '') + if(step.id lt v.currentStep, ' slide-prev', '')}">
+                                <div aura:id="step-module_content" class="slds-is-relative slds-p-vertical_large slds-p-horizontal_small">
+                                    <lightning:layout>
+                                        <lightning:layoutItem size="12">
+                                            <lightning:layout >
+                                                <lightning:layoutItem class="" size="12">
+                                                    <lightning:layout multipleRows="true">
+                                                        <!--<lightning:layoutItem padding="around-small">-->
+                                                        <aura:iteration items="{!step.stepModuleWrapperList}" var="stepModule" indexVar="innerIndex">
+                                                            <div aura:id="module-container" class="module-container slds-is-relative slds-p-around_small">
+                                                                <c:Adventure_StepModule stepModule="{!stepModule}" lastModule="{!and(index == v.peakContentObject[0].adventureStepWrapper.length - 1, innerIndex == step.stepModuleWrapperList.length - 1)}" truncate="{!v.truncate}" showLinks="{!v.showLinks}"/>
+                                                            </div>
+                                                        </aura:iteration>
+                                                        <!--</lightning:layoutItem>-->
+                                                    </lightning:layout>
+                                                </lightning:layoutItem>
+                                            </lightning:layout>
+                                        </lightning:layoutItem>
+                                    </lightning:layout>
+                                </div>
+                            </div>
+                        </aura:iteration>
+                    </div>
+                </section>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </aura:if>
+</aura:component>

@@ -1,0 +1,53 @@
+<!--
+  - Copyright (c) 2018. 7Summits Inc.
+  -->
+
+<aura:component controller="SVNSUMMITS_IdeaStatusTrackerController"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId"
+                access="global" >
+    
+    <aura:handler   name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="summaryWrapper" type="List"/>
+    <aura:attribute name="userProfileURL" type="String" default="/profile/" access="global"/>
+    <aura:attribute name="sitePath" type="String" access="global"/>
+    
+    <h2 class="compact-list-header slds-text-heading_medium">{!$Label.c.ss_idea_label_StatusChanges}</h2>
+    
+    <div class="slds-feed">
+        <ul class="slds-feed__list">
+            <aura:iteration items="{!v.summaryWrapper}" var="summ" >
+            <li class="slds-feed__item">
+                <article class="slds-post">
+                    <header class="slds-post__header slds-media">
+                        <div class="slds-media__figure">
+                            <span class="slds-avatar slds-avatar_circle">
+                                <span class="slds-icon_container slds-icon-standard-user"
+                                      title="Description of icon when needed">
+                                    <lightning:icon iconName="action:user"
+                                                    alternativeText="Approved"
+                                                    size="x-small"/>
+                                    <span class="slds-assistive-text">User Avatar</span>
+                                </span>
+                            </span>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate">
+                                <p><a href="javascript:void(0);" >{!summ.newStatus}  by  {!summ.changedBy}</a></p>
+                                
+                            </div>
+                            <p class="slds-text-body_small"><a href="javascript:void(0);" title="Click for single-item view of this post" class="slds-text-link_reset">{!summ.changedDate}</a></p>
+                        </div>
+                    </header>
+                    <div class="slds-post__content slds-text-longform">
+                        <p> <aura:unescapedHtml value="{!summ.commentText}"/> </p>
+                    </div>
+                    
+                </article>
+                
+            </li>
+            </aura:iteration>
+        </ul>
+    </div>
+
+    
+</aura:component>

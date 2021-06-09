@@ -1,0 +1,21 @@
+/*
+ * Copyright (c) 2019. 7Summits Inc.
+*/
+.THIS {
+}
+.THIS .slds-map {
+    min-width: 15.75rem;
+    padding-bottom: 10.25%;
+    padding-top: 11.25%;
+}
+.THIS .slds-p-around_medium{
+    position: absolute;
+    left: 0;
+    bottom: -40px;
+}
+.THIS .slds-grid .slds-wrap slds-card{
+    position: relative;
+}
+.THIS .from_label{
+    font-size: 12px;
+}

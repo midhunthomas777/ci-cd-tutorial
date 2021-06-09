@@ -1,0 +1,4 @@
+<aura:component >
+    <c:Component1 />
+    <c:Component2 />
+</aura:component>

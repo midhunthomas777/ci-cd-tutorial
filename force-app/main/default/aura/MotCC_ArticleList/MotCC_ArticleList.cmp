@@ -1,0 +1,39 @@
+<!--
+ - Created by tricia.igoe on 4/9/20.
+ -->
+
+<aura:component description="MotCC_ArticleList" controller="MotCC_ArticleList" implements="forceCommunity:availableForAllPageTypes,lightning:isUrlAddressable" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:attribute name="topicId" type="String"/>
+    <aura:attribute name="data" type="Object" />
+    <aura:attribute name="allData" type="Object" />
+    <aura:attribute name="columns" type="List" />
+    <aura:attribute name="sortDirection" type="String" default="asc" />
+    <aura:attribute name="defaultSortDirection" type="String" default="asc" />
+    <aura:attribute name="sortedBy" type="String" />
+    <aura:attribute name="checkboxColumn" type="Boolean"/>
+
+    <div class="theArticleList">
+        <div class="article-topic__search" onkeyup="{! c.handleKeyUp }">
+            <lightning:input
+                    aura:id="enter-search"
+                    name="enter-search"
+                    placeholder="Search articles..."
+                    type="search"
+                    variant="label-hidden"
+                    class="article-topic__search-input" />
+        </div>
+        <lightning:datatable
+                keyField="Id"
+                columns="{!v.columns}"
+                data="{!v.data}"
+                hideCheckboxColumn="true"
+                defaultSortDirection="{!v.defaultSortDirection}"
+                sortedDirection="{!v.sortDirection}"
+                sortedBy="{!v.sortedBy}"
+                onsort="{!c.handleSort}"
+                wrapTextMaxLines="3"/>
+    </div>
+
+</aura:component>

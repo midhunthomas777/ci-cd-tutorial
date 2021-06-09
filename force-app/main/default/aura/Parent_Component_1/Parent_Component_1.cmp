@@ -1,0 +1,7 @@
+<aura:component >
+    Instittute : Capitalinfo <br/>
+    Mainbranch: Cochin <br/>
+    City : cochin <br/> <br/>
+    <c:Child_Component_1 /> <br/>
+    <c:Child_Component_2 /> <br/>
+</aura:component>

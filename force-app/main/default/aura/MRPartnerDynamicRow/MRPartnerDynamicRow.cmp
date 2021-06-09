@@ -1,0 +1,109 @@
+<aura:component >   
+    <style>
+        .slds-scope .slds-list--horizontal .slds-item--detail {
+        width: 50% !important;
+        }
+        .slds-scope .slds-list--horizontal .slds-item--label {
+        width: 50% !important;
+        padding-right: .75rem;
+        }
+        .slds-scope .slds-list--horizontal .slds-item--label1 {
+        width: 40% !important;
+        padding-right: .75rem;
+        text-align:right !important;
+        }
+    </style>
+    
+    
+    
+    <aura:attribute name="MRPartnerInstance" type="ConsolidatedBy_Partner_Information__mdt"/>
+    <aura:attribute name="rowIndex" type="String"/>
+    <aura:attribute name="disableFieldsInViewCalculatorPopup" type="Boolean" default="false"/>
+    <aura:attribute name="PopupWindow" type="Boolean" default="false"/>
+    
+    <!-- Register 2 Lightning Event for handle add or Delete rows on Parent Component  --> 
+    <aura:registerEvent name="DeleteRowEvt" type="c:DeleteRowEvt"/> 
+    <aura:registerEvent name="AddRowEvt" type="c:AddNewRowEvt"/> 
+    <lightning:layout horizontalAlign="spread">
+        <lightning:layoutItem largeDeviceSize="12" mediumDeviceSize="12" smallDeviceSize="12" size="12">
+            <aura:if isTrue="{!v.rowIndex == 0}">
+                
+                <a class="slds-float--right" onclick="{!c.AddNewRow}">Please click here to add New MR Partner
+                    <lightning:icon variant="brand" iconName="utility:new" class="slds-icon slds-icon_small slds-p-right_xx-large" size="small" alternativeText="icon"/>
+                </a>
+                <br/><br/>
+                
+            </aura:if>
+        </lightning:layoutItem>
+    </lightning:layout>
+    <lightning:layout horizontalAlign="spread">
+        <div class="slds-box">
+            <lightning:layoutItem largeDeviceSize="12" mediumDeviceSize="12" smallDeviceSize="12" size="12">
+                <h3 class="slds-section-title--divider" style="background-color: #DDE3ED!important;">Partner {!v.rowIndex + 1}
+                </h3> 
+            </lightning:layoutItem>
+            <lightning:layoutItem largeDeviceSize="12" mediumDeviceSize="12" smallDeviceSize="12" size="12">
+                <br/>
+            </lightning:layoutItem>
+            <div class="slds-list--horizontal slds-wrap slds-p-horizontal--x-large">
+                <lightning:layoutItem flexibility="auto" padding="around-small" largeDeviceSize="3" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                    MR Name
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="auto" largeDeviceSize="3" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                    <lightning:input name="MRName"  aura:id="MRName"  value="{!v.MRPartnerInstance.MR_Name__c}" disabled="{!v.disableFieldsInViewCalculatorPopup}"/>
+                </lightning:layoutItem>
+                
+                <lightning:layoutItem flexibility="auto" padding="around-small" largeDeviceSize="3" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                    MRID
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="auto" largeDeviceSize="3" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                    <lightning:input name="MRID"  aura:id="MRID" value="{!v.MRPartnerInstance.MRID__c}" disabled="{!v.disableFieldsInViewCalculatorPopup}"/>
+                </lightning:layoutItem>
+                
+                <lightning:layoutItem flexibility="auto" padding="around-small" largeDeviceSize="3" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                    End-User Customer Number
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="auto" largeDeviceSize="3" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                    <lightning:input name="CustomerNumber"  aura:id="CustomerNumber" value="{!v.MRPartnerInstance.End_user_Customer_number__c}" disabled="{!v.disableFieldsInViewCalculatorPopup}"/>
+                </lightning:layoutItem>
+                
+                <lightning:layoutItem flexibility="auto" padding="around-small" largeDeviceSize="3" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                    End-User Customer Name
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="auto" largeDeviceSize="3" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                    <lightning:input name="CustomerName"  aura:id="CustomerName" value="{!v.MRPartnerInstance.End_user_Customer_name__c}" disabled="{!v.disableFieldsInViewCalculatorPopup}" />
+                </lightning:layoutItem>
+                
+                <lightning:layoutItem flexibility="auto" padding="around-small" largeDeviceSize="3" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                    Dollar amount to be associated to MR
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="auto" largeDeviceSize="3" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                    <ui:inputCurrency class="slds-input" aura:id="AmountMR" value="{!v.MRPartnerInstance.Dollar_amount_to_be_associated_to_MR__c}" disabled="{!v.disableFieldsInViewCalculatorPopup}"/> 
+                </lightning:layoutItem>
+                
+                <lightning:layoutItem flexibility="auto" padding="around-small" largeDeviceSize="3" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                    Commission to be associated to MR
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="auto" largeDeviceSize="3" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                    <ui:inputCurrency class="slds-input" aura:id="CommissionMR" value="{!v.MRPartnerInstance.Commission_amount_to_be_associated_to_MR__c}" disabled="{!v.disableFieldsInViewCalculatorPopup}"/>
+                </lightning:layoutItem>
+                
+                <lightning:layoutItem largeDeviceSize="3" mediumDeviceSize="12" smallDeviceSize="12" size="12">
+                    <aura:if isTrue="{!v.rowIndex == 0}">
+                        <!-- <lightning:button variant="brand" label="Add" onclick="{! c.AddNewRow }" disabled="{!v.disableFieldsInViewCalculatorPopup}" /> -->
+                        <aura:set attribute="else">
+                            <!-- <lightning:button variant="brand" label="Add" onclick="{! c.AddNewRow }" disabled="{!v.disableFieldsInViewCalculatorPopup}" /> -->   
+                            <a onclick="{!c.removeRow}">
+                                <!-- <lightning:icon variant="error" iconName="utility:delete" class="slds-icon slds-icon_small" size="small" alternativeText="icon"/>-->
+                            </a>
+                            
+                        </aura:set> 
+                    </aura:if>
+                </lightning:layoutItem>
+                <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="12" smallDeviceSize="12" size="3">
+                    <br/>
+                </lightning:layoutItem>
+            </div>
+        </div>
+    </lightning:layout>    
+</aura:component>

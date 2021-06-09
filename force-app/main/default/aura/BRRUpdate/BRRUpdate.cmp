@@ -1,0 +1,51 @@
+<aura:component controller="BRRUpdateCtrl" implements="lightning:actionOverride,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,lightning:availableForFlowScreens,lightning:availableForFlowActions" access="global">
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="andFilters" type="List"/>
+    <aura:attribute name="orFilters" type="List"/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="true"/>
+    <aura:attribute name="loadTable" type ="Boolean" default="false"/>
+    <aura:attribute name="resultList" type ="List" default="true"/> 
+    <aura:attribute name="regionSelected" type ="String" default="--None--"/>
+    <aura:attribute name="territorySelected" type ="String" default="--None--"/>
+    <aura:attribute name="lstRegion" type ="List"/> <!--default="['NA','AP','EA','LA','ME']"/-->
+    <!--aura:attribute name="lstTerritory" type ="List" default="T1,T2,NYC,T3,T4-E,T4-W,Florida,T5-N,T5-S,Chicago,T6,T7,T8,Los Angeles,Comm Mkts,DOD-East,DOD-West,Civil,Civil LEA,DOS-EMEA,CT1,CT2,CT3,CT4,CT5,CT6,CT7,Brazil,Mexico,NOLA,SOLA,United Nations,EMEA without UN"/-->
+    <aura:attribute name="lstTerritory" type ="List"/>
+     <aura:attribute name="mapTerritory" type ="Map"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="c:DynamicDataTableEvent" action="{!c.getselectedRecId}"/>    
+    <aura:registerEvent name="DynamicDataTableValidation" type="c:DynamicDataTableValidation"/>
+    <aura:handler name="change" value="{!v.regionSelected}" action="{!c.changeRegion}"/> 
+
+    <div class="slds-box">
+            <lightning:layout verticalAlign="center" class="x-large">
+                <lightning:layoutItem flexibility="auto, no-grow" padding="around-small">
+                    <ui:inputSelect aura:id="Region" label="Region" class="slds-select" labelClass="slds-form-element__label" value="{!v.regionSelected}">
+                        <option value="--None--" text="--None--"></option>
+                        <aura:iteration items="{!v.lstRegion}" var="rgn" >                                                            
+                            <option value="{!rgn}" text="{!rgn}"></option>              
+                        </aura:iteration>
+                    </ui:inputSelect>
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="auto, no-grow" padding="around-small">
+                    <ui:inputSelect aura:id="Territory" label="Territory" class="slds-select" labelClass="slds-form-element__label" value="{!v.territorySelected}">
+                        <option value="--None--" text="--None--"></option>
+                        <aura:iteration items="{!v.lstTerritory}" var="tr" >                                                            
+                            <option value="{!tr}" text="{!tr}"></option>              
+                        </aura:iteration>
+                    </ui:inputSelect>
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="auto, no-grow" padding="around-small">
+                    <div style="padding-top: 25px;">
+                        <lightning:button variant="brand" label="Search" onclick="{!c.refreshTable}"/></div>
+                </lightning:layoutItem>
+            </lightning:layout>
+        </div>
+    
+    <aura:if isTrue="{!v.loadTable}">
+        <c:ChildRecordsByParent columns="{!v.columns}" andFilters="{!v.andFilters}" orFilters="{!v.orFilters}" 
+                                objectName="BRR_Opportunity__c"  additionalFields ="Opportunity__r.Name,Opportunity_Name__c,AccountName__c"
+                                andORFilters="AND" inlineEditing="true" hideSelection="false"  
+                                maxRowSelection="50" recordId="{!v.recordId}" showPageSize ="true" pageSize= "10" 
+                                sortField ="Name" /> 
+    </aura:if>
+</aura:component>

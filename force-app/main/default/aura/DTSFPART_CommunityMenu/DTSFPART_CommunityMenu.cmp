@@ -1,0 +1,23 @@
+<aura:component extends="forceCommunity:navigationMenuBase" implements="forceCommunity:availableForAllPageTypes">
+    <aura:attribute name="_defaultMenuMasterLabel" type="String" default="{!$Label.NavigationLinkSetDefaults.MasterLabel}" />
+    <aura:attribute name="navigationLinkSetId" type="String" />
+    <aura:attribute name="_privateMenuItemById" type="Map" />
+    <aura:attribute name="_menuItems" type="Object" />
+    <aura:attribute name="menuItemsInternal" type="Object" />
+    <aura:attribute name="addHomeIcon" type="Boolean" default="false" />
+    <aura:attribute name="enablePermissioning" type="Boolean" default="false" />
+    <aura:attribute name="visibleMenuItems" type="String" default="" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <c:communityMenu menuItems="{!v.menuItemsInternal}"
+                     privateMenuItems="{!v.menuItems}"
+                     navigationLinkSetId="{!v.navigationLinkSetId}"
+                     enablePermissioning="{!v.enablePermissioning}"
+                     onselect="{!c.onItemSelected}"></c:communityMenu>
+    
+    <c:permissionHelper navigationLinkSetId="{!v.navigationLinkSetId}" communityMode="{!$Site.context.viewType}" onwalkmeinfo="{!c.onWalkmeInfo}" />
+
+    <c:DTSFPART_WalkmePermissions aura:id="walkme"/>
+    
+</aura:component>

@@ -1,0 +1,26 @@
+/*
+ * Copyright (c) 2019. 7Summits Inc.
+ */
+.THIS .peak-ideas-list-item_link {
+    display: block;
+}
+
+.THIS .ideas-list-item__heading,
+.THIS .ideas-list-item__description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.THIS .idea__meta {
+    font-size: 10px;
+    line-height: 1.25;
+    text-transform: uppercase;
+    color: token(colorTextWeak);
+    letter-spacing: .05em;
+}
+.THIS .idea__meta > span + span::before {
+    content: ' | ';
+    margin-left: token(varSpacingXxSmall);
+    margin-right: token(varSpacingXxSmall);
+}

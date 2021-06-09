@@ -1,0 +1,6 @@
+<aura:event type="COMPONENT" description="use for pass requester email and 
+                                          core Id" >
+    <aura:attribute name="userEmail" type="String"/>
+    <aura:attribute name="userCoreId" type="String"/>
+    <aura:attribute name="isvalidated" type="Boolean"/>
+</aura:event>

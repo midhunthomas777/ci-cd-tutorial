@@ -1,0 +1,22 @@
+<aura:component controller="DisplayNotesBelowHeirarchyCtrl" implements="lightning:actionOverride,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,lightning:isUrlAddressable" access="global">	
+    <aura:attribute name="loadSpinner" type ="Boolean" default="false"/>
+    <aura:attribute name="resultList" type ="List" />
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="openpop" type="Boolean" default="false"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="large" aura:id="mySpinner"/>
+    </aura:if>
+    <lightning:icon name ="Notes" iconName="action:new_note" alternativeText="Notes" size="xx-small"/> &nbsp;<b>Notes</b><div class="slds-p-top_x-small"></div>
+    
+    <div class="c-container"> 
+        <aura:if isTrue="{!not(empty(v.resultList))}">
+            <div class="slds-box slds-theme_shade">
+                <c:GenerateLightningDataTable columns="{!v.columns}" inlineEditing="false" resultList ="{!v.resultList}"
+                                              hideSelection="true" maxRowSelection ="0" showPagination="true"
+                                              pageSize="10"  />
+            </div>
+        </aura:if>
+    </div>
+</aura:component>

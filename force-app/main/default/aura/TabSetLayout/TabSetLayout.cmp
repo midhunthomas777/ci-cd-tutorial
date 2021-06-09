@@ -1,0 +1,25 @@
+<aura:component implements="forceCommunity:layout" description="Custom Content Layou" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:attribute name="shouldRender" type="Boolean" default="true" />
+    <aura:attribute name="header" type="Aura.Component[]" required="false" description="Content Header" />
+    <aura:attribute name="content" type="Aura.Component[]" required="false" description="Content" />
+    <aura:attribute name="footer" type="Aura.Component[]" required="false" description="Content Footer" />
+
+    <c:pageTabsetReference aura:id="tabsetReference" />
+
+    <div class="siteforceSldsOneColLayout siteforceContentArea">
+        <div class="slds-col--padded comm-content-header comm-layout-column" onrerender="{!c.reRender}">
+            {!v.header}
+        </div>
+        <aura:if isTrue="{!v.shouldRender}">
+            <div class="slds-col--padded contentRegion comm-layout-column" onresetscroll="{!c.onResetScroll}" onhidesiblings="{!c.hideSiblings}" onshowsiblings="{!c.showSiblings}" onrerender="{!c.reRender}">
+                {!v.content}
+            </div>
+        </aura:if>
+        <div class="slds-col--padded comm-content-footer comm-layout-column" onrerender="{!c.reRender}">
+            {!v.footer}
+        </div>
+    </div>
+    
+</aura:component>

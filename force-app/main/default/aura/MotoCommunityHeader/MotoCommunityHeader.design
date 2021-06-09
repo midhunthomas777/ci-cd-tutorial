@@ -1,0 +1,13 @@
+<design:component >
+    <design:attribute name="name" label="The unique value you used for the URL when creating the community" /> <!-- <design:attr>label="The name of the Visualforce Coveo Search component where your Standalone Search Box should redirect." /> -->
+    <design:attribute name="searchHub" label="The name of the searchHub, used for Coveo Analytics." />
+    <design:attribute name="searchPageName" label="The location of your search component in your community." />
+    <design:attribute name="supportUrl" label="URL of the support page" />
+    <design:attribute name="showSearch" label="Show the search bar." />
+    <design:attribute name="showChat" label="Show the chat icon." />
+    <design:attribute name="showUserMenu" label="Show the User Menu (If unchecked, show the Sign In link)." />
+    <design:attribute name="showUserMenuAdminAccount" label="Show Account in Partner Admin User Menu."/>
+    <design:attribute name="showUserMenuAdminRelatedContacts" label="Show Related Contacts in Partner Admin User Menu."/>
+    <design:attribute name="showUserMenuAccountPreferences" label="Show Account Preferences in User Menu."/>
+    <design:attribute name="showUserMenuResetPassword" label="Show Reset Password in User Menu."/>
+</design:component>

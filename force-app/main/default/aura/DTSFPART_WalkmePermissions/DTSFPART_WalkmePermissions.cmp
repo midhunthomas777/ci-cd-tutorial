@@ -1,0 +1,7 @@
+<aura:component>
+    <aura:method name="setWalkmePermissions" action="{!c.setWalkmePermissions}">
+        <aura:attribute name="permissions" type="Object" /> 
+    </aura:method>
+
+    <c:auraPubSub aura:id="pubsub" onready="{!c.handlePubsubReady}"/>
+</aura:component>

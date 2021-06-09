@@ -1,0 +1,33 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<!--
+ - Created by francoiskorb on 9/21/16.
+ -->
+
+<aura:component description="SVNSUMMITS_Ideas_Filter_Themes"
+                controller="SVNSUMMITS_IdeaFiltersController"
+                extends="c:SVNSUMMITS_Ideas_Base"
+                access="global">
+
+	<aura:attribute name="baseModel"    type="String"  access="global"/>
+
+	<aura:attribute name="debugMode"    type="Boolean" default="false" access="global"/>
+	<aura:attribute name="listId"       type="String"  default="List1" access="global"/>
+
+	<aura:attribute name="labelFilter"  type="String" default="{!$Label.c.ss_idea_label_Themes}" access="global"/>
+	<aura:attribute name="themesList"   type="Map" access="global"/>
+	<aura:attribute name="themeSelect"  type="String"/>
+
+	<aura:handler name="init" value="{!this}" action="{!c.initializeFilters}"/>
+
+	<lightning:select label="{!v.labelFilter}"
+					  onchange="{!c.filterByThemes}"
+					  value="{!v.themeSelect}"
+					  variant="label-hidden">
+		<option value="{!v.labelFilter}" label="{!v.labelFilter}">{!v.labelFilter}</option>
+		<aura:iteration items="{!v.themesList}" var="themes">
+			<option value="{!themes}" label="{!themes}">{!themes}</option>
+		</aura:iteration>
+	</lightning:select>
+</aura:component>

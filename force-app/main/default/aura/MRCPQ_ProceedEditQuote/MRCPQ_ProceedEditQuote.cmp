@@ -1,0 +1,25 @@
+<aura:component controller="MRCPQ_EditQuoteController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"  access="global">
+	<aura:attribute name="recordId" type="String" access="global"/>
+    <aura:attribute name="mcnNumber" type="String" />
+    <aura:attribute name="accountId" type="String" />
+    <aura:attribute name="oppId" type="String" />
+    <aura:attribute name="mcnId" type="String" />
+    <aura:attribute name="userTheme" type="String" />
+    <aura:attribute name="getURL" type="String"/>
+    <aura:attribute name="getPageURL" type="String" />
+    <aura:attribute name="cpqSiteId" type="String"/>
+    <!-- <aura:attribute name="mcnId" type="String" />
+    <aura:attribute name="mcnId" type="String" />
+    <aura:attribute name="mcnId" type="String" />
+    <aura:attribute name="mcnId" type="String" /> -->
+    
+    
+    <aura:method name="proceedToQuoteInitmethod" action="{!c.doInit}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    
+    <div class='slds-float_right'>
+         <lightning:Button aura:id="proceedBtnId" variant="brand" label="Proceed to Edit Quote" onclick="{!c.editquote}"/>
+    </div>
+    
+</aura:component>

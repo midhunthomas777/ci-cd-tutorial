@@ -1,0 +1,93 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc. All rights reserved.
+  -
+  -->
+
+<aura:component controller="Peak_OnboardingController">
+    <aura:registerEvent name="pageChange" type="c:Peak_OnboardingChangePage"/>
+    <aura:registerEvent name="closeModal" type="c:Peak_OnboardingCloseModal"/>
+    <aura:attribute name="doneMessage" type="String"/>
+    <aura:attribute name="doneHeader" type="String" />
+    <aura:attribute name="doneAction" type="String" />
+    <aura:attribute name="LinkToProfile" type="String" default="" />
+    <aura:attribute name="LinkToSettings" type="String" default="" />
+    <aura:attribute name="user" type="User"/>
+    <aura:attribute name="buttonColor" type="String" default="#ff8201"/>
+    <aura:attribute name="action1Icon" type="String" access="global" />
+    <aura:attribute name="action1Text" type="String" access="global" />
+    <aura:attribute name="action1Description" type="String" access="global" />
+    <aura:attribute name="action1Url" type="String" access="global" />
+    <aura:attribute name="action1UseUserId" type="Boolean" access="global" default="false" />
+    <aura:attribute name="action2Icon" type="String" access="global" />
+    <aura:attribute name="action2Text" type="String" access="global" />
+    <aura:attribute name="action2Description" type="String" access="global" />
+    <aura:attribute name="action2Url" type="String" access="global" />
+    <aura:attribute name="action2UseUserId" type="Boolean" access="global" default="false" />
+    <aura:attribute name="action3Icon" type="String" access="global" />
+    <aura:attribute name="action3Text" type="String" access="global" />
+    <aura:attribute name="action3Description" type="String" access="global" />
+    <aura:attribute name="action3Url" type="String" access="global" />
+    <aura:attribute name="action3UseUserId" type="Boolean" access="global" default="false" />
+    <aura:attribute name="action4Icon" type="String" access="global" />
+    <aura:attribute name="action4Text" type="String" access="global" />
+    <aura:attribute name="action4Description" type="String" access="global" />
+    <aura:attribute name="action4Url" type="String" access="global" />
+    <aura:attribute name="action4UseUserId" type="Boolean" access="global" default="false" />
+
+    <c:Peak_OnboardingSlide class="done"
+                            title="{!v.doneHeader}"
+                            description="{!v.doneMessage}"
+                            subText="{!v.doneAction}"
+                            primaryButtonLabel="Complete"
+                            primaryButtonColor="{!v.buttonColor}"
+                            primaryOnClick="{!c.completeOnboarding}"
+                            backOnClick="{!c.goBack}"
+    >
+        <lightning:layout multipleRows="true" class="doneContainer" pullToBoundary="small" verticalAlign="stretch" horizontalAlign="center">
+            <aura:if isTrue="{!and(v.action1Url, v.action1Text)}">
+                <lightning:layoutItem size="12" mediumDeviceSize="6" padding="around-small">
+                    <c:Peak_OnboardingDoneCard link="{!v.action1Url + if(v.action1UseUserId, v.user.Id, '')}"
+                                               label="{!v.action1Text}"
+                                               description="{!v.action1Description}"
+                                               icon="{!v.action1Icon}"
+                                               onclick="{!c.handleClick}"
+                                               openInNewWindow="false"
+                    />
+                </lightning:layoutItem>
+            </aura:if>
+            <aura:if isTrue="{!and(v.action2Url, v.action2Text)}">
+                <lightning:layoutItem size="12" mediumDeviceSize="6" padding="around-small">
+                    <c:Peak_OnboardingDoneCard link="{!v.action2Url + if(v.action2UseUserId, v.user.Id, '')}"
+                                               label="{!v.action2Text}"
+                                               description="{!v.action2Description}"
+                                               icon="{!v.action2Icon}"
+                                               onclick="{!c.handleClick}"
+                                               openInNewWindow="false"
+                    />
+                </lightning:layoutItem>
+            </aura:if>
+            <aura:if isTrue="{!and(v.action3Url, v.action3Text)}">
+                <lightning:layoutItem size="12" mediumDeviceSize="6" padding="around-small">
+                    <c:Peak_OnboardingDoneCard link="{!v.action3Url + if(v.action3UseUserId, v.user.Id, '')}"
+                                               label="{!v.action3Text}"
+                                               description="{!v.action3Description}"
+                                               icon="{!v.action3Icon}"
+                                               onclick="{!c.handleClick}"
+                                               openInNewWindow="false"
+                    />
+                </lightning:layoutItem>
+            </aura:if>
+            <aura:if isTrue="{!and(v.action4Url, v.action4Text)}">
+                <lightning:layoutItem size="12" mediumDeviceSize="6" padding="around-small">
+                    <c:Peak_OnboardingDoneCard link="{!v.action4Url + if(v.action4UseUserId, v.user.Id, '')}"
+                                               label="{!v.action4Text}"
+                                               description="{!v.action4Description}"
+                                               icon="{!v.action4Icon}"
+                                               onclick="{!c.handleClick}"
+                                               openInNewWindow="false"
+                    />
+                </lightning:layoutItem>
+            </aura:if>
+        </lightning:layout>
+    </c:Peak_OnboardingSlide>
+</aura:component>

@@ -1,0 +1,58 @@
+<!--
+  - Copyright (c) 2020. 7Summits Inc.
+  -->
+
+<aura:component access="global"
+                controller="x7sGoogleMapController"
+                implements="forceCommunity:availableForAllPageTypes,force:hasRecordId,lightning:isUrlAddressable,flexipage:availableForAllPageTypes">
+
+	<aura:attribute name="location"         type="String" default="1 Market St, 94105" access="global"/>
+	<aura:attribute name="destination"      type="String" default="" access="global"/>
+	<aura:attribute name="geoLocationName"  type="String" default="" access="global"/>
+
+	<aura:attribute name="maptype"          type="String"  default="satellite"  access="global" required="true"/>
+	<aura:attribute name="mode"             type="String"  default="driving"    access="global" required="true"/>
+	<aura:attribute name="streetView"       type="Boolean" default="false"      access="global"/>
+	<aura:attribute name="units"            type="String"  default="auto"       access="global"/>
+	<aura:attribute name="zoom"             type="String"  default="18"         access="global" required="true"/>
+	<aura:attribute name="height"           type="String"  default="500"        access="global" required="true"/>
+	<aura:attribute name="apiKey"           type="String"  default=""           access="global" required="true"/>
+
+	<aura:attribute name="StreetAttributeName"      type="String" default="" access="global"/>
+	<aura:attribute name="CityAttributeName"        type="String" default="" access="global"/>
+	<aura:attribute name="StateAttributeName"       type="String" default="" access="global"/>
+	<aura:attribute name="PostalCodeAttributeName"  type="String" default="" access="global"/>
+	<aura:attribute name="CountryAttributeName"     type="String" default="" access="global"/>
+
+	<aura:attribute name="hasError"                 type="Boolean" default="false" access="global"/>
+	<aura:attribute name="dataErrorMessage"         type="String"  default="Map will display after valid address data is added to this record" access="global"/>
+
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+	<section>
+		<aura:if isTrue="{! not(equals(v.location, ''))}">
+			<aura:if isTrue="{! and(v.streetView, or(v.geoLocationName != '', v.location != ''))}">
+				<iframe src="{!'https://www.google.com/maps/embed/v1/streetview?key='+v.apiKey+'&amp;location='+v.location}"
+				        frameborder="0"
+				        height="{!v.height}"/>
+
+				<aura:set attribute="else">
+					<aura:if isTrue="{!v.destination != ''}">
+						<iframe src="{!'https://www.google.com/maps/embed/v1/directions?key='+v.apiKey+'&amp;origin='+v.location+'&amp;destination='+v.destination+'&amp;maptype='+v.maptype+'&amp;mode='+v.mode}"
+						        frameborder="0"
+						        height="{!v.height}"/>
+						<aura:set attribute="else">
+							<iframe src="{!'https://www.google.com/maps/embed/v1/place?key='+v.apiKey+'&amp;q='+v.location+'&amp;zoom='+v.zoom+'&amp;maptype='+v.maptype}"
+							        frameborder="0"
+							        height="{!v.height}"/>
+						</aura:set>
+					</aura:if>
+				</aura:set>
+			</aura:if>
+		</aura:if>
+
+		<aura:if isTrue="{!v.hasError}">
+			{!v.dataErrorMessage}
+		</aura:if>
+	</section>
+</aura:component>

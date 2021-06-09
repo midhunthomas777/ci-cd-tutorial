@@ -1,0 +1,82 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc. All rights reserved.
+  -
+  -->
+
+<aura:component description="Peak_OnboardingSlide">
+    <aura:attribute name="class" type="String" />
+    <aura:attribute name="layout" type="String" default="vertical" />
+
+    <aura:attribute name="title" type="String" default="" />
+    <aura:attribute name="description" type="String" default="" />
+    <aura:attribute name="subText" type="String" default="" />
+    <aura:attribute name="hideHeader" type="Boolean" default="false" />
+
+    <aura:attribute name="primaryButtonLabel" type="String" default="Save &amp; Next" />
+    <aura:attribute name="primaryButtonColor" type="String" default="#333" />
+    <aura:attribute name="primaryButtonLabelColor" type="String" default="#fff" />
+    <aura:attribute name="backButtonLabel" type="String" default="Go Back" />
+
+    <aura:attribute name="footer" type="Aura.Component[]" />
+
+    <aura:registerEvent name="primaryOnClick" type="c:Peak_OnboardingButtonEvent" />
+    <aura:registerEvent name="backOnClick" type="c:Peak_OnboardingButtonEvent" />
+
+    <aura:handler name="init" action="{!c.init}" value="{!this}"/>
+
+    <aura:html tag="style">
+        .cPeak_OnboardingSlide .onboarding-slide__button-primary {
+            background-color: {!v.primaryButtonColor};
+        }
+    </aura:html>
+
+    <article class="{!'onboarding-slide ' + if(equals(v.layout, 'horizontal'), 'onboarding-slide_horizontal ', '') + v.class}">
+        <lightning:layout pullToBoundary="small"
+                          multipleRows="true"
+        >
+            <aura:if isTrue="{! !v.hideHeader }">
+                <lightning:layoutItem size="12" mediumDeviceSize="{!if(equals(v.layout, 'horizontal'), '4', '12')}" padding="horizontal-small">
+                    <header class="onboarding-slide__header">
+                        <aura:if isTrue="{!v.title}">
+                            <h1 class="onboarding-slide__title slds-text-heading_large">{!v.title}</h1>
+                        </aura:if>
+                        <aura:if isTrue="{!v.description}">
+                            <p class="onboarding-slide__description slds-text-heading_small slds-p-top_xx-small">
+                                <aura:unescapedHtml value="{!v.description}" />
+                            </p>
+                        </aura:if>
+                        <aura:if isTrue="{!v.subText}">
+                            <p class="onboarding-slide__sub-text slds-text-color_weak slds-p-top_xx-small">
+                                <aura:unescapedHtml value="{!v.subText}" />
+                            </p>
+                        </aura:if>
+                    </header>
+                </lightning:layoutItem>
+            </aura:if>
+            <lightning:layoutItem size="12" mediumDeviceSize="{!if(and(equals(v.layout, 'horizontal'), !v.hideHeader), '8', '12')}" padding="horizontal-small">
+                <section class="onboarding-slide__body slds-text-align_center">
+                    {!v.body}
+                </section>
+            </lightning:layoutItem>
+            <lightning:layoutItem size="12" padding="horizontal-small">
+                <footer class="onboarding-slide__footer slds-text-align_center">
+                    <aura:if isTrue="{!v.backButtonLabel}">
+                        <lightning:button variant="neutral"
+                                          class="onboarding-slide__button onboarding-slide__button-back"
+                                          label="{!v.backButtonLabel}"
+                                          onclick="{!c.handleBackClick}" />
+                    </aura:if>
+                    <aura:if isTrue="{!v.primaryButtonLabel}">
+                        <lightning:button variant="brand"
+                                          class="onboarding-slide__button onboarding-slide__button-primary"
+                                          label="{!v.primaryButtonLabel}"
+                                          onclick="{!c.handlePrimaryClick}" />
+                    </aura:if>
+
+                    {!v.footer}
+                </footer>
+            </lightning:layoutItem>
+        </lightning:layout>
+
+    </article>
+</aura:component>

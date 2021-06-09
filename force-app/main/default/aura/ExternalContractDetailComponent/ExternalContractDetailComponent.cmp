@@ -1,0 +1,87 @@
+<aura:component controller="ExternalContractsController"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,lightning:isUrlAddressable"
+                access="global">
+    <aura:attribute name="refreshTable" type="Boolean" default="false"/>
+    <aura:attribute name="contractNumber" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="singleContract" type="Object"/>
+    <aura:attribute name="loadSpinner" type="Boolean" default="false"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="contractDetailList" type="List"/>
+    <aura:attribute name="filteredData" type="List"/>
+    <aura:attribute name="columnWidth" type="Integer" default="110"/>
+
+    <aura:attribute name="filter" type="String"/>
+
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="medium" aura:id="mySpinner"/>
+    </aura:if>
+    <div class="slds-p-vertical_large slds-m-bottom_medium slds-align_absolute-center">
+        <span class="moto-order-header">Contract detail</span>
+    </div>
+    <div class="slds-m-bottom_small"></div>
+    <aura:if isTrue="{!not(empty(v.singleContract))}">
+        <div class="slds-p-vertical_large slds-m-bottom_medium">
+            <lightning:layout multipleRows="true">
+                <lightning:layoutItem size="7" largeDeviceSize="3">
+                    <div>
+                        <lightning:button variant="base" iconName="utility:back" iconPosition="left"
+                                          onclick="{! c.viewAllOrders }"
+                                          label="View All Contracts" title="View All Contracts"/>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" largeDeviceSize="6" class="slds-order_3 slds-large-order_2">
+                    <div class="slds-align_absolute-center">
+                        <span class="moto-order-title">Contract No. {!v.singleContract.CONTRACT_NUMBER}</span>
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+        </div>
+
+        <div class="c-container slds-border_bottom slds-border_top slds-border_right slds-border_left slds-p-around_small">
+            <lightning:layout horizontalAlign="spread" multipleRows="true">
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3"
+                                      padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="State">State</p>
+                        <p>{!v.singleContract.SITE_STATE}</p>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3"
+                                      padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="End User Site Name">End User Site
+                            Name</p>
+                        <p>{!v.singleContract.SITE_NAME}</p>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3"
+                                      padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Site ID">Site ID</p>
+                        <p>{!v.singleContract.END_USER_SITE_NUMBER}</p>
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+        </div>
+
+        <lightning:layout verticalAlign="center" class="x-large">
+            <lightning:layoutItem flexibility="auto,no-grow" padding="around-small">
+                <lightning:input type="search"
+                                 label="Search"
+                                 placeholder="Search line items ..."
+                                 onchange="{!c.handleFilter}"
+                                 value="{!v.filter}"
+                                 class="moto-input-item"/>
+
+            </lightning:layoutItem>
+        </lightning:layout>
+    </aura:if>
+    <div class="slds-m-bottom_medium"></div>
+    <aura:if isTrue="{!v.refreshTable}">
+        <c:GenerateLightningDataTable columns="{!v.columns}" inlineEditing="false" resultList="{!v.filteredData}"
+                                      hideSelection="true"
+                                      showPagination="true" pageSize="10" minColumnWidth="{!v.columnWidth}"
+                                      sortField="ITEM_DESCRIPTION"/>
+    </aura:if>
+</aura:component>

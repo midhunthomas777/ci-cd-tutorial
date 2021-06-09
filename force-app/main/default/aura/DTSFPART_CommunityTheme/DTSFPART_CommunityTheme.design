@@ -1,0 +1,10 @@
+<design:component label="Hubs Community Theme">
+    <design:attribute name="communityMode"      label="Community Mode" datasource="Partner Hub,Customer Hub" />
+    <design:attribute name="cssClass"           label="CSS Class" />
+    <design:attribute name="tealiumLibraryUrl"  label="Tealium Library URL" />
+    <design:attribute name="dynatraceUrl"       label="Dynatrace URL" />
+    <design:attribute name="mulesoftCredentials" label="Mulesoft Named Credentials" datasource="apex://DTSFPART_MulesoftCredentialsPicklist" />
+    <design:attribute name="occUrl" label="OCC Shop Url" />
+    <design:attribute name="aemUrl" label="AEM Url" />
+    <design:attribute name="businessonlineUrl" label="Motorola Online Url" />    
+</design:component>

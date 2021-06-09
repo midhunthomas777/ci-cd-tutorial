@@ -1,0 +1,31 @@
+<!-- Copyright ©2019 7Summits Inc. All rights reserved. -->
+
+<aura:component description="SVNSUMMITS_Ideas_FileView"
+                implements="force:hasRecordId,force:hasSObjectName"
+                controller="SVNSUMMITS_Ideas_FeedPublishController"
+                access="global">
+
+    <!--Internal Attributes-->
+    <aura:attribute name="recordId"         type="String"   access="global"/>
+    <aura:attribute name="files"            type="List"     access="global" />
+    <aura:attribute name="visibility"       type="String"   default="AllUsers"  access="global"/>
+
+    <!--Boolean Attributes-->
+    <aura:attribute name="isParentCalled"   type="Boolean"  default="false"   access="global" />
+
+    <!--Events-->
+    <aura:handler event="c:SVNSUMMITS_Ideas_FileUpload_Event" action="{!c.handleFileUploadChange}"/>
+
+    <!--Init Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+
+    <!--Body-->
+    <aura:if isTrue="{!v.files.length > 0}">
+        <aura:iteration items="{!v.files}" var="file" >
+            <lightning:fileCard fileId="{!file}"
+                                description="{!$Label.c.ss_idea_label_fileUploaded}"/>
+        </aura:iteration>
+    </aura:if>
+
+</aura:component>

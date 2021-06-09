@@ -1,0 +1,63 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<design:component label="7S Ideas Detail">
+	<design:attribute name="zoneName"
+	                  label="Zone Name"
+	                  description="Ideas Zone Name"/>
+
+	<design:attribute name="displayMode"
+	                  label="Featured Image Display:"
+	                  description="Select image display mode"
+	                  dataSource="Full,Half,None"/>
+
+	<design:attribute name="opaqueBackground"
+	                  label = "Opaque background"
+	                  description="Enable to show an opaque background"/>
+
+	<design:attribute name="displayTheme"
+	                  label="Display Idea Theme"
+	                  description="When enabled, displays the associated Idea Theme on the detail page."/>
+	<design:attribute name="displayCategories"
+	                  label="Display Idea Categories"
+	                  description="When enabled, displays the assigned Idea Category on the detail page."/>
+	<design:attribute name="displaySupporters"
+	                  label="Display Supporters"
+	                  description="When enabled, displays a list of users who have supported the idea."/>
+	<design:attribute name="numberSupporters"
+	                  label="Number of supporters"
+	                  description="Enter the total number of supporters to show"/>
+	<design:attribute name="displayStatusChanges"
+	                  label="Display Status Changes"
+	                  description="When enabled, displays a record of all status changes made to this Idea."/>
+	<design:attribute name="displayComments"
+	                  label="Enable Idea Comments"
+	                  description="When enabled, displays the list of comments on the idea, and allow users to post additional comments."/>
+	<design:attribute name="numComments"
+	                  label="Number of comments"
+	                  description="Enter the number of comments to display on the page"/>
+	<design:attribute name="showPagination"
+	                  label="Show comment pagination"
+	                  description="Show navigation buttons for the comments"/>
+	<design:attribute name="showSort"
+	                  label="Show comment sort option"
+	                  description="Show the comment sort selector"/>
+	<design:attribute name="sortOrder"
+	                  label="Comment Default Sort"
+	                  description="Select the default comment sort"
+	                  dataSource="LatestComment,OldestComment,MostVotes,LeastVotes"/>
+
+	<design:attribute name="showCustomFields"
+	                  label="Show custom fields"
+	                  description="Enable to display all defined custom fields on the detail page"/>
+	<design:attribute name="hideEmptyCustomFields"
+	                  label="Hide empty custom fields"
+	                  description="Enable to hide empty custom fields"/>
+	<design:attribute name="customFieldSetName"
+	                  label="Custom Field Set Name"
+	                  description="Specify the custom metadata field set API name. Leave blank to fall back to the Ideas Settings field set."/>
+
+	<design:attribute name="ideaListURL"
+	                  label="Idea List URL"
+	                  description="URL to the ideas list" />
+</design:component>

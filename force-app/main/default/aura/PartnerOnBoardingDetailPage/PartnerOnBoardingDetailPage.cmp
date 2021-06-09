@@ -1,0 +1,74 @@
+<aura:component controller="PartnerOnBoardingRedirectionCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,lightning:isUrlAddressable,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="contactColumns" type="List" /> 
+    <aura:attribute name="applicationId" type="String" access="global"/> 
+    <aura:attribute name="customActions" type="List" />
+    <aura:attribute name="accessCode" type="String" />
+    <aura:attribute name="isSubmitted" type="Boolean" default="true" /> 
+    <aura:attribute name="loadData" type="boolean" default="false" /> 
+    <aura:attribute name="openPopUp" type="boolean" default="false"/>
+    <aura:attribute name="approvalComment" type="boolean"  />
+    <aura:handler event="c:GenericApprovalSubmissionEvent" action="{!c.handleApproval}"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+     <div class="slds-page-header slds-page-header_record-home">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <lightning:icon iconName="standard:partners" alternativeText="macros" />
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1><span class="slds-page-header__title">{!$Label.c.Partner_Onboarding_wel}</span></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-page-header__col-actions">
+                    <div class="slds-page-header__controls">
+                        <div class="slds-page-header__control">
+                            <lightning:button label="{!$Label.c.Partner_Support}" iconName="utility:call"  variant="base" onclick="{!c.navigateToContact}"/>
+                            <div class="slds-p-horizontal_medium"></div>
+                            <lightning:button label="{!$Label.c.PartnerEmpower_Program_Information}" iconName="utility:info"  variant="base" onclick="{!c.navigateToPartner}"/>
+                        </div>	
+                    </div>
+                </div>
+            </div>
+        </div>
+    <aura:if isTrue="{!v.loadData}">        
+        <div>
+            <c:PartnerOnBoardingPath recordId="{!v.applicationId}" />
+        </div>
+        <lightning:card iconName="standard:user" title="{!$Label.c.POPartnerEmpower}">
+            <!--aura:set attribute="actions">
+                <c:POSubmitForApproval recordId="{!v.applicationId}" openPopUp="{!v.openPopUp}" comment="{!v.approvalComment}"/>
+            </aura:set-->
+            <div class="slds-p-left_large slds-p-right_medium">
+                <lightning:recordForm
+                                      recordId="{!v.applicationId}"
+                                      objectApiName="Empower_Application__c"
+                                      columns="2"
+                                      mode="readonly" layoutType="Full" />
+            </div>
+            <div>
+                <c:singleRelatedList recordId="{!v.applicationId}" 
+                                     sobjectApiName="MPEContact__c"
+                                     relatedFieldApiName="Application__c"
+                                     sortedBy="Name"
+                                     sortedDirection="DESC"
+                                     fields="Application__c,Name,First_Name__c,Last_Name__c,Email__c,Phone__c,toLabel(Primary_Role__c)"
+                                     columns="{!v.contactColumns}"
+                                     customActions="{!v.customActions}"       
+                                     onRowActionHandler="{!c.customHandler}"  
+                                     />
+                
+                
+            </div>
+        </lightning:card>
+        <aura:set attribute="else">
+            <c:PartnerOnBoardingAccessPage/>
+        </aura:set>
+    </aura:if>
+</aura:component>

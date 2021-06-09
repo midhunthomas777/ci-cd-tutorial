@@ -1,0 +1,15 @@
+/**
+ * Expedition_Pack - Front-end assets used for the 7Summits Expedition Pack
+ * @version 1.0.0
+ * @author 7Summits
+ *
+ * COMPILED FILE DO NOT DIRECTLY EDIT
+ */
+.THIS .peak-featured-topics__heading {
+  margin-bottom: token(spacingXSmall);
+}
+.THIS.error-message {
+  padding: token(spacingSmall);
+  border: 1px solid token(borderColor);
+  border-radius: token(borderRadiusMedium);
+}

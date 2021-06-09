@@ -1,0 +1,68 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+
+<!--
+ - Created by francoiskorb on 2019-04-17.
+ -->
+
+<design:component label="7S Ideas Detail Discussion">
+	<design:attribute name="zoneName"
+	                  label="Zone Name"
+	                  description="Ideas Zone Name"/>
+
+	<design:attribute name="selectedTab"
+	                  label="Set initial tab position"
+	                  description="Set the initial selected tab - not all three tabs may be visible due to access permission."
+	                  dataSource="comments,discussion,files"/>
+	<design:attribute name="showComments"
+	                  label="Show Idea comments"
+	                  description="Enable to show Idea comments"/>
+	<design:attribute name="numComments"
+	                  label="Number of comments"
+	                  description="Enter the number of comments to display on the page"/>
+	<design:attribute name="showPagination"
+	                  label="Show comment pagination"
+	                  description="Show navigation buttons for the comments"/>
+	<design:attribute name="showSort"
+	                  label="Show comment sort option"
+	                  description="Show the comment sort selector"/>
+	<design:attribute name="sortOrder"
+	                  label="Comment Default Sort"
+	                  description="Select the default comment sort"
+	                  dataSource="LatestComment,OldestComment,MostVotes,LeastVotes"/>
+
+	<design:attribute name="showChatter"
+	                  label="Show Chatter feed"
+	                  description="Enable to show Ideas chatter feed"/>
+	<design:attribute name="feedTitle"
+	                  label="Chatter feed title"
+	                  description="Set a heading for the chatter feed, leave blank to hide"/>
+	<design:attribute name="showPublisher"
+	                  label="Show Publisher"
+	                  description="Enable to show the feed publisher" />
+	<design:attribute name="showFeed"
+	                  label = "Show Feed"
+	                  description="Enable chatter feed"/>
+
+	<design:attribute name="showFiles"
+	                  label="Show Related Files"
+	                  description="Enable to show related files"/>
+	<design:attribute name="filesTitle"
+	                  label="Related files title"
+	                  description="Set a heading for the related files, leave blank to hide"/>
+	<design:attribute name="filesAccept"
+	                  label="Allow File Types"
+	                  description="File Formats Supported" />
+	<design:attribute name="filesVisibility"
+	                  dataSource="AllUsers,InternalUsers,SharedUsers"
+	                  label="Files Visibility"
+	                  description="Set File Share Visibility" />
+	<design:attribute name="showFileUploader"
+	                  label="Show File Uploader"
+	                  description="Display the file uploader" />
+	<design:attribute name="showFileViewer"
+	                  label="Show File Viewer"
+	                  description="Show the uploaded files" />
+
+</design:component>

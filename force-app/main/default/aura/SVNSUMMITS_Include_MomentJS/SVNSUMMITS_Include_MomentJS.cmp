@@ -1,0 +1,14 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+
+<aura:component description="SVNSUMMITS_Include_MomentJS">
+
+	<ltng:require
+			scripts="{! join(',',
+			    $Resource.SVNSUMMITS_Ideas_MomentJS + '/moment.min.js',
+			    $Resource.SVNSUMMITS_Ideas_MomentJS + '/moment-with-locales.min.js',
+			    $Resource.SVNSUMMITS_Ideas_MomentJS + '/moment-timezone-with-data.min.js')}"
+			afterScriptsLoaded="{!c.afterScriptsLoaded}"/>
+
+</aura:component>

@@ -1,0 +1,22 @@
+<aura:component access="global" implements="lightning:availableForFlowScreens">
+    <aura:attribute name="iconName" type ="String" access="global"/>
+    <aura:attribute name="heading" type ="String" access="global"/>
+    <aura:attribute name="helpText" type ="String" access="global"/>
+    <aura:attribute name="iconSize" type ="String" access="global" default="small"/>
+    <lightning:layout>
+        <lightning:layoutItem size="1">
+            <lightning:icon iconName="{!v.iconName}" size="{!v.iconSize}"/>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="1">
+        </lightning:layoutItem>        
+        <lightning:layoutItem size="9">
+            <div class="slds-text-heading_medium slds-text-font_monospace">{!v.heading}</div>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="1">
+            <aura:if isTrue="{!not(empty(v.helpText))}">
+                <lightning:helptext content="{!v.helpText}" />
+            </aura:if>
+        </lightning:layoutItem>
+    </lightning:layout>
+    <div class="slds-p-bottom_x-small"></div>
+</aura:component>

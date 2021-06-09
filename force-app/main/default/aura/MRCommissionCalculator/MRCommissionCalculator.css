@@ -1,0 +1,9 @@
+.THIS .slds-select_container:before {    
+    display:none !important;
+}
+.THIS .slds-select_container:after {    
+    top: calc((5.5rem / 2) - 6px)!important;
+}
+.THIS {
+  background-color: #ffffff;
+}

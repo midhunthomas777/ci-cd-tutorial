@@ -1,0 +1,16 @@
+<aura:component >
+    
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="maxRowSelection" type="Integer" default="1"/>
+    <aura:attribute name="pageSize" type="Integer" default="5"/>
+    <aura:attribute name="customerAccId" type="String" />
+    
+    <div id="displayMCNList">
+        <lightning:datatable aura:id="accountTable" class="cols" columns="{! v.columns }" data="{! v.PaginationList }" keyField="Id" 
+                             maxRowSelection="{! v.maxRowSelection }" onrowselection="{!c.openMCNDetails}"/>
+        <lightning:buttonGroup class="slds-align_absolute-center slds-m-top_xx-small">
+            <lightning:button label="Previous" disabled="{!v.startPage == 0}" onclick="{!c.previous}" iconName='utility:back'/>
+            <lightning:button label="Next" disabled="{!v.endPage >= v.totalRecords}" onclick="{!c.next}" variant="brand" iconName='utility:forward' iconPosition='right'/>
+        </lightning:buttonGroup>
+    </div>
+</aura:component>

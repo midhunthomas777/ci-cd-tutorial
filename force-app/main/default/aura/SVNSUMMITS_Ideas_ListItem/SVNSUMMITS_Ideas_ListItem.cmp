@@ -1,0 +1,114 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<aura:component description="SVNSUMMITS_Ideas_ListItem"
+                controller="SVNSUMMITS_IdeaListController"
+                extends="c:SVNSUMMITS_Ideas_Base"
+                access="public">
+
+    <aura:attribute name="debugMode" type="Boolean" default="false" access="global"/>
+
+    <aura:attribute name="sitePath"         type="String"   access="global"/>
+    <aura:attribute name="sitePrefix"       type="String"   access="global"/>
+    <aura:attribute name="idea"             type="Map"      access="public"/>
+
+    <aura:attribute name="allowVoting"              type="Boolean" default="false" access="global"/>
+    <aura:attribute name="enableDownVoting"         type="Boolean" default="false" access="global"/>
+    <aura:attribute name="displayImages"            type="Boolean" default="true"  access="global"/>
+    <aura:attribute name="displayPostDateAuthor"    type="Boolean" default="true"  access="global"/>
+    <aura:attribute name="displayStatus"            type="Boolean" default="true"  access="global"/>
+    <aura:attribute name="headingLines"             type="String"  default=""    access="global"/>
+    <aura:attribute name="isNicknameDisplayEnabled" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="isVoting" type="Boolean" default="false" />
+
+    <aura:attribute name="accountLimitReachedMessage" type="String"   access="global" />
+    <aura:attribute name="currentVoteCount" 	  	    type="Integer" 	default="0" 	access="global" />
+    <aura:attribute name="totalVoteCount" 	 		    type="Integer" 	default="0" 	access="global" />
+
+    <aura:attribute name="userProfileURL"   type="String" default="/profile/"   access="global"/>
+    <aura:attribute name="ideaDetailURL"    type="String" default="/idea/"      access="global"/>
+
+    <!-- UI -->
+    <aura:attribute name="tooltipVoteUp"    type="String" default="{!$Label.c.ss_idea_label_UpVote}"    access="global"/>
+    <aura:attribute name="tooltipVoteDown"  type="String" default="{!$Label.c.ss_idea_label_DownVote}"  access="global"/>
+    <aura:attribute name="labelUpVoted"     type="String" default="{!$Label.c.ss_idea_label_UpVoted}"   access="global"/>
+    <aura:attribute name="labelDownVoted"   type="String" default="{!$Label.c.ss_idea_label_DownVoted}" access="global"/>
+
+    <aura:attribute name="baseModel"  type="String"  access="global"/>
+    <aura:attribute name="baseLoaded" type="Boolean" access="global" default="false"/>
+
+    <lightning:layoutItem class="ideas_list-item"
+                          size="12"
+                          padding="around-small"
+    >
+        <lightning:layout multipleRows="true"
+                          class="{!'idea ' + if(v.displayImages, ' idea_has-image', '')}"
+                          pullToBoundary="small"
+                          verticalAlign="center">
+            <aura:if isTrue="{!v.displayImages}">
+                <!-- Image -->
+                <c:SVNSUMMITS_Ideas_Tile_Image idea="{!v.idea}"
+                                               sitePath="{!v.sitePath}"
+                                               sitePrefix="{!v.sitePrefix}"
+                                               height="90px;"
+                                               size="12"
+                                               mediumDeviceSize="2"
+                                               ideaDetailURL="{!v.ideaDetailURL}"
+                />
+            </aura:if>
+
+            <lightning:layoutItem class="idea__content slds-p-vertical_x-small"
+                                  size="12"
+                                  mediumDeviceSize="{!v.displayImages ? '7' : '9'}"
+                                  padding="horizontal-small"
+            >
+                <c:SVNSUMMITS_Ideas_Tile_Name idea="{!v.idea}"
+                                              displayStatus="{!v.displayStatus}"
+                                              displayPostDateAuthor="{!v.displayPostDateAuthor}"
+                                              headingLines="{!v.headingLines}"
+                                              isNicknameDisplayEnabled="{!v.isNicknameDisplayEnabled}"
+                                              sitePath="{!v.sitePath}"
+                                              sitePrefix="{!v.sitePrefix}"
+                                              userProfileURL="{!v.userProfileURL}"
+                                              ideaDetailURL="{!v.ideaDetailURL}"
+                />
+            </lightning:layoutItem>
+
+            <!-- Vote -->
+            <lightning:layoutItem class="idea__vote"
+                                  size="12"
+                                  mediumDeviceSize="3"
+                                  padding="horizontal-small"
+            >
+                <lightning:layout multipleRows="true"
+                                  horizontalAlign="spread"
+                >
+                    <aura:if isTrue="{!v.allowVoting}">
+                        <c:SVNSUMMITS_Ideas_Points points="{!v.idea.VoteTotal}"
+                                                   size="6"
+                                                   mediumDeviceSize="12"
+                        />
+
+                        <lightning:layoutItem class="idea__votes"
+                                              size="6"
+                                              mediumDeviceSize="12"
+                        >
+                            <c:SVNSUMMITS_Ideas_Vote_Buttons disableDownVoting="{! !v.enableDownVoting }"
+                                                             userHasVoted="{!v.idea.Votes[0]}"
+                                                             userVoteType="{!v.idea.Votes[0].Type}"
+                                                             onVote="{!c.handle_VoteUp}"
+                                                             onDownVote="{!c.handle_VoteDown}"
+                                                             enableVote="{!v.idea.enableVote}"
+                                                             ideaId="{!v.idea.Id}"
+                                                             reduceButtonLabels="false"
+                                                             totalVoteCount="{!v.totalVoteCount}"
+                                                             currentVoteCount="{!v.currentVoteCount}"
+                                                             accountLimitReachedMessage="{!v.accountLimitReachedMessage}"
+                            />
+                        </lightning:layoutItem>
+                    </aura:if>
+                </lightning:layout>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </lightning:layoutItem>
+</aura:component>

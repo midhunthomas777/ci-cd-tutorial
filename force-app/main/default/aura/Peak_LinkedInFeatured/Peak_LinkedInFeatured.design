@@ -1,0 +1,14 @@
+<design:component label="7S LinkedIn Featured Posts">
+	<design:attribute name="title" label="Heading Title"/>
+    <design:attribute name="subTitle" label="Subheading"/>
+    <design:attribute name="extLink" label="Subheading Link URL"/>
+    <design:attribute name="align" label="Header Alignment" datasource="left,center,right"/>
+
+    <design:attribute name="postURLs" label="LinkedIn Post IDs [comma separated]"/>
+    
+    <design:attribute name="postsPerRow" label="Posts Per Row" datasource="1,2,3,4,5,6" description="When viewed on a mobile device, the row count will be stacked vertically."/>
+	<design:attribute name="height" label="Post Height (px)"/>
+
+    <design:attribute name="useMetaData" label="Use custom metadata type values for content" description="If checked, use values from configured custom metadata type record and ignore all content/post IDs in property editor." />
+    <design:attribute name="record" label="Record Name for the post URLs" description="Only applicable if using custom metadata type values for content."/>
+</design:component>

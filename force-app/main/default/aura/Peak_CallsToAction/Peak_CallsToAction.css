@@ -1,0 +1,82 @@
+/**
+ * Expedition_Pack - Front-end assets used for the 7Summits Expedition Pack
+ * @version 1.0.0
+ * @author 7Summits
+ *
+ */
+.THIS h1 {
+  font-size: 1.5rem;
+}
+.THIS.communicatorFAQs{
+  font-size: 32px;
+  font-family:UniversLTStd-Cn, sans-serif;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.38;
+  letter-spacing: normal;
+  color: #464646;
+}
+.THIS.communicatorFAQs .peak-tile__image{
+  height: 200px;
+}
+.THIS.communicatorFAQs .peak-cta__title{
+  padding: 50px 0px;
+  font-size: 30px;
+}
+.THIS.communicatorFAQs .peak-tile_tile {
+  height: 325px;
+  background-color: #F4F2F2;
+  box-shadow: 5px 5px 15px #DDDDDD;
+}
+.THIS.communicatorFAQs .peak-tile__info {
+  top: 100px;
+  position: relative;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.38;
+  letter-spacing: normal;
+  font-family: Arial, sans-serif;
+}
+.THIS.communicatorFAQs .peak-tile__description {
+  padding-top: 20px;
+  color: #005eb8;
+  font-weight: normal;
+}
+.THIS.securityPatches{
+  font-size: 32px;
+  font-family:UniversLTStd-Cn, sans-serif;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.38;
+  letter-spacing: normal;
+  color: #464646;
+}
+.THIS.securityPatches .peak-tile__image{
+  height: 200px;
+  background-color: white;
+}
+.THIS.securityPatches .peak-cta__title{
+  padding: 50px 0px;
+  font-size: 30px;
+}
+.THIS.securityPatches .peak-tile_tile {
+  height: 325px;
+  background-color: #F4F2F2;
+  box-shadow: 5px 5px 15px #DDDDDD;
+}
+.THIS.securityPatches .peak-tile__info {
+  top: 100px;
+  position: relative;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.38;
+  letter-spacing: normal;
+  font-family: Arial, sans-serif;
+}
+.THIS.securityPatches .peak-tile__description {
+  padding-top: 20px;
+  color: #005eb8;
+  font-weight: normal;
+}

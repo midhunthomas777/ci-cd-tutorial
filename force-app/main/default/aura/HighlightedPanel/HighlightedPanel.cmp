@@ -1,0 +1,50 @@
+<aura:component controller="HighLightedPanelCtrl"
+                implements="lightning:actionOverride,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,lightning:availableForFlowScreens,lightning:availableForFlowActions" access="global">
+    <aura:attribute name="result" type="map" />
+    <aura:attribute name="fieldSetName" type="String" description="API name of Fieldset from object" />
+    <aura:attribute name="errorMsg" type ="String"/>
+    <aura:attribute name="title" type ="String"/>
+    <aura:attribute name="showLink" type ="Boolean" default="false"/>
+    <aura:attribute name="metaField" type ="String"/>
+    <aura:attribute name="iconName" type ="String" default="standard:opportunity"/>
+    
+    <lightning:workspaceAPI aura:id="workspace"/>
+    
+    <aura:attribute name="showSpinner" type="Boolean" default="true" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:if isTrue="{!v.showSpinner}">
+        <lightning:spinner variant="brand" />
+    </aura:if>
+    
+    <aura:if isTrue="{!not(empty(v.errorMsg))}"> 
+        <c:AlertMessages Message="{!v.errorMsg}" type="error"/>
+    </aura:if><br/>
+    <aura:if isTrue="{!not(empty(v.result))}"> 
+        <div class="slds-page-header">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <lightning:icon iconName="{!v.iconName}" alternativeText="opportunity" />
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <aura:if isTrue="{!!v.showLink}">
+                                        <h1><span class="slds-page-header__title" title="{!v.title}">{!v.title}</span></h1>
+                                        <aura:set attribute="else">
+                                            <a href="" target="_blank" onclick="{!c.redirectToDetailPage}" title="{!v.title}">{!v.title}</a>
+                                        </aura:set>
+                                    </aura:if>
+                                </div>
+                            </div>
+                            <p class="slds-page-header__name-meta">{!v.metaField}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+</aura:component>

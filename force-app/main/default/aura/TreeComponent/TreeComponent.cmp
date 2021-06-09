@@ -1,0 +1,33 @@
+<aura:component controller="TreeComponentController" extensible="true" implements="force:lightningQuickAction,flexipage:availableForRecordHome,force:hasRecordId" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="items" type="Object" />
+    <aura:attribute name="oldOppErrorMsg" type="String" />
+    <aura:attribute name="folderExists" type="boolean" default= "false"/>    
+    <aura:attribute name="displayMessage" type="String"/>
+    <aura:attribute name="rootFolderId" type="String"/><!--SF-2545-->
+    <aura:attribute name="alertType" type="String" default="error"/>
+    <aura:attribute name="oldOpportunity"  type="boolean" default= "false"/>
+    <aura:attribute name="recordIdType"  type="String" default= "Opportunity"/>
+    <aura:attribute name="recordInfo" type="Object"/> 
+    <force:recordData aura:id="recordLoader" recordId="{!v.recordId}" 
+                      fields="CreatedDate,RecordType.Name,Region__c,Owner.GoogleDriveFolderRollup__c,Google_Drive_Root_Folder_Id__c,Territory__c"
+                      recordUpdated="{!c.handleRecordUpdated}"
+                      targetFields="{!v.recordInfo}"/>
+    
+    <lightning:empApi aura:id="empApi"/>
+    <aura:attribute name="channel" type="String" default="/event/Google_Drive_Integration__e"/>
+    
+    <!--aura:if isTrue="{!v.folderExists}">
+        data come
+        <lightning:tree items="{!v.items}"  /> 
+        <aura:set attribute="else"> 
+            <c:AlertMessages type="error" Message="{!v.displayMessage}"/>
+        </aura:set>
+    </aura:if-->    
+    <aura:if isTrue="{!not(empty(v.displayMessage))}">
+     <c:AlertMessages type="{!v.alertType}" Message="{!v.displayMessage}"/>        
+    </aura:if>  
+    <aura:if isTrue="{!v.folderExists}">
+        <lightning:tree items="{!v.items}"  onselect="{!c.handleSelect}" /> 
+    </aura:if>
+</aura:component>

@@ -1,0 +1,110 @@
+<aura:component controller="MotoCommunityBannerController"
+                implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes"
+                access="global" extensible="true">
+
+    <aura:attribute name="accountName" type="string" default="-"/>
+    <aura:attribute name="casesUrl" type="string" default=""/>
+    <aura:attribute name="ordersUrl" type="string" default=""/>
+    <aura:attribute name="contractsUrl" type="string" default=""/>
+    <aura:attribute name="orderCount" type="integer" default="-1"/>
+    <aura:attribute name="contractCount" type="integer" default="-1"/>
+    <aura:attribute name="caseCount" type="integer" default="-1"/>
+    <aura:attribute name="isOrderError" type="Boolean" default="false"/>
+    <aura:attribute name="isCaseError" type="Boolean" default="false"/>
+    <aura:attribute name="isContractsError" type="Boolean" default="false"/>
+    <aura:attribute name="componentName" type="string"/>
+    <lightning:navigation aura:id="navService"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <div class="moto-container">
+        <div class="moto-banner-container slds-grid slds-grid_vertical-align-center">
+
+            <div class="slds-col slds-size_1-of-1">
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-medium-size_4-of-12 slds-size_1-of-1 moto-banner-head">
+                        <div class="title">
+                            <h1>{!v.accountName}</h1>
+                        </div>
+                    </div>
+                    <div class="slds-medium-size_2-of-12 slds-size_4-of-12 moto-banner-section">
+                        <h1>
+                            <aura:if isTrue="{!!v.isOrderError}">
+                                <aura:if isTrue="{!v.orderCount >= 0}">
+                                    <a href="{!v.ordersUrl}" class="statlink">
+                                        <lightning:formattedNumber class="moto-count-header" value="{!v.orderCount}"/>
+                                    </a>
+                                    <aura:set attribute="else">
+                                        <div class="countSpinner">
+                                            <lightning:spinner alternativeText="-" size="small" />
+                                        </div>
+                                    </aura:set>
+                                </aura:if>
+                                <aura:set attribute="else">
+                                            <span class="moto-banner-error">
+                                                <lightning:icon iconName="utility:warning" class="slds-current-color"
+                                                                alternativeText="Warning!"/>
+                                            </span>
+                                </aura:set>
+                            </aura:if>
+                            <h3>Open orders</h3>
+                        </h1>
+                    </div>
+                    <div class="slds-medium-size_2-of-12 slds-size_4-of-12 moto-banner-section">
+
+                        <h1>
+                            <aura:if isTrue="{!!v.isCaseError}">
+                                <aura:if isTrue="{!v.caseCount >= 0}">
+                                    <a href="{!v.casesUrl}" class="statlink">
+                                        <lightning:formattedNumber class="moto-count-header" value="{!v.caseCount}"/>
+                                    </a>
+                                    <aura:set attribute="else">
+                                        <div class="countSpinner">
+                                            <lightning:spinner alternativeText="-" size="small" />
+                                        </div>
+                                    </aura:set>
+                                </aura:if>
+                                <aura:set attribute="else">
+                                    <span class="moto-banner-error">
+                                        <lightning:icon iconName="utility:warning" class="slds-current-color"
+                                                        alternativeText="Warning!"/>
+                                    </span>
+                                </aura:set>
+                            </aura:if>
+                            <h3>Open cases</h3>
+                        </h1>
+                    </div>
+                    <div aura:id="contractsContainer"
+                         class="slds-medium-size_2-of-12 slds-size_4-of-12 moto-banner-section contracts popover-enabled">
+
+                        <h1>
+                            <aura:if isTrue="{!!v.isContractsError}">
+                                <aura:if isTrue="{!v.contractCount >= 0}">
+                                    <a href="{!v.contractsUrl}" class="statlink">
+                                        <lightning:formattedNumber class="moto-count-header" value="{!v.contractCount}"/>
+                                    </a>
+                                    <aura:set attribute="else">
+                                        <div class="countSpinner">
+                                            <lightning:spinner alternativeText="-" size="small" />
+                                        </div>
+                                    </aura:set>
+                                </aura:if>
+                                <aura:set attribute="else">
+                                    <span class="moto-banner-error">
+                                        <lightning:icon iconName="utility:warning" class="slds-current-color"
+                                                        alternativeText="Warning!"/>
+                                    </span>
+                                </aura:set>
+                            </aura:if>
+                            <h3>Expiring contracts</h3>
+                            <div class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" role="tooltip">
+                                <div class="slds-popover__body">Contracts expiring within 6 months</div>
+                            </div>
+                        </h1>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</aura:component>

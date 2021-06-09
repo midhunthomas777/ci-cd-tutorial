@@ -1,0 +1,13 @@
+<!-- Copyright ©2019 7Summits Inc. All rights reserved. -->
+
+<design:component label="7S Ideas File Uploader">
+
+    <design:attribute name="accept"
+                      label="Allow File Types"
+                      description="File Formats Supported" />
+
+    <design:attribute name="disabled"
+                      label="File Uploader Disabled"
+                      description="Set file uploader to disabled" />
+
+</design:component>

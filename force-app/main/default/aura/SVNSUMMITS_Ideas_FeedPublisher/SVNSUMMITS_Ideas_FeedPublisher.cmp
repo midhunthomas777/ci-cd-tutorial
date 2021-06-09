@@ -1,0 +1,15 @@
+<!-- Copyright ©2019 7Summits Inc. All rights reserved. -->
+
+<aura:component description="SVNSUMMITS_Ideas_FeedPublisher" implements="force:hasRecordId">
+
+    <!--Internal Attributes-->
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="idea" type="Map" access="global" />
+
+
+    <!--BODY-->
+    <aura:if isTrue="{!not(empty(v.idea.extension))}">
+        <forceChatter:publisher context="RECORD" recordId="{!v.idea.extension}" />
+    </aura:if>
+
+</aura:component>

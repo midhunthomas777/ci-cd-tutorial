@@ -1,0 +1,6 @@
+<design:component label="Partner Portal Menu">
+    <design:attribute name="addHomeIcon" label="Add Home icon along text" />
+    <design:attribute name="navigationLinkSetId" datasource="apex://DTSFPART_MenuPicklist" label="Default Menu" />
+    <design:attribute name="enablePermissioning" label="Enable Permissioning" />
+    <design:attribute name="visibleMenuItems" label="Deprecated setting" description="Deprecated - has no use here." />
+</design:component>

@@ -1,0 +1,32 @@
+<aura:component controller="SearchBeforeCreateCtrl" implements="force:appHostable,lightning:availableForFlowScreens,lightning:availableForFlowActions,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:attribute name="errorMsg" type ="String"/>
+    <aura:attribute name="leadId" type ="String"/>
+    <aura:attribute name="oppName" type ="String"/>
+    <aura:attribute name="countryName" type="String" />
+    <aura:attribute name="stateName" type="String" />
+    <aura:attribute name="cityName" type="String" />
+    <aura:attribute name="CountryCode" type="String" />
+    <aura:attribute name="territory" type="String" />
+        <aura:attribute name="street" type="String" />
+
+    <aura:attribute name="region" type="String" />
+    <aura:attribute name="StateCode" type="String" />
+
+    <aura:attribute name="loadSBC" type="Boolean" default="false"/>
+    <aura:attribute name="showSpinner" type ="Boolean" default="false"/>
+    <aura:attribute name="userTheme" type="String"  />
+    <aura:if isTrue="{!v.showSpinner}">
+        <lightning:spinner variant="brand"/>
+    </aura:if>
+    <aura:if isTrue="{!not(empty(v.errorMsg))}"> 
+        <c:AlertMessages Message="{!v.errorMsg}" type="error"/>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.loadSBC}">
+        <c:SearchBeforeCreateTable leadId="{!v.leadId}" countryName ="{!v.countryName}"  userTheme="{!v.userTheme}" territory="{!v.territory}"
+                                   stateName ="{!v.stateName}" cityName ="{!v.cityName}" accountName ="{!v.oppName}" region ="{!v.region}"
+                                   isLeadConvert = "true" stateCode ="{!v.StateCode}" countryISOCode ="{!v.CountryCode}" streetName ="{!v.street}"/>
+    </aura:if>
+</aura:component>

@@ -1,0 +1,25 @@
+@font-face {
+    font-family: "UniversLTStd-Cn";
+    src: url("/sfsites/c/resource/partnerCommunityAssets/fonts/UniversLTStd_Cn");
+}
+
+.THIS .moto-case-header {
+    font-size: t(fontSizeXxxLarge);
+    font-family: "UniversLTStd-Cn";
+}
+.THIS .moto-case-title{
+    font-size: t(fontSizeXLarge);
+}
+.THIS .moto-allcases-button {
+    border-radius: t(borderRadiusXLarge);
+    height:t(squareIconMediumBoundaryAlt);
+    background-color: #232323;
+    color: #FFFFFF;
+    font-size: t(fontSizeSmall);
+    padding-left: t(spacingLarge);
+    padding-right: t(spacingLarge);
+}
+
+.THIS.slds-spinner_container {
+    z-index: 7000;
+}

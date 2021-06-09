@@ -1,0 +1,403 @@
+<aura:component >
+    <aura:attribute name="isOpen" type="Boolean" default="false"/>
+    <aura:attribute name="RMARequestFormWrapper" type="object" />
+    <aura:attribute name="defaultRMARequestFormWrapper" type="object" />
+    <aura:attribute name="isDisabled" type="Boolean" />
+    <lightning:overlayLibrary aura:id="overlayLib" />
+    
+    <form class="slds-form--stacked" style="padding-bottom: 26px;"> 
+        <div class="moto-form-container">
+            <h1 class="moto-rma-header">Company Information</h1>
+            <div class="slds-grid slds-wrap">
+                <div class="slds-size_1-of-1 slds-large-size_1-of-2 moto-form-item">
+                    <lightning:layout>
+                        <lightning:layoutItem>
+                            <label class="slds-form-element__label moto-form-label">Motorola Solutions Customer Account Number</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:input aura:id="customerAccountNumber"
+                                     type="text"
+                                     value="{!v.RMARequestFormWrapper.userenDetails.customerAccountNumber}" 
+                                     variant="label-hidden"  
+                                     label="Motorola Solutions Customer Account Number"
+                                     required="false"
+                                     disabled="{!v.isDisabled}"
+                                     />
+                </div>
+                <div class="slds-size_1-of-1 slds-large-size_1-of-2 moto-form-item">
+                    <lightning:layout>
+                        <lightning:layoutItem>
+                            <label class="slds-form-element__label moto-form-label">PO#*</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:input type="text" aura:id="po" 
+                                     variant="label-hidden" 
+                                     value="{!v.RMARequestFormWrapper.userenDetails.po}" label="PO#" 
+                                     required="true"
+                                     disabled="{!v.isDisabled}"/>
+                </div>
+                <div class="slds-size_1-of-1 moto-form-item">
+                    <lightning:layout>
+                        <lightning:layoutItem>
+                            <label class="slds-form-element__labe moto-form-label">Company Name*</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>   
+                    <lightning:input type="text" aura:id="companyName"  
+                                     value="{!v.RMARequestFormWrapper.userDetails.CompanyName}" 
+                                     variant="label-hidden" label="Company Name" 
+                                     required="true"
+                                     disabled="{!v.isDisabled}"/>
+                    
+                </div>
+                <div class="slds-size_1-of-1 moto-form-item">
+                    <lightning:layout>
+                        <lightning:layoutItem>
+                            <label class="slds-form-element__label moto-form-label">Billing Address*</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:input type="text" aura:id="billingAddress" 
+                                     value="{!v.RMARequestFormWrapper.userDetails.Contact.MailingStreet}"
+                                     variant="label-hidden" 
+                                     label="Billing Address" 
+                                     required="true"
+                                     disabled="{!v.isDisabled}"/>
+                </div>
+                <div class="slds-size_1-of-1 slds-large-size_1-of-2 moto-form-item">
+                    <lightning:layout horizontalalign="space">
+                        <lightning:layoutItem>
+                            <label class="slds-form-element__label moto-form-label">City*</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:input type="text" aura:id="city"  
+                                     value="{!v.RMARequestFormWrapper.userDetails.City}" 
+                                     variant="label-hidden" 
+                                     label="City" 
+                                     required="true"
+                                     disabled="{!v.isDisabled}"/>
+                </div>
+                <div class="slds-size_1-of-1 slds-large-size_1-of-2 moto-form-item">
+                    <lightning:layout horizontalalign="space">
+                        <lightning:layoutItem>
+                            <label class="slds-form-element__label moto-form-label">State*</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:input type="text" aura:id="state" 
+                                     value="{!v.RMARequestFormWrapper.userDetails.State}" 
+                                     variant="label-hidden" 
+                                     label="State" required="true"
+                                     disabled="{!v.isDisabled}"/>
+                </div>
+                <div class="slds-size_1-of-1 moto-form-item">
+                    <lightning:layout horizontalalign="space">
+                        <lightning:layoutItem>
+                            <label class="slds-form-element__label moto-form-label">Zip Code*</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:input type="text" aura:id="zip" 
+                                     value="{!v.RMARequestFormWrapper.userDetails.Contact.MailingPostalCode}" 
+                                     variant="label-hidden" 
+                                     label="ZIP" 
+                                     required="true"
+                                     disabled="{!v.isDisabled}"/>
+                </div>
+                <div class="slds-size_1-of-1 slds-large-size_1-of-2 moto-form-item">
+                    <lightning:layout horizontalalign="space">
+                        <lightning:layoutItem>
+                            <label class="slds-form-element__label moto-form-label">Contact Name*</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:input type="text"
+                                     aura:id="contactname" 
+                                     value="{!v.RMARequestFormWrapper.userDetails.Contact.Name}" 
+                                     variant="label-hidden" 
+                                     label="Contact Name"   
+                                     required="true"
+                                     disabled="{!v.isDisabled}"/>
+                </div>
+                <div class="slds-size_1-of-1 slds-large-size_1-of-2 moto-form-item">
+                    <lightning:layout>
+                        <lightning:layoutItem>
+                            <label class="slds-form-element__label moto-form-label">Contact E-mail*</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:input type="email"
+                                     aura:id="contcatEmail" 
+                                     value="{!v.RMARequestFormWrapper.userDetails.Contact.Email}" 
+                                     variant="label-hidden" 
+                                     label="Contact Name" 
+                                     required="true"
+                                     disabled="{!v.isDisabled}"/>
+                </div>
+                <div class="slds-size_1-of-1 slds-large-size_1-of-2 moto-form-item">
+                    <lightning:layout>
+                        <lightning:layoutItem>
+                            <label class="slds-form-element__label moto-form-label">Phone Number*</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:input type="tel" 
+                                     aura:id="contactPhoneNumber" 
+                                     value="{!v.RMARequestFormWrapper.userDetails.Phone}" 
+                                     variant="label-hidden" 
+                                     label="Contact Phone Number" 
+                                     messageWhenPatternMismatch="Please enter valid phone number"
+                                     required="true"
+                                     disabled="{!v.isDisabled}"/>
+                </div>
+                <div class="slds-size_1-of-1 slds-large-size_1-of-2 moto-form-item">
+                    <lightning:layout>
+                        <lightning:layoutItem>
+                            <label class="slds-form-element__label moto-form-label">Fax Number</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:input type="text"  
+                                     name="faxnumber" 
+                                     variant="label-hidden" 
+                                     value="{!v.RMARequestFormWrapper.userenDetails.faxNumber}"
+                                     label="Fax Number" 
+                                     disabled="{!v.isDisabled}"/>
+                </div>
+            </div>
+        </div>
+        <div class="moto-midsection-container">
+            <h1 class="moto-rma-header" style="margin-top: 13px;">Parts Information</h1>
+            <div class="moto-parts-container">
+                <aura:iteration items="{!v.RMARequestFormWrapper.lineItemWrapList}" var="item" indexVar="index">
+                    <div class="moto-upperparts-grid">
+                        <div class="moto-item-label">
+                            <lightning:layout>
+                                <lightning:layoutItem>
+                                    <label class="slds-form-element__label moto-form-label">Item</label>
+                                </lightning:layoutItem >
+                            </lightning:layout>
+                            <lightning:layout>
+                                <lightning:layoutItem class="moto-index-item">
+                                    <span>{!index+1}</span>
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                        </div>
+                        <div class="moto-form-item">
+                            <lightning:layout>
+                                <lightning:layoutItem>
+                                    <label class="slds-form-element__label moto-form-label">Part Number*</label>
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                            <lightning:input type="text" value="{!item.partNumber}" name="partNumber" aura:id="lineItem" variant="label-hidden"  required="true" disabled="{!v.isDisabled}"/>
+                        </div>
+                        <div class="moto-form-item">
+                            <lightning:layout horizontalalign="space">
+                                <lightning:layoutItem>
+                                    <label class="slds-form-element__label moto-form-label">Serial# (Optional)</label>
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                            <lightning:input type="text" value="{!item.serial}" 
+                                             variant="label-hidden"
+                                             disabled="{!v.isDisabled}"/>
+                        </div>
+                        <div class="moto-form-item">
+                            <lightning:layout>
+                                <lightning:layoutItem>
+                                    <label class="slds-form-element__label moto-form-label">Manufacture Date*</label>
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                            <lightning:input type="Date" value="{!item.manfactureDate}" aura:id="lineItem" 
+                                             variant="label-hidden" 
+                                             required="true"
+                                             disabled="{!v.isDisabled}"/>
+                        </div>
+                    </div>
+                    <aura:if isTrue="{!!v.isOpen}">
+                        <div class="moto-lowerparts-grid">
+                            <div class="moto-trash-button">
+                                <lightning:buttonIcon value="{!index}" iconName="utility:delete" variant="border" onclick="{!c.removeRow}" alternativeText="Remove Row"/>  
+                            </div>
+                            <div class="moto-form-item">
+                                <lightning:layout>
+                                    <lightning:layoutItem>
+                                        <label class="slds-form-element__label moto-form-label">Problem Description*</label>
+                                    </lightning:layoutItem>
+                                </lightning:layout>
+                                <lightning:textarea class="moto-problem-input" type="text" 
+                                                    value="{!item.problemDescription}" 
+                                                    aura:id="lineItem" variant="label-hidden" 
+                                                    required="true"
+                                                    disabled="{!v.isDisabled}"/> 			
+                            </div>
+                        </div>
+                        <aura:set attribute="else">
+                            <div class="moto-review-lowerparts-grid">
+                                <div class="moto-problem-item">
+                                    <lightning:layout>
+                                        <lightning:layoutItem>
+                                            <label class="slds-form-element__label moto-form-label">Problem Description*</label>
+                                        </lightning:layoutItem>
+                                    </lightning:layout>
+                                    <lightning:textarea class="moto-problem-input" type="text" 
+                                                        value="{!item.problemDescription}" 
+                                                        aura:id="lineItem" variant="label-hidden" 
+                                                        required="true"
+                                                        disabled="{!v.isDisabled}"/> 			
+                                </div>
+                            </div>
+                        </aura:set>
+                    </aura:if>              	
+                </aura:iteration>
+                <aura:if isTrue="{!!v.isOpen}">
+                    <div class="moto-additem-grid">
+                        <div class="moto-form-item"></div>
+                        <div class="moto-form-item">
+                            <lightning:button onclick="{!c.addLineItem}" label="Add LineItem" variant="base" iconName="utility:new" iconPosition="left"/>
+                        </div>
+                    </div> 
+                </aura:if>
+            </div>
+        </div>
+        <div class="moto-form-container">
+            <h1 class="moto-rma-header">Shipping Information</h1>
+            <div class="slds-grid slds-wrap moto-grid-container">
+                <div class="slds-size_1-of-1 moto-form-item">
+                    <lightning:layout>
+                        <lightning:layoutItem>
+                            <label class="slds-form-element__label moto-form-label" required="">Ship To Information(Same as Above)</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:select aura:id="selected" name="Ship To Information" 
+                                      value="{!v.RMARequestFormWrapper.userenDetails.shipToInformation}" 
+                                      variant="label-hidden" label="Fax Number" 
+                                      onchange="{!c.handleChange}"
+                                      disabled="{!v.isDisabled}">                    
+                        <option value="">Select</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>                   
+                    </lightning:select>
+                </div>
+                <div class="slds-size_1-of-1 slds-large-size_1-of-2 moto-form-item">
+                    <lightning:layout >
+                        <lightning:layoutItem>
+                            <label class="slds-form-element__label moto-form-label">Company Name*</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:input type="text" class="customInput" 
+                                     aura:id="shipCompanyName"
+                                     value="{!v.RMARequestFormWrapper.ShipToAddress.companyName}" 
+                                     variant="label-hidden" 
+                                     label="Company Name" 
+                                     onchange="{!c.handlechangeinvalue}"
+                                     required="true"
+                                     disabled="{!v.isDisabled}"/>
+                </div>
+                <div class="slds-size_1-of-1 slds-large-size_1-of-2 moto-form-item">
+                    <lightning:layout>
+                        <lightning:layoutItem>
+                            <label class="slds-form-element__label moto-form-label">Site Name*</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:input type="text" aura:id="sitename" 
+                                     value="{!v.RMARequestFormWrapper.userenDetails.siteName}"
+                                     variant="label-hidden" 
+                                     label="Site Name"
+                                     disabled="{!v.isDisabled}"
+                                     required="true"/>
+                </div>
+                <div class="slds-size_1-of-1 moto-form-item">
+                    <lightning:layout>
+                        <lightning:layoutItem>
+                            <label class="slds-form-element__label moto-form-label">Attn*</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:input type="text" 
+                                     aura:id="attn" 
+                                     variant="label-hidden" 
+                                     label="Attn" value="{!v.RMARequestFormWrapper.ShipToAddress.attn}"
+                                     onchange="{!c.handlechangeinvalue}"
+                                     required="true"
+                                     disabled="{!v.isDisabled}"/>
+                </div>
+                <div class="slds-size_1-of-1 moto-form-item">
+                    <lightning:layout>
+                        <lightning:layoutItem>
+                            <label class="slds-form-element__label moto-form-label">Address*</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:input type="text" 
+                                     aura:id="shipToAddress"     
+                                     value="{!v.RMARequestFormWrapper.ShipToAddress.shipAddress}"
+                                     variant="label-hidden" 
+                                     label="Address" 
+                                     onchange="{!c.handlechangeinvalue}"
+                                     required="true"
+                                     disabled="{!v.isDisabled}"/>
+                </div>
+                <div class="slds-size_1-of-1 slds-large-size_1-of-2 moto-form-item">
+                    <lightning:layout>
+                        <lightning:layoutItem>
+                            <label class="slds-form-element__label moto-form-label">City*</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:input type="text" aura:id="shipToCity"
+                                     value="{!v.RMARequestFormWrapper.ShipToAddress.city}" 
+                                     variant="label-hidden" 
+                                     label="City"
+                                     onchange="{!c.handlechangeinvalue}"
+                                     required="true"
+                                     disabled="{!v.isDisabled}"/>
+                </div>
+                <div class="slds-size_1-of-1 slds-large-size_1-of-2 moto-form-item">
+                    <lightning:layout>
+                        <lightning:layoutItem>
+                            <label class="slds-form-element__label moto-form-label">State*</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:input type="text" aura:id="shipToState" 
+                                     value="{!v.RMARequestFormWrapper.ShipToAddress.state}" 
+                                     variant="label-hidden" 
+                                     required="true"
+                                     label="State" 
+                                     onchange="{!c.handlechangeinvalue}"
+                                     disabled="{!v.isDisabled}"/>
+                </div>  
+                <div class="slds-size_1-of-1 moto-form-item">
+                    <lightning:layout>
+                        <lightning:layoutItem>
+                            <label class="slds-form-element__label moto-form-label">Zip Code*</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:input type="text" 
+                                     aura:id="zipCode"     
+                                     value="{!v.RMARequestFormWrapper.ShipToAddress.zipCode}"
+                                     variant="label-hidden" 
+                                     label="Zip Code" 
+                                     onchange="{!c.handlechangeinvalue}"
+                                     required="true"
+                                     disabled="{!v.isDisabled}"/>
+                </div>
+                <div class="slds-size_1-of-1 moto-form-item">
+                    <lightning:layout>
+                        <lightning:layoutItem>
+                            <label class="slds-form-element__label moto-form-label">Preferred Shipping Method*</label>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    <lightning:layoutItem>
+                        <lightning:select aura:id="preferredshippingmethod" 
+                                          variant="label-hidden" 
+                                          value="{!v.RMARequestFormWrapper.userenDetails.preferredShippingMethod}" 
+                                          label="Preferred Shipping Method"
+                                          disabled="{!v.isDisabled}">
+                            <option value="Overnight">Overnight</option>
+                            <option value="Two Day Air">Two Day Air</option>  
+                            <option value="3 Day Air">3 Day Air</option>
+                            <option value="Ground">Ground</option>
+                        </lightning:select>
+                    </lightning:layoutItem>
+                </div> 
+            </div>
+        </div>
+    </form>
+    <aura:if isTrue="{!!v.isOpen}">
+        <div>
+            <div class="moto-form-container moto-form-item">
+                <lightning:button label="Review" class="moto-submit-buttons" variant="Brand" onclick="{!c.reviewRMAForm}"/>
+                <lightning:button label="Reset" class="moto-submit-buttons" variant="Brand" onclick="{!c.resetForm}"/>
+            </div>
+        </div>
+    </aura:if>    
+</aura:component>

@@ -1,0 +1,24 @@
+<aura:component implements="forceCommunity:layout" description="4 Rows Layout" access="global">
+    <aura:attribute name="row1" description="Content" type="Aura.Component[]" required="false" />
+    <aura:attribute name="row2" description="Content" type="Aura.Component[]" required="false" />
+    <aura:attribute name="row3" description="Content" type="Aura.Component[]" required="false" />
+    <aura:html tag="style">
+        .contentPanel {
+        max-width: 1155px;
+        margin-left: auto;
+        margin-right: auto;
+        }
+    </aura:html>
+    <div class="contentPanel">
+        <div class="slds-grid slds-wrap slds-grid_pull-padded">
+            <div class="slds-p-horizontal_small slds-p-bottom_large slds-size_1-of-1 slds-order_2 slds-medium-order_1">{!v.row1}</div>
+            <div class="slds-p-horizontal_small slds-p-bottom_large slds-size_1-of-1 slds-order_2 slds-medium-order_1">{!v.row2}</div>
+        </div>
+    </div>
+    <div class="slds-p-horizontal_small slds-size_1-of-1 slds-order_2 slds-medium-order_1" 
+         style="max-width: 100%;background-color: #fff !important;">
+        <div class="contentPanel">
+            {!v.row3}
+        </div>
+    </div>
+</aura:component>

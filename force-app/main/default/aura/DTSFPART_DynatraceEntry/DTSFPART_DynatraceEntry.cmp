@@ -1,0 +1,15 @@
+<aura:component controller="DTSFPART_DynatraceEntryController" implements="flexipage:availableForAllPageTypes">
+    
+    <aura:attribute name="currentUser"      type="User" />
+    <aura:attribute name="dynatraceUrl"     type="String" />
+    <aura:attribute name="_dynatraceUrl"    type="String" />
+    <aura:attribute name="currentActionId"  type="String" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <aura:if isTrue="{!v._dynatraceUrl}">
+        <ltng:require scripts="{!v._dynatraceUrl}" afterScriptsLoaded="{!c.dynatraceScriptLoaded}"/>
+    </aura:if>
+
+    <c:dynatraceNotifier ondynatrace="{!c.handleDynatraceEvent}" />
+</aura:component>

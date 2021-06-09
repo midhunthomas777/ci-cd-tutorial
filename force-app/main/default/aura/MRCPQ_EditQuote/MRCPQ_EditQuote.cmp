@@ -1,0 +1,70 @@
+<aura:component controller="MRCPQ_EditQuoteController" 
+                implements="lightning:actionOverride,force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global">
+    
+    <aura:attribute name="recordId" type="String" access="global"/>
+    <aura:attribute name="accountId" type="String" />
+    <aura:attribute name="userTheme" type ="String"/>
+    <aura:attribute name="oppoAccId" type="String"/>
+    <aura:attribute name="multipleMCN" type="boolean" default="false"/>
+
+    <aura:attribute name="getPageURL" type="String" />
+    <aura:attribute name="cpqSiteId" type="String"/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="false"/>
+    <aura:attribute name="showError" type="boolean" default="false"/>
+    <aura:attribute name="oppId" type="String" />
+    <!-- SF-2759 -->
+    <aura:attribute name="invokeEditList" type="Boolean" default="true" />
+    <aura:attribute name="selectedaccountId" type="String" />
+    <aura:attribute name="selectedMCNid" type="String" />
+    <aura:attribute name="selectedMCNnumber" type="String" />
+    <aura:attribute name="MCNselected" type="Integer" />
+    <aura:attribute name="quoteId" type="String" />
+    <!--<aura:handler event="c:returnMCN" action="{!c.getValueFromReturnMCNEvent}"/>-->
+    <!-- EDIT QUOTE MCN TESTING -->
+    <aura:method name="childmethod" action="{!c.doInit}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>    
+
+    <lightning:messages/> 
+
+    <div>
+        <aura:if isTrue="{!v.showError}">
+            <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" style="margin-top:50px;" role="alert">
+                <span class="slds-assistive-text">warning</span>
+                <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="Description of icon when needed"></span>
+                <h2>{!v.errorMessage}</h2>
+            </div>
+        </aura:if>
+        
+        <aura:if isTrue="{!v.loadSpinner}">
+            <lightning:spinner alternativeText="Loading" variant="brand" size="small"/>
+        </aura:if>
+
+        <aura:if isTrue="{!v.multipleMCN}">
+            <lightning:layout>
+                <lightning:layoutItem flexibility="auto" padding="around-large">
+                    <div class="custom-box slds-box slds-p-around_medium slds-text-align_center">
+                        <c:MRCPQ_MCNList recordId="{!v.recordId}" userTheme="{!v.userTheme}" 
+                        oppoAccId="{!v.oppoAccId}" oppId="{!v.oppId}" fromEditQuote="{!v.invokeEditList}"/>
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            <aura:set attribute="else">
+                <div class="slds-grid slds-grid_vertical slds-grid_align-spread slds-wrap slds-grid_full">
+                    <div class="slds-col"></div>
+                    <div class="slds-col slds-size_1-of-1 slds-p-vertical_small">
+                        <div class="slds-text-heading_small slds-text-align_center">
+                            {!$Label.c.MRCPQ_EditQuoteMessage}
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-p-vertical_small slds-text-align_right">
+                        <lightning:buttonGroup>
+                            <lightning:button variant="neutral" label="{!$Label.c.MRCPQ_Cancel}" onclick="{!c.onCancel}"/>
+                            <lightning:button variant="brand" label="{!$Label.c.MRCPQ_Proceed}" onclick="{!c.onProceedEdit}"/>
+                        </lightning:buttonGroup>
+                    </div>
+                </div>
+            </aura:set>
+        </aura:if>
+        
+    </div>
+</aura:component>

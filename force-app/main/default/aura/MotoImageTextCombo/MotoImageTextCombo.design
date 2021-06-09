@@ -1,0 +1,17 @@
+<design:component >
+  <design:attribute name="imageUrl" label="Image Url" />
+  <design:attribute name="imageLeftSide" label="Is image on the left side?" />
+  <design:attribute name="bodyTitle" label="Body Title" />
+  <design:attribute name="textBody" label="Text body" max="255"/>
+  <design:attribute name="bulletOne" label="Bullet Point One" max="255"/>
+  <design:attribute name="urlOne" label="Bullet One Url"/>
+  <design:attribute name="bulletTwo" label="Bullet Point Two" max="255"/>
+  <design:attribute name="urlTwo" label="Bullet Two Url"/>
+  <design:attribute name="bulletThree" label="Bullet Point Three" max="255"/>
+  <design:attribute name="urlThree" label="Bullet Three Url"/>
+  <design:attribute name="bulletFour" label="Bullet Point Four" max="255"/>
+  <design:attribute name="urlFour" label="Bullet Four Url"/>
+  <design:attribute name="bulletFive" label="Bullet Point Five" max="255"/>
+  <design:attribute name="urlFive" label="Bullet Five Url"/>
+
+</design:component>

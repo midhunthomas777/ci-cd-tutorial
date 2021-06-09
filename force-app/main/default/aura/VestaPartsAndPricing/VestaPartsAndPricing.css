@@ -1,0 +1,48 @@
+@font-face {
+  font-family: "UniversLTStd-Cn";
+  src: url("/sfsites/c/resource/partnerCommunityAssets/fonts/UniversLTStd_Cn");
+}
+
+/* turn off row borders */
+.THIS table.slds-table {
+  border: none !important;
+}
+
+.THIS table.slds-table tbody td {
+  /* turn off the row borders */
+  border: none !important;
+}
+
+.THIS table.slds-table tbody th {
+  /* turn off the row borders */
+  border: none !important;
+}
+
+/* end turn off row borders */
+
+.THIS.view-all-container {
+  margin-top: 18px;
+}
+
+.THIS.title-container {
+  text-align: center;
+  margin-bottom: 40px;
+  margin-top: 55px;
+}
+
+.THIS.title-container.extra-space {
+  margin-top: 80px;
+}
+
+.THIS.title-container h2 {
+  font-size: 32px;
+  line-height: 45px;
+  color: #343434;
+  font-family: "UniversLTStd-Cn";
+  line-height: 45px;
+  letter-spacing: -0.5px;
+}
+
+.THIS .slds-spinner_container {
+  z-index: 7000;
+}

@@ -1,0 +1,37 @@
+<!--
+ - Created by jonbalza on 2019-09-15.
+ -->
+
+<aura:component description="Peak_OnboardingProgressStep">
+    <aura:attribute name="show" type="Boolean" default="true" access="global" />
+    <aura:attribute name="label" type="String" access="global" />
+    <aura:attribute name="completed" type="Boolean" default="false" access="global" />
+    <aura:attribute name="pageNumber" type="String" access="global" />
+    <aura:attribute name="pageName" type="String" access="global" />
+
+    <aura:attribute name="completedIcon" type="String" default="utility:check" access="global" />
+    <aura:attribute name="todoIcon" type="String" default="utility:reassign" access="global" />
+
+    <aura:registerEvent name="onclick" type="c:Peak_OnboardingChangePage" />
+
+    <aura:if isTrue="{!v.show}">
+        <li class="onboarding-step">
+            <button class="onboarding-step__link" onclick="{!c.handleClick}">
+                <lightning:layout class="onboarding-step__layout" verticalAlign="center">
+                    <lightning:layoutItem flexibility="no-grow" class="slds-p-right_small">
+                        <div class="onboarding-step__checkbox">
+                            <aura:if isTrue="{!v.completed}">
+                                <lightning:icon class="onboarding-step__icon slds-align_absolute-center"
+                                                iconName="{!v.completedIcon}"
+                                                size="xx-small"
+                                />
+                            </aura:if>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem class="onboarding-step__label">{!v.label}</lightning:layoutItem>
+                </lightning:layout>
+            </button>
+        </li>
+    </aura:if>
+
+</aura:component>

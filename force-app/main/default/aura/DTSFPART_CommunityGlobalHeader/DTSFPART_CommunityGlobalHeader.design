@@ -1,0 +1,3 @@
+<design:component label="Partner Portal Global Header">
+    <design:attribute name="cartCookieName" label="Cart Cookie Name" />
+</design:component>

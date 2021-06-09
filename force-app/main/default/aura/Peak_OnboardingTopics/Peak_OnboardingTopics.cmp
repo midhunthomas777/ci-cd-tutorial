@@ -1,0 +1,132 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc. All rights reserved.
+  -
+  -->
+
+<aura:component controller="Peak_OnboardingController">
+
+    <aura:registerEvent name="pageChange" type="c:Peak_OnboardingChangePage"/>
+    <aura:attribute name="topicsMessage" type="String"/>
+    <aura:attribute name="topicsHeader" type="String"/>
+    <aura:attribute name="topicsAction" type="String"/>
+    <aura:attribute name="topics1Ids" type="String"/>
+    <aura:attribute name="topics1" type="List"/>
+    <aura:attribute name="topics2Ids" type="String"/>
+    <aura:attribute name="topics2" type="List"/>
+    <aura:attribute name="chosenTopics" type="List"/>
+    <aura:attribute name="topicSlides" type="List"/>
+    <aura:attribute name="remainingTopics" type="List"/>
+    <aura:attribute name="leftoverTopics" type="List"/>
+    <aura:attribute name="currentSlide" type="Object"/>
+    <aura:attribute name="group1TopicLabel" type="String"/>
+    <aura:attribute name="group2TopicLabel" type="String"/>
+    <aura:attribute name="followButtonLabel" type="String" default="Follow" />
+    <aura:attribute name="followButtonIcon" type="String" default="utility:add" />
+    <aura:attribute name="followingButtonLabel" type="String" default="Following" />
+    <aura:attribute name="followingButtonIcon" type="String" default="utility:check" />
+    <aura:attribute name="buttonColor" type="String" default="#ff8201"/>
+    <aura:attribute name="useTopicMetadata" type="Boolean" access="global" default="false"/>
+    <aura:attribute name="items" type="List" default=""/>
+    <aura:attribute name="user" type="User"/>
+    <aura:handler name="init" action="{!c.init}" value="{!this}"/>
+
+    <c:Peak_OnboardingSlide class="topics"
+                            title="{!v.topicsHeader}"
+                            description="{!v.topicsMessage}"
+                            subText="{!v.topicsAction}"
+                            primaryButtonLabel="Save &amp; Next"
+                            primaryButtonColor="{!v.buttonColor}"
+                            primaryOnClick="{!c.goToNext}"
+                            backButtonLabel="Go Back"
+                            backOnClick="{!c.goBack}"
+    >
+        <aura:if isTrue="{!v.useTopicMetadata}">
+            <lightning:layout multipleRows="true">
+                <aura:if isTrue="{!greaterthan(v.chosenTopics.length, 0)}">
+                    <lightning:layoutItem class="slds-align-middle" size="12" padding="around-none">
+                        <div class="slds-box slds-box_small slds-p-around_small slds-text-align_left slds-m-bottom_medium">
+                            <lightning:layout verticalAlign="center">
+                                <lightning:layoutItem flexibility="no-grow">
+                                    <strong class="slds-p-right_small">Selected Topics:</strong>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem flexibility="auto">
+                                    <aura:iteration items="{!v.chosenTopics}" var="chosenTopic" indexVar="chosenTopicIndex">
+                                        <lightning:pill class="slds-float_left lightning-pill"
+                                                        label="{!chosenTopic.name}"
+                                                        name="{!chosenTopic.id}"
+                                                        onremove="{!c.handleRemove}"
+                                        />
+                                    </aura:iteration>
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                        </div>
+                    </lightning:layoutItem>
+                </aura:if>
+                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12" padding="around-none">
+                    <lightning:layout class="onboarding-topic-list"
+                                      verticalAlign="stretch"
+                                      horizontalAlign="center"
+                                      multipleRows="true"
+                                      pullToBoundary="small"
+                    >
+                        <aura:iteration items="{!v.remainingTopics}" var="topic" indexVar="index">
+                            <aura:if isTrue="{! !topic.following}">
+                                <lightning:layoutItem size="12" mediumDeviceSize="6" largeDeviceSize="4" padding="around-small">
+                                    <c:Peak_OnboardingTopicButton id="{!topic.id}"
+                                                                  name="{!topic.name}"
+                                                                  following="{!topic.following}"
+                                                                  onFollow="{!c.userFollowTopic}"
+                                                                  onUnfollow="{!c.userUnfollowTopic}"
+                                    />
+                                </lightning:layoutItem>
+                            </aura:if>
+                        </aura:iteration>
+                    </lightning:layout>
+                </lightning:layoutItem>
+            </lightning:layout>
+            <aura:set attribute="else">
+                <lightning:layout multipleRows="true" horizontalAlign="center" pullToBoundary="medium" verticalAlign="start">
+                    <aura:if isTrue="{!not(empty(v.topics1))}">
+                        <lightning:layoutItem size="12"
+                                              class="onboarding-topic-list"
+                                              mediumDeviceSize="6"
+                                              padding="around-medium"
+                        >
+                            <aura:if isTrue="{!v.group1TopicLabel}">
+                                <h2 class="slds-text-heading_medium slds-p-bottom_x-small">{!v.group1TopicLabel}</h2>
+                            </aura:if>
+                            <aura:iteration items="{!v.topics1}" var="topic">
+                                <c:Peak_OnboardingTopicButton id="{!topic.id}"
+                                                              name="{!topic.name}"
+                                                              following="{!topic.following}"
+                                                              onFollow="{!c.userFollowTopic}"
+                                                              onUnfollow="{!c.userUnfollowTopic}"
+                                />
+                            </aura:iteration>
+                        </lightning:layoutItem>
+                    </aura:if>
+                    <aura:if isTrue="{!not(empty(v.topics2))}">
+                        <lightning:layoutItem size="12"
+                                              class="onboarding-topic-list"
+                                              mediumDeviceSize="6"
+                                              padding="around-medium"
+                        >
+                            <aura:if isTrue="{!v.group2TopicLabel}">
+                                <h2 class="slds-text-heading_medium slds-p-bottom_x-small">{!v.group2TopicLabel}</h2>
+                            </aura:if>
+                            <aura:iteration items="{!v.topics2}" var="topic">
+                                <c:Peak_OnboardingTopicButton id="{!topic.id}"
+                                                              name="{!topic.name}"
+                                                              following="{!topic.following}"
+                                                              onFollow="{!c.userFollowTopic}"
+                                                              onUnfollow="{!c.userUnfollowTopic}"
+                                />
+                            </aura:iteration>
+                        </lightning:layoutItem>
+                    </aura:if>
+
+                </lightning:layout>
+            </aura:set>
+        </aura:if>
+    </c:Peak_OnboardingSlide>
+</aura:component>

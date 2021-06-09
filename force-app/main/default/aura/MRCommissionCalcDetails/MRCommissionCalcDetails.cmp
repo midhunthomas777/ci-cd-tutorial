@@ -1,0 +1,160 @@
+<aura:component controller="MRCommissionCalcDetailsCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="accountId" type="String" />
+    <aura:attribute name="accountRecType" type="String" />
+    <aura:attribute name="partnerId" type="String" />
+    <aura:attribute name="getURL" type="String"/>
+    <aura:attribute name="cpqSiteId" type="String"/>
+    <aura:attribute name="mcnId" type="String" />
+    <aura:attribute name="cpqMRID" type="String" />
+    <aura:attribute name="selectedOrderType" type="String" default="Box"/>
+    <aura:attribute name="orderTypes" type="List" default="{'label': 'Box', 'value' : 'Box'}"/>
+    <aura:attribute name="calculatorRecordProcessing" type="Boolean" default="false" />
+    <aura:attribute name="detailWrap" type="Object"/>
+    <aura:attribute name="accountDetails" type="List"/>
+    <aura:attribute name="commissionDetails" type="String"/>
+    <aura:attribute name="motorolaCustomerNumber" type="String" />
+    <aura:attribute name="showBtn" type="Boolean" default="false" />
+    <aura:attribute name="isInternalUser" type="Boolean" />
+    <aura:attribute name="finalAnswers" type="String"  />
+    <aura:attribute name="excludeList" type="String"/>
+    
+    
+
+    
+    <aura:attribute name="orderType" type="String" />
+    <aura:attribute name="Amount" type="String" /> 
+    <aura:attribute name="Percentage" type="String"/>
+    <aura:attribute name="Dollars" type="String" /> 
+    <aura:method name="childmethod" action="{!c.doInit}"/> 
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:If isTrue="{!v.calculatorRecordProcessing}">
+        <span/>
+        <div>
+            <lightning:spinner variant="brand" aura:id="mySpinner" alternativeText="loading.." />
+        </div>
+    </aura:If>
+    
+    <lightning:layout >
+        <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+            <aura:If isTrue="{!v.accountRecType == 'SoldToAccount'}">
+                <b><h3 class="slds-section-title--divider">Customer Account Information</h3></b>
+                <aura:set attribute="else"> 
+                    <b><h3 class="slds-section-title--divider">Prospect Account Information</h3></b>
+                </aura:set>
+            </aura:If> 
+            <div class="slds-box">
+                <div class="slds-list--horizontal slds-wrap slds-p-horizontal--x-large">
+                    <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                        <b>Account Name</b>
+                    </lightning:layoutItem>
+                    <aura:if isTrue="{!v.accountRecType == 'SoldToAccount'}">
+                        <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                            <aura:if isTrue="{!v.detailWrap.customerAccount.Parent.Name != null}">  {!v.detailWrap.customerAccount.Parent.Name}
+                                <aura:set attribute="else"><br/></aura:set>
+                            </aura:if> 
+                        </lightning:layoutItem>
+                    </aura:if>
+                    <aura:if isTrue="{!v.accountRecType == 'Prospect'}">
+                        <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                            <aura:if isTrue="{!v.detailWrap.prospectAccount.Name != null}">  {!v.detailWrap.prospectAccount.Name}
+                                <aura:set attribute="else"><br/></aura:set>
+                            </aura:if> 
+                        </lightning:layoutItem>
+                    </aura:if>
+                    <aura:if isTrue="{!v.accountRecType == 'SoldToAccount'}">
+                        <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                            <b>Route to Market</b>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                            <aura:if isTrue="{!v.detailWrap.customerAccount.Primary_Route_to_Market__c != null}">{!v.detailWrap.customerAccount.Primary_Route_to_Market__c}
+                                <aura:set attribute="else"><br/></aura:set>
+                            </aura:if> 
+                        </lightning:layoutItem>
+                    </aura:if>
+                    <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                        <b> Assigned MR</b>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                        {!v.detailWrap.mrAssignedMR}
+                    </lightning:layoutItem>
+                    <aura:if isTrue="{!v.accountRecType == 'SoldToAccount'}">
+                        <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                            <b>Motorola Customer Number</b>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                            <aura:if isTrue="{!v.detailWrap.customerAccount.Motorola_Customer_Number__c != null}"> {!v.detailWrap.customerAccount.Motorola_Customer_Number__c}
+                                <aura:set attribute="else"><br/></aura:set>
+                            </aura:if> 
+                        </lightning:layoutItem> 
+                    </aura:if>
+                </div>
+            </div>
+        </lightning:layoutItem>
+        <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+            <b><h3 class="slds-section-title--divider">Partner Account Information</h3></b>
+            <div class="slds-box">
+                <div class="slds-list--horizontal slds-wrap slds-p-horizontal--x-large">
+                    <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                        <b>MR Name</b>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                        <aura:if isTrue="{!v.detailWrap.partnerAccount.Name != null}"> {!v.detailWrap.partnerAccount.Name}
+                            <aura:set attribute="else"><br/></aura:set>
+                        </aura:if>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                        <b>MR Partner Membership ID</b>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                        <aura:if isTrue="{!v.detailWrap.partnerAccount.Partner_Membership_Id__c != null}"> {!v.detailWrap.partnerAccount.Partner_Membership_Id__c}
+                            <aura:set attribute="else"><br/></aura:set>
+                        </aura:if>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                        <b>MR ID</b>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                        {!v.detailWrap.mrId}       
+                    </lightning:layoutItem>
+                    <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                        <b>MR City</b>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                        <aura:if isTrue="{!v.detailWrap.partnerAccount.BillingCity != null}"> {!v.detailWrap.partnerAccount.BillingCity}
+                            <aura:set attribute="else"><br/></aura:set>
+                        </aura:if>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                        <b>MR State/Province</b>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                        <aura:if isTrue="{!v.detailWrap.partnerAccount.BillingState != null}"> {!v.detailWrap.partnerAccount.BillingState}
+                            <aura:set attribute="else"><br/></aura:set>
+                        </aura:if>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                        <b>MR Country</b>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                        <aura:if isTrue="{!v.detailWrap.partnerAccount.BillingCountry != null}"> {!v.detailWrap.partnerAccount.BillingCountry}
+                            <aura:set attribute="else"><br/></aura:set>
+                        </aura:if>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                        <b>MR Tier Level</b>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="6" smallDeviceSize="12" size="12">
+                        {!v.detailWrap.mrTierLevel}
+                    </lightning:layoutItem>
+                </div> 
+            </div>
+        </lightning:layoutItem>
+    </lightning:layout> 
+    
+    <br/>
+    <div > 
+        <c:MRCommissionOrderCalculator mcnId ="{!v.mcnId}" detailWrap ="{!v.detailWrap}" partnerId="{!v.partnerId}" accountId="{!v.accountId}" motorolaCustomerNumber="{!v.motorolaCustomerNumber}" isInternalUser="{!v.isInternalUser}"/>
+    </div><br/> 
+    
+</aura:component>

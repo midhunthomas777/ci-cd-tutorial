@@ -1,0 +1,19 @@
+.THIS {
+}
+.THIS .left-align {
+    text-align: left;
+}
+.THIS .right-align {
+    text-align: right;
+}
+.THIS .center-align {
+    text-align: center;
+}
+.THIS .slds-textarea {
+    height:100px !important;
+    width:400px !important;
+}
+.THIS .searchBtn{
+    padding-left: 6%;
+    padding-top: 1%;
+}

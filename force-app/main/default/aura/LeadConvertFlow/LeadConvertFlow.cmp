@@ -1,0 +1,32 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId,force:lightningQuickActionWithoutHeader" 
+                access="global"
+                controller="SearchBeforeCreateCtrl">
+    <!-- aura:html tag="style">
+        .slds-modal__container{max-width: 70rem !important;width:90% !important;}
+    </aura:html -->
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute type="boolean" name="isValidLead"/>
+    <aura:attribute type="string" name="displayMessage"/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="true"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    
+    <aura:if isTrue="{!v.isValidLead}">
+        <lightning:card class="slds-scrollable">
+            <lightning:flow aura:id="LeadConversionFlow" />
+        </lightning:card>
+        <aura:set attribute="else"> 
+            <center>
+                <div class="c-container">
+                    <lightning:layout>
+                        <aura:If isTrue="{!not(empty(v.displayMessage))}">
+                            <lightning:layoutItem flexibility="auto" padding="horizontal-small">
+                                <c:AlertMessages type="error" Message="{!v.displayMessage}"/>
+                            </lightning:layoutItem>
+                        </aura:If>
+                    </lightning:layout>
+                </div>
+            </center>
+        </aura:set>
+    </aura:if>
+                
+</aura:component>

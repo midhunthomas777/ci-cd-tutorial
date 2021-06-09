@@ -1,0 +1,5 @@
+<design:component label="7S My Account Team">
+    <design:attribute name="title" label="Title"/>
+    <design:attribute name="titleAlignment" datasource="left, center, right" label="Title Alignment"/>
+    <design:attribute name="introText" label="Intro" description="Intro text; appears directly below title."/>
+</design:component>

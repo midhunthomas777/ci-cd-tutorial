@@ -1,0 +1,36 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<!--
+ - Created by francoiskorb on 9/21/16.
+ -->
+<aura:component description="SVNSUMMITS_Ideas_Filter_ListGrid"
+                controller="SVNSUMMITS_IdeaFiltersController"
+                extends="c:SVNSUMMITS_Ideas_Base"
+                access="global">
+
+	<!-- Base -->
+	<aura:attribute name="baseModel"        type="String" access="global"/>
+
+	<aura:attribute name="debugMode"    type="Boolean"  default="false"     access="global"/>
+	<aura:attribute name="listId"       type="String"   default="List1" access="global"/>
+	<aura:attribute name="displayMode"  type="String"   default="Tile View" access="global"/>
+	<aura:attribute name="listView"     type="Boolean"  default="false"/>
+	<aura:attribute name="gridView"     type="Boolean"  default="true"/>
+
+	<aura:handler event="c:SVNSUMMITS_Ideas_Set_Default_Display_Mode" action="{!c.setInitialView}"/>
+	<aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+
+	<lightning:buttonGroup class="ideas-views">
+		<lightning:buttonIconStateful iconName="utility:list"
+									  alternativeText="{!$Label.c.ss_idea_label_List}"
+									  onclick="{!c.setListView}"
+									  selected="{!v.listView}"
+									  class="slds-button_first" />
+		<lightning:buttonIconStateful iconName="utility:apps"
+									  alternativeText="{!$Label.c.ss_idea_label_Grid}"
+									  onclick="{!c.setGridView}"
+									  selected="{!v.gridView}"
+									  class="slds-button_last"/>
+	</lightning:buttonGroup>
+</aura:component>

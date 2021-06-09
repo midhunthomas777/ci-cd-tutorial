@@ -1,0 +1,35 @@
+<aura:component description="Peak_ContentTile">
+    <aura:attribute name="Headline" type="String" />
+    <aura:attribute name="SubHeadline" type="String" />
+    <aura:attribute name="Paragraph" type="String" />
+    <aura:attribute name="ButtonText" type="String" />
+    <aura:attribute name="ButtonURL" type="String"  />
+    <aura:attribute name="Button2Text" type="String"  />
+    <aura:attribute name="Button2URL" type="String" />
+    <aura:attribute name="darkText" type="Boolean"  />
+    <aura:attribute name="centered" type="Boolean"  />
+    <aura:attribute name="className" type="String"  />
+
+    <aura:handler name="init" action="{!c.initPeakContentTile}" value="{!this}"/>
+
+    <div class="{!'peak-component peak-contenttile' + v.className}">
+        <aura:if isTrue="{!v.Headline}">
+            <c:Peak_HTML_Headings tag="h1" class="peak-contenttile__headline" align="{!if(v.centered, 'center', 'left')}">
+                <c:Peak_Base labelText="{!v.Headline}"/>
+            </c:Peak_HTML_Headings>
+        </aura:if>
+        <aura:if isTrue="{!v.SubHeadline}">
+            <c:Peak_HTML_Headings tag="h2" class="peak-contenttile__subheadline" align="{!if(v.centered, 'center', 'left')}">
+                <c:Peak_Base labelText="{!v.SubHeadline}"/>
+            </c:Peak_HTML_Headings>
+        </aura:if>
+        <aura:if isTrue="{!v.Paragraph != ''}">
+            <p class="{!'peak-contenttile__paragraph slds-m-bottom_large ' + if(v.centered, 'slds-text-align_center', '')}">
+                <c:Peak_Base labelText="{!v.Paragraph}"/>
+            </p>
+        </aura:if>
+
+        <c:Peak_ContentTileButton ButtonURL="{!v.ButtonURL}" ButtonText="{!v.ButtonText}" darkText="{!v.darkText}" />
+        <c:Peak_ContentTileButton ButtonURL="{!v.Button2URL}" ButtonText="{!v.Button2Text}" darkText="{!v.darkText}" />
+    </div>
+</aura:component>

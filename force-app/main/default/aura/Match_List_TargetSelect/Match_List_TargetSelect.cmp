@@ -1,0 +1,25 @@
+<!--
+  - Copyright (c) 2018  7Summits Inc.
+  -->
+<!--
+ - Created by francois korb on 5/8/18.
+ -->
+
+<aura:component description="Match_List_TargetSelect" extends="c:Match_Base">
+	<aura:registerEvent name="filterEvent" type="c:Match_Filter_Event"/>
+
+	<aura:attribute name="targets"  type="List"   access="public"/>
+	<aura:attribute name="targetId" type="String" access="public"/>
+
+	<lightning:layout >
+		<lightning:layoutItem size="6" >
+			<lightning:combobox label="{!$Label.c.ss_match_LabelListTargetSelect}"
+			                    value="{!v.targetId}"
+			                    options="{!v.targets}"
+			                    name="selectProject"
+			                    onchange="{!c.onTargetSelect}">
+			</lightning:combobox>
+		</lightning:layoutItem>
+	</lightning:layout>
+
+</aura:component>

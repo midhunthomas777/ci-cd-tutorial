@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT" description="Event template" >
+    <aura:attribute name="fieldSetResult" type="Object[]"  />
+    <aura:attribute name="sectionfieldSetName" type="String"  />
+</aura:event>

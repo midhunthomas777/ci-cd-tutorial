@@ -1,0 +1,87 @@
+<aura:component controller="ExternalCasesController"
+    implements="forceCommunity:availableForAllPageTypes,lightning:isUrlAddressable" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="pageName" type="String" description="Name of the page component resides" />
+
+    <aura:attribute name="columns" type="List" description="Columns for the Case List" />
+
+    <aura:attribute name="unfilteredCaseList" type="Object" description="Original unfiltered list" />
+    <aura:attribute name="casesList" type="Object" description="Object for the Case List" />
+
+    <!-- <aura:attribute name="months" type="List" default="[1,3,6]" description="Month values to search "/>
+    <aura:attribute name="selectedMonth" type="String" default="All" description="Select month filter"/> -->
+    <aura:attribute name="fromValue" type="date" />
+    <aura:attribute name="toValue" type="date" />
+    <aura:attribute name="statuses" type="List" default="[]" description="Statuses of the Case to filter" />
+    <aura:attribute name="selectedStatus" type="String" description="Selected status filter" />
+    <aura:attribute name="recordId" type="String" />
+
+    <aura:attribute name="loadSpinner" type="Boolean" default="false"
+        description="Boolean varaible to load the spinner" />
+    <aura:attribute name="refreshTable" type="Boolean" default="false"
+        description="Boolean variable to refresh the table " />
+
+    <aura:attribute name="searchText" type="String" description="Variable to store search text value" />
+
+    <aura:attribute name="pageSizes" type="List" default="[10,20,50,100]" description="Records per page" />
+    <aura:attribute name="selectedPageSize" type="Integer" default="10"
+        description="Selected records to display per page" />
+    <aura:attribute name="dynamicPageSize" type="Integer" default="10"
+        description="Page size used in data table component" />
+
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="medium" aura:id="mySpinner" />
+    </aura:if>
+    <div aura:id="title" class="title-container">
+        <h2>Cases</h2>
+    </div>
+    <aura:if isTrue="{!not(v.pageName == 'Home')}">
+        <lightning:layout verticalAlign="center" class="x-large filter-bottom-space" pullToBoundary="medium"
+            multipleRows="true">
+            <lightning:layoutItem flexibility="auto,no-grow" padding="around-small" size="12" mediumDeviceSize="6"
+                largeDeviceSize="3">
+                <lightning:input type="search" label="Search" placeholder="Search cases ..."
+                    onchange="{!c.handleFilter}" value="{!v.searchText}" class="moto-input-item" />
+            </lightning:layoutItem>
+
+            <lightning:layoutItem flexibility="auto,no-grow" padding="around-small" size="12" mediumDeviceSize="6"
+                largeDeviceSize="3">
+                <lightning:select aura:id="statusFilter" label="Filter by Status"
+                    class="slds-text-heading_small slds-text-title_bold moto-select-item" onchange="{!c.handleFilter}"
+                    value="{!v.selectedStatus}">
+                    <aura:iteration items="{!v.statuses}" var="status">
+                        <option value="{!status}" text="{!status}"></option>
+                    </aura:iteration>
+                </lightning:select>
+            </lightning:layoutItem>
+
+            <lightning:layoutItem flexibility="auto,no-grow" padding="around-small" size="12" mediumDeviceSize="6"
+                largeDeviceSize="3">
+                <lightning:input type="date" label="From date" value="{!v.fromValue}" onchange="{!c.handleFilter}"
+                    class="moto-input-item" />
+            </lightning:layoutItem>
+
+            <lightning:layoutItem flexibility="auto,no-grow" padding="around-small" size="12" mediumDeviceSize="6"
+                largeDeviceSize="3">
+                <lightning:input type="date" label="To date" value="{!v.toValue}" onchange="{!c.handleFilter}"
+                    class="moto-input-item" />
+            </lightning:layoutItem>
+        </lightning:layout>
+    </aura:if>
+
+    <aura:if isTrue="{!v.refreshTable}">
+        <c:GenerateLightningDataTable columns="{!v.columns}" inlineEditing="false" resultList="{!v.casesList}"
+            hideSelection="true" showPagination="{!v.pageName == 'Home' ? 'false' : 'true'}"
+            pageSize="{!v.dynamicPageSize}" showPageSize="{!v.pageName == 'Home' ? 'false' : 'true'}"
+            sortField="opened_at" showExport="true" exportBtnPosition="right" exportBtnIconPosition="left"
+            exportBtnLabel="Export" exportBtnValue="Export" />
+    </aura:if>
+    <aura:if isTrue="{!not(empty(v.unfilteredCaseList))}">
+        <aura:if isTrue="{!v.pageName == 'Home'}">
+            <div class="slds-text-align_right view-all-container">
+                <lightning:button variant="base" iconName="utility:forward" iconPosition="right"
+                    onclick="{!c.viewAllCases }" label="View all" title="View all" />
+            </div>
+        </aura:if>
+    </aura:if>
+</aura:component>

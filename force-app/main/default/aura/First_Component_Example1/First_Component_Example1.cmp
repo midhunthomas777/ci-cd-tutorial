@@ -1,0 +1,5 @@
+<aura:component >
+    <B>   School Name</B> <br/>
+    Teacher name <br/>
+    Student name <br/>
+</aura:component>

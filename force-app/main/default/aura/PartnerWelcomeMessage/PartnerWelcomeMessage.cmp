@@ -1,0 +1,8 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" controller="PartnerWelcomeMessageCls">
+	 <aura:attribute name="setMeOnInit" type="String" default="default value" />
+     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+     <div style="text-align: center;color: #1e2443;">
+         <b style="font-size: 20px;">{!$Label.c.Welcome}</b><br/>
+         <p style="font-size: 12px;">{!v.setMeOnInit}</p>
+     </div>    
+</aura:component>

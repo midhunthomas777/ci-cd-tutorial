@@ -1,0 +1,19 @@
+<!-- Copyright (c) 2018 7Summits Inc. -->
+<!--
+ - Created by francois korb on 3/20/18.
+ -->
+
+<aura:component description="Match_Base"
+                implements="lightning:isUrlAddressable"
+                controller="Match_Settings"
+                abstract="true"
+                extensible="true">
+
+	<aura:registerEvent name="baseReady" type="c:Match_Base_Event"/>
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+	<aura:attribute name="settings" type="object" access="public"/>
+
+	{!v.body}
+
+</aura:component>

@@ -1,0 +1,101 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+
+<!--
+ - Created by francoiskorb on 2019-02-25.
+ -->
+
+<aura:component description="SVNSUMMNITS_Ideas_Feed"
+                implements="force:appHostable,forceCommunity:availableForAllPageTypes,flexipage:availableForRecordHome,flexipage:availableForAllPageTypes,force:hasRecordId,lightning:isUrlAddressable"
+                extends="c:SVNSUMMITS_Ideas_Base"
+                controller="SVNSUMMITS_IdeaViewController"
+				access="global">
+
+	<!-- Base -->
+	<aura:handler   name="baseReady"        event="c:SVNSUMMITS_BaseReady" action="{!c.doInit}" />
+	<aura:attribute name="baseModel"        type="String"   access="global"/>
+	<aura:attribute name="debugMode"        type="Boolean"  default="false" access="global"/>
+
+	<!--Internal Attributes-->
+	<aura:attribute name="recordId"         type="String"/>
+	<aura:attribute name="idea"             type="Map"      access="global"/>
+	<aura:attribute name="zoneName"         type="String"   default="Internal Zone" access="global"/>
+	<aura:attribute name="zoneId"           type="String"   default=""          access="global" />
+	<aura:attribute name="userProfileURL"   type="String"   default="/profile/" access="global" />
+
+	<!-- Tabs -->
+	<aura:attribute name="showTabs"         type="Boolean" default="false"      access="global"/>
+	<aura:attribute name="showComments"     type="Boolean" default="false"      access="global"/>
+	<aura:attribute name="showChatter"      type="Boolean" default="false"      access="global"/>
+	<aura:attribute name="showFiles"        type="Boolean" default="false"      access="global"/>
+	<aura:attribute name="selectedTab"      type="String"  default="comments"   access="global"/>
+
+	<aura:attribute name="commentsLoaded"   type="Boolean" default="false"      access="global"/>
+	<aura:attribute name="chatterLoaded"    type="Boolean" default="false"      access="global"/>
+	<aura:attribute name="filesLoaded"      type="Boolean" default="false"      access="global"/>
+
+	<aura:attribute name="tabCommentsLabel" type="String"   default="{!$Label.c.ss_idea_tabLabelComments}"/>
+	<aura:attribute name="tabChatterLabel"  type="String"   default="{!$Label.c.ss_idea_tabLabelFeed}"/>
+	<aura:attribute name="tabFilesLabel"    type="String"   default="{!$Label.c.ss_idea_tabLabelFiles}"/>
+
+	<!-- Comments -->
+	<aura:attribute name="numComments"      type="Integer"  default="6"     access="global"/>
+	<aura:attribute name="showPagination"   type="Boolean"  default="true"  access="global"/>
+	<aura:attribute name="showSort"         type="Boolean"  default="true"  access="global"/>
+	<aura:attribute name="sortOrder"        type="String"   default="LatestComment" access="global"/>
+	<aura:attribute name="commentsLikes"    type="String"   default="Likes" access="global" />
+
+	<!-- Feed -->
+	<aura:attribute name="feedTitle"        type="String"   default=""      access="global" />
+	<aura:attribute name="showPublisher"    type="Boolean"  default="true"  access="global" />
+	<aura:attribute name="showFeed"         type="Boolean"  default="true"  access="global" />
+
+	<!-- Related Files -->
+	<aura:attribute name="filesTitle"       type="String"   default=""          access="global"/>
+	<aura:attribute name="filesDisabled"    type="Boolean"  default="false"     access="global"/>
+	<aura:attribute name="showFileUploader" type="Boolean"  default="true"      access="global"/>
+	<aura:attribute name="showFileViewer"   type="Boolean"  default="true"      access="global"/>
+	<aura:attribute name="filesVisibility"  type="String"   default="AllUsers"  access="global"/>
+	<aura:attribute name="filesAccept"      type="String"   default=".pdf,.png" access="global"/>
+
+	<lightning:layoutItem >
+		<lightning:tabset selectedTabId="{!v.selectedTab}">
+
+			<!-- COMMENTS -->
+			<aura:if isTrue="{!v.showComments}">
+				<lightning:tab label="{!v.tabCommentsLabel}"
+				               onactive="{! c.handleActive }"
+				               id="comments">
+
+					<lightning:layoutItem size="12"
+					                      padding="around-small">
+					</lightning:layoutItem>
+				</lightning:tab>
+			</aura:if>
+
+			<!-- FEED -->
+			<aura:if isTrue="{!and(v.showFeed, v.showTabs)}">
+				<lightning:tab label="{!v.tabChatterLabel}"
+				               onactive="{! c.handleActive }"
+				               id="discussion">
+					<lightning:layoutItem size="12"
+					                      padding="around-small">
+					</lightning:layoutItem>
+				</lightning:tab>
+			</aura:if>
+
+			<!-- FILES  -->
+			<aura:if isTrue="{!v.showFiles}">
+				<lightning:tab label="{!v.tabFilesLabel}"
+				               onactive="{! c.handleActive }"
+				               id="files">
+					<lightning:layoutItem size="12"
+					                      padding="around-small">
+					</lightning:layoutItem>
+				</lightning:tab>
+			</aura:if>
+		</lightning:tabset>
+
+	</lightning:layoutItem>
+</aura:component>

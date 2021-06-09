@@ -1,0 +1,19 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="title" type="String" default="Video" access="global" />
+    <aura:attribute name="titleAlignment" type="string" default="left"  access="global"/>
+
+    <aura:attribute name="VideoID" type="String" default="R8X-w5V64zU" access="global" />
+    <aura:attribute name="CustomClassName" type="String" default="" access="global" />
+    <aura:attribute name="CustomIdName" type="String" default="" access="global" />
+
+    <div class="{!'peak-component peak-videoembed ' + v.CustomClassName}" id="{!v.CustomIdName}">
+        <aura:if isTrue="{!v.title}">
+            <c:Peak_HTML_Headings class="peak-videoembed__title" align="{!v.titleAlignment}">
+                <c:Peak_Base labelText="{!v.title}" />
+            </c:Peak_HTML_Headings>
+        </aura:if>
+        <div class="video-container">
+            <iframe src="{!'https://www.youtube.com/embed/'+v.VideoID}" frameborder="0" allowfullscreen="true"></iframe>
+        </div>
+    </div>
+</aura:component>

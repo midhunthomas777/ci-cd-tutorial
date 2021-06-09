@@ -1,0 +1,4 @@
+<design:component>
+	<design:attribute name="responseMessage" label="Response Message" />
+    <design:attribute name="leadrecordId" label="Lead_Id" />
+</design:component>

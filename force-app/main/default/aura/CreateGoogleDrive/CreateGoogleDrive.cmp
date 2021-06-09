@@ -1,0 +1,49 @@
+<aura:component controller="GoogleDriveUtility" implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader"> 
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="true"/>
+    <aura:attribute type="boolean" name="hideButton" default="false"/>
+    <aura:attribute type="String" name="displayMessage"/>
+    <aura:attribute type="String" name="confirmMessage"/>
+    
+    <lightning:notificationsLibrary aura:id="notifLib"/>
+    
+    <aura:attribute name="recordCreatedDate" type="Date"/> 
+    <force:recordData aura:id="recordLoader" recordId="{!v.recordId}" 
+                      fields="CreatedDate,LastModifiedDate"
+                      recordUpdated="{!c.handleRecordUpdated}"
+                      targetFields="{!v.recordCreatedDate}"/>
+    
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner alternativeText="Loading.." variant="brand" size="large" aura:id="mySpinner"/>
+    </aura:if>
+    <center>
+        <div class="c-container">
+            <lightning:layout>
+                <lightning:layoutItem flexibility="auto" padding="horizontal-small">
+                    <aura:if isTrue="{!v.hideButton}">
+                       <aura:if isTrue="{!not(empty(v.displayMessage))}">
+                        <c:AlertMessages type="error" Message="{!v.displayMessage}"/>
+                        </aura:if>
+                        <aura:set attribute="else">
+                            <div class="c-container">
+                                <lightning:layout>
+                                    <lightning:layoutItem flexibility="auto" padding="around-small">
+                                        <div class="custom-box">
+                                            {!v.confirmMessage}
+                                        </div>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem flexibility="auto" padding="around-small">
+                                        <div class="custom-box">
+                                            <lightning:button variant="brand" label="Create Drive" onclick="{! c.createDrive}"/>
+                                        </div>
+                                    </lightning:layoutItem>
+                                </lightning:layout>
+                            </div>                            
+                        </aura:set>
+                    </aura:if>
+                </lightning:layoutItem>
+            </lightning:layout>
+        </div>
+    </center>
+    
+</aura:component>

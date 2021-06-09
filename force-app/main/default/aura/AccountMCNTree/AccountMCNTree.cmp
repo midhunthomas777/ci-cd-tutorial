@@ -1,0 +1,97 @@
+<aura:component controller="AccListController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" 
+                access="global">       
+    <!--<ltng:require styles="{!$Resource.infy_cct__SLDS + '/assets/styles/salesforce-lightning-design-system-vf.css'}"
+                  scripts="{!$Resource.jquerymin1.js}"
+                   />-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="accountId" type="String" /> 
+    <aura:attribute name="myWindow" type="String" />
+    <aura:attribute name="isAccount" type="String" />
+    <aura:attribute name="setNewOppURL" type="String" />
+    <aura:attribute name="setNewOppCancelURL" type="String" />
+    <aura:attribute name="oppId" type="String" />
+
+    <aura:attribute name="accounts" type="Account[]" />
+    <aura:attribute name="selected" type="Account[]" />
+      
+    <aura:attribute name="selectedCount" type="integer" default="0"/>
+    <aura:attribute name="strSelectedMCN" type="String[]" default="" />
+    <aura:attribute name="cpqWindow" type="String" />
+    
+    <aura:attribute name="strChkbool" type="boolean" default="false"/>
+    <aura:attribute name="expenseName" type="String" default="My Expense"/>
+    <aura:attribute name="checkedMCN" type="String[]" />   
+
+    <aura:handler name="myComponentEvent"  event="c:Selectedcheckbox" action="{!c.handleMyComponentEvent}"/>
+  
+	<!-- <span class="slds-badge">{!v.accountId}  Selected MCN:{!v.selectedCount}</span>-->
+      <div class="slds">
+      <div class="slds-page-header">
+            <div class="slds-grid">
+                <div class="slds-col slds-has-flexi-truncate">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <c:svgIcon svgPath="/resource/slds214/assets/icons/standard-sprite/svg/symbols.svg#process" category="standard" size="medium" name="user" />
+                        </div>
+                        <div class="slds-media__body">
+                            <p class="slds-text-heading--label"></p>
+                            <div class="slds-grid">
+                                <h5 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle">Motorola Customer Number Selection</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /slds-col-->                       
+            </div>  
+            <!-- /slds-grid-->                
+        </div>
+        <!-- /slds-page-header-->
+
+        <div  role="application">
+            <div class="slds-grid slds-grid--align-center">                
+                <button type="button" class="slds-button slds-button--brand" onclick="{!c.Selected}">Select MCN</button>
+                <button class="slds-button slds-button--brand" onclick="{!c.doCancel}">Cancel</button>
+            </div>
+            <ul class="slds-tree" role="tree" aria-labelledby="treeheading" aria-activedescendant="tree0-node0">         
+    		
+                <table class="slds-table slds-table--bordered slds-table--fixed-layout slds-no-row-hover"  role="grid">
+    			<thead>
+            		<tr class="slds-text-heading--label ">                                                        
+						<td role="gridcell" class="slds-cell-shrink" scope="col">
+                    		<label class="slds-checkbox">                      
+                    		</label>
+      					</td>
+                        <td role="gridcell" class="slds-cell-shrink" scope="col" >
+                            <label class="slds-checkbox">                      
+                    		</label>
+                        </td>
+						<th scope="col" aura:id="CDH Account" aria-label="CDH Account"><div class="slds-truncate" title="CDH Account">Customer Name</div></th>
+                		<th class="slds-cell-wrap" scope="col" aura:id="Motorola Customer Number" aria-label="Motorola Customer Number"><div title="Motorola Customer Number">Motorola Customer Number</div></th>
+                        <!--<th scope="col" aura:id="Price List Name" aria-label="Price List Name"><div class="slds-truncate" title="Price List Name">Price List Name</div></th>
+                        <th scope="col" aura:id="Payment Term" aria-label="Payment Term"><div class="slds-truncate" title="Payment Term">Payment Term</div></th>
+                        <th scope="col" aura:id="Freight Term" aria-label="Freight Term"><div class="slds-truncate" title="Freight Term">Freight Term</div></th>-->                                             						
+                        <th scope="col" aura:id="Address" aria-label="Address"><div class="slds-truncate" title="Address">Address</div></th> 
+                        <th scope="col" aura:id="City" aria-label="City"><div class="slds-truncate" title="City">City</div></th> 
+                        <th scope="col" aura:id="State" aria-label="State"><div class="slds-truncate" title="State">State/Province</div></th> 
+                        <th scope="col" aura:id="Country" aria-label="Country"><div class="slds-truncate" title="Country">Country</div></th> 
+                        <th scope="col" aura:id="Payment Term" aria-label="Payment Term"><div class="slds-truncate" title="Payment Term">Payment Term</div></th> 
+                        <th scope="col" aura:id="Freight Term" aria-label="Freight Term"><div class="slds-truncate" title="Freight Term">Freight Term</div></th> 
+                        <th scope="col" aura:id="Price List Name" aria-label="Price List Name"><div class="slds-truncate" title="Price List Name">Price List Name</div></th> 
+                        <th scope="col" aura:id="RTM" aria-label="RTM"><div class="slds-truncate" title="RTM">RTM</div></th> 
+                    </tr>
+                </thead>        
+      		<aura:iteration items="{!v.accounts}" var="accs2"  >         
+        		<c:AccountRow acc="{!accs2}" ChildselectedCount="{!v.selectedCount}" /> 
+    		</aura:iteration>
+                    
+				</table>
+            </ul> 
+             <ul>
+    		<!--<aura:iteration items="{!v.selected}" var="accs3"  >         
+        		<c:AccountRow acc="{!accs3}"  /> 
+    		</aura:iteration>-->
+        </ul>
+       	</div>
+    	</div>
+   
+</aura:component>

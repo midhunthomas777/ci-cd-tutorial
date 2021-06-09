@@ -1,0 +1,4 @@
+<!-- Copyright ©2019 7Summits Inc. All rights reserved. -->
+<design:component label="7S Profile Wizard Percentage Bar">
+	    <design:attribute name="PercentComplete" label="Percent Complete"  description="Profile Progress"/>
+</design:component>

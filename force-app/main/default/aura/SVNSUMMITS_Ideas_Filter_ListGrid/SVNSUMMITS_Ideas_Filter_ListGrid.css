@@ -1,0 +1,13 @@
+/*
+ * Copyright (c) 2019. 7Summits Inc.
+ */
+
+/* SLDS has a ".slds-button_last", but not a ".slds-button_first"... and as of Winter '19, <lightning:buttonIconStateful />
+ * doesn't display correctly inside <lighting:buttonGroup /> */
+.THIS.slds-button-group .slds-button_first .slds-button,
+.THIS.slds-button-group .slds-button.slds-button_first,
+.THIS.slds-button-group .slds-button_first .slds-button:only-child,
+.THIS.slds-button-group .slds-button.slds-button_first
+{
+    border-radius: 0.25rem 0 0 0.25rem;
+}

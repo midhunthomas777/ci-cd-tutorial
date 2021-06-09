@@ -1,0 +1,5 @@
+<aura:component >
+    <lightning:button label="submit"></lightning:button>
+    <lightning:button label="Title" title ="title message"></lightning:button>
+    <lightning:button iconname="standard:account"></lightning:button>
+</aura:component>

@@ -1,0 +1,10 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<!--
+ - Created by francoiskorb on 9/26/16.
+ -->
+
+<aura:component description="SVNSUMMITS_Include_Resources">
+    <ltng:require scripts="{!$Resource.Ideas_Resources}"/>
+</aura:component>

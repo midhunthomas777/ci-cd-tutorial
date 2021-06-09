@@ -1,0 +1,503 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<aura:component controller="SVNSUMMITS_IdeaNewController"
+                implements="force:appHostable,forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes,lightning:availableForFlowScreens"
+                extends="c:SVNSUMMITS_Ideas_Base"
+                access="global">
+
+	<ltng:require
+			scripts="{! join(',',
+			    $Resource.SVNSUMMITS_Ideas_MomentJS + '/moment.min.js',
+			    $Resource.SVNSUMMITS_Ideas_MomentJS + '/moment-with-locales.min.js',
+			    $Resource.SVNSUMMITS_Ideas_MomentJS + '/moment-timezone-with-data.min.js')}"
+			afterScriptsLoaded="{!c.onInit}"/>
+
+	<aura:attribute name="debugMode" type="Boolean" default="true" access="global"/>
+
+	<!-- Design attributes -->
+	<aura:attribute name="zoneName"             type="String"   default="Internal Zone" access="global" required="true"/>
+	<aura:attribute name="headerText"           type="String"   default="New Idea"  access="global"/>
+	<aura:attribute name="categoriesAllowed"    type="String"   default=""          access="global" />
+	<aura:attribute name="statusAllowed"        type="String"   default=""          access="global" description="List of allowed status values" />
+	<aura:attribute name="useTopics"            type="Boolean"  default="true"      access="global"/>
+	<aura:attribute name="editStatus"           type="Boolean"  default="true"      access="global"/>
+	<aura:attribute name="topicRequired"        type="Boolean"  default="true"      access="global" />
+	<aura:attribute name="allowThemes"          type="Boolean"  default="true"      access="global"/>
+	<aura:attribute name="allowCategories"      type="Boolean"  default="true"      access="global"/>
+	<aura:attribute name="showDuplicates"       type="Boolean"  default="true"      access="global"/>
+	<aura:attribute name="requireComment"       type="Boolean"  default="false"     access="global"/>
+	<aura:attribute name="ideaListURL"          type="String"   default="/ideas/"   access="global" required="true"/>
+	<aura:attribute name="ideaDetailURL"        type="String"   default="/idea/"    access="global"/>
+	<aura:attribute name="sitePrefix"           type="String"                       access="global"/>
+	<aura:attribute name="opaqueBackground"     type="Boolean"  default="false"     access="global"/>
+	<aura:attribute name="showRequestedBy" 	    type="Boolean"  default="false"     access="global"/>
+	<aura:attribute name="isNewIdea"            type="Boolean"  default="true"      access="global" />
+
+	<aura:attribute name="title"                type="String"   default="New Idea"  access="global"/>
+	<aura:attribute name="maxTitleLength"       type="Integer"  default="80"/>
+	<aura:attribute name="minTitleLength"       type="Integer"  default="2"/>
+
+	<aura:attribute name="zoneId"               type="String"   default=""          access="global"/>
+	<aura:attribute name="simIdeasLimit"        type="Integer"  default="5"         access="global"/>
+	<aura:attribute name="currIdea"             type="Map"      default="{'sobjectType' : 'Idea', 'Title': ''}" access="global"/>
+	<aura:attribute name="showCross"            type="Boolean"  access="global"     default="true" />
+
+	<!-- Edit mode -->
+	<aura:attribute name="isEditing"            type="Boolean"  default="false"     access="global"/>
+	<aura:attribute name="recordId"             type="String"                       access="global"/>
+	<aura:attribute name="currentStatus"        type="String"   default=""/>
+	<aura:attribute name="createIdeaClick"      type="Boolean"  default="false"/>
+
+	<!-- custom fields -->
+	<aura:attribute name="showCustomFields"     type="Boolean"  default="true"      access="global" />
+	<aura:attribute name="customFieldSetName"   type="String"   default=""          access="global"/>
+	<aura:attribute name="customFields"         type="Map"/>
+
+	<!-- Preset field -->
+	<aura:attribute name="presetField"          type="String"   default=""          access="global"/>
+	<aura:attribute name="presetValue"          type="String"   default=""          access="global"/>
+
+	<aura:attribute name="selectedUser" 		type="User" 	                    access="global"/>
+	<aura:attribute name="selectedUserId"       type="String"   default=""          access="global"/>
+
+	<!-- image upload -->
+    <aura:attribute name="allowImages"          type="Boolean"  default="true"      access="global"/>
+	<aura:attribute name="attachmentName"       type="String"   default=""          access="global"/>
+	<aura:attribute name="attachmentAccept"     type="String"   default="png,jpg,jpeg,gif" access="global"/>
+	<aura:attribute name="attachmentUpload"     type="Map"                          access="global"/>
+
+	<!-- Related Files -->
+	<aura:attribute name="showRelatedFiles"     type="Boolean"  default="true"      access="global" />
+	<aura:attribute name="relatedNames"         type="String"   default=""          access="global"/>
+	<aura:attribute name="relatedFilesAccept"   type="String"   default=".png, .jpg, .jpeg, .gif, .pdf" access="global"/>
+	<aura:attribute name="relatedFilesUpload"   type="Map"      access="global"/>
+	<aura:attribute name="relatedFiles"         type="Map"      default="{'sobjectType': 'RelatedFiles', 'files': []}" access="global"/>
+	<aura:attribute name="relatedFile"          type="Map"      default="{'sobjectType': 'RelatedFile',  'name': ''}"  access="global"/>
+
+	<!-- Upload -->
+	<aura:attribute name="maxFileSizeKb"        type="Decimal"  default="4248"      access="global"/>
+	<aura:attribute name="allowedFileTypes"     type="String"   default=""          access="global"/>
+	<aura:attribute name="strAttachmentError"   type="String[]"/>
+
+	<aura:attribute name="isBrowseError"        type="Boolean"/>
+	<aura:attribute name="strError"             type="String[]"/>
+
+	<!-- Apex data  -->
+	<aura:attribute name="ideasList"            type="Map"      access="global"/>
+	<aura:attribute name="topicNamesList"       type="String[]" access="global"/>
+	<aura:attribute name="categoriesSet"        type="Map"      access="global"/>
+	<aura:attribute name="themeSet"             type="Map"      access="global"/>
+	<aura:attribute name="statusSet"            type="Map"      access="global"/>
+	<aura:attribute name="topicSet" 			type='String' 	access="global"/>
+
+	<!-- Error handling -->
+	<aura:attribute name="validDescription"     type="Boolean"  default="true"/>
+	<aura:attribute name="validComment"         type="Boolean"  default="true"/>
+
+	<aura:attribute name="errorShortTitle"      type="String"   default="{!$Label.c.ss_idea_error_titleTooShort}"/>
+
+	<aura:attribute name="validTopic"           type="Boolean"  default="true"/>
+	<aura:attribute name="errorTopic"           type="String"   default="{!$Label.c.ss_idea_error_topicRequired}"/>
+
+	<aura:attribute name="errorImageType"       type="String"   default="{!$Label.c.ss_idea_error_imageEntry}"/>
+	<aura:attribute name="errorImageSize"       type="String"   default="{!$Label.c.ss_idea_error_imageSize}"/>
+
+	<!-- UI Labels -->
+	<aura:attribute name="labelTitle"           type="String" default="{!$Label.c.ss_idea_label_Title}"/>
+	<aura:attribute name="labelTitleHelp"       type="String" default="{!$Label.c.ss_idea_label_CharacterLimit}"/>
+	<aura:attribute name="labelSubmitted"       type="String" default="{!$Label.c.ss_idea_label_AlreadySubmitted}"/>
+	<aura:attribute name="labelBody"            type="String" default="{!$Label.c.ss_idea_label_Describe}"/>
+	<aura:attribute name="labelUpload"          type="String" default="{!$Label.c.ss_idea_label_UploadImage}"/>
+	<aura:attribute name="labelUploadSize"      type="String" default="{!$Label.c.ss_idea_label_AspectRatio}"/>
+	<aura:attribute name="labelAttachment"      type="String" default="{!$Label.c.ss_idea_label_ChooseFile}"/>
+
+	<aura:attribute name="labelTheme"           type="String" default="{!$Label.c.ss_idea_label_ChooseTheme}"/>
+	<aura:attribute name="labelTopic"           type="String" default="{!$Label.c.ss_idea_label_PickTopic}"/>
+	<aura:attribute name="labelCategory"        type="String" default="{!$Label.c.ss_idea_label_SelectCategory}"/>
+	<aura:attribute name="labelStatus"          type="String" default="{!$Label.c.ss_idea_label_Status}"/>
+	<aura:attribute name="labelSubmit"          type="String" default="{!$Label.c.ss_idea_label_Submit}"/>
+	<aura:attribute name="labelCancel"          type="String" default="{!$Label.c.ss_idea_label_Cancel}"/>
+
+	<aura:attribute name="baseModel"            type="String" access="global"/>
+	<aura:attribute name="showSpinner"          type="Boolean" default="false"/>
+
+	<lightning:layout multipleRows="true"
+	                  class="{!v.opaqueBackground ? 'slds-card' : ''}">
+		<aura:if isTrue="{!v.zoneId != ''}">
+			<lightning:spinner size="large"
+			                   class="slds-hide"
+			                   variant="brand"
+			                   aura:id="spinnerSubmit"
+			                   alternativeText="{!$Label.c.ss_idea_label_spinnerSaving}"/>
+
+			<aura:if isTrue="{!v.headerText}">
+				<lightning:layoutItem size="12"
+									  padding="around-small">
+					<c:SVNSUMMITS_Ideas_Heading tag="h2" size="medium">
+						<lightning:formattedText value="{!v.headerText}"/>
+					</c:SVNSUMMITS_Ideas_Heading>
+				</lightning:layoutItem>
+			</aura:if>
+
+			<!-- TITLE -->
+			<lightning:layoutItem size="12"
+			                      padding="around-small">
+				<lightning:input type="text"
+				                 aura:id="ideaInput"
+				                 label="{!$Label.c.ss_idea_label_Title}"
+				                 required="true"
+				                 minlength="{!v.minTitleLength}"
+				                 maxlength="{!v.maxTitleLength}"
+				                 messageWhenTooShort="{!$Label.c.ss_idea_error_titleTooShort}"
+				                 messageWhenTooLong="{!$Label.c.ss_idea_error_titleTooLong}"
+				                 messageWhenValueMissing="{!$Label.c.ss_idea_error_titleEntry}"
+				                 onblur="{!c.check_DuplicateIdeas}"
+				                 value="{!v.currIdea.Title}"/>
+			</lightning:layoutItem>
+
+			<!-- SIMILAR IDEAS-->
+			<aura:if isTrue="{!v.showDuplicates}">
+				<lightning:layoutItem size="12"
+				                      padding="around-small">
+					<aura:iteration items="{!v.ideasList}" var="idea" indexVar="i">
+						<aura:if isTrue="{! i == 0}">
+							<lightning:formattedText value="{!$Label.c.ss_idea_label_AlreadySubmitted}"
+							                         class="slds-text-heading--label slds-p-top-small">
+							</lightning:formattedText>
+						</aura:if>
+
+						<p class="slds-tile__title">
+							<a onclick="{!c.gotoRecord}"
+							   data-id="{!idea.Id}"
+							   class=" slds-truncate">{!idea.Title}</a>
+							&nbsp;-&nbsp;{!idea.VoteTotal}&nbsp;{!$Label.c.ss_idea_label_points}</p>
+					</aura:iteration>
+				</lightning:layoutItem>
+			</aura:if>
+
+			<!-- DESCRIPTION -->
+			<lightning:layoutItem size="12"
+			                      padding="around-small">
+				<lightning:inputRichText label="{!$Label.c.ss_idea_label_Describe}"
+				                         valid="{!v.validDescription}"
+				                         placeholder="{!$Label.c.ss_idea_label_Describe}"
+				                         messageWhenBadInput="{!$Label.c.ss_idea_error_descriptionEntry}"
+				                         value="{!v.currIdea.Body}">
+					<lightning:insertImageButton />
+					<force:quillButtonLink />
+				</lightning:inputRichText>
+			</lightning:layoutItem>
+
+			<!-- CUSTOM FIELDS -->
+			<aura:if isTrue="{!v.showCustomFields}">
+				<aura:iteration items="{!v.customFields}" var="customField">
+					<lightning:layoutItem size="12"
+					                      padding="horizontal-medium">
+						<lightning:layout multipleRows="true"
+						                  class="slds-p-top--medium">
+
+							<!-- LABEL -->
+							<aura:if isTrue="{!customField.fieldType == 'Richtext'}">
+								<lightning:layoutItem size="12"
+								                      class="slds-form-element__label">
+									<aura:if isTrue="{!customField.required}">
+										<lightning:formattedText value="* "
+										                         class="slds-text-color--error"/>
+									</aura:if>
+									<lightning:formattedText value="{!customField.fieldLabel}"/>
+								</lightning:layoutItem>
+							</aura:if>
+
+							<!-- FIELD -->
+							<lightning:layoutItem size="12">
+								<aura:if isTrue="{! customField.fieldType == 'Text'}">
+									<lightning:input type="text"
+									                 label="{!customField.fieldLabel}"
+									                 value="{!customField.value}"
+									                 required="{!customField.required}"
+									                 placeholder="{!customField.info}"
+							                         class="{!customField.alignClass}"
+									/>
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'Textarea'}">
+									<lightning:textArea label="{!customField.fieldLabel}"
+									                    value="{!customField.value}"
+									                    placeholder="{!customField.info}"
+									                    required="{!customField.required}"
+									/>
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'Richtext'}">
+									<lightning:inputRichText value="{!customField.value}"
+									                         placeholder="{!customField.info}"
+								                             class="{!customField.alignClass}"
+									/>
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'Date'}">
+									<lightning:input type="date"
+									                 label="{!customField.label}"
+									                 value="{!customField.value}"
+									                 placeholder="{!customField.info}"
+									                 required="{!customField.required}"
+									                 class="{!customField.alignClass}"
+									/>
+								</aura:if>
+								<aura:if isTrue="{!customField.fieldType == 'DateTime'}">
+									<lightning:input type="datetime-local"
+									                 label="{!customField.fieldLabel}"
+									                 value="{!customField.value}"
+									                 placeholder="{!customField.info}"
+									                 required="{!customField.required}"
+									                 class="{!customField.alignClass}"
+									/>
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'Currency'}">
+									<lightning:input type="number"
+									                 label="{!customField.fieldLabel}"
+									                 title="{!customField.fieldLabel}"
+									                 value="{!customField.value}"
+									                 placeholder="{!customField.info}"
+									                 required="{!customField.required}"
+									                 class="{!customField.alignClass}"
+									                 formatter="currency"
+									                 step="0.01"
+									/>
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'Number'}">
+									<lightning:input type="number"
+									                 label="{!customField.fieldLabel}"
+									                 title="{!customField.fieldLabel}"
+									                 value="{!customField.value}"
+									                 placeholder="{!customField.info}"
+									                 required="{!customField.required}"
+									                 class="{!customField.alignClass}"
+									/>
+
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'Percent'}">
+									<lightning:input type="number"
+									                 label="{!customField.fieldLabel}"
+									                 title="{!customField.fieldLabel}"
+									                 value="{!customField.value}"
+									                 placeholder="{!customField.info}"
+									                 required="{!customField.required}"
+									                 class="{!customField.alignClass}"
+									                 formatter="percent"
+									                 step="0.01"
+									/>
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'Email'}">
+									<lightning:input type="email"
+									                 label="{!customField.fieldLabel}"
+									                 title="{!customField.fieldLabel}"
+									                 value="{!customField.value}"
+									                 placeholder="{!customField.info}"
+									                 required="{!customField.required}"
+									                 class="{!customField.alignClass}"
+									/>
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'Phone'}">
+									<lightning:input type="tel"
+									                 label="{!customField.fieldLabel}"
+									                 title="{!customField.fieldLabel}"
+									                 value="{!customField.value}"
+									                 placeholder="{!customField.info}"
+									                 required="{!customField.required}"
+									                 class="{!customField.alignClass}"
+									                 pattern="{!customField.dataValue}"
+									/>
+
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'Checkbox'}">
+									<lightning:input type="checkbox"
+									                 label="{!customField.fieldLabel}"
+									                 title="{!customField.fieldLabel}"
+									                 checked="{!customField.value}"
+									                 placeholder="{!customField.info}"
+									                 class="{!customField.alignClass}"
+									/>
+								</aura:if>
+
+								<aura:if isTrue="{!customField.fieldType == 'Picklist'}">
+									<lightning:select label="{!customField.fieldLabel}"
+									                  value="{!customField.value}"
+									                  >
+										<aura:iteration items="{!customField.dataValues}" var="option">
+											<option label="{!option}" value="{!option}">{!option}</option>
+										</aura:iteration>
+									</lightning:select>
+								</aura:if>
+
+							</lightning:layoutItem>
+						</lightning:layout>
+					</lightning:layoutItem>
+				</aura:iteration>
+			</aura:if>
+
+			<!-- ATTACHMENT -->
+			<aura:if isTrue="{!v.allowImages}">
+				<lightning:layoutItem size="12"
+				                      padding="around-small">
+					<lightning:input type="file"
+					                 multiple="false"
+					                 title="{!$Label.c.ss_idea_tooltip_UploadImage}"
+					                 label="{!$Label.c.ss_idea_label_UploadImage}"
+					                 accept="{!v.attachmentAccept}"
+					                 name="featuredImage"
+					                 onchange="{!c.onAttachmentUpload}"/>
+
+					<aura:if isTrue="{!v.attachmentName.length > 0}">
+						<lightning:formattedText value="{!v.attachmentName}"
+						                         title="{!$Label.c.ss_idea_label_ChooseFile}"/>
+					</aura:if>
+				</lightning:layoutItem>
+			</aura:if>
+
+			<!-- THEME -->
+			<aura:if isTrue="{!v.allowThemes}">
+				<lightning:layoutItem size="12"
+				                      padding="around-small">
+					<lightning:select label="{!$Label.c.ss_idea_label_ChooseTheme}"
+					                  value="{!v.currIdea.IdeaThemeId}">
+						<aura:iteration items="{!v.themeSet}" var="theme">
+							<option label="{!theme.Title}" value="{!theme.Id}">
+								{!theme.Title}
+							</option>
+						</aura:iteration>
+					</lightning:select>
+				</lightning:layoutItem>
+			</aura:if>
+
+			<!-- RELATED TOPIC -->
+			<aura:if isTrue="{!v.useTopics}">
+				<lightning:layoutItem size="12"
+				                      padding="around-small">
+					<lightning:select required="{!v.topicRequired}"
+					                  label="{!$Label.c.ss_idea_label_PickTopic}"
+					                  value="{!v.currIdea.Related_Topic_Name__c}"
+					                  messageWhenValueMissing="{!v.errorTopic}">
+						<aura:iteration items="{!v.topicNamesList}" var="topic">
+							<option label="{!topic.Name}"
+							        value="{!topic.Name}">
+								{!topic.Name}
+							</option>
+						</aura:iteration>
+					</lightning:select>
+				</lightning:layoutItem>
+			</aura:if>
+
+			<!-- CATEGORY -->
+			<aura:if isTrue="{!v.allowCategories}">
+				<lightning:layoutItem size="12"
+				                      padding="around-small">
+					<lightning:select label="{!$Label.c.ss_idea_label_SelectCategory}"
+					                  value="{!v.currIdea.Categories}">
+						<aura:iteration items="{!v.categoriesSet}" var="category">
+							<option label="{!category}"
+							        value="{!category}">
+								{!category}
+							</option>
+						</aura:iteration>
+					</lightning:select>
+				</lightning:layoutItem>
+			</aura:if>
+
+			<!-- Requested By -->
+			<aura:if isTrue="{!v.showRequestedBy}">
+				<lightning:layoutItem size="12"
+									  padding="around-small">
+					<c:SVNSUMMITS_Ideas_CustomLookUp objectType="User"
+					                                 searchLabel="{!$Label.c.ss_idea_label_RequestedBy}"
+					                                 selectedUserId="{!v.currIdea.Requested_By__c}"
+													 isNewIdea="{!v.isNewIdea}"
+													 selectedUser="{!v.selectedUser}"
+													 isEditing="{!v.isEditing}"
+													 showCross="{!v.showCross}"/>
+				</lightning:layoutItem>
+			</aura:if>
+
+			<!-- STATUS -->
+			<aura:if isTrue="{! and(v.isEditing, v.editStatus)}">
+				<!-- Status Change -->
+				<lightning:layoutItem size="12"
+				                      padding="around-small">
+					<lightning:select label="{!$Label.c.ss_idea_label_Status}"
+					                  value="{!v.currIdea.Status}">
+						<aura:iteration items="{!v.statusSet}" var="status">
+							<option label="{!status}"
+							        value="{!status}">
+								{!status}
+							</option>
+						</aura:iteration>
+					</lightning:select>
+				</lightning:layoutItem>
+
+				<!-- Status Comment -->
+				<lightning:layoutItem size="12">
+					<lightning:inputRichText label="{!$Label.c.ss_idea_label_StatusComment}"
+					                         placeholder="{!$Label.c.ss_idea_label_StatusComment}"
+					                         messageWhenBadInput="{!$Label.c.ss_idea_error_statusComment}"
+					                         valid="{!v.validComment}"
+					                         value="{!v.currIdea.Status_Comment__c}"/>
+				</lightning:layoutItem>
+			</aura:if>
+
+			<!-- Related Files -->
+			<aura:if isTrue="{!v.showRelatedFiles}">
+				<lightning:layoutItem size="12"
+				                      padding="around-small">
+					<lightning:input type="file"
+					                 multiple="false"
+					                 title="{!$Label.c.ss_idea_tooltip_UploadRelated}"
+					                 label="{!$Label.c.ss_idea_label_UploadRelated}"
+					                 accept="{!v.relatedFilesAccept}"
+					                 name="relatedFiles"
+					                 onchange="{! c.onRelatedUpload}"/>
+					<aura:if isTrue="{!v.relatedNames.length}">
+						<lightning:formattedText value="{!v.relatedNames}"
+						                         title="{!$Label.c.ss_idea_label_ChooseFile}"/>
+					</aura:if>
+				</lightning:layoutItem>
+			</aura:if>
+
+			<!-- SUBMIT -->
+
+			<aura:if isTrue="{!v.showSpinner}" >
+				<lightning:spinner alternativeText="{!$Label.c.ss_idea_label_spinnerSaving}"
+				                   variant="brand"/>
+			</aura:if>
+
+			<lightning:layoutItem size="12"
+			                      padding="around-small">
+				<lightning:layout multipleRows="false">
+					<lightning:layoutItem>
+						<lightning:button name="Submit"
+						                  label="{!$Label.c.ss_idea_label_Submit}"
+						                  title="{!$Label.c.ss_idea_tooltip_Submit}"
+						                  onclick="{!c.handleSubmitIdea}"
+						                  disabled="{!v.showSpinner}"
+						                  variant="brand"/>
+					</lightning:layoutItem>
+
+					<lightning:layoutItem class="slds-p-left--xx-small">
+						<lightning:button name="Cancel"
+						                  label="{!$Label.c.ss_idea_label_Cancel}"
+						                  title="{!$Label.c.ss_idea_tooltip_Cancel}"
+						                  onclick="{!c.goBack}"
+						                  variant="neutral"/>
+					</lightning:layoutItem>
+				</lightning:layout>
+			</lightning:layoutItem>
+
+		</aura:if>
+	</lightning:layout>
+</aura:component>

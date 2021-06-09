@@ -1,0 +1,180 @@
+<!-- Copyright (c) 2018. 7Summits Inc. -->
+<!--
+ - Created by francois korb on 3/20/18.
+ -->
+
+<aura:component description="Match_List"
+                implements="forceCommunity:availableForAllPageTypes,force:hasRecordId,lightning:isUrlAddressable,flexipage:availableForAllPageTypes"
+                access="global"
+                extends="c:Match_Base"
+                controller="Match_Controller">
+
+	<!-- Base -->
+	<aura:handler   name="baseReady"        event="c:Match_Base_Event"       action="{!c.onInit}"/>
+	<aura:attribute name="baseLoaded"       type="Boolean"  default="false"  access="public"/>
+
+	<!-- Options -->
+	<aura:attribute name="listMode"         type="String"   default="User"   access="global"/>
+	<aura:attribute name="settingName"      type="String"   default=""       access="global" required="false"/>
+
+	<!-- Heading -->
+	<aura:attribute name="showHeading"      type="Boolean"  default="true"          access="global"/>
+	<aura:attribute name="headingIcon"      type="String"   default="utility:table" access="global"/>
+
+	<aura:attribute name="firstColumnIcon"  type="String"   default=""       access="global"/>
+	<aura:attribute name="showSelect"       type="Boolean"  default="false"  access="global"/>
+	<aura:attribute name="showConfidence"   type="Boolean"  default="true"   access="global"/>
+	<aura:attribute name="showRequired"     type="Boolean"  default="true"   access="global"/>
+	<aura:attribute name="showRating"       type="Boolean"  default="true"   access="global"/>
+	<aura:attribute name="showAction"       type="Boolean"  default="false"  access="global"/>
+	<aura:attribute name="showFlow"         type="Boolean"  default="true"   access="global"/>
+
+	<!-- Pagination -->
+	<aura:attribute name="pageCount"        type="string"/>
+	<aura:attribute name="pageSize"         type="string"   default="10"     access="global"/>
+	<aura:attribute name="currentPage"      type="Integer"  default="1"      access="public"/>
+	<aura:attribute name="paginationPosition"   type="String"  default="Bottom" access="global"/>
+	<aura:attribute name="paginationAlignment"  type="String"  default="end"    access="global"/>
+
+	<aura:handler name="paginateEvent" action="{!c.handlePagination}" event="c:Match_Pagination_Event"/>
+
+
+	<!-- Filter -->
+	<aura:attribute name="critical"         type="Boolean"  default="false"  access="public"/>
+	<aura:attribute name="filterString"     type="String"   default=""       access="public"/>
+	<aura:attribute name="sortString"       type="String"   default=""       access="public"/>
+
+	<aura:attribute name="customFilter1"    type="String"   default=""       access="global"/>
+	<aura:attribute name="customValue1"     type="String"   default=""       access="global"/>
+	<aura:attribute name="customFilter2"    type="String"   default=""       access="global"/>
+	<aura:attribute name="customValue2"     type="String"   default=""       access="global"/>
+	<aura:attribute name="customFilter3"    type="String"   default=""       access="global"/>
+	<aura:attribute name="customValue3"     type="String"   default=""       access="global"/>
+	<aura:attribute name="customFilter4"    type="String"   default=""       access="global"/>
+	<aura:attribute name="customValue4"     type="String"   default=""       access="global"/>
+	<aura:attribute name="customFilter5"    type="String"   default=""       access="global"/>
+	<aura:attribute name="customValue5"     type="String"   default=""       access="global"/>
+
+
+	<aura:handler   event="c:Match_Filter_Event"     action="{!c.handleFilterEvent}"/>
+
+	<!-- Data -->
+	<aura:attribute name="list"             type="Map"   access="public"/>
+	<aura:attribute name="model"            type="Map"      access="public"/>
+	<aura:attribute name="columns"          type="List"     default="[]"/>
+	<aura:attribute name="data"             type="List"     default="[]"/>
+
+	<!-- Target select -->
+	<aura:attribute name="useUserId"        type="Boolean"  default="false" access="global"/>
+	<aura:attribute name="targets"          type="Map"      access="public"/>
+	<aura:attribute name="targetId"         type="String"   default=""/>
+
+	<!-- Data table -->
+	<aura:attribute name="sortedBy"         type="String"/>
+	<aura:attribute name="sortedDirection"  type="String"/>
+
+	<!-- DataTable built in spinner -->
+	<aura:attribute name="isLoading"        type="Boolean" default="false"/>
+
+	<!-- action control -->
+	<aura:attribute name="viewLabel"        type="String"  default="View" access="global"/>
+
+	<!-- hide the flow to avoid on screen notifications -->
+	<lightning:flow aura:id="matchFlow"     class="slds-hide" onstatuschange="{!c.flowStatusChange}"/>
+	<lightning:notificationsLibrary         aura:id="flowToast"/>
+
+	<lightning:card title=""
+	                footer="{!'Records processed: ' +  v.list.processed}">
+		<lightning:layout multipleRows="true">
+
+			<!-- Heading -->
+			<aura:if isTrue="{!v.showHeading}">
+				<lightning:layoutItem size="12"
+				                      padding="around-small">
+
+					<lightning:layout verticalAlign="center">
+						<lightning:layoutItem size="11">
+
+							<lightning:layout verticalAlign="center">
+								<aura:if isTrue="{! not(empty(v.headingIcon))}">
+									<lightning:layoutItem class="slds-p-right--xx-small">
+										<lightning:icon iconName="{!v.headingIcon}"
+										                alternativeText="list"
+										                size="small"/>
+									</lightning:layoutItem>
+								</aura:if>
+
+								<lightning:layoutItem class="slds-text-heading--medium" size="10">
+									{!v.model.label}
+								</lightning:layoutItem>
+							</lightning:layout>
+						</lightning:layoutItem>
+
+						<lightning:layoutItem class="slds-float--right" size="1">
+							<lightning:buttonIcon alternativeText="refresh"
+							                      class="slds-float--right"
+							                      iconName="utility:refresh"
+							                      title="{!$Label.c.ss_match_toolTipRefresh}"
+							                      onclick="{!c.handleRefresh}"/>
+						</lightning:layoutItem>
+					</lightning:layout>
+
+				</lightning:layoutItem>
+			</aura:if>
+
+			<!-- Select target -->
+			<aura:if isTrue="{!v.showSelect}">
+				<lightning:layoutItem size="12"
+				                      padding="around-small"
+				                      class="slds-p-bottom--small">
+					<c:Match_List_TargetSelect targets="{!v.targets}"
+					                           targetId="{!v.targetId}"/>
+				</lightning:layoutItem>
+			</aura:if>
+
+			<aura:if isTrue="{! or(v.paginationPosition == 'Top', v.paginationPosition == 'Both')}">
+				<lightning:layoutItem padding="around-small"
+				                      size="12">
+					<c:Match_Pagination align="{!v.paginationAlignment}"
+					                    firstDisabled="{!not(v.list.pageHasPrevious)}"
+					                    nextDisabled="{! not(v.list.pageHasNext)}"
+					                    previousDisabled="{! not(v.list.pageHasPrevious)}"
+					                    currentPage="{!v.list.pageCurrent}"
+					                    totalPages="{!v.list.pageCount}"
+					                    totalItems="{!v.list.total}"/>
+				</lightning:layoutItem>
+			</aura:if>
+
+
+			<!-- Data -->
+			<lightning:layoutItem size="12"
+			                      class="dataTable"
+			                      padding="around-small">
+				<lightning:datatable data="{!v.data}"
+				                     columns="{!v.columns}"
+				                     keyField="id"
+				                     isLoading="{!v.isLoading}"
+				                     hideCheckboxColumn="true"
+				                     sortedBy="{!v.sortedBy }"
+				                     sortedDirection="{!v.sortedDirection }"
+				                     onsort="{!c.updateColumnSorting }"
+				                     onresize="{!c.storeColumnWidths }"
+				                     onrowaction="{!c.handleRowAction }"/>
+			</lightning:layoutItem>
+
+			<aura:if isTrue="{! or(v.paginationPosition == 'Bottom', v.paginationPosition == 'Both')}">
+				<lightning:layoutItem padding="around-small"
+				                      size="12">
+					<c:Match_Pagination align="{!v.paginationAlignment}"
+					                    firstDisabled="{!not(v.list.pageHasPrevious)}"
+					                    nextDisabled="{! not(v.list.pageHasNext)}"
+					                    previousDisabled="{! not(v.list.pageHasPrevious)}"
+					                    currentPage="{!v.list.pageCurrent}"
+					                    totalPages="{!v.list.pageCount}"
+					                    totalItems="{!v.list.total}"/>
+				</lightning:layoutItem>
+			</aura:if>
+
+		</lightning:layout>
+	</lightning:card>
+</aura:component>

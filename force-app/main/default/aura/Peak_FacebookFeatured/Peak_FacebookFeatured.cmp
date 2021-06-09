@@ -1,0 +1,73 @@
+<aura:component controller="Peak_FacebookController" access="global" implements="lightning:availableForFlowScreens,force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes">
+
+    <aura:attribute name="post1href" access="global" type="String" default="https://www.facebook.com/20531316728/posts/10154009990506729/"
+    />
+    <aura:attribute name="post1full" access="global" type="Boolean" default="true" />
+    <aura:attribute name="post1height" access="global" type="String" default="500" />
+    <aura:attribute name="post2href" access="global" type="String" default="https://www.facebook.com/20531316728/posts/10154009990506729/"
+    />
+    <aura:attribute name="post2full" access="global" type="Boolean" default="true" />
+    <aura:attribute name="post2height" access="global" type="String" default="500" />
+    <aura:attribute name="post3href" access="global" type="String" default="https://www.facebook.com/20531316728/posts/10154009990506729/"
+    />
+    <aura:attribute name="post3full" access="global" type="Boolean" default="true" />
+    <aura:attribute name="post3height" access="global" type="String" default="500" />
+
+    <aura:attribute name="title" access="global" type="String" default="Featured Facebook Posts" />
+    <aura:attribute name="subTitle" access="global" type="String" default="Join In The Fun!" />
+    <aura:attribute name="extLink" access="global" type="String" default="http://7summitsinc.com/" />
+    <aura:attribute name="align" access="global" type="String" default="center" />
+
+    <aura:attribute name="useMetaData" access="global" type="Boolean" default="false" />
+    <aura:attribute name="record" access="global" type="String" default="" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <lightning:card title="">
+        <!-- <aura:set attribute="footer"> -->
+            <!-- <div class="slds-align_absolute-center"> -->
+                <!-- Powered by&nbsp; -->
+                <!-- <a href="http://www.7summitsinc.com/">7Summits</a> -->
+            <!-- </div> -->
+        <!-- </aura:set> -->
+        <section>
+            <h2 class="{!'slds-text-heading_medium slds-p-vertical_medium slds-text-align_'+v.align}">{!v.title}
+                <br />
+                <aura:if isTrue="{!v.subTitle != ''}">
+                    <small>
+                        <aura:if isTrue="{!v.extLink != ''}">
+                            <a href="{!v.extLink}" target="_blank">
+                                {!v.subTitle}
+                            </a>
+
+                            <aura:set attribute="else">
+                                {!v.subTitle}
+                            </aura:set>
+                        </aura:if>
+                    </small>
+                </aura:if>
+            </h2>
+
+            <lightning:layout horizontalAlign="center" multipleRows="true">
+                <aura:if isTrue="{!v.post1href}">
+                    <lightning:layoutItem flexibility="grow" padding="around-small">
+                        <iframe src="{!'https://www.facebook.com/plugins/post.php?href='+v.post1href+'&amp;show_text='+v.post1full+'&amp;width=auto&amp;height='+v.post1height}"
+                            height="{!v.post1height}" scrolling="yes" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+                    </lightning:layoutItem>
+                </aura:if>
+                <aura:if isTrue="{!v.post2href}">
+                    <lightning:layoutItem flexibility="grow" padding="around-small">
+                        <iframe src="{!'https://www.facebook.com/plugins/post.php?href='+v.post2href+'&amp;show_text='+v.post2full+'&amp;width=auto&amp;height='+v.post2height}"
+                            height="{!v.post2height}" scrolling="yes" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+                    </lightning:layoutItem>
+                </aura:if>
+                <aura:if isTrue="{!v.post3href}">
+                    <lightning:layoutItem flexibility="grow" padding="around-small">
+                        <iframe src="{!'https://www.facebook.com/plugins/post.php?href='+v.post3href+'&amp;show_text='+v.post3full+'&amp;width=auto&amp;height='+v.post3height}"
+                            height="{!v.post3height}" scrolling="yes" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+                    </lightning:layoutItem>
+                </aura:if>
+            </lightning:layout>
+        </section>
+    </lightning:card>
+</aura:component>

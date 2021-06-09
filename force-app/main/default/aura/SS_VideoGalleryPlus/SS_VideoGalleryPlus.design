@@ -1,0 +1,47 @@
+<design:component label="7S Video Gallery Plus">
+	<design:attribute name="Title"
+	                  label="Component Title"/>
+	<design:attribute name="moreText"
+	                  label="'See More' Link Text"/>
+
+	<design:attribute name="vimeoUsername"
+	                  label="OPTION 1: Vimeo Channel"
+	                  description="Please enter the applicable channel name from Vimeo (e.g., 'staffpicks' without quotes). Only use 1 of the 4 available options"/>
+	<design:attribute name="youtubeUsername"
+	                  label="OPTION 2: YouTube Username"
+	                  description="Please enter the applicable username from YouTube. Only use 1 of the 4 available options."/>
+	<design:attribute name="youtubeChannelId"
+	                  label="OPTION 3: YouTube Channel ID"
+	                  description="Please enter the applicable Channel ID from YouTube. Only use 1 of the 4 available options."/>
+	<design:attribute name="youtubePlaylistId"
+	                  label="OPTION 4: YouTube Playlist ID"
+	                  description="Please enter the applicable Playlist ID from YouTube. Only use 1 of the 4 available options."/>
+	<design:attribute name="numberOfVideos"
+	                  label="Number of Videos"
+	                  description="[Vimeo: 20 max] [YouTube: 50 max]"/>
+	<design:attribute name="order"
+	                  label="YouTube Channel/Username Sort By"
+	                  datasource="date,rating,relevance,title,videoCount,viewCount"/>
+	<design:attribute name="carouselMode"
+	                  label="Display as Carousel?"/>
+	<design:attribute name="apiKey"
+	                  label="YouTube API v3 Key"
+	                  description="Each organization using this component must obtain its own YouTube API v3 Key by registering. This process is simple and free. Please go here for more info: https://developers.google.com/youtube/registering_an_application"/>
+
+	<design:attribute name="hideDescriptions"
+	                  label="Hide All Descriptions"
+	                  description="Check this setting to hide all descriptions, even if the description fields are populated."/>
+	<design:attribute name="descriptionLineLength"
+	                  label="Maximum Description Lines"
+	                  description="The maximum number of lines of the description text to be displayed."/>
+	<design:attribute name="hasBorder"
+	                  label="Add Border to Videos"/>
+	<design:attribute name="videosPerRow"
+	                  label="Videos Per Row"
+	                  datasource="1,2,3,4,5,6"
+	                  description="When viewed on a mobile device, the row count will be stacked vertically."/>
+	<design:attribute name="align"
+	                  label="Header Alignment"
+	                  datasource="center,left,right"/>
+
+</design:component>

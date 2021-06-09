@@ -1,0 +1,118 @@
+<aura:component controller="AccListController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" 
+                access="global">
+    
+	<aura:attribute name="acc" type="Account" />
+	<aura:attribute name="ext" type="String" default="plus"/> 
+	
+    <aura:attribute name="ChildselectedCount" type="integer" default="0"/>
+    <aura:attribute name="strCDHParty" type="String" default="{!v.acc.name}"/>
+    <aura:registerEvent name="myComponentEvent" type="c:Selectedcheckbox"/>   
+		                 
+    <tr class="slds-hint-parent" id="tree0-node0" role="treeitem" aria-level="1" aria-expanded="true">
+		<td role="gridcell" class="slds-cell-shrink" data-label="Select row CDH Account">			
+            		<div class="uiInput uiInputCheckbox uiInput--default uiInput--checkbox">
+                    <label class="slds-checkbox"  style="outline: 1px solid rgb(21, 137, 238);">                
+                        <!--<input type="checkbox" aura:id="checkboxMCN" id="{!v.acc.Id}" name="options" onclick="{!c.onCheck}" value=""/>-->
+                        <ui:inputCheckbox aura:id="checkboxMCN" text="{!v.acc.Id}" value=""  class="sq-25 checkbox checkbox--defa	ult checkbox--states-1 brm mrs bg-secondary-btn sq-22 a-mid dib" click="{!c.select}" />
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-assistive-text">Select row CDH Account</span>
+                    </label>
+                    </div>
+		</td>                     
+		<th scope="row" data-label="Plussign"> 
+			<div class="slds-truncate" title="{!v.acc.Name}">
+            	<aura:if isTrue="{!v.acc.Account_Identifiers1__r[0] != null}">
+                <aura:if isTrue="{!v.ext=='plus'}">
+                    <div id="plus" >
+                        <span  title="View Location">
+                        <img draggable="false" style="cursor:pointer;" class="emoji" width="15" height="15" alt="➕" src="https://s0.wp.com/wp-content/mu-plugins/wpcom-smileys/twemoji/2/svg/2795.svg"  onclick="{!c.showHidePanel}"  />                          
+                        </span>
+                    </div>
+                    <aura:set attribute="else">
+                        <div id="minus">
+                            <span  title="View Location">
+                            <img draggable="false" style="cursor:pointer;" class="emoji" width="15" height="15" alt="➖" onclick="{!c.showHidePanel}" src="https://s0.wp.com/wp-content/mu-plugins/wpcom-smileys/twemoji/2/svg/2796.svg"/>                                 
+                            </span>    
+                      	</div>
+                    </aura:set>
+                </aura:if> 
+                &nbsp;
+                <aura:set attribute="else">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                    
+                </aura:set>
+             </aura:if>   
+			</div>
+		</th>
+        <td class="slds-cell-wrap" role="gridcell" data-label="CDH Account">
+			<div title="{!v.acc.CDH_Account_Name__c}">
+                <aura:if isTrue="{!v.acc.CDH_Account_Name__c == null}">                
+                <a onclick="{!c.openMCNdetail}" data-record="{!v.acc.Id}"  >{!v.acc.Name}</a>
+                <aura:set attribute="else">
+                <a onclick="{!c.openMCNdetail}" data-record="{!v.acc.Id}">{!v.acc.CDH_Account_Name__c}</a>                
+                </aura:set>
+				</aura:if>  
+            </div>
+		</td>
+        <td role="gridcell" class="slds-cell-wrap" data-label="Motorola Customer Number">
+			<div title="{!v.acc.Motorola_Customer_Number__c}">{!v.acc.Motorola_Customer_Number__c}</div>
+		</td> 
+		<td role="gridcell" class="slds-cell-wrap" data-label="Address">
+			<div title="{!v.acc.ShippingStreet}">
+                <aura:if isTrue="{!v.acc.ShippingStreet != null}">  
+                {!v.acc.ShippingStreet}
+                <aura:set attribute="else">
+                {!v.acc.BillingStreet}   
+    			</aura:set>
+                </aura:if>
+            </div>
+		</td> 
+        <td role="gridcell" class="slds-cell-wrap" data-label="City">
+			<div title="{!v.acc.ShippingCity}">
+                <aura:if isTrue="{!v.acc.ShippingCity != null}">  
+                {!v.acc.ShippingCity}
+                <aura:set attribute="else">
+                {!v.acc.BillingCity}   
+    			</aura:set>
+                </aura:if>
+            </div>
+		</td>
+        <td role="gridcell" class="slds-cell-wrap" data-label="State">
+			<div title="{!v.acc.ShippingState}">
+                <aura:if isTrue="{!v.acc.ShippingState != null}">  
+                {!v.acc.ShippingState}
+                <aura:set attribute="else">
+                {!v.acc.BillingState}   
+    			</aura:set>
+                </aura:if>
+            </div>
+		</td>
+        <td role="gridcell" class="slds-cell-wrap" data-label="Country">
+			<div title="{!v.acc.ShippingCountry}">
+                <aura:if isTrue="{!v.acc.ShippingCountry != null}">  
+                {!v.acc.ShippingCountry}
+                <aura:set attribute="else">
+                {!v.acc.BillingCountry}   
+    			</aura:set>
+                </aura:if>
+            </div>
+		</td>                  
+		<td role="gridcell" class="slds-cell-wrap" data-label="Payment Term">
+            <div title="{!v.acc.Payment_Term__c}">{!v.acc.Payment_Term__c}</div>
+        </td>
+		<td role="gridcell" class="slds-cell-wrap" data-label="Freight Term">
+            <div title="{!v.acc.Freight_Term__c}">{!v.acc.Freight_Term__c}</div>
+        </td>
+        <td class="slds-cell-wrap" role="gridcell" data-label="Price List Name">
+            <div title="{!v.acc.Price_List_Name__c}">{!v.acc.Price_List_Name__c}</div>
+        </td>
+        <td class="slds-cell-wrap" role="gridcell" data-label="RTM">
+            <div title="{!v.acc.Primary_Route_to_Market__c}">{!v.acc.Primary_Route_to_Market__c}</div>
+        </td>
+        <!--<td role="gridcell" data-label="ERP Active">
+            <div class="slds-truncate" title="{!v.acc.ERP_Active__c}">
+            	<ui:outputCheckbox value="{!v.acc.ERP_Active__c}"/>
+            </div>
+        </td>-->                    
+	</tr>  
+	
+</aura:component>

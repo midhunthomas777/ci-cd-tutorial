@@ -1,0 +1,61 @@
+<aura:component controller="CreateRevenueCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,lightning:availableForFlowScreens" access="global" >   
+    <aura:attribute name="RevenueList" type="Revenue__c[]"   /> 
+    <aura:attribute name="loadSpinner" type ="Boolean" default="false"/>
+    <aura:attribute name="showRevenueList" type ="Boolean" default="true"/>
+    <aura:attribute name="showCreateBtn" type ="Boolean" default="true"/>
+    <aura:attribute name="showSaveBtn" type ="Boolean" default="false"/>
+    <aura:attribute name="errorMsg" type ="Boolean" default="false" />
+    <aura:attribute name="createRevenue" type ="Boolean" default="false"/>
+    <aura:attribute name="revenueDelta" type ="Boolean"/>
+    <aura:attribute name="revenueMonths" type="List"/>
+    <aura:attribute name="revenueYears" type="List"/>
+    <aura:attribute name="oppCloseDate" type="String"/>
+    <aura:attribute name="oppId" type="String" default ="{!v.recordId}"/>
+    <aura:attribute name="oppCurrency" type="String"/>
+    <aura:attribute name="oppFiscalMonth" type="String"/>
+    <aura:attribute name="oliUnitPrice" type="String"/>
+    <aura:attribute name="oppRecordType" type="String" default ="Government_Standard"/>
+    <aura:attribute name="errMsg" type="String"/>
+    <aura:attribute name="oppoLineItems" type="List" />
+	<aura:attribute name="lstExistingRevYears" type ="List"/>
+    <aura:attribute name="userTheme" type="String"/> <!--added by akhil-->
+    <aura:handler event="c:validateRevenueInsert" action="{!c.validateRevenues}"/>    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    <!--<aura:handler name="init" value="{!this}" action="{!c.addFirstRow}"/>-->
+    <aura:handler name="AddRowEvt" event="c:AddNewRowEvt" action="{!c.addNewRow}"/>
+    <aura:handler name="DeleteRowEvt" event="c:DeleteRowEvt" action="{!c.removeDeletedRow}"/>
+    <aura:handler name="change" value="{!v.selectedPageSize}" action="{!c.changePageSize}"/> 
+    
+    <aura:if isTrue="{!v.loadSpinner}">
+        <div class="position: relative;">
+            <lightning:spinner alternativeText="Loading.." variant="brand" size="large" aura:id="mySpinner"/>
+        </div>   
+    </aura:if>
+    <div class="slds-box slds-theme_default">
+        <aura:if isTrue="{!v.showRevenueList}">
+            <c:RevenueList oppId ="{!v.oppId}" recordId="{!v.recordId}" oppCloseDate ="{!v.oppCloseDate}" oppCurrency ="{!v.oppCurrency}" />
+        </aura:if>   
+        <aura:if isTrue="{!not(empty(v.errMsg))}">
+            <c:AlertMessages Message="{!v.errMsg}" type="error"/>
+        </aura:if>
+        <aura:if isTrue="{!v.createRevenue}">
+            <aura:iteration items="{!v.RevenueList}" var="item" indexVar="index">
+                <c:CreateRevenueItem RevenueInstance="{!item}" oppCloseDate ="{!v.oppCloseDate}" rowIndex="{!index}" oliUnitPrice ="{!v.oliUnitPrice}"
+                                     revenueMonths ="{!v.revenueMonths}" oppFiscalMonth="{!v.oppFiscalMonth}" errMsg ="{!v.errMsg}"
+                                     />
+            </aura:iteration>
+        </aura:if>
+        <div class="slds-m-bottom_x-small"></div>
+        <aura:if isTrue="{!v.oppRecordType == 'Government_Standard'}">
+            <div class='slds-box slds-align_absolute-center'>
+                <lightning:Button variant="neutral" label="Cancel" onclick="{!c.cancel}"/>  
+                <aura:if isTrue="{!v.showCreateBtn}">
+                    <lightning:button  variant="brand" label="Create Revenue" onclick="{!c.createRevenue}" />
+                </aura:if>
+                <aura:if isTrue="{!v.showSaveBtn}">
+                    <lightning:button variant="brand" label="Save Revenue" onclick="{!c.saveRevenue}" /> 
+                </aura:if>
+            </div>
+        </aura:if>
+    </div>
+</aura:component>

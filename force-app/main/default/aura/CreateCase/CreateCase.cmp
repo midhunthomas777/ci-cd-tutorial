@@ -1,0 +1,157 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,force:hasRecordId" access="global" controller="CreateCaseController">
+    <aura:attribute name="fieldName" 	type="string" default="Id,WhatId,Subject,WhoId,Who.name,Status" required="true" />
+    <aura:attribute name="iconContactName" 	type="string" default="standard:contact"/>
+    <aura:attribute name="label" 		type="string" default="Contact Name" description="Label will be displayed above input Box" />
+    <aura:attribute name="placeholder" 	type="string" default="Search Contacts...." description="placeholder for input Box" />
+    <aura:attribute name="searchString"   type="string" access="private" default="" description="String to search"/>
+    <aura:attribute name="selectedRecord" type="Object" access="private" default="" description="selected Record Details" />
+    <aura:attribute name="recordsList" 	  type="List"   access="private" description="List of Records having data" />
+    <aura:attribute name="message" 		  type="String" access="private" default="" />
+    <aura:attribute name="showSpinner" type="Boolean" default="true" />
+    <aura:attribute name="sObjectName" type="String" default="Case" /> 
+    <aura:attribute name="iconName" type="String" default="case" /> 
+    <aura:attribute name="taskRecord" type="Task" />
+    <aura:attribute name="recordType" type="String" />
+    <aura:attribute name="picklistValues" type="List" />
+    <aura:attribute name="depotFlag" type="boolean" default="false"/>
+    <aura:attribute name="caseExistFlag" type="boolean" default="false"/> 
+    <aura:attribute name="CaseId" type ="String" />
+    <aura:attribute name="AccountId" type="String"/>
+    <aura:attribute name="ContactId" type="String"/>
+    <aura:attribute name="Subject" type="String"/>
+    <aura:attribute name="AccountRecordType" type="String"/>
+    <aura:attribute name="customerNumberFlag" type="boolean" default="false"/>
+    <aura:attribute name="AccountChildMap" type="Map"/>
+    <aura:attribute name="CustomerNumber" type="String" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+   <aura:handler event="force:refreshView" action="{!c.doInit}" /> 
+    <!--loading spinner start-->
+    <aura:if isTrue="{!v.showSpinner}">
+        <lightning:spinner />
+    </aura:if>
+    
+    <!-- Loading spinner end-->
+     <aura:if isTrue="{!v.caseExistFlag}">
+         <ui:message title="Case Details" severity="info" closable="true">
+			Please find the existing case : {!v.CaseId}
+	</ui:message>
+        
+    </aura:if>
+    
+    <aura:if isTrue="{!!v.caseExistFlag}">
+    <lightning:card iconName="{!'standard:'+v.iconName}" title="{!'Create - Close '+v.sObjectName}">
+        <div class="slds-m-around_small">
+         
+        <lightning:recordEditForm objectApiName="Case" aura:id="createCaseForm"
+                                                        onsubmit="{!c.handleSubmit}"
+                                                        onload="{!c.handleLoad}"
+                                                        onsuccess="{!c.handleSuccess}"
+                                                        onerror="{!c.handleError}"
+                                                        recordTypeId="{!v.recordType}">
+
+               <!-- <lightning:messages aura:id="errorMessage" />-->
+                <div class="slds-col slds-size_1-of-1">
+                    <!--<div class="slds-col slds-size_1-of-1">-->
+                    <!--Record Type Picklist Value start-->
+                    <lightning:select required="true" label="Case Category" value="{!v.recordType}" aura:id="caseRecordTypeListId">       
+                        <option value="">--None--</option>
+                        <aura:iteration items="{!v.picklistValues}" var="item">
+                            <option value="{!item.key}">
+                                {!item.value}
+                            </option>
+                        </aura:iteration>
+                    </lightning:select>
+                    <!--Record Type Picklist Value-->
+                    <!--<label for="accountAuraId">Account Name</label> -->
+                    <lightning:inputField fieldName="AccountId" required="true" aura:id="accountAuraId" value="{!v.AccountId}" onchange="{!c.setCustomerNumberRefresh}" />
+                    <!--Contact lookup-->
+                    <div>
+                        <aura:if isTrue="{!!empty(v.selectedRecord)}">
+                            <abbr title="required" class="slds-required">*</abbr>
+                            <label class="slds-form-element__label">{!v.label}</label>
+                        </aura:if>
+                        <div class="slds-combobox_container">
+                            <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open" aura:id="resultsDiv" aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                                    <div aura:id="lookup-pill" class="{! 'slds-pill-container ' + if(v.selectedRecord == '','slds-hide','') }">
+                                        <lightning:pill class="fullWidth" label="{!v.selectedRecord.label}" name="{!v.selectedRecord.value}" onremove="{! c.removeItem }">
+                                            <aura:set attribute="media">
+                                                <lightning:icon iconName="{!v.iconContactName}" size="x-small" alternativeText="icon"/>
+                                            </aura:set>
+                                        </lightning:pill>
+                                    </div>
+                                    <div aura:id="lookupField" class="{! if(v.selectedRecord == '','slds-show','slds-hide') }"><!-- -->
+                                        <!-- Icon, Search Bar, Search Icon -->
+                                        <!--<lightning:icon class="slds-combobox__input-entity-icon" iconName="{!v.iconContactName}" size="large" alternativeText="icon"/>-->
+                                        <lightning:input label="Contact Name" aura:id="inputLookup" class="inputBox" 
+                                                         placeholder="{!v.placeholder}" onblur="{!c.blurEvent}" 
+                                                         onclick="{!c.showRecords}" onkeyup="{!c.searchRecords}" 
+                                                         value="{!v.searchString}" 
+                                                         onchange="{!c.searchRecords}"
+                                                         autoComplete="off"/>
+                                        <lightning:icon class="slds-input__icon searchIcon" iconName="utility:search" size="x-small" alternativeText="search"/>
+                                        <lightning:spinner class="slds-hide" aura:id="Spinner" alternativeText="Loading" size="small" variant="brand"/>
+                                    </div>
+                                </div>
+                                <!-- Dropdown List -->
+                                <div id="listbox-id-1" class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" 
+                                     style="{! 'max-height:' + (8 + (v.recordCount * 40)) + 'px' }" 
+                                     aura:id="resultDropDown"> 
+                                    <ul class="slds-listbox slds-listbox_vertical recordListBox" role="presentation">
+                                        <aura:if isTrue="{!empty(v.message)}" >
+                                            <!-- To display Drop down List -->
+                                            <aura:iteration items="{!v.recordsList}" var="rec" >
+                                                <li id="{!rec.value}" class="slds-listbox__item eachItem" onmousedown="{!c.selectItem}">
+                                                    <div class="slds-media slds-listbox__option_entity">
+                                                        <lightning:icon iconName="{!v.iconContactName}" size="small" alternativeText="icon" />
+                                                        <span class="verticalAlign slds-truncate">{!rec.label}</span>
+                                                    </div>
+                                                </li>
+                                            </aura:iteration>
+                                            <!-- To display Error Message -->
+                                            <aura:set attribute="else">
+                                                <li class="slds-listbox__item">
+                                                    <span class="slds-media slds-listbox__option_entity">{!v.message}</span>
+                                                </li>
+                                            </aura:set>
+                                        </aura:if>
+                                    </ul>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    <!--Ends here-->
+                    <!-- LUCXB-784 Added  Customer Account field-->
+                    <aura:if isTrue="{!v.customerNumberFlag}">
+                       <!-- <lightning:inputField fieldName="Customer_Account__c" />-->
+                        <lightning:select aura:id="CustomerNumber" value="{!v.CustomerNumber}"  name="CustomerNumber" label="Customer Number" required="true">
+                            <option value="">--None--</option>
+                            <aura:iteration items="{!v.AccountChildMap}" var="i" indexVar="key">
+                                <option text="{!i.value}" value="{!i.key}"  />
+                            </aura:iteration>
+                        </lightning:select>
+                    </aura:if>
+                    <!-- CITIC-503  Added  Subject-->
+                    <lightning:inputField fieldName="Subject"  value="{!v.Subject}" />
+                    <lightning:inputField fieldName="Case_Type_1__c" required="true" onchange="{!c.setDepotRefresh}"  aura:id="CaseType"/>
+                    <lightning:inputField fieldName="Case_Type_2__c" required="true" />
+                    <lightning:inputField fieldName="Case_Type_3__c" required="true" />
+                    <aura:if isTrue="{!v.depotFlag}">
+                        <lightning:inputField fieldName="Depot__c" required="true"/>
+                        
+                    </aura:if>
+                  
+                   
+                    <lightning:inputField fieldName="Description" required="true"/>
+                </div>
+             
+                <div class="slds-align_absolute-center">
+                    <lightning:button type="submit" name="Submit" variant="Brand" class="slds-button" label="Create - Close Case"/><!-- class="slds-m-top_medium"-->
+                </div>
+           
+            </lightning:recordEditForm>
+        </div>
+    </lightning:card>
+</aura:if>
+</aura:component>

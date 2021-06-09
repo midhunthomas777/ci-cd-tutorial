@@ -1,0 +1,218 @@
+<aura:component controller="MRCommCalcConsolidatedBuyCtlr" access="global" 
+                implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:lightningQuickAction">	
+    
+    <aura:attribute name="getURL" type="String" />    
+    <aura:attribute name="mcnId" type="String" />
+    <aura:attribute name="errorMsg" type="String" />    
+    
+    <aura:attribute name="aggregatevalues" type="String[]" />
+    <aura:attribute name="cbLeftFields" type="String[]" />
+    <aura:attribute name="cbRightFields" type="String[]" />  
+    
+    <aura:attribute name="defaultVal" type="Decimal" default="0.00" />
+    <aura:attribute name="calculatorRecordProcessing" type="Boolean" default="false" />
+    <aura:attribute name="isCCMR" type="Boolean" default="true" />
+    <aura:attribute name="reset" type="Boolean" default="false" />
+    <aura:attribute name="showSpinner" type="Boolean" default="true" />
+    <aura:attribute name="showPDFBtn" type="Boolean" default="false" />    
+    <aura:attribute name="showAccountDetails" type="Boolean" default="false" />
+    <aura:attribute name="showCommCalc" type="Boolean" default="false" />
+    <aura:attribute name="showPartnerInfo" type="Boolean" default="false" />
+    <aura:attribute name="MRPartnerList" type="ConsolidatedBy_Partner_Information__mdt[]"   /> 
+    <aura:attribute name="detailWrap" type="Object"/>
+    <aura:registerEvent name="MRCommissionOderCalculatorCloseEvent" type="c:MRCommissionOderCalculatorCloseEvent"/>
+    <!--Event handler for Add and Delete Row Event which is fire from MRPartnerDynamicRow Component-->    
+    <aura:handler name="DeleteRowEvt" event="c:DeleteRowEvt" action="{!c.removeDeletedRow}"/>
+    <aura:handler name="AddRowEvt" event="c:AddNewRowEvt" action="{!c.addNewRow}"/>
+    <aura:If isTrue="{!v.calculatorRecordProcessing}">
+        <span/>
+        <div>
+            <lightning:spinner variant="brand" aura:id="mySpinner" alternativeText="loading.." />
+        </div>
+    </aura:If>
+    
+    
+    <div class="slds-m-around_medium">
+        
+        
+        
+        <lightning:layout >
+            <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                <b><h3 class="slds-section-title--divider">Search MCN</h3></b>       
+                <div class="slds-box">
+                    <div class="slds-list--horizontal slds-wrap slds-p-horizontal--x-large">
+                        
+                        <lightning:layoutItem  largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                            <ui:inputText aura:id="MotorolaCustomerNumber" 
+                                          label ="Motorola Customer Number"
+                                          labelClass="slds-form-element__label" 
+                                          class="slds-input" 
+                                          value="" required="true"/> 
+                        </lightning:layoutItem>
+                        <lightning:layoutItem  largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">           
+                            <br/><div class="searchBtn">
+                            <lightning:button variant="brand" label="Search" onclick="{!c.SearchMCN}"/>
+                            </div>               
+                        </lightning:layoutItem>
+                    </div>
+                </div>
+            </lightning:layoutItem>
+            <aura:If isTrue="{!v.showAccountDetails}">
+                <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                    <b><h3 class="slds-section-title--divider">Customer Account Information</h3></b>       
+                    <div class="slds-box">
+                        <div class="slds-list--horizontal slds-wrap slds-p-horizontal--x-large">
+                            <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                                <b>Account Name</b>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                                <aura:if isTrue="{!v.detailWrap.customerAccount.Parent.Name != null}">  {!v.detailWrap.customerAccount.Parent.Name}
+                                    <aura:set attribute="else"><br/></aura:set>
+                                </aura:if> 
+                            </lightning:layoutItem>
+                            <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                                <b>Route to Market</b>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                                <aura:if isTrue="{!v.detailWrap.customerAccount.Primary_Route_to_Market__c != null}">{!v.detailWrap.customerAccount.Primary_Route_to_Market__c}
+                                    <aura:set attribute="else"><br/></aura:set>
+                                </aura:if> 
+                            </lightning:layoutItem>
+                            <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                                <b>Motorola Customer Number</b>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                                <aura:if isTrue="{!v.detailWrap.customerAccount.Motorola_Customer_Number__c != null}"> {!v.detailWrap.customerAccount.Motorola_Customer_Number__c}
+                                    <aura:set attribute="else"><br/></aura:set>
+                                </aura:if> 
+                            </lightning:layoutItem> 
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+            </aura:If> 
+        </lightning:layout> 
+    </div>
+    <!--Consolidated Buy Calculation Starts-->
+    <div class="slds-m-around_medium">
+        <aura:If isTrue="{!v.showCommCalc}">     
+            <lightning:layout > 
+                <lightning:layoutItem class="center-align" size="12">                    
+                    <lightning:button  variant="brand" type="submit" label="Calculate" onclick="{!c.doCalculate}"/> 
+                    <aura:if isTrue="{!v.reset}">
+                        <lightning:button  variant="brand" label="Reset" onclick="{!c.doReset}"/>  
+                    </aura:if>
+                    <aura:if isTrue="{!v.showPDFBtn}">
+                        <lightning:button  variant="brand" label="Print PDF" onclick="{!c.doPrint}" />   
+                    </aura:if>
+                </lightning:layoutItem>
+            </lightning:layout>
+            <br/>
+            <lightning:layout>  
+                <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                    <div class="slds-box">
+                        <div class="slds-list--horizontal slds-wrap slds-p-horizontal--x-large">
+                            <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                                Total Order Amount (USD)
+                            </lightning:layoutItem>
+                            
+                           <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                                    <lightning:input name="totalCommissionAmount"  aura:id="totalCommissionAmount" type="number" step="0.01"  formatter="currency" value="0.00"/>                                
+                       </lightning:layoutItem>  
+                                
+                            <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                                Override Commission Dollars (USD)
+                            </lightning:layoutItem>
+                            <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                                    <lightning:input name="overrideTOA"  aura:id="overrideTOA" type="number" step="0.01"  formatter="currency" value="0.00"/>                                                                
+                            </lightning:layoutItem>
+                        </div>   
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                    <div class="slds-box">
+                        <div class="slds-list--horizontal slds-wrap slds-p-horizontal--x-large">
+                            <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                                Total Commission Percentage (%)
+                            </lightning:layoutItem>
+                            <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                                    <lightning:input name="totalCommissionPercentage"  aura:id="totalCommissionPercentage" type="number" step="0.01" value="0.00" disabled="true"  />                                                                
+                            </lightning:layoutItem><br/>                       
+                            <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                                Total Commission Dollars (USD)
+                            </lightning:layoutItem>
+                            <lightning:layoutItem largeDeviceSize="6" mediumDeviceSize="8" smallDeviceSize="12" size="12">
+                                    <lightning:input name="totalCommissionDollars"  aura:id="totalCommissionDollars" type="number"  formatter="currency" step="0.01" value="0.00" disabled="true"/>                                                                
+                            </lightning:layoutItem>
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+                
+            </lightning:layout>
+            <lightning:Layout>
+                <lightning:layoutItem flexibility="grow" size="12">
+                    <div class="slds-box">
+                        <div class="slds-list--horizontal slds-wrap slds-p-horizontal--x-large">
+                            <lightning:layoutItem flexibility="grow" size="4" mediumDeviceSize="2" largeDeviceSize="4">
+                                Comments
+                            </lightning:layoutItem>
+                            <lightning:layoutItem flexibility="grow" size="8" mediumDeviceSize="2" largeDeviceSize="8">
+                                <div class="slds-item--detail slds-truncate">                                     
+                                    <lightning:textarea name="comments" aura:id="comments" value="" class="topText"  maxlength="5000" />
+                                </div> 
+                            </lightning:layoutItem><br/>                       
+                        </div>
+                    </div>
+                </lightning:layoutItem>
+            </lightning:Layout>
+        </aura:If>
+        <!-- Dynamic Partner Info-->
+        
+        <aura:If isTrue="{!v.showPartnerInfo}"> 
+            <br/> <h3 class="slds-section-title--divider" style="background-color: #DDE3ED!important;">Partners Information</h3>
+            <span/>
+            <div class="slds-item--detail slds-truncate">                                            
+                <table class="slds-table slds-table_bordered slds-table_cell-buffer">    
+                    <tbody>
+                        <aura:iteration items="{!v.MRPartnerList}" var="item" indexVar="index">
+                            <!--<c:MRCommissionPartnerInformation />-->
+                            <c:MRPartnerDynamicRow MRPartnerInstance="{!item}" rowIndex="{!index}" disableFieldsInViewCalculatorPopup="{!v.disableFieldsInViewCalculatorPopup}" PopupWindow="true"/>
+                        </aura:iteration>
+                    </tbody>
+                </table>
+                <br/>
+            </div> <br/>
+        </aura:If>
+    </div>
+    
+    
+    
+    
+    <!-- Validation Component Starts -->
+    <c:ModalComponent aura:id="goButtonValidation"
+                      roleType="alertdialog"
+                      classSize="slds-modal slds-modal--prompt"
+                      headerClass="slds-theme--error slds-theme--alert-texture"
+                      headerStyle="background-color:DodgerBlue;"
+                      bodyClass="slds-p-around__medium slds-text-align--center"
+                      showCloseButton="true"
+                      showCancelButton="false"
+                      okButtonLabel="OK"                      
+                      footerClass="slds-theme--default">
+        <aura:set attribute="header">
+            <h6 class="slds-text-heading--medium" id="prompt-heading-id">
+                <span>
+                    <c:svgIcon class="slds-icon slds-icon--small slds-m-right--small slds-col slds-no-flex" 
+                               svgPath="/partnercommunity/resource/slds214/assets/icons/utility-sprite/svg/symbols.svg#warning" 
+                               category="utility" 
+                               size="medium" 
+                               name="warning" />
+                </span>
+                <b>Message</b>
+            </h6>
+            <!-- Body is created Dynamically -->
+        </aura:set>
+    </c:ModalComponent>
+    <!-- Validation Component Ends -->
+    
+    
+</aura:component>

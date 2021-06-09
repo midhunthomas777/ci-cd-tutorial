@@ -1,0 +1,26 @@
+<aura:component controller="MRCPQ_CheckoutController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="getPageURL" type="String" />
+    <aura:attribute name="showError" type="Boolean" default="false"/>
+    <aura:attribute name="checkout" type="Boolean" default="false"/>
+    <aura:attribute name="CheckoutValidation" type="Object" />
+
+
+    <div class="c-container">
+        <lightning:layout>
+            <aura:if isTrue="{!v.checkout}">
+            <lightning:layoutItem flexibility="auto" padding="around-small">
+                <div class="custom-box">
+                    {!$Label.c.MRCPQ_Checkout_Confirm}
+                </div>
+            </lightning:layoutItem>
+            <lightning:layoutItem flexibility="auto" padding="around-small">
+                <div class="custom-box">
+                    <lightning:button variant="brand" label="Checkout" onclick="{!c.submitPayment}"/>
+                </div>
+            </lightning:layoutItem>
+               
+            </aura:if>
+        </lightning:layout>
+    </div>
+</aura:component>

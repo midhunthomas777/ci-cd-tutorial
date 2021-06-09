@@ -1,0 +1,126 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc. All rights reserved.
+  -
+  -->
+
+<design:component label="7S Onboarding">
+    <design:attribute name="displayMode" label="Component Display Mode" dataSource="Show Progress On Page, Hide Progress On Page, Always Show Onboarding" />
+    <design:attribute name="usedOnProfilePage" label="Used On Profile Page" description="When checked, will check the record ID of the profile and compare it to the User ID of the logged in user, displaying it only on their profile page." />
+    <design:attribute name="linearNavigationOnly" label="Onboarding - Use Linear Navigation Only" description="If selected, the user will have to proceed through each step of the onboarding without clicking around. Does not effect the progress component."/>
+    <design:attribute name="showProgressWhenComplete" label="Progress - Keep on page after onboarding is complete" description="When Display Mode is set to 'Progress On Page', checking this will keep it on screen once onboarding is complete." />
+    <design:attribute name="progressHeading" label="Progress - Header Text" />
+    <design:attribute name="progressMessage" label="Progress - Message" />
+
+    <!-- Step 0 Attributes -->
+    <design:attribute name="headerText" label="Global - Header Text" description="Text to be displayed at the top of the Onboarding panel."/>
+    <design:attribute name="buttonColor" label="Global - Button Color" description="Color of the button on every slide."/>
+    <design:attribute name="byeForNowMessage" label="Global - Bye For Now Message" description="Text that displays on the Bye slide that displays when the User Xs out of the Onboarding flow."/>
+
+    <!-- Step 1 Attributes -->
+    <design:attribute name="showStep1" label="Show Welcome Slide" description="Visibility for each step displayed in the flow at the top of the Onboarding component. Enable all steps you would like users to complete."/>
+    <design:attribute name="step1Label" label="Welcome - Progress Label" description="Label for each step displayed in the flow at the top of the Onboarding component."/>
+    <design:attribute name="welcomeHeader" label="Welcome - Slide Header" description="Header text that displays on the Welcome slide"/>
+    <design:attribute name="welcomeMessage" label="Welcome - Message" description="Text that displays on the Welcome slide."/>
+
+    <!-- Step 2 Attributes -->
+    <design:attribute name="showStep2" label="Show Profile Slide" description="Visibility for each step displayed in the flow at the top of the Onboarding component. Enable all steps you would like users to complete."/>
+    <design:attribute name="step2Label" label="Profile - Progress Label" description="Label for each step displayed in the flow at the top of the Onboarding component."/>
+    <design:attribute name="profileHeader" label="Profile - Slide Header" description="Header text that displays on the Profile slide"/>
+    <design:attribute name="profileMessage" label="Profile - Message" description="Text that displays on the Profile slide"/>
+    <design:attribute name="profileAction" label="Profile - Action" description="Action text that displays on the Profile slide."/>
+    <design:attribute name="showTitle" label="Profile - Show Title" description="Show the user's title on the Profile slide."/>
+    <design:attribute name="showCompany" label="Profile - Show Company" description="Show the user's company on the Profile slide."/>
+    <design:attribute name="showEmail" label="Profile - Show Email" description="Show the user's email address on the Profile slide."/>
+    <design:attribute name="showMobile" label="Profile - Show Mobile" description="Show the user's mobile phone on the Profile slide."/>
+    <design:attribute name="showNickname" label="Profile - Show Nickname" description="Show the user's nickname on the Profile slide."/>
+    <!--
+    TODO: Dynamic query builder for custom fields
+    <design:attribute name="showRegion" label="Profile - Show Region" description="Show the user's region on the Profile slide."/>
+    <design:attribute name="showIndustry" label="Profile - Show Industry" description="Show the user's industry on the Profile slide."/>
+-->
+    <design:attribute name="showAboutMe" label="Profile - Show About Me" description="Show the user's About Me field on the Profile slide."/>
+    <design:attribute name="showAvatarUpload" label="Profile - Show Avatar Upload" description="Show the user's profile image on the Profile slide."/>
+    <design:attribute name="acceptableAvatarFileTypes" label="Profile - acceptable Avatar File Types" description="What file types are accepted for the user's profile image. Recommend: .jpg,.png"/>
+
+    <!-- Step 3 Attributes -->
+    <design:attribute name="showStep3" label="Show Additional Info Slide" description="Visibility for each step displayed in the flow at the top of the Onboarding component. Enable all steps you would like users to complete."/>
+    <design:attribute name="step3Label" label="Additional Info - Progress Label" description="Label for each step displayed in the flow at the top of the Onboarding component."/>
+    <design:attribute name="additionalSlideHeader" label="Additional Info - Slide Header" description=""/>
+    <design:attribute name="additionalSlideMessage" label="Additional Info - Message" description=""/>
+    <design:attribute name="additionalSlideLabel" label="Additional Info - Action" description=""/>
+    <design:attribute name="additionalSlideUserFieldName1" label="Additional Info - User Field Name 1" description="API name of User field 1 that will be updated"/>
+    <design:attribute name="additionalSlideUserFieldLabel1" label="Additional Info - User Field Label 1" description="Label of Field 1"/>
+    <design:attribute name="additionalSlideUserFieldName2" label="Additional Info - User Field Name 2" description="API name of User field 2 that will be updated"/>
+    <design:attribute name="additionalSlideUserFieldLabel2" label="Additional Info - User Field Label 2" description="Label of Field 2"/>
+
+    <!-- Step 4 Attributes -->
+    <design:attribute name="showStep4" label="Show Topics Slide" description="Visibility for each step displayed in the flow at the top of the Onboarding component. Enable all steps you would like users to complete."/>
+    <design:attribute name="useTopicMetadata" label="Use Custom Topic Metadata" description="Choosing this option uses 7S Onboarding Topic Settings ONLY for your topic slide(s)."/>
+    <design:attribute name="step4Label" label="Topics - Progress Label" description="Label for each step displayed in the flow at the top of the Onboarding component."/>
+    <design:attribute name="topicsHeader" label="Topics - Slide Header" description="Header text that displays on the Topics slide."/>
+    <design:attribute name="topicsMessage" label="Topics - Message" description="Text that displays on the Topics slide"/>
+    <design:attribute name="topicsAction" label="Topics - Action" description="Action text that displays on the Topics slide."/>
+    <design:attribute name="group1TopicLabel" label="Topics - Category 1 Topic Label" />
+    <design:attribute name="topics" label="Topics - Category 1 Topic IDs" description="List of comma delimited group 1 topics to display for the user to follow."/>
+    <design:attribute name="group2TopicLabel" label="Topics - Category 2 Topic Label" />
+    <design:attribute name="topicsProduct" label="Topics - Category 2 Topic IDs" description="List of comma delimited group 2 topics to display for the user to follow"/>
+
+    <!-- Step 5 Attributes -->
+    <design:attribute name="showStep5" label="Show Groups Slide" description="Visibility for each step displayed in the flow at the top of the Onboarding component. Enable all steps you would like users to complete."/>
+    <!--
+    TODO: Dynamic query builder for custom fields
+    <design:attribute name="showUserSpecificGroups" label="Show User-Specific Groups" description="Shows the user specific Group"/>
+    -->
+    <design:attribute name="step5Label" label="Groups - Progress Label" description="Label for each step displayed in the flow at the top of the Onboarding component."/>
+    <design:attribute name="groupsHeader" label="Groups - Slide Header" description="Header text that displays on the Groups slide."/>
+    <design:attribute name="groupsMessage" label="Groups - Message" description="Text that displays on the Groups slide."/>
+    <design:attribute name="groupsAction" label="Groups - Action" description="Action text that displays on the Groups slide."/>
+    <design:attribute name="showGroupDescription" label="Groups - Show Group Description" description="Unchecking removes the group description from the card." />
+    <design:attribute name="groupIDs" label="Groups - Group IDs" description="List of comma delimited groups to display that the user may join."/>
+
+    <!-- Step 6 Attributes -->
+    <design:attribute name="showStep6" label="Show Notifications Slide" description="Visibility for each step displayed in the flow at the top of the Onboarding component. Enable all steps you would like users to complete."/>
+    <design:attribute name="step6Label" label="Notifications - Progress Label" description="Label for each step displayed in the flow at the top of the Onboarding component."/>
+    <design:attribute name="notificationHeader" label="Notifications - Slide Header" description="Header text that displays on the Notification slide."/>
+    <design:attribute name="notificationMessage" label="Notifications - Message" description="Text that displays on the Notification slide."/>
+    <design:attribute name="notificationAction" label="Notifications - Action" description="Action text that displays on the Notification slide."/>
+    <design:attribute name="notificationText" label="Notifications - Confirm Text" description="Notification text that displays on the Notification slide."/>
+
+    <!-- Step 7 Attributes -->
+    <design:attribute name="showStep7" label="Show Video Tour Slide" description="Visibility for each step displayed in the flow at the top of the Onboarding component. Enable all steps you would like users to complete."/>
+    <design:attribute name="step7Label" label="Video Tour - Progress Label" description="Label for each step displayed in the flow at the top of the Onboarding component."/>
+    <design:attribute name="toursHeader" label="Video Tour - Slide Header" description="Header text that displays on the Tours slide."/>
+    <design:attribute name="toursMessage" label="Video Tour - Message" description="Text that displays on the Tours slide."/>
+    <design:attribute name="videoType1" label="Video Tour - Video Source" datasource="YouTube, Vimeo" Description="Video source. Select YouTube or Vimeo."/>
+    <design:attribute name="VideoURL1" label="Video Tour - Video ID" description="Identifier for the video. The YouTube ID can be found in the URL of the video. It is usually 11 characters. (e.g. https://www.youtube.com/watch?v=[VIDEO_ID] OR https://youtu.be/[VIDEO_ID]) | The Vimeo ID can be found in the URL of the video. It is usually 9 characters. (e.g. https://vimeo.com/[VIDEO_ID])"/>
+    <design:attribute name="VideoTitle1" label="Video Tour - Title" description="Title for the video."/>
+    <design:attribute name="VideoDescription1" label="Video Tour - Description" description="Description of Video 1."/>
+
+    <!-- Step 8 Attributes -->
+    <design:attribute name="showStep8" label="Show Completion Slide" description="Visibility for each step displayed in the flow at the top of the Onboarding component. Enable all steps you would like users to complete."/>
+    <design:attribute name="step8Label" label="Completion - Progress Label" description="Label for each step displayed in the flow at the top of the Onboarding component."/>
+    <design:attribute name="doneHeader" label="Completion - Slide Header" description="Header text that displays on the Completion slide."/>
+    <design:attribute name="doneMessage" label="Completion - Message" description="Text that displays on the Completion slide."/>
+    <design:attribute name="doneAction" label="Completion - Action" description="Action text that displays on the Completion slide."/>
+    <design:attribute name="action1Icon" label="Completion - Action 1 Icon" description="Icon that displays on the Completion slide."/>
+    <design:attribute name="action1Text" label="Completion - Action 1 Text" description="Text that displays on the Completion slide."/>
+    <design:attribute name="action1Description" label="Completion - Action 1 Description" description="Text that displays on the Completion slide."/>
+    <design:attribute name="action1Url" label="Completion - Action 1 Url" description="URL that displays on the Completion slide"/>
+    <design:attribute name="action1UseUserId" label="Action 1 Append User ID" description="Append the logged in user's user ID to the end of the URL. Useful for profile and settings URLs."/>
+    <design:attribute name="action2Icon" label="Completion - Action 2 Icon" description="Icon that displays on the Completion slide."/>
+    <design:attribute name="action2Text" label="Completion - Action 2 Text" description="Text that displays on the Completion slide."/>
+    <design:attribute name="action2Description" label="Completion - Action 2 Description" description="Text that displays on the Completion slide."/>
+    <design:attribute name="action2Url" label="Completion - Action 2 Url" description="URL that displays on the Completion slide"/>
+    <design:attribute name="action2UseUserId" label="Action 2 Append User ID" description="Append the logged in user's user ID to the end of the URL. Useful for profile and settings URLs."/>
+    <design:attribute name="action3Icon" label="Completion - Action 3 Icon" description="Icon that displays on the Completion slide."/>
+    <design:attribute name="action3Text" label="Completion - Action 3 Text" description="Text that displays on the Completion slide."/>
+    <design:attribute name="action3Description" label="Completion - Action 3 Description" description="Text that displays on the Completion slide."/>
+    <design:attribute name="action3Url" label="Completion - Action 3 Url" description="URL that displays on the Completion slide"/>
+    <design:attribute name="action3UseUserId" label="Action 3 Append User ID" description="Append the logged in user's user ID to the end of the URL. Useful for profile and settings URLs."/>
+    <design:attribute name="action4Icon" label="Completion - Action 4 Icon" description="Icon that displays on the Completion slide."/>
+    <design:attribute name="action4Text" label="Completion - Action 4 Text" description="Text that displays on the Completion slide."/>
+    <design:attribute name="action4Description" label="Completion - Action 4 Description" description="Text that displays on the Completion slide."/>
+    <design:attribute name="action4Url" label="Completion - Action 4 Url" description="URL that displays on the Completion slide"/>
+    <design:attribute name="action4UseUserId" label="Action 4 Append User ID" description="Append the logged in user's user ID to the end of the URL. Useful for profile and settings URLs."/>
+
+</design:component>

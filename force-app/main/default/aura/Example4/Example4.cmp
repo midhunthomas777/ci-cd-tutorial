@@ -1,0 +1,5 @@
+<aura:component >
+	<div style ="box">  
+    my 
+    </div>
+</aura:component>

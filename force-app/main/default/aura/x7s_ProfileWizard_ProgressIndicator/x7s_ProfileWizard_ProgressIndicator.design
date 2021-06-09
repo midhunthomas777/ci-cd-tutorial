@@ -1,0 +1,3 @@
+<design:component label="7S Profile Wizard Progress Indicator">
+	    <design:attribute name="ProfileStep" label="ProfileStep"  description="Profile Wizard Step"/>
+</design:component>

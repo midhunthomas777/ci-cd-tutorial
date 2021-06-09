@@ -1,0 +1,34 @@
+<aura:component controller="VestaPartsAndPricingController" implements="forceCommunity:availableForAllPageTypes">
+    <aura:attribute name="columns" type="List" />
+    <aura:attribute name="andFilters" type="List" />
+    <aura:attribute name="accountId" type="String" />
+    <aura:attribute name="currentPriceBook" type="String" default="Contractor__c" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="loadSpinner" type="Boolean" default="true" />
+    <aura:attribute name="pageName" type="String" />
+    <aura:attribute name="searchText" type="String" description="Variable to store search text value" />
+
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="medium" aura:id="mySpinner" />
+    </aura:if>
+    <div class="title-container">
+        <h2>Parts &amp; Pricing</h2>
+    </div>
+    <aura:if isTrue="{!not(empty(v.columns))}">
+        <span class="datatable-container">
+            <c:ChildRecordsByParent columns="{!v.columns}" andFilters="{!v.andFilters}"
+                objectName="Vesta_Part_and_Pricing__c" showPagination="{!v.pageName == 'Home' ? 'false' : 'true'}"
+                hideSelection="true" showPageSize="{!v.pageName == 'Home' ? 'false' : 'true'}" pageSize="10"
+                sortField="Name" enableClientSideSearch="{!v.pageName == 'Home' ? 'false' : 'true'}"
+                clientSideSearchPlaceholder="Search Parts ..." showExport="true" exportBtnPosition="right" exportBtnIconPosition="left"
+                exportBtnLabel="Export" exportBtnValue="Export" />
+        </span>
+    </aura:if>
+
+    <aura:if isTrue="{!v.pageName == 'Home'}">
+        <div class="slds-text-align_right view-all-container">
+            <lightning:button variant="base" iconName="utility:forward" iconPosition="right"
+                onclick="{! c.viewAllPartsAndPricing }" label="View all" title="View all" class="view-orders-button" />
+        </div>
+    </aura:if>
+</aura:component>

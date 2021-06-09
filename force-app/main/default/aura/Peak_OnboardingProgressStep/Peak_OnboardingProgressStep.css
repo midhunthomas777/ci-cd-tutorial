@@ -1,0 +1,40 @@
+/**
+ * Created by jonbalza on 2019-09-12.
+ */
+.THIS + .THIS {
+    margin-top: 2px;
+}
+.THIS .onboarding-step__link {
+    display: block;
+    border-radius: token(borderRadiusMedium);
+    border: none;
+    background: #f9f9f9;
+    color: token(textColor);
+    cursor: pointer;
+    text-align: left;
+    padding: 1rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    transition: .2s all linear;
+}
+.THIS .onboarding-step__checkbox {
+    display: block;
+    background: #fff;
+    border-radius: token(borderRadiusMedium);
+    border: 1px solid token(borderColor);
+    width: 20px;
+    height: 20px;
+}
+.THIS .onboarding-step__icon {
+    margin-top: 1px;
+}
+.THIS .onboarding-step__link:hover,
+.THIS .onboarding-step__link:focus {
+    background: #E4E5E6;
+    text-decoration: none;
+}
+.THIS .onboarding-topic__label {
+    line-height: 1.1;
+    font-size: .875rem;
+}

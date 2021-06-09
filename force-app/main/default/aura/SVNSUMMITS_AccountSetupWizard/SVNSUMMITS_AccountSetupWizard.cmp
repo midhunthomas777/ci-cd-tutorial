@@ -1,0 +1,290 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <!-- ******************** -->
+    <!-- Attributes -->
+    <!-- ******************** -->
+    <aura:attribute type="String" name="accountId" />
+    <aura:attribute type="Integer" name="stepNumber" default="-1"/>
+    <aura:attribute type="String" name="licenceId" />
+    <aura:attribute type="String" name="insuranceId" />
+    <aura:attribute type="String" name="wizardLabel" />
+    <aura:attribute type="String" name="imageURL" />
+    <aura:attribute type="String" name="textAreaText" />
+    <aura:attribute type="String" name="buttonLabel" />
+    
+    <aura:attribute type="String" name="accountPageLabel" />
+    <aura:attribute type="String" name="accountPageDescription" />
+    <aura:attribute type="String" name="accountPageButtonLabel" />
+    <aura:attribute type="String" name="accountPageIcon" />
+    
+    <aura:attribute type="String" name="attachmentPageLabel" />
+    <aura:attribute type="String" name="attachmentPageDescription" />
+    <aura:attribute type="String" name="attachmentPageButtonLabel" />
+    <aura:attribute type="String" name="attachmentPageIcon" />
+    
+    <aura:attribute type="String" name="consentPageLabel" />
+    <aura:attribute type="String" name="consentPageDescription" />
+    <aura:attribute type="String" name="consentPageButtonLabel" />
+    <aura:attribute type="String" name="consentPageIcon" />
+    
+    <aura:attribute type="String" name="successPageLabel" />
+    <aura:attribute type="String" name="successPageDescription" />
+    
+    
+    
+    <!-- ******************** -->
+    <!-- Spinner -->
+    <!-- ******************** -->
+    <lightning:spinner alternativeText="Loading" size="medium" aura:id="spinner" class="slds-hide"/>
+    
+    
+    <!-- ******************** -->
+    <!-- Container for all screens -->
+    <!-- ******************** -->
+    
+    <div class="wizard-container ">
+        
+        <!-- ******************** -->
+        <!-- Intro Screen -->
+        <!-- ******************** -->
+        
+        <aura:if isTrue="{!v.stepNumber == -1}">
+            <!-- ******************** -->
+            <!-- Page Header -->
+            <!-- ******************** -->
+            
+            <div class="slds-text-heading--large slds-m-bottom_large"> {!v.wizardLabel} </div>
+            
+            <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_large">
+                <!-- ******************** -->
+                <!-- Image -->
+                <!-- ******************** -->
+                <div class="slds-col slds-size_1-of-3 ">
+                    <div class="slds-card fixed-height slds-large-show">
+                        <img src="{!v.imageURL}"/>
+                    </div>
+                    
+                </div>
+                
+                <!-- ******************** -->
+                <!-- Text Area -->
+                <!-- ******************** -->
+                <div class="slds-col slds-large-size--2-of-3 slds-size_3-of-3">
+                    <div class="slds-card fixed-height ">
+                        <lightning:formattedRichText value="{!v.textAreaText}"></lightning:formattedRichText>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <!-- ******************** -->
+            <!-- Get Started Button -->
+            <!-- ******************** -->
+            <div class="slds-float_right">
+                <lightning:button label="{!v.buttonLabel}" title="{!v.buttonLabel}" onclick="{!c.goToWizard}"/>
+            </div>
+            
+        </aura:if>
+        
+        <!-- ******************** -->
+        <!-- Screen 1 -->
+        <!-- ******************** -->
+        
+        <aura:if isTrue="{!v.stepNumber == 0}">
+            
+            <!-- ******************** -->
+            <!-- Account Details -->
+            <!-- ******************** -->
+            <c:SVNSUMMITS_AccountSetupWizardHeader icon="{!v.accountPageIcon}" label="{!v.accountPageLabel}" description="{!v.accountPageDescription}" />
+            <c:SVNSUMMITS_AccountSetupProgressIndicator currentStep="{!'step'+(v.stepNumber+1)}"/>
+            <lightning:card  title="Account Details">
+                
+                <lightning:recordEditForm
+                                          aura:id="accountForm"
+                                          onsuccess="{!c.createContact}"
+                                          objectApiName="Account">
+                    <lightning:messages />
+                    
+                    <lightning:layout multipleRows ="true">
+                        <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize ="6">
+                            <lightning:input type="text" aura:id="nameField" label="Name"/>
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize ="6">
+                            <lightning:inputField fieldName="Industry" aura:id="industryField"/>
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize ="6">
+                            <lightning:inputField fieldName="AnnualRevenue" aura:id="revenueField"/>
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize ="6">
+                            <lightning:inputField fieldName="NumberOfEmployees" aura:id="noEmployeeField"/>
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize ="12">
+                            <lightning:inputField fieldName="ShippingAddress" aura:id="addressField"/>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    
+                </lightning:recordEditForm>
+                
+            </lightning:card>
+            
+            <!-- ******************** -->
+            <!-- Contact Details -->
+            <!-- ******************** -->
+            
+            <lightning:card  title="Contact Details">
+                <lightning:recordEditForm
+                                          aura:id="contactForm"
+                                          onsuccess="{!c.handleContactSuccess}"
+                                          objectApiName="Contact"
+                                          onload="{!c.handleContactOnload}"
+                                          >
+                    <!-- the messages component is for error messages -->
+                    <lightning:messages />
+                    
+                    <lightning:layout multipleRows ="true">
+                        <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize ="6">
+                            <lightning:inputField fieldName="Name" />
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize ="6">
+                            <lightning:layout multipleRows ="true">
+                                <lightning:layoutItem padding="around-small" size="12">
+                                    <lightning:inputField fieldName="Email" />
+                                </lightning:layoutItem>
+                                
+                                <lightning:layoutItem padding="around-small" size="12">
+                                    <lightning:inputField fieldName="Phone" />
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                            
+                        </lightning:layoutItem>
+                        
+                        <lightning:inputField fieldName="AccountId" aura:id="contactAccountId" class="slds-hide"/>
+                        
+                    </lightning:layout>
+                    
+                </lightning:recordEditForm>
+                
+            </lightning:card>
+            
+            <lightning:button  variant="brand"  name="Next" label="{!v.accountPageButtonLabel}" onclick="{!c.createRecords}" class="slds-float_right slds-m-top_small" 
+                              iconName ="utility:forward" iconPosition="right"/>
+            <div class="slds-clearfix" />
+        </aura:if>
+        
+        <!-- ******************** -->
+        <!-- Screen 2 file uploading -->
+        <!-- ******************** -->
+        
+        <aura:if isTrue="{!v.stepNumber == 1}">
+            <c:SVNSUMMITS_AccountSetupWizardHeader icon="{!v.attachmentPageIcon}" label="{!v.attachmentPageLabel}" description="{!v.attachmentPageDescription}" />
+            <c:SVNSUMMITS_AccountSetupProgressIndicator currentStep="{!'step'+(v.stepNumber+1)}"/>
+            <lightning:layout multipleRows ="true">
+                <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize ="6">
+                    <aura:if isTrue="{!empty(v.insuranceId)}">
+                        <lightning:fileUpload  name="insuranceUploader"
+                                              label= "Upload Liability Insurance"
+                                              multiple="false"
+                                              recordId="{!v.accountId}"
+                                              onuploadfinished="{!c.handleinsuranceUploadFinished}"/>
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!!empty(v.insuranceId)}">
+                        <h1 class="slds-form-element__label">Liability Insurance</h1>
+                        <lightning:fileCard fileId="{!v.insuranceId}"/>
+                    </aura:if>
+                    
+                </lightning:layoutItem>
+                
+                <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize ="6">
+                    <aura:if isTrue="{!empty(v.licenceId)}">
+                        <lightning:fileUpload  name="licenceUploader"
+                                              label= "Upload Business Licence"
+                                              multiple="false"
+                                              recordId="{!v.accountId}"
+                                              onuploadfinished="{! c.handlelicenceUploadFinished }"/>
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!!empty(v.licenceId)}">
+                        <h1 class="slds-form-element__label">Business Licence</h1>
+                        <lightning:fileCard fileId="{!v.licenceId}"/>
+                    </aura:if>
+                </lightning:layoutItem>
+                
+            </lightning:layout>
+            
+            
+            
+            
+            
+            
+            
+            <lightning:button  variant="brand"  name="Next" label="{!v.attachmentPageButtonLabel}" onclick="{!c.goToConsentPage}" class="slds-float_right slds-m-top_small" 
+                              iconName ="utility:forward" iconPosition="right" disabled="{!or(empty(v.licenceId),empty(v.insuranceId))}"/>
+        </aura:if>
+        
+        <!-- ******************** -->
+        <!-- Screen 3 Consent and agreement -->
+        <!-- ******************** -->
+        
+        <aura:if isTrue="{!v.stepNumber == 2}">
+            <c:SVNSUMMITS_AccountSetupWizardHeader icon="{!v.consentPageIcon}" label="{!v.consentPageLabel}" description="{!v.consentPageDescription}" />
+            <c:SVNSUMMITS_AccountSetupProgressIndicator currentStep="{!'step'+(v.stepNumber+1)}"/>
+            <div class="termsScreen">
+                <div class="termsDiv slds-m-bottom_medium">
+                    Lorem ipsum dolor sit amet, veniam numquam has te. No suas nonumes recusabo mea, est ut graeci definitiones. His ne melius vituperata scriptorem, cum paulo copiosae conclusionemque at. Facer inermis ius in, ad brute nominati referrentur vis. Dicat erant sit ex. Phaedrum imperdiet scribentur vix no, ad latine similique forensibus vel.
+                    
+                    Dolore populo vivendum vis eu, mei quaestio liberavisse ex. Electram necessitatibus ut vel, quo at probatus oportere, molestie conclusionemque pri cu. Brute augue tincidunt vim id, ne munere fierent rationibus mei. Ut pro volutpat praesent qualisque, an iisque scripta intellegebat eam.
+                    
+                    Mea ea nonumy labores lobortis, duo quaestio antiopam inimicus et. Ea natum solet iisque quo, prodesset mnesarchum ne vim. Sonet detraxit temporibus no has. Omnium blandit in vim, mea at omnium oblique.
+                    
+                    Eum ea quidam oportere imperdiet, facer oportere vituperatoribus eu vix, mea ei iisque legendos hendrerit. Blandit comprehensam eu his, ad eros veniam ridens eum. Id odio lobortis elaboraret pro. Vix te fabulas partiendo.
+                    
+                    Natum oportere et qui, vis graeco tincidunt instructior an, autem elitr noster per et. Mea eu mundi qualisque. Quo nemore nusquam vituperata et, mea ut abhorreant deseruisse, cu nostrud postulant dissentias qui. Postea tincidunt vel eu.
+                    
+                    Ad eos alia inermis nominavi, eum nibh docendi definitionem no. Ius eu stet mucius nonumes, no mea facilis philosophia necessitatibus. Te eam vidit iisque legendos, vero meliore deserunt ius ea. An qui inimicus inciderint.
+                    
+                    Lorem ipsum dolor sit amet, veniam numquam has te. No suas nonumes recusabo mea, est ut graeci definitiones. His ne melius vituperata scriptorem, cum paulo copiosae conclusionemque at. Facer inermis ius in, ad brute nominati referrentur vis. Dicat erant sit ex. Phaedrum imperdiet scribentur vix no, ad latine similique forensibus vel.
+                    
+                    Dolore populo vivendum vis eu, mei quaestio liberavisse ex. Electram necessitatibus ut vel, quo at probatus oportere, molestie conclusionemque pri cu. Brute augue tincidunt vim id, ne munere fierent rationibus mei. Ut pro volutpat praesent qualisque, an iisque scripta intellegebat eam.
+                    
+                    Mea ea nonumy labores lobortis, duo quaestio antiopam inimicus et. Ea natum solet iisque quo, prodesset mnesarchum ne vim. Sonet detraxit temporibus no has. Omnium blandit in vim, mea at omnium oblique.
+                    
+                    Eum ea quidam oportere imperdiet, facer oportere vituperatoribus eu vix, mea ei iisque legendos hendrerit. Blandit comprehensam eu his, ad eros veniam ridens eum. Id odio lobortis elaboraret pro. Vix te fabulas partiendo.
+                    
+                    Natum oportere et qui, vis graeco tincidunt instructior an, autem elitr noster per et. Mea eu mundi qualisque. Quo nemore nusquam vituperata et, mea ut abhorreant deseruisse, cu nostrud postulant dissentias qui. Postea tincidunt vel eu.
+                    
+                    Ad eos alia inermis nominavi, eum nibh docendi definitionem no. Ius eu stet mucius nonumes, no mea facilis philosophia necessitatibus. Te eam vidit iisque legendos, vero meliore deserunt ius ea. An qui inimicus inciderint.
+                </div>
+                <lightning:recordEditForm
+                                          onsuccess="{!c.handleSubmitFormSuccess}"
+                                          onsubmit="{!c.handleSubmitForm}"
+                                          objectApiName="Account"
+                                          recordId="{!v.accountId}"
+                                          aura:id="consentUpdateForm"
+                                          >
+                    <lightning:messages />
+                    <lightning:inputField fieldName="Background_Check_Consent__c" label="I agree for background check and other compliance requirements"/>
+                    
+                    <lightning:button  variant="brand" type="submit" name="submit" label="{!v.consentPageButtonLabel}" class="slds-float_right slds-m-top_small" />
+                </lightning:recordEditForm>
+            </div>
+        </aura:if>
+        
+        <!-- ******************** -->
+        <!-- Screen 4 success message -->
+        <!-- ******************** -->
+        <aura:if isTrue="{!v.stepNumber == 3}">
+            <div class="successScreen">
+                <lightning:icon iconName="utility:success" alternativeText="Submitted" />
+                
+                
+                <h1>{!v.successPageLabel}</h1>
+                <h2>{!v.successPageDescription}</h2>
+            </div>
+        </aura:if>
+    </div>
+</aura:component>

@@ -1,0 +1,97 @@
+<!--
+	Copyright (c) 2019. 7Summits Inc.
+-->
+<aura:component controller="x7S_MapSingleController" description="7S Map Single"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global">
+    
+    <!-- design attributes -->
+    <aura:attribute name="showTitle" type="Boolean" default="false" access="global" />
+    <aura:attribute name="titleAlignment" type="String" access="global" />
+    <aura:attribute name="mapTitle" type="string" default="" access="global" />
+    <aura:attribute name="titleSize" type="String" access="global" />
+    
+    <aura:attribute name="street" type="string" access="global" />
+    <aura:attribute name="city" type="string" access="global" />
+    <aura:attribute name="state" type="string" access="global" />
+    <aura:attribute name="country" type="string" access="global" />
+    <aura:attribute name="postalCode" type="string" access="global" />
+    <aura:attribute name="longitude" type="string" access="global" />
+    <aura:attribute name="latitude" type="string" access="global" />
+    
+    <aura:attribute name="street_Api" type="string" access="global" />
+    <aura:attribute name="city_Api" type="string" access="global" />
+    <aura:attribute name="state_Api" type="string" access="global" />
+    <aura:attribute name="country_Api" type="string" access="global" />
+    <aura:attribute name="postalCode_Api" type="string" access="global" />
+    <aura:attribute name="longitude_Api" type="string" access="global" />
+    <aura:attribute name="latitude_Api" type="string" access="global" />
+    
+    <aura:attribute name="addressName" type="string" default="" access="global" />
+    <aura:attribute name="zoomLevel" type="integer" default="" access="global" />
+    <aura:attribute name="showFooter" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="invalidAddressValue" type="string" default="{!$Label.c.x7S_Map_Single_Invalid_Address_Message}"  access="global" />
+    <aura:attribute name="fieldErrorValue" type="string" default="{!$Label.c.x7S_Map_Single_Field_Error_Message}"  access="global" />
+    <aura:attribute name="errorIcon" type="string" default="{!$Label.c.x7S_Map_Single_Error_Icon_Name}"  access="global" />
+    <!--end of design attributes -->
+    
+    <!-- attributes -->
+    <aura:attribute name="mapMarkers" type="map" />
+    
+    <aura:attribute name="streetValue" type="string" default='' />
+    <aura:attribute name="cityValue" type="string" default='' />
+    <aura:attribute name="stateValue" type="string" default='' />
+    <aura:attribute name="countryValue" type="string" default='' />
+    <aura:attribute name="postalCodeValue" type="string" default='' />
+    <aura:attribute name="longitudeValue" type="string" default='' />
+    <aura:attribute name="latitudeValue" type="string" default='' />
+    <aura:attribute name="mapDisplay" type="boolean" default='true' />
+    <aura:attribute name="invalidfields" type="Boolean" default="false"/>
+    <aura:attribute name="invalidAddress" type="Boolean" default="false"/>
+    
+    <!-- handlers  -->
+    <aura:handler name="init" value="{! this }" action="{! c.init }" />
+    
+    <aura:if isTrue="{!v.mapDisplay}" >
+        <lightning:layout multipleRows="true" class='slds-card'>
+            <aura:if isTrue="{! and(v.showTitle, v.mapTitle)}">
+                <lightning:layoutItem flexibility="auto" size="12" class="slds-card slds-modal__header" >
+                    <c:x7sMapHeading  tag="h2" size="{!v.titleSize}" align="{!v.titleAlignment}">
+                        <lightning:formattedText class="{!'slds-text-heading--'+v.titleSize}" size="{!v.titleSize}"
+                                                 value="{!v.mapTitle}"/>
+                    </c:x7sMapHeading>
+                    
+                </lightning:layoutItem>
+            </aura:if>
+            
+            <lightning:layoutItem flexibility="auto" size="12" class="{!v.showFooter ? 'slds-m-bottom_xx-large ' : ''}">
+                <div class="{!v.showFooter ? 'slds-m-bottom_x-small' : ''}">
+                    <!-- the map component -->
+                    <lightning:map mapMarkers="{! v.mapMarkers }" showFooter = "{!v.showFooter}" zoomLevel="{!v.zoomLevel}" />
+                </div>
+            </lightning:layoutItem>
+            
+        </lightning:layout>
+        <aura:set attribute="else">
+            <div class="slds-modal__content slds-p-around--medium">
+                <lightning:layout>
+                    <lightning:layoutItem flexibility="auto" size="12" padding="around-small">
+                        <div class="slds-grid slds-gutters">
+                            <div >
+                                <span><lightning:icon iconName="{!v.errorIcon}" alternativeText="Error!" variant="error" size="small"/></span>
+                            </div>
+                            <div class="slds-col slds-size_11-of-12">
+                                <aura:if isTrue="{!v.invalidfields}" >
+                                    <b><h4><lightning:formattedText value="{!v.fieldErrorValue}" /></h4></b>
+                                </aura:if>
+                                <aura:if isTrue="{!v.invalidAddress}" >
+                                    <b><h4><lightning:formattedText value="{!v.invalidAddressValue}" /></h4></b>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </div>
+        </aura:set>
+    </aura:if>
+</aura:component>

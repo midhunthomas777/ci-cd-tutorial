@@ -1,0 +1,36 @@
+<!--
+ - Created by jonbalza on 2019-09-12.
+ -->
+
+<aura:component description="Peak_OnboardingTopicButton">
+    <aura:attribute name="id" type="String" />
+    <aura:attribute name="name" type="String" />
+    <aura:attribute name="class" type="String" />
+    <aura:attribute name="following" type="Boolean" />
+    <aura:attribute name="followLabel" type="String" default="Follow topic" />
+    <aura:attribute name="followIcon" type="String" default="utility:add" />
+    <aura:attribute name="unfollowLabel" type="String" default="Unfollow topic" />
+    <aura:attribute name="unfollowIcon" type="String" default="utility:check" />
+    <aura:attribute name="loadingIcon" type="String" default="utility:spinner" />
+
+    <aura:attribute name="_loading" type="Boolean" default="false" />
+
+    <aura:registerEvent name="onFollow" type="c:Peak_OnboardingButtonEvent" />
+    <aura:registerEvent name="onUnfollow" type="c:Peak_OnboardingButtonEvent" />
+
+    <button onclick="{!c.handleClick}"
+            class="{!'onboarding-topic ' + if(v.following, 'following', 'follow') + ' ' + v.class + ' ' + if(v._loading, '_loading', '')}"
+            name="{!v.id}"
+            aria-label="{!if(v.following, v.unfollowLabel, v.followLabel) + ' ' + v.name}"
+    >
+        <lightning:layout class="onboarding-topic__layout" verticalAlign="center">
+            <lightning:layoutItem flexibility="no-grow" class="slds-p-right_small">
+                <lightning:icon class="onboarding-topic__icon"
+                                iconName="{!if(v._loading, v.loadingIcon, if(v.following, v.unfollowIcon, v.followIcon))}"
+                                size="x-small"
+                />
+            </lightning:layoutItem>
+            <lightning:layoutItem class="onboarding-topic__label">{!v.name}</lightning:layoutItem>
+        </lightning:layout>
+    </button>
+</aura:component>

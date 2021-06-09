@@ -1,0 +1,9 @@
+<aura:component >
+	<div>
+    
+        Name :         Sathish Malya <br/>
+        Qualifiaction :Mtech  <br/>
+        College       :  iit  <br/>
+    
+    </div>
+</aura:component>

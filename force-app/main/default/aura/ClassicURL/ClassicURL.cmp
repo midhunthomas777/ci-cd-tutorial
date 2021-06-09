@@ -1,0 +1,25 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" controller="GlobalUtility">
+    
+    <aura:attribute name="classicUrlCurrentRecord" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:if isTrue="{!not(empty(v.classicUrlCurrentRecord))}">
+        <lightning:card iconName="action:share_link" title="Share link with other Users">
+            <div class="slds-p-horizontal_medium">
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_7-of-12" style="word-break: break-all;">
+                        <ui:outputURL aura:id="oURL" value="{!v.classicUrlCurrentRecord}" label="{!v.classicUrlCurrentRecord}"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-12">
+                    </div>
+                    <div class="slds-col slds-size_4-of-12">
+                        <lightning:button iconName="utility:copy_to_clipboard"
+                                          onclick="{!c.copyHardcoreText}"
+                                          label="Copy Link to clipboard"
+                                          aura:id="btn1"/>
+                    </div>
+                </div>
+            </div>
+        </lightning:card>
+    </aura:if>
+</aura:component>

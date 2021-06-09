@@ -1,0 +1,29 @@
+<aura:component Access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="label" type="String"/>
+    <aura:attribute name="valueInString" type="String"/>
+    <aura:attribute name="allOptions" type="List" default="[]"/>
+    <aura:attribute name="options" type="List" default="[]"/>
+    <aura:attribute name="value" type="List" default="[]"/>
+    <aura:attribute name="fieldType" type="String"/>
+    <aura:attribute name="fieldName" type="String"/>
+    <aura:attribute name="currentRecord" type="Map"/>
+    <aura:attribute name="disabled" type="Boolean" default="false"/>
+    
+    <aura:if isTrue="{!v.fieldType == 'BOOLEAN'}">
+        <aura:if isTrue="{!v.valueInString == 'true'}">
+            <lightning:input type="checkbox" label="{!v.label}" checked="true" aura:id="checkboxField"
+                             onchange="{!c.handleCheck}" disabled="{!v.disabled}"/>
+            <aura:set attribute="else">
+                <lightning:input type="checkbox" label="{!v.label}" checked="false" aura:id="checkboxField"
+                                 onchange="{!c.handleCheck}" disabled="{!v.disabled}"/>
+            </aura:set>
+        </aura:if>
+        <aura:set attribute="else">
+            <lightning:dualListbox label="{!v.label}" sourceLabel="Available" 
+                                   selectedLabel="Selected" options="{!v.options}" 
+                                   value="{!v.value}" onchange="{!c.handleChange}"
+                                   disabled="{!v.disabled}"/>
+        </aura:set>
+    </aura:if>
+</aura:component>

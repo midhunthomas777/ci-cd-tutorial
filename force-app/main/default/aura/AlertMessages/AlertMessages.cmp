@@ -1,0 +1,23 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="errorType" type="String" default="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error"/>
+    <aura:attribute name="warningType" type="String" default="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning"/>
+    <aura:attribute name="infoType" type="String" default="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_info"/>
+    <aura:attribute name="offlineType" type="String" default="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_offline"/>
+	<aura:attribute name="successType" type="String" default="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_success"/>
+    
+    <aura:attribute name="type" type="String"/>
+    <aura:attribute name="Message" type="String"/>
+    <aura:attribute name="alertStyle" type="String"/>
+
+    <aura:attribute name="alertclass" type="String"/>
+    <aura:attribute name="alertAdditionalClass" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <aura:if isTrue="{!not(empty(v.alertclass))}">
+        <div class="{!v.alertclass+' '+v.alertAdditionalClass}" style="{!v.alertStyle}" role="alert">
+            <span class="slds-assistive-text">{!v.type}</span>
+            <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="Description of icon when needed"></span>
+            <h2>{!v.Message}</h2>
+        </div>
+    </aura:if>
+</aura:component>

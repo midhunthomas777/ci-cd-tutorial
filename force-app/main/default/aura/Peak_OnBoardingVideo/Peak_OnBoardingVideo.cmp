@@ -1,0 +1,41 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc. All rights reserved.
+  -
+  -->
+
+<!--
+ - Created by francoiskorb on 2019-07-03.
+ -->
+
+<aura:component description="Display videos from YouTube or Vimeo and configure related display settings in a single component."
+				access="global">
+	<aura:attribute name="type" access="global" type="String" default="YouTube"/>
+	<aura:attribute name="videoId" access="global" type="String" default=""/>
+	<aura:attribute name="title" access="global" type="String" default="First Video"/>
+	<aura:attribute name="description" access="global" type="String" default="Some great first content!"/>
+
+	<div class="onboarding-video">
+		<div class="onboarding-video__iframe-wrapper">
+			<aura:if isTrue="{!equals(v.type, 'YouTube')}">
+				<iframe class="onboarding-video__iframe"
+						src="{!'https://www.youtube.com/embed/'+v.videoId+'?rel=0&amp;showinfo=0'}"
+						frameborder="0"></iframe>
+			</aura:if>
+			<aura:if isTrue="{!equals(v.type, 'Vimeo')}">
+				<iframe class="onboarding-video__iframe"
+						src="{!'https://player.vimeo.com/video/'+v.videoId+'?title=0&amp;byline=0&amp;portrait=0'}"
+						frameborder="0"></iframe>
+			</aura:if>
+		</div>
+		<aura:if isTrue="{!or(v.title, v.description)}">
+			<aura:if isTrue="{!v.title}">
+				<h3 class="onboarding-video__title slds-text-heading_small slds-p-top_x-small">{!v.title}</h3>
+			</aura:if>
+			<aura:if isTrue="{!v.description}">
+				<p class="onboarding-video__description">
+					{!v.description}
+				</p>
+			</aura:if>
+		</aura:if>
+	</div>
+</aura:component>

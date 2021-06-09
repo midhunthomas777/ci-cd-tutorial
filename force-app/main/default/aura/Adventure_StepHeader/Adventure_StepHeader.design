@@ -1,0 +1,9 @@
+<!--
+ - Copyright (c) 2018. 7Summits Inc.
+ - Created by 7Summits - Joe Callin on 8/14/18.
+-->
+<design:component label="7S Adventure_StepHeader">
+
+    <!--<design:attribute name="customClass" label="Custom Class Name" description="Custom CSS class name. Usually remains blank." />-->
+    <!--<design:attribute name="customId" label="Custom ID Name" description="Custom, distinct CSS ID name. Usually remains blank." />-->
+</design:component>

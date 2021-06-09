@@ -1,0 +1,26 @@
+<aura:component>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:attribute name="debugMode"            type="Boolean"  default="false" />
+    <aura:attribute name="lastPageName"         type="String"   default="" />
+    <aura:attribute name="tealiumLibraryUrl"    type="String"   default="" />
+    <aura:attribute name="tealiumReady"         type="Boolean"  default="false" />
+    <aura:attribute name="eventsQueue"          type="List" />
+    <aura:attribute name="temporaryEvent"       type="Map" />
+    <aura:attribute name="mode"                 type="String"   default="" />
+    <aura:attribute name="currentUser"          type="Map" default="" /> 
+    <aura:attribute name="currentRecordId"      type="String" />
+    
+    <aura:method name="setCurrentUser" action="{!c.setCurrentUser}">
+        <aura:attribute name="currentUser" type="Map" default="" /> 
+    </aura:method>
+
+    <ltng:require
+        scripts="{!join(',', 
+            $Resource.DTSFPART_jQuery_351_prod,     
+            $Resource.DTSFPART_TealiumEmail,
+            $Resource.DTSFPART_tealium_service)}"
+        afterScriptsLoaded="{!c.scriptsLoaded}" />
+
+    <c:tealiumNotifier ontealium="{!c.handleTealiumEvent}" />
+</aura:component>

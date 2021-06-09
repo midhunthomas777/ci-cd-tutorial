@@ -1,0 +1,170 @@
+<aura:component controller="NewOpportunityCtrl" access="global"
+                implements="lightning:actionOverride,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,lightning:isUrlAddressable">	
+    
+    <aura:html tag="style">   
+        .slds-modal__container{max-width: 90rem !important;width:90% !important;}
+    </aura:html>    
+    <aura:attribute name="changeMCN" type="Boolean" default="false" />
+    <aura:attribute name="isProspect" type="Boolean" default="false" />
+    <aura:attribute name="mcnNotRequired" type="Boolean" default="false" />
+    <aura:attribute name="showOppForm" type="Boolean" default="true" />
+    <aura:attribute name="selectMCNLink" type="Boolean" default="true" />
+    <aura:attribute name="linkText" type="String" default="[Select MCN]"/>
+    <aura:attribute name="customerAccId" type="String" default="{!v.recordId}"/> 
+    
+   <!--  <aura:attribute name="customerAccId" type="String"/>-->
+    <aura:attribute name="motorolaCustomerNumber" type="String"/>
+    <aura:attribute name="mcnId" type="String"/>
+    <aura:attribute name="userTheme" type="String"/>
+    <aura:attribute name="executionOrigin" type="String" default="component"/>
+    <aura:attribute name="accountData" type="Map"/>
+    <aura:attribute name="metaMessages" type="Map"/>
+    <aura:attribute name="noOfMCNs" type="Integer"/>
+    <aura:attribute name="defaultStageName" type="String" default="Prospect"/>
+    
+    <!--For New Opportunity With RecordType Selection-->
+    <aura:attribute name="recordTypeId" type="String" />
+    <aura:attribute name="isNewOpp" type="Boolean" default="false"/>
+    <aura:attribute name="isDisabled" type="Boolean"/>
+    <aura:attribute name="isPartnerAsEndUser" type="Boolean" default="false"/>    
+    <aura:attribute name="oppTerrMap" type="Map" /><!--SF-2699-->
+    <aura:attribute name="accountRegion" type="String" /><!--SF-2699-->
+    <aura:attribute name="accountTerr" type="String" /><!--SF-2699-->
+    <!-- Clone Opportunity -->
+    <aura:attribute name="clone" type="Boolean" default ="false" />
+    <aura:attribute name="originalOpportunityId" type="String" />
+    <aura:attribute name="newOpportunityId" type="String" />
+    <aura:attribute name="saveOrCloneBtn" type="String" default ="Save &amp; Add Product Family"/>
+    <aura:attribute name="fpid" type="String"/>
+    <aura:attribute name="opportunityName" type="String"/>
+    
+    <aura:attribute name="newCloneOpportunityLeftUI" type="object[]"/>
+    <aura:attribute name="newCloneOpportunityRightUI" type="object[]" />
+    <aura:attribute name="loadSpinner" type ="Boolean" default="false"/>
+    <aura:attribute name="stdErrorMsg" type ="Boolean" default="false"/>
+    <aura:attribute name="renderPrePopulatedField" type ="Boolean" default="false"/>
+    
+    <aura:attribute name="selectedRelationships" type="String"/>
+    <aura:attribute name="errorMsg" type ="String"/>
+    <aura:attribute name="seOppLeftSideFields" type="object[]"/>
+    <aura:attribute name="secondaryOwner" type="String" />
+    <aura:attribute name="accRegion" type="String" />
+    <aura:attribute name="accTerritory" type="String" />
+                                     
+    <aura:attribute name="currentUser" type="User"/> 
+    <force:recordData aura:id="userRecordLoader" recordId="{!$SObjectType.CurrentUser.Id}" 
+                      fields="Profile.Name,UserTheater__c,Default_Territory__c" 
+                      targetFields="{!v.currentUser}"
+                      recordUpdated="{!c.recordUpdated}" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	
+    <!--For refreshing the component in mobile-->
+    <aura:handler name="change" value="{!v.pageReference}" action="{!c.doInit}"/>
+    <aura:handler event="c:NewOpportunityEvent" action="{!c.getMCNDetails}"/>
+    <aura:handler event="c:CaptureLookupFieldValues" action="{!c.getUpdatedLookupValues}"/>
+   
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner alternativeText="Loading.." variant="brand" size="large" aura:id="mySpinner"/>
+    </aura:if>
+    
+    <aura:if isTrue="{!not(empty(v.errorMsg))}"> 
+        <c:AlertMessages Message="{!v.errorMsg}" type="error"/>
+    </aura:if>
+    
+    <div id="newOppForm" class="slds-theme_default">
+        <aura:if isTrue="{!v.showOppForm}">
+            <lightning:recordEditForm aura:id="oppEditForm" objectApiName="Opportunity" onsuccess="{!c.handleSuccess}" recordTypeId="{!v.recordTypeId}"
+                                      onload="{!c.handleLoad}" onsubmit="{!c.handleSubmit}" recordId="{!v.originalOpportunityId}" onerror="{!c.handleError}">
+                <div id="stdError">
+                    <lightning:messages/>
+                </div>
+                <div class="slds-box slds-align_absolute-center">
+                    <lightning:button variant="brand" label="{!v.saveOrCloneBtn}" type="submit"/>
+                    <aura:if isTrue="{!v.userTheme == 'Theme3'}">
+                        <lightning:button variant="brand" label="Cancel" onclick="{!c.cancel}"/>
+                    </aura:if>
+                </div>
+                
+                <!--UI Modified by Swarupa inorder to support other Opp Record types along with 'Project' recType-->   
+                <lightning:layout multipleRows="true" class="slds-box">
+                    <lightning:layoutItem size="12"  smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" class="slds-p-around_xx-small">
+                        <c:strike_lookup aura:Id="oppAccount" label="Account Name"
+                                         object="Account" searchField="Name"
+                                         placeholder="Search Accounts" iconName="standard:account"
+                                         limit="10" loadingMessage="Loading..."
+                                         errorMessage="Invalid input" helpTextPlacement = "auto right"
+                                         showRecentRecords = "true" value="{!v.customerAccId}" required="true"
+                                         filter ="RecordType.DeveloperName = 'SoldToAccount' OR RecordType.DeveloperName = 'Prospect'"
+                                         disabled="{!(or(v.clone))}"
+                                         class="slds-form-element_horizontal"
+                                         lookupFieldAPI ="AccountId"/>
+                    <!--</lightning:layoutItem>
+                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" class="slds-p-around_xx-small"> 
+                       --> <lightning:layout multipleRows="true">
+                            <aura:iteration items="{!v.newCloneOpportunityLeftUI}" var="obj">
+                                <aura:if isTrue="{!or(v.clone,obj.fieldPath !='ForecastCategoryName')}">
+                                    <lightning:layoutItem size="12" class="slds-p-around_xx-small">
+                                        <aura:if isTrue="{!obj.fieldPath == 'Field_of_Play__c'}">
+                                            <lightning:inputField fieldName="{!obj.fieldPath}" value="{!v.fpid}"/>
+                                            <aura:set attribute="else">
+                                                <aura:if isTrue="{!and(v.clone,obj.fieldPath =='CurrencyIsoCode')}">
+                                                    <lightning:inputField fieldName="{!obj.fieldPath}" aura:id="{!obj.fieldPath}" disabled="true"/>
+                                                    <aura:set attribute="else">
+                                                        <aura:if isTrue = "{!obj.fieldPath =='StageName'}">
+                                                            <lightning:inputField fieldName="{!obj.fieldPath}" value="{!v.defaultStageName}"/>      
+                                                            <aura:set attribute="else">
+                                                            <aura:if isTrue="{!obj.required}">
+                                                                <lightning:inputField fieldName="{!obj.fieldPath}" class="customRequired" aura:id="reqField"/>
+                                                                <aura:set attribute="else">
+                                                                    <lightning:inputField fieldName="{!obj.fieldPath}" aura:id="{!obj.fieldPath}"/>
+                                                                </aura:set> 
+                                                            </aura:if> 
+                                                        </aura:set>
+                                                            </aura:if>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </aura:set>
+                                        </aura:if>
+                                    </lightning:layoutItem>
+                                </aura:if>
+                            </aura:iteration>
+                        </lightning:layout>
+                    </lightning:layoutItem>
+                    
+                    <!--Render Account Fields-->                   
+                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" class="slds-p-around_xx-small"> 
+                        <lightning:layout multipleRows="true">
+                            <aura:if isTrue="{!v.renderPrePopulatedField}">
+                                <aura:iteration items="{!v.accountData}" var="obj">
+                                    <lightning:layoutItem size="12" class="slds-p-around_xx-small">
+                                        <lightning:inputField fieldName="{!obj.key}" value ="{!obj.value}"/>
+                                    </lightning:layoutItem>
+                                </aura:iteration>
+                            </aura:if>
+                            <!--Modified by Swarupa Display Opportunity Right Field Set-->
+                            <aura:iteration items="{!v.newCloneOpportunityRightUI}" var="obj">                                        
+                                <lightning:layoutItem size="12" class="slds-p-around_xx-small">
+                                    <aura:if isTrue="{!and(v.clone,obj.fieldPath =='CurrencyIsoCode')}">
+                                        <lightning:inputField fieldName="{!obj.fieldPath}" aura:id="{!obj.fieldPath}" disabled="true"/>
+                                        <aura:set attribute="else">
+                                            <aura:if isTrue="{!obj.required}">
+                                                <lightning:inputField fieldName="{!obj.fieldPath}" class="customRequired" aura:id="reqField"/>
+                                                <aura:set attribute="else">
+                                                    <lightning:inputField fieldName="{!obj.fieldPath}" aura:id="{!obj.fieldPath}"/>
+                                                </aura:set> 
+                                            </aura:if>    
+                                        </aura:set>
+                                    </aura:if>
+                                </lightning:layoutItem>  
+                            </aura:iteration>
+                        </lightning:layout>
+                    </lightning:layoutItem>
+                </lightning:layout>  
+            </lightning:recordEditForm>
+        </aura:if>
+    </div>
+     <!--SF-2509
+    <aura:if isTrue="{!v.changeMCN}">
+        <c:ChangeMCNOnOpportunity customerAccId ="{!v.customerAccId}" changeMCN="{!v.changeMCN}" userTheme="{!v.userTheme}" executionOrigin="{!v.executionOrigin}"/>
+    </aura:if>-->
+</aura:component>

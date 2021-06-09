@@ -1,0 +1,23 @@
+<aura:component controller="AccountStructureRemodel" implements="force:lightningQuickActionWithoutHeader,flexipage:availableForRecordHome,force:hasRecordId" access="Global">
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute type="boolean" name="validMCN"/>
+    <aura:attribute type="string" name="displayMessage"/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="true"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <center>
+        <div class="c-container">
+            <lightning:layout>
+                <lightning:layoutItem flexibility="auto" padding="horizontal-small">
+                    <aura:if isTrue="{!v.validMCN}">
+                        <lightning:button variant="brand" label="createAccount" onclick="{!c.createAccount}"/>
+                        <aura:set attribute="else"> 
+                            <c:AlertMessages type="error" Message="{!v.displayMessage}"/>
+                        </aura:set>
+                    </aura:if>
+                </lightning:layoutItem>
+            </lightning:layout>
+        </div>
+    </center>
+    
+</aura:component>

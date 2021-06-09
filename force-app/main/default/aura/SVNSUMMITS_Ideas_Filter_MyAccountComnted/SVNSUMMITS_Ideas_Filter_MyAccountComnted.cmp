@@ -1,0 +1,24 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+
+<aura:component description="SVNSUMMITS_Ideas_Filter_MyAccountComnted"
+                controller="SVNSUMMITS_IdeaFiltersController"
+                extends="c:SVNSUMMITS_Ideas_Base"
+                access="global">
+
+    <aura:attribute name="baseModel" type="String"  access="global"/>
+    <aura:attribute name="debugMode" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="listId"    type="String"  default="List1" access="global"/>
+    <aura:attribute name="myAccountCommentedIdeas"   type="Boolean" default="false" />
+
+
+    <div class="my-ideas">
+        <lightning:input label="{!$Label.c.ss_idea_label_myCompanyCommentedIdeas}"
+                         type="checkbox"
+                         checked="{!v.myAccountCommentedIdeas}"
+                         onchange="{!c.filterByMyCompanyCommentedIdeas}"/>
+    </div>
+
+
+</aura:component>

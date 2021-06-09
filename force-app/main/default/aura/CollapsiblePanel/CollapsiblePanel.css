@@ -1,0 +1,31 @@
+.THIS div.Message {
+    color: #FFFFFF;
+    font-weight : bold;
+    background-color:#555;
+    width : 100% ;   
+    padding : 0px;
+    margin : 10px 0px 5px 0px ;
+    border-radius: 5px;
+    
+}
+
+.THIS div.container {
+    margin: 0px 20px 0px 40px;
+}
+
+.THIS div.expandCollapse{
+    cursor : pointer;
+    color: #FFFFFF;
+    font-weight : bold;
+    background-color:#555;
+    width : 100% ;   
+    padding : 10px;
+    margin : 10px 0px 5px 0px ;
+    border-radius: 5px;
+}
+.THIS div.show{
+    display:block;
+}
+.THIS div.hide{
+    display:none;
+}

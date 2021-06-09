@@ -1,0 +1,393 @@
+<aura:component controller="ManageRevenuesCtrl" implements="lightning:actionOverride,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,lightning:availableForFlowScreens,lightning:availableForFlowActions" access="global">
+    
+    <aura:attribute name="totalPriceUSD" type="integer"/>
+    <aura:attribute name="deltaActuaRateUSD" type="integer"/>
+    <aura:attribute name="deltaPlanRateUSD" type="integer"/>
+    <aura:attribute name="totalActualRateUSD" type="integer"/>
+    <aura:attribute name="revenueActualRateUSD" type="integer"/>
+    <aura:attribute name="totalPlanRateUSD" type="integer"/>
+    <aura:attribute name="revenuePlanRateUSD" type="integer"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="oppLineItemId" type="String"/>
+    <aura:attribute name="selectedRecId" type="String" />
+    <aura:attribute name="productFamilySelected" type="String" default="--None--"/>
+    <aura:attribute name="yearSelected" type="String" default="--None--"/>
+    <aura:attribute name="lstYear" type="List" default="2019,2020,2021,2022"/>
+    <aura:attribute name="lstproductFamily" type="List" />
+    <aura:attribute name="andFilters" type="List"/>
+    <aura:attribute name="orFilters" type="List"/>
+    <aura:attribute name="urlservice" type="List"/>
+    <aura:attribute name="priceOrderSum" type ="integer" default="0"/>
+    <aura:attribute name= "revenueSum" type ="integer" default="0"/>
+    <aura:attribute name= "delta" type ="Integer" default="0"/>
+    <aura:attribute name="openpop" type="Boolean" default="false"/>
+    <aura:attribute name="resultList" type="List"/>
+    <aura:attribute name="currencyCode" type="List" default="USD"/>
+    <aura:attribute name="USDcurrencyCode" type="String" default="USD"/>
+    <aura:attribute name="revenueEnabled" type="Boolean" default="false"/>
+    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="c:DynamicDataTableEvent" action="{!c.getselectedRecId}"/>    
+    <aura:registerEvent name="DynamicDataTableValidation" type="c:DynamicDataTableValidation"/>
+    
+    <aura:attribute name="errorMsg" type="String"/>
+    <aura:attribute name="progressMsg" type="String" default ="{!$Label.c.Run_Rate_creation_in_progress}"/>
+    <aura:attribute name="opportunityCreationMsg" type="String" default ="{!$Label.c.Run_Rate_Opportunities_Creation_Message}"/>
+    <aura:attribute name="progressSeverity" type="String" default ="info"/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="true"/>
+    <aura:attribute name="loadTable" type ="Boolean" default="true"/>
+    <aura:attribute name="progress" type="Integer" default="0"/>
+    <aura:attribute name="isProgressing" type="Boolean" default="true"/>
+    <aura:attribute name="hideprogressBar" type="Boolean" default="true"/>
+    
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="large" aura:id="mySpinner"/>
+    </aura:if>
+    <!-- c:HighlightedPanel recordId="{!v.recordId}" fieldSetName="RunRateHighlightPanel" iconName="action:priority"/ -->
+    <lightning:recordForm recordId="{!v.recordId}"
+                          objectApiName="Run_Rate_Definition__c"
+                          layoutType="Compact"
+                          columns="3"
+                          mode="readonly" />
+    <div class="slds-var-m-vertical_medium"></div>
+    
+    <!--force:recordView recordId="{!v.recordId}" type="MINI"/--> 
+    <aura:if isTrue="{!not(empty(v.errorMsg))}"> 
+        <c:AlertMessages Message="{!v.errorMsg}" type="error"/>
+    </aura:if>
+    <aura:if isTrue="{!v.hideprogressBar}">
+        <div class="slds-box">
+            <ui:message title="{!v.progressMsg}" severity="{!v.progressSeverity}">
+            </ui:message>
+        </div>
+    </aura:if>
+    
+    <div class ="slds-theme_default">
+        <div class="slds-box">
+            <lightning:layout verticalAlign="center" class="x-large">
+                <lightning:layoutItem flexibility="auto, no-grow" padding="around-small">
+                    <ui:inputSelect aura:id="productFamily" label="Product Family" class="slds-select" labelClass="slds-form-element__label" value="{!v.productFamilySelected}">
+                        <option value="--None--" text="--None--"></option>
+                        <aura:iteration items="{!v.lstproductFamily}" var="prod" >                                                            
+                            <option value="{!prod.Id}" text="{!prod.Name}"></option>              
+                        </aura:iteration>
+                    </ui:inputSelect>
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="auto, no-grow" padding="around-small">
+                    <div class="custom-box">- OR -</div>
+                </lightning:layoutItem>                
+                <lightning:layoutItem flexibility="auto" padding="around-small">
+                    <ui:inputText aura:id="productTerm" label="Search Product" labelClass="slds-form-element__label" 
+                                  class="slds-input" value="" maxlength="30"/>  
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="auto, no-grow" padding="around-small">
+                    <div class="custom-box">- OR -</div>
+                </lightning:layoutItem> 
+                <lightning:layoutItem flexibility="auto" padding="around-small">
+                    <ui:inputText aura:id="oppName" label="Search Opportunity" labelClass="slds-form-element__label" 
+                                  class="slds-input" value="" maxlength="30"/>  
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="auto, no-grow" padding="around-small">
+                    <div style="padding-top: 25px;">
+                        <lightning:button variant="brand" label="Search" onclick="{!c.refreshTable}"/>
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+        </div>
+        <div class="slds-var-m-vertical_medium"></div>
+        
+        
+        <!--  SF-2428  -->
+        
+        <div class="slds-box slds-box_x-small">
+            <div class="slds-grid slds-gutters" align="right">
+                <div class="slds-col slds-size_1-of-9"></div>
+                <div class="slds-col slds-text-align_right slds-size_1-of-9"> 
+                    <span>
+                        <lightning:layoutItem padding="around-small">
+                            <b>{!$Label.c.Total_Order}</b>&nbsp;
+                            <lightning:formattedNumber value="{!v.priceOrderSum}" style="currency" currencyCode="{!v.currencyCode}"/>        
+                        </lightning:layoutItem>
+                    </span>
+                    <aura:if isTrue="{!v.revenueEnabled}">
+                        <aura:if isTrue="{!or(v.revenueSum != 0,v.priceOrderSum != 0)}">
+                            <span>
+                                <lightning:layoutItem padding="around-small">
+                                    <b>{!$Label.c.Total_Revenue}</b>&nbsp;
+                                    <lightning:formattedNumber value="{!v.revenueSum}" style="currency" currencyCode="{!v.currencyCode}"/>
+                                </lightning:layoutItem>
+                            </span>
+                            
+                        </aura:if>
+                    </aura:if>
+                    
+                </div>
+                
+                <aura:if isTrue="{!v.revenueEnabled}">
+                    <aura:if isTrue="{!or(v.revenueSum != 0,v.priceOrderSum != 0)}">
+                        <aura:if isTrue="{!v.delta>0}">
+                        <div class="slds-col slds-align-middle slds-text-align_right slds-size_1-of-9">
+                            <span>
+                                <lightning:layoutItem padding="around-small"> <!--SF-2228-->
+                                    <b>{!$Label.c.Delta}</b>&nbsp;+<lightning:formattedNumber value="{!v.delta}" style="currency" currencyCode="{!v.currencyCode}"/>  
+                                    
+                                </lightning:layoutItem>
+                            </span>
+                        </div>
+                        <aura:set attribute="else">
+                        <div class="slds-col slds-align-middle slds-text-align_right slds-size_1-of-9">
+                            <span>
+                                <lightning:layoutItem padding="around-small"> <!--SF-2228-->
+                                    <b>{!$Label.c.Delta}</b>&nbsp;
+                                    <lightning:formattedNumber value="{!v.delta}" style="currency" currencyCode="{!v.currencyCode}"/>  
+                                    
+                                </lightning:layoutItem>
+                            </span>
+                        </div>    
+                        </aura:set>
+                        </aura:if>
+                    </aura:if>
+                </aura:if>
+                
+                <!--<aura:if isTrue="{!and(v.revenueEnabled,v.currencyCode[0] != 'USD')}">-->
+                <aura:if isTrue="{!v.currencyCode[0] != 'USD'}">
+                    <!-- <aura:if isTrue="{!and(v.totalActualRateUSD != 0, v.revenueActualRateUSD !=0)}"> -->
+                    <!--<aura:if isTrue="{!v.priceOrderSum != 0,v.revenueSum != 0)}">-->
+                    <aura:if isTrue="{!v.revenueEnabled}">
+                        <div class="slds-col slds-align-top slds-text-align_right slds-size_1-of-9">
+                            <aura:if isTrue="{!or(v.priceOrderSum != 0,v.revenueSum != 0)}">
+                                
+                                <span>
+                                    <lightning:layoutItem padding="around-small">
+                                        <b>{!$Label.c.USD_Actual_Rate}</b>
+                                    </lightning:layoutItem>
+                                </span>
+                                
+                            </aura:if>
+                            <aura:if isTrue="{!v.revenueSum != 0}">
+                                <span>
+                                    <lightning:layoutItem padding="around-small">
+                                        <b>{!$Label.c.USD_Actual_Revenue}</b>
+                                    </lightning:layoutItem>
+                                </span>
+                                
+                            </aura:if>
+                        </div>
+                        <aura:set attribute="else">
+                            <aura:if isTrue="{!v.priceOrderSum != 0}">
+                                <div class="slds-col slds-align-top slds-text-align_right slds-size_1-of-9">
+                                    <span>
+                                        <lightning:layoutItem padding="around-small">
+                                            <b>{!$Label.c.USD_Actual_Rate}</b>
+                                        </lightning:layoutItem>
+                                    </span>
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!v.revenueSum != 0}">
+                                <div class="slds-col slds-align-bottom slds-text-align_right slds-size_1-of-9">
+                                    <span>
+                                        <lightning:layoutItem padding="around-small">
+                                            <b>{!$Label.c.USD_Actual_Revenue}</b>
+                                        </lightning:layoutItem>
+                                    </span>
+                                </div>
+                            </aura:if>
+                        </aura:set>
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!v.revenueEnabled}">
+                        <div class="slds-col slds-size_1-of-9 slds-text-align_left">
+                            <aura:if isTrue="{!or(v.priceOrderSum != 0,v.revenueSum != 0)}">
+                                
+                                <span>
+                                    <lightning:layoutItem padding="around-small">
+                                        <lightning:formattedNumber value="{!v.totalActualRateUSD}" style="currency" currencyCode="{!v.USDcurrencyCode}"/>        
+                                    </lightning:layoutItem>
+                                </span>
+                                
+                            </aura:if>
+                            <aura:if isTrue="{!v.revenueSum != 0}">
+                                <span>
+                                    <lightning:layoutItem padding="around-small">
+                                        <lightning:formattedNumber value="{!v.revenueActualRateUSD}" style="currency" currencyCode="{!v.USDcurrencyCode}"/>
+                                    </lightning:layoutItem>
+                                </span>
+                                
+                            </aura:if>
+                        </div>
+                        <aura:set attribute="else">
+                            
+                            <div class="slds-col slds-size_1-of-9 slds-text-align_left">
+                                <aura:if isTrue="{!v.priceOrderSum != 0}">
+                                    <span>
+                                        <lightning:layoutItem padding="around-small">
+                                            <lightning:formattedNumber value="{!v.totalActualRateUSD}" style="currency" currencyCode="{!v.USDcurrencyCode}"/>        
+                                        </lightning:layoutItem>
+                                    </span>
+                                    
+                                </aura:if>
+                                <aura:if isTrue="{!v.revenueSum != 0}">
+                                    <span>
+                                        <lightning:layoutItem padding="around-small">
+                                            <lightning:formattedNumber value="{!v.revenueActualRateUSD}" style="currency" currencyCode="{!v.USDcurrencyCode}"/>
+                                        </lightning:layoutItem>
+                                    </span>
+                                    
+                                </aura:if>
+                            </div>
+                        </aura:set>
+                    </aura:if>
+                    
+                    
+                    
+                    <!-- ***************      PLAN RATES           *********************************************** -->                             
+                    
+                    <!--<aura:if isTrue="{!and(v.totalPlanRateUSD != 0, v.revenuePlanRateUSD !=0)}"> -->
+                    <!--<aura:if isTrue="{!or(v.priceOrderSum != 0,v.revenueSum != 0)}">-->
+                    <aura:if isTrue="{!v.revenueEnabled}">
+                        <div class="slds-col slds-align-top slds-text-align_right slds-size_1-of-9">
+                            <aura:if isTrue="{!or(v.priceOrderSum != 0,v.revenueSum != 0)}">
+                                <span>
+                                    <lightning:layoutItem padding="around-small">
+                                        <b>{!$Label.c.USD_Plan_Rate}</b>
+                                    </lightning:layoutItem>
+                                </span>
+                            </aura:if>
+                            
+                            <aura:if isTrue="{!v.revenueSum != 0}">
+                                <span>
+                                    <lightning:layoutItem padding="around-small">
+                                        <b>{!$Label.c.USD_Plan_Revenue}</b>
+                                    </lightning:layoutItem>
+                                </span>
+                            </aura:if>
+                            
+                        </div>
+                        <aura:set attribute="else">
+                            <aura:if isTrue="{!v.priceOrderSum != 0}">
+                                <div class="slds-col slds-align-top slds-text-align_right slds-size_1-of-9">
+                                    <aura:if isTrue="{!or(v.priceOrderSum != 0,v.revenueSum != 0)}">
+                                        <span>
+                                            <lightning:layoutItem padding="around-small">
+                                                <b>{!$Label.c.USD_Plan_Rate}</b>
+                                            </lightning:layoutItem>
+                                        </span>
+                                    </aura:if>
+                                    
+                                    <aura:if isTrue="{!v.revenueSum != 0}">
+                                        <span>
+                                            <lightning:layoutItem padding="around-small">
+                                                <b>{!$Label.c.USD_Plan_Revenue}</b>
+                                            </lightning:layoutItem>
+                                        </span>
+                                    </aura:if>
+                                    
+                                </div>
+                            </aura:if>
+                        </aura:set>
+                    </aura:if>
+                    <aura:if isTrue="{!v.revenueEnabled}">
+                        <div class="slds-col slds-size_1-of-9 slds-text-align_left">
+                            <aura:if isTrue="{!or(v.priceOrderSum != 0,v.revenueSum != 0)}">
+                                <span>
+                                    <lightning:layoutItem padding="around-small">
+                                        <lightning:formattedNumber value="{!v.totalPlanRateUSD}" style="currency" currencyCode="{!v.USDcurrencyCode}"/>        
+                                    </lightning:layoutItem>
+                                </span>
+                            </aura:if> 
+                            <aura:if isTrue="{!and(v.revenueSum != 0)}">
+                                <span>
+                                    <lightning:layoutItem padding="around-small">
+                                        <lightning:formattedNumber value="{!v.revenuePlanRateUSD}" style="currency" currencyCode="{!v.USDcurrencyCode}"/>
+                                    </lightning:layoutItem>
+                                </span>
+                                
+                            </aura:if>
+                        </div>
+                        <aura:set attribute="else">
+                            
+                            <div class="slds-col slds-size_1-of-9 slds-text-align_left">
+                                <aura:if isTrue="{!v.priceOrderSum != 0}">
+                                    <span>
+                                        <lightning:layoutItem padding="around-small">
+                                            <lightning:formattedNumber value="{!v.totalPlanRateUSD}" style="currency" currencyCode="{!v.USDcurrencyCode}"/>        
+                                        </lightning:layoutItem>
+                                    </span>
+                                </aura:if> 
+                                <aura:if isTrue="{!and(v.revenueSum != 0)}">
+                                    <span>
+                                        <lightning:layoutItem padding="around-small">
+                                            <lightning:formattedNumber value="{!v.revenuePlanRateUSD}" style="currency" currencyCode="{!v.USDcurrencyCode}"/>
+                                        </lightning:layoutItem>
+                                    </span>
+                                    
+                                </aura:if>
+                            </div>
+                        </aura:set>
+                    </aura:if>
+                    </aura:if>
+                    
+                    
+                    
+                    <aura:if isTrue="{!v.revenueEnabled}">
+                        <aura:if isTrue="{!or(v.priceOrderSum != 0,v.revenueSum != 0)}">
+                            <div class="slds-col slds-size_2-of-9 slds-text-center">
+                                <span>
+                                    <lightning:layoutItem padding="around-small">
+                                        <lightning:button variant="brand" label="{!$Label.c.Match_Revenue_from_Price}" onclick="{!c.matchRevenuePrice}"/>
+                                    </lightning:layoutItem>
+                                </span>
+                            </div>
+                        </aura:if>
+                    </aura:if>
+                </div>
+            
+        </div>
+    
+    <!--  SF-2428  -->
+    
+    
+    <aura:if isTrue="{!v.openpop}">
+        <!--modal code starts-->      
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" iconName="utility:close"  size="large" variant="bare" onclick="{!c.close}"/>
+                </header> 
+                <lightning:buttonIcon class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" iconName="utility:close"  size="large" variant="bare" onclick="{!c.close}"/>
+                
+                <div class="slds-modal__content slds-var-p-around_medium" >
+                    <lightning:layout>
+                        <lightning:layoutItem flexibility="auto" padding="around-small">
+                            <div class="custom-box">
+                                {!$Label.c.Match_Revenue_from_Price_Message}
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem flexibility="auto" padding="around-small">
+                            <div class="custom-box">
+                                <lightning:button variant="brand" label="Confirm" onclick="{!c.matchRevenueWithPrice}"/>
+                            </div>
+                        </lightning:layoutItem>
+                    </lightning:layout> 
+                </div>
+                
+                <footer class="slds-modal__footer" >
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        
+        <!--modal close-->
+    </aura:if>
+    <aura:if isTrue="{!v.loadTable}">
+        <aura:if isTrue="{!not(empty(v.columns))}">
+            <c:ChildRecordsByParent columns="{!v.columns}" andFilters="{!v.andFilters}" orFilters="{!v.orFilters}" 
+                                    objectName="OpportunityLineItem" additionalFields="Opportunity_Name__c,Opportunity_Url__c"
+                                    andORFilters="AND" inlineEditing="true" hideSelection="false" 
+                                    maxRowSelection="50" recordId="{!v.recordId}" showPageSize ="true" pageSize= "15" selectedPageSize="15"
+                                    lstPageSize = "15,30,45,60" sortField ="Opportunity.Name,Product_Family_Name__c"/> <!--added productfamily as second sort SF-2087-->
+        </aura:if>
+    </aura:if>
+</div>
+</aura:component>

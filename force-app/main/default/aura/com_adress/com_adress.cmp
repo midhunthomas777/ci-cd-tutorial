@@ -1,0 +1,9 @@
+<aura:component >
+	<div>
+        FirsttName: <br/>
+        SecondName: <br/>
+        ClassName : <br/>
+        
+    
+    </div>
+</aura:component>

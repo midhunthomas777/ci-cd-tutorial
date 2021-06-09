@@ -1,0 +1,19 @@
+<!--
+ - Created by jonbalza on 2019-01-23.
+ -->
+
+<aura:component description="Peak_GridListItem">
+    <aura:attribute name="class" type="String" default="" />
+    <aura:attribute name="itemSpacing" type="Integer" default="10" />
+    <aura:attribute name="maxHeight" type="String" default="" />
+    <aura:attribute name="size" type="String" default="6" />
+    <aura:attribute name="smallDeviceSize" type="String" default="6" />
+    <aura:attribute name="mediumDeviceSize" type="String" default="6" />
+    <aura:attribute name="largeDeviceSize" type="String" default="6" />
+
+    <li class="{!'peak-grid-list-item ' + if(v.class, v.class + ' ', '') + 'slds-col ' + if(v.size, ' slds-size_' + v.size + '-of-12', '') + if(v.smallDeviceSize, ' slds-small-size_' + v.smallDeviceSize + '-of-12', '') + if(v.mediumDeviceSize, ' slds-medium-size_' + v.mediumDeviceSize + '-of-12', '') + if(v.largeDeviceSize, ' slds-large-size_' + v.largeDeviceSize + '-of-12', '')}"
+        style="{!if(v.maxHeight, 'max-height: ' + v.maxHeight + ';', '') + if(v.itemSpacing, 'padding:' + (v.itemSpacing / 2) + 'px;', '')}"
+    >
+        {!v.body}
+    </li>
+</aura:component>

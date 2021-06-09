@@ -1,0 +1,99 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,lightning:actionOverride,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="fieldSetFinalResult" type="Object[]"  />
+    <aura:attribute name="eventFieldsValues" type="Object[]"/>
+    <aura:attribute name="selectedRegion" type="String"/>
+    <aura:attribute name="recordType" type="String"/>
+    <aura:attribute name="fieldSetFinalResultFirst" type="Object[]"  />
+    <aura:handler name="PartnerOnBoardingFieldSetEvent" event="c:PartnerOnBoardingFieldSetEvent" action="{!c.handleFieldSetEvent}"/>
+    <aura:attribute name="showSpinner" type ="Boolean" default="false"/>
+    <aura:attribute name="firstPageResult" type ="Object"/>
+    <aura:attribute name="errorMsg" type ="String" />
+    <aura:if isTrue="{!v.showSpinner}">
+        <lightning:spinner alternativeText="Loading.."/>
+    </aura:if>
+    <c:GenericFieldSet aura:id="firstPageFieldSet" recordId="{!v.recordId}" sObjectName="API_Partner_Application__c" sectionHeader="Application Details" sectionfieldSetName="API_Partner_Onboarding_First_Page"/>
+    <div Id="apipartnerOnboardingAlertMsg">
+        <div class="slds-page-header slds-page-header_record-home">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <lightning:icon iconName="standard:partners" alternativeText="macros" />
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1><span class="slds-page-header__title">{!$Label.c.API_Partner_Onboarding_Title}</span></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-page-header__col-actions">
+                    <div class="slds-page-header__controls">
+                        <div class="slds-page-header__control">
+                            <!-- <lightning:button label="{!$Label.c.Partner_Support}" iconName="utility:call"  variant="base" onclick="{!c.navigateToContact}"/> 
+                            <div class="slds-p-horizontal_medium"></div> -->
+                            <lightning:button label="{!$Label.c.Command_Central_Partner_Program_Information}" iconName="utility:info"  variant="base" onclick="{!c.navigateToApplicationInfo}"/>
+                        </div>	
+                    </div>
+                </div>
+            </div>
+        </div>
+        <aura:if isTrue="{!not(empty(v.errorMsg))}"> 
+            <c:AlertMessages Message="{!v.errorMsg}" type="error"/>
+        </aura:if>
+    </div>
+    <div Id="apipartnerOnboardingFirstPage">
+        <lightning:recordEditForm aura:id="recordFrm" objectApiName="API_Partner_Application__c" onsubmit="{!c.handleSubmit}" onsuccess="{!c.handleSuccess}" onerror="{!c.handleError}" >   
+            <div class="c-container">
+                <lightning:messages/>
+                <lightning:layout multipleRows="true">
+                    <aura:iteration items="{!v.fieldSetFinalResultFirst}" var="fieldVal">                      
+                        <aura:if isTrue="{!and(fieldVal.type != 'MULTIPICKLIST', fieldVal.fieldType == NULL)}">
+                            <aura:if isTrue="{!and(fieldVal.apiName == 'I_agree_with_the_Program_Terms_of_Use__c', fieldVal.type == 'BOOLEAN')}">
+                                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="6" largeDeviceSize="12" padding="around-small">
+                                    <lightning:inputField fieldName="{!fieldVal.apiName}" variant="label-stack"/>
+                                    <lightning:button label="{!$Label.c.Program_Terms_of_Use}" iconName="utility:info"  variant="base" onclick="{!c.navigateToTermOfUse}"/>
+                                    <!--  <ui:outputURL value="{!$Label.c.Program_Terms_of_Use_URL}" label="{!$Label.c.Program_Terms_of_Use}" /> -->
+                                </lightning:layoutItem>
+                                <aura:set attribute="else">
+                                    <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="6" largeDeviceSize="4" padding="around-small">
+                                        <aura:if isTrue="{!fieldVal.isCustomLabel}">
+                                            <label class="customRequired" for="{!fieldVal.apiName}">{!fieldVal.description}</label>
+                                            <lightning:inputField fieldName="{!fieldVal.apiName}" variant="label-hidden"/>
+                                            <aura:set attribute="else">
+                                                <lightning:inputField fieldName="{!fieldVal.apiName}" variant="label-stack"/>
+                                            </aura:set>
+                                        </aura:if>
+                                    </lightning:layoutItem>
+                                </aura:set>
+                            </aura:if>
+
+                            <aura:set attribute="else">
+                                <aura:if isTrue="{!and(fieldVal.fieldType != NULL, fieldVal.fieldType == 'Header')}">
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12" padding="around-small">
+                                        <ui:message title="{!fieldVal.helpText}" severity="info" class="slds-text-title_caps slds-align_absolute-center slds-m-top_small slds-text-title_bold" />
+                                    </lightning:layoutItem>
+                                    <aura:set attribute="else">
+                                        <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="6" largeDeviceSize="12" padding="around-small">
+                                            <lightning:inputField fieldName="{!fieldVal.apiName}" variant="label-stack"/>
+                                        </lightning:layoutItem>
+                                    </aura:set>
+                                </aura:if>
+                            </aura:set>
+                        </aura:if>
+                    </aura:iteration>
+                </lightning:layout>
+            </div>
+            <div class="slds-p-top_x-small"></div>
+            <lightning:messages />
+            <lightning:layout verticalAlign="end" horizontalAlign="center" >
+                <lightning:layoutItem >
+                        <lightning:button  variant="brand" type="Submit" iconPosition="right" label="{!$Label.c.Submit}" title="Submit"/>
+                </lightning:layoutItem>
+            </lightning:layout>
+        </lightning:recordEditForm>
+    </div>
+    
+</aura:component>

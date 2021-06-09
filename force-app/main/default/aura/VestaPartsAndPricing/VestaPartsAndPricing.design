@@ -1,0 +1,3 @@
+<design:component>
+    <design:attribute name="accountId" label="Current User Account Id" />
+</design:component>

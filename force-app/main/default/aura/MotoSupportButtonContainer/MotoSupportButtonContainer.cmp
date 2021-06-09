@@ -1,0 +1,52 @@
+<!--
+ - Created by WGVR43 on 18.06.2020.
+ -->
+
+<aura:component description="MotoButtonContainer" implements="forceCommunity:availableForAllPageTypes" access="global">
+    <lightning:overlayLibrary aura:id="overlayLib" />
+
+    <aura:attribute name="iconName" type="String" />
+    <aura:attribute name="title" type="String" />
+    <aura:attribute name="subTitle" type="String" />
+
+    <aura:attribute name="displayButton1" type="Boolean" />
+    <aura:attribute name="textButton1" type="String" />
+    <aura:attribute name="iconButton1" type="String" />
+    <aura:attribute name="addressButton1" type="String" />
+
+    <aura:attribute name="displayButton2" type="Boolean" />
+    <aura:attribute name="textButton2" type="String" />
+    <aura:attribute name="iconButton2" type="String" />
+    <aura:attribute name="addressButton2" type="String" />
+
+    <div class="moto-form-container">
+        <div class="slds-align_absolute-center slds-p-top_small">
+            <lightning:icon iconName="{!v.iconName}" alternativeText="{!v.title}" size="large" title="{!v.title}" variant="error" />
+        </div>
+        <lightning:layout class="slds-align_absolute-center">
+            <lightning:layoutItem class="slds-p-vertical_small">
+                <div class="slds-text-heading_medium"><b>{!v.title}</b></div>
+            </lightning:layoutItem>
+        </lightning:layout>
+        <div class="moto-body-section">
+            <span>{!v.subTitle}</span>
+            <aura:if isTrue="{!empty(v.subTitle)}">
+                <br/>
+            </aura:if>
+        </div>
+        <div>
+            <lightning:layout class="slds-align_absolute-center ">
+                <aura:if isTrue="{!v.displayButton1}">
+                    <lightning:layoutItem padding="around-small">
+                        <lightning:button aura:id="button1" class="moto-form-button" label="{!v.textButton1}" iconName="{!v.iconButton1}" onclick="{!c.handleButtonClick}"/>
+                    </lightning:layoutItem>
+                </aura:if>
+                <aura:if isTrue="{!v.displayButton2}">
+                    <lightning:layoutItem padding="around-small">
+                        <lightning:button aura:id="button2" class="moto-form-button" label="{!v.textButton2}" iconName="{!v.iconButton2}" onclick="{!c.handleButtonClick}"/>
+                    </lightning:layoutItem>
+                </aura:if>
+            </lightning:layout>
+        </div>
+    </div>
+</aura:component>

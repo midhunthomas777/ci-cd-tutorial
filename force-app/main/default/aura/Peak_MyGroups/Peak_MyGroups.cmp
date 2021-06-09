@@ -1,0 +1,73 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" controller="Peak_MyGroupsController" access="global">
+    <aura:attribute name="title" type="String" default="$Label.c.X7S_My_Groups"  access="global"/>
+    <aura:attribute name="titleNoGroups" type="String" default="$Label.c.X7S_No_Groups_Joined"  access="global"/>
+    <aura:attribute name="showDescription" type="Boolean" default="true" access="global" />
+    <aura:attribute name="showMembers" type="Boolean" default="true" access="global" />
+
+    <aura:attribute name="inGroup" type="Boolean" default="false" />
+    <aura:attribute name="GroupsUrl" type="String" default="" access="global" />
+    <aura:attribute name="RecommendedGroup" type="String" default="" access="global" />
+    <aura:attribute name="isInit" type="Boolean" default="false" />
+    <aura:attribute name="numberOfResults" type="String" default="3" access="global" />
+    <aura:attribute name="peakResponse" type="Peak_Response" default="" />
+
+    <aura:attribute name="CustomClassName" type="String" default="" access="global" />
+    <aura:attribute name="CustomIdName" type="String" default="" access="global" />
+
+    <aura:handler name="init" action="{!c.initPeakMyGroups}" value="{!this}" />
+
+    <section class="{!'peak-component peak-mygroups ' + v.CustomClassName}" id="{!v.CustomIdName}">
+        <aura:if isTrue="{!v.isInit}">
+            <header class="peak-mygroups__header">
+                <!-- Header -->
+                <aura:if isTrue="{!v.inGroup}">
+                    <!-- In Group header -->
+                    <aura:if isTrue="{!v.title}">
+                        <c:Peak_HTML_Headings class="peak-mygroups__title">
+                            <c:Peak_Base labelText="{!v.title}" />
+                        </c:Peak_HTML_Headings>
+                    </aura:if>
+
+                    <!-- Not in Group header -->
+                    <aura:set attribute="else">
+                        <aura:if isTrue="{!v.titleNoGroups}">
+                            <c:Peak_HTML_Headings tag="h2" class="peak-mygroups__title peak-mygroups__title_nogroups">
+                                <c:Peak_Base labelText="{!v.titleNoGroups}" />
+                            </c:Peak_HTML_Headings>
+                        </aura:if>
+                        <p class="peak-mygroups__intro slds-m-vertical_x-small">{!$Label.c.X7S_Groups_Intro}</p>
+                    </aura:set>
+                </aura:if>
+            </header>
+
+            <!-- Group results - same list regardless of in or not in groups -->
+            <aura:iteration items="{!v.peakResponse.results}" var="group">
+                <c:Peak_GroupAvatarTile group="{!group}"
+                                        inGroup="{!v.inGroup}"
+                                        showDescription="{!v.showDescription}"
+                                        showMembers="{!v.showMembers}"
+                />
+            </aura:iteration>
+
+            <!-- Footer -->
+            <aura:if isTrue="{!v.GroupsUrl}">
+                <footer class="peak-mygroups__footer">
+                    <aura:if isTrue="{!v.inGroup}">
+                        <!-- In Group footer -->
+                        <p class="slds-m-top_small">
+                            <a onclick="{!c.linkClick}" data-link="{!v.GroupsUrl}" class="slds-button slds-button_neutral">
+                                {!$Label.c.X7S_More_Groups}&nbsp;<lightning:icon iconName="utility:chevronright" size="xx-small"/>
+                            </a>
+                        </p>
+                        <!-- Not in Group footer -->
+                        <aura:set attribute="else">
+                            <p class="slds-m-top_small">
+                                <a onclick="{!c.linkClick}" data-link="{!v.GroupsUrl}" class="slds-button slds-button_neutral">{!$Label.c.X7S_Explore_More_Groups}</a>
+                            </p>
+                        </aura:set>
+                    </aura:if>
+                </footer>
+            </aura:if>
+        </aura:if>
+    </section>
+</aura:component>

@@ -1,0 +1,19 @@
+/**
+ * Expedition_Pack - Front-end assets used for the 7Summits Expedition Pack
+ * @version 1.0.0
+ * @author 7Summits
+ *
+ * COMPILED FILE DO NOT DIRECTLY EDIT
+ */
+.THIS {
+  position: relative;
+  min-height: 2rem;
+}
+.THIS .file-details .help-icon button {
+  vertical-align: text-bottom;
+  color: currentColor;
+}
+.THIS .file-input,
+.THIS .spinner-container {
+  position: relative;
+}

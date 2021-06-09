@@ -1,0 +1,237 @@
+<aura:component access="global" controller="NewCAPPController">
+    
+    <aura:attribute name="value" type="Map" />
+    <aura:attribute name="key" type="String" />
+    <aura:attribute name="reRenderVendorLine" type="Boolean" default="true" />
+    <aura:attribute name="reRenderPicklist" type="Boolean" default="true" />
+    <aura:attribute name="cappRecordType" type="String" />
+    <aura:attribute name="controllingFieldsMap" type="Map" />
+    <aura:attribute name="recordLevelHeading" type="String"/>
+    <aura:attribute name="recordName" type="String"/>
+    <aura:attribute name="sobjectName" type="String"/>
+    <aura:attribute name="urlTarget" type="String" default="_self" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="currentRecordId" type="String"/>
+    <aura:attribute name="allowNewCompetitor" type="Boolean" default="false" description="Show New Record option"/>
+    <aura:attribute name="competitorRecTypeId" type="String" default="" description="Competitor Record Type Id"/>
+    <aura:attribute name="competitorIntURL" type="String" default=""/>
+    <aura:attribute name="disableVendorProd" type="Boolean" default="true"/>
+    <aura:attribute name="siteUsage" type="Boolean" default="\'End User\',\'Technical\'"/>
+    <aura:handler name="strike_evt_addNewRecord" event="c:strike_evt"  action="{!c.handleNewAccount}" description="Used to create a new Account"/>
+    
+    <aura:if isTrue="{!not(empty(v.recordName))}">
+        <lightning:layout >
+            <lightning:layoutItem size="2">
+                    <lightning:formattedUrl value="{!'/'+v.key}" target="{!v.urlTarget}" label="{!v.recordName}"/>
+            </lightning:layoutItem>
+            <aura:if isTrue="{!not(empty(v.competitorIntURL))}">
+                <lightning:layoutItem size="3">
+                    <lightning:formattedUrl value="{!v.competitorIntURL}" target="_blank" label="Competitor Intelligence Folder"/>
+                </lightning:layoutItem>
+            </aura:if>
+        </lightning:layout>
+    </aura:if>
+    <lightning:layout multipleRows="true">
+        <aura:iteration items="{!v.value}" var="grandGrandchildren" indexVar="index">
+            <aura:if isTrue="{!and(grandGrandchildren.fieldType != 'MULTIPICKLIST',and(grandGrandchildren.fieldType != 'BOOLEAN',
+                             and(grandGrandchildren.fieldName != 'Name',grandGrandchildren.fieldType != 'DATETIME')))}">
+                <lightning:layoutItem size="3" padding="horizontal-small" class="layoutCSS">
+                    <aura:if isTrue="{!not(empty(grandGrandchildren.fieldHelp))}">
+                        <lightning:helptext content="{!grandGrandchildren.fieldHelp}" class="helptextCSS" />
+                    </aura:if>
+                    <aura:if isTrue="{!grandGrandchildren.fieldType == 'DOUBLE'}">
+                        <lightning:input type="number" label="{!grandGrandchildren.fieldLabel}"
+                                         value="{!grandGrandchildren.fieldValue}"
+                                         disabled="{!grandGrandchildren.isReadOnly}" />
+                        <aura:set attribute="else">
+                            <aura:if isTrue="{!grandGrandchildren.fieldType == 'REFERENCE'}">
+                                <aura:if isTrue="{!grandGrandchildren.fieldName == 'Vendor__c'}">
+                                    <!--SF-2364 CappVendorExclusion__c filter added-->
+                                    <c:NewCAPPStrikeLookup object="Account" required="true" aura:id="vendor"
+                                                           label="{!grandGrandchildren.fieldLabel}" searchField="Name" limit="10"
+                                                           iconName="standard:account" loadingMessage="Loading..."
+                                                           errorMessage="Invalid input" helpTextPlacement="auto right"
+                                                           filter="RecordType.DeveloperName = 'Competitor' AND CappVendorExclusion__c = FALSE"
+                                                           order="CAPP_Sort_Order__c, Name"
+                                                           value="{!grandGrandchildren.fieldValue}" cappRecord="{!v.value}"
+                                                           lookupFieldAPI="{!grandGrandchildren.fieldName}"
+                                                           refreshVendorLineMethod="{!c.refreshVendorLine}"
+                                                           disabled="{!grandGrandchildren.isReadOnly}"
+                                                           allowNewRecords="{!v.allowNewCompetitor}"
+                                                           overrideNewEvent="{!v.allowNewCompetitor}"/>
+                                    <aura:set attribute="else">
+                                        <aura:if isTrue="{!grandGrandchildren.fieldName == 'Vendor_Product_Line__c'}">
+                                            <aura:if isTrue="{!v.reRenderVendorLine}">
+                                                <c:NewCAPPStrikeLookup object="Vendor_Product_Line__c" limit="10"
+                                                                       label="{!grandGrandchildren.fieldLabel}" searchField="Name"
+                                                                       iconName="standard:account" loadingMessage="Loading..."
+                                                                       errorMessage="Invalid input" helpTextPlacement="auto right"
+                                                                       value="{!grandGrandchildren.fieldValue}" showPossibleRecords="true"
+                                                                       filter="{!'Account__c = \''+grandGrandchildren.vendorValue+'\' AND CAPP_Record_Type__c = \''+v.cappRecordType+'\''}"
+                                                                       lookupFieldAPI="{!grandGrandchildren.fieldName}"
+                                                                       disabled="{! grandGrandchildren.isReadOnly || v.disableVendorProd}"/>
+                                            </aura:if>
+                                            <aura:set attribute="else">
+                                                <aura:if isTrue="{!grandGrandchildren.fieldName == 'Primary_Dispatcher__c'}">
+                                                    <c:strike_lookup object="System_Relationship__c"
+                                                                     label="{!grandGrandchildren.fieldLabel}" searchField="Name"
+                                                                     limit="10" iconName="standard:account"
+                                                                     loadingMessage="Loading..." errorMessage="Invalid input"
+                                                                     helpTextPlacement="auto right"
+                                                                     value="{!grandGrandchildren.fieldValue}"
+                                                                     lookupFieldAPI="{!grandGrandchildren.fieldName}"
+                                                                     disabled="{!grandGrandchildren.isReadOnly}"/>
+                                                    <aura:set attribute="else">
+                                                        <aura:if isTrue="{!grandGrandchildren.fieldName == 'Service_Provider__c'}">
+                                                            <c:strike_lookup object="Account"
+                                                                             label="{!grandGrandchildren.fieldLabel}"
+                                                                             searchField="Name" limit="10"
+                                                                             iconName="standard:account" loadingMessage="Loading..."
+                                                                             errorMessage="Invalid input"
+                                                                             helpTextPlacement="auto right"
+                                                                             filter="Available_as_Service_Provider__c = TRUE"
+                                                                             value="{!grandGrandchildren.fieldValue}"
+                                                                             lookupFieldAPI="{!grandGrandchildren.fieldName}"
+                                                                             disabled="{!grandGrandchildren.isReadOnly}"/>
+                                                            <aura:set attribute="else">
+                                                                <aura:if isTrue="{!and(grandGrandchildren.fieldName == 'Site__c',v.sobjectName == 'System_Relationship__c')}">
+                                                                    <c:strike_lookup object="Technical_Site__c"
+                                                                                     label="{!grandGrandchildren.fieldLabel}"
+                                                                                     searchField="Name" limit="10"
+                                                                                     iconName="standard:account"
+                                                                                     loadingMessage="Loading..."
+                                                                                     errorMessage="Invalid input"
+                                                                                     helpTextPlacement="auto right" 
+                                                                                     value="{!grandGrandchildren.fieldValue}"
+                                                                                     lookupFieldAPI="{!grandGrandchildren.fieldName}"
+                                                                                     filter="Available_for_CAPP__c = TRUE"
+                                                                                     disabled="{!grandGrandchildren.isReadOnly}" />
+                                                                	<aura:set attribute="else">
+                                                                        <aura:if isTrue="{!and(grandGrandchildren.fieldName == 'Prior_Vendor__c',v.sobjectName == 'System_Relationship__c')}">
+                                                                            <c:strike_lookup object="Account"
+                                                                                             label="{!grandGrandchildren.fieldLabel}"
+                                                                                             searchField="Name" limit="10"
+                                                                                             iconName="standard:account" loadingMessage="Loading..."
+                                                                                             errorMessage="Invalid input"
+                                                                                             helpTextPlacement="auto right"
+                                                                                             filter="RecordType.DeveloperName = 'Competitor'"
+                                                                                             value="{!grandGrandchildren.fieldValue}"
+                                                                                             lookupFieldAPI="{!grandGrandchildren.fieldName}"
+                                                                                             disabled="{!grandGrandchildren.isReadOnly}"/>
+                                                                        </aura:if>
+                                                                    </aura:set>
+                                                                </aura:if>
+                                                            </aura:set>
+                                                        </aura:if>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:set>
+                                </aura:if>
+                                <aura:set attribute="else">
+                                    <aura:if isTrue="{!grandGrandchildren.fieldType == 'PICKLIST'}">
+                                        <aura:if isTrue="{!v.reRenderPicklist}">
+                                            <c:NewCAPPPicklist fieldLabel="{!grandGrandchildren.fieldLabel}"
+                                                               fieldValue="{!grandGrandchildren.fieldValue}"
+                                                               fieldName="{!grandGrandchildren.fieldName}"
+                                                               picklistValues="{!grandGrandchildren.pickValues}"
+                                                               controllingFieldsMap="{!v.controllingFieldsMap}"
+                                                               refreshDependentPicklist="{!c.refreshDependentPicklist}"
+                                                               cappRecord="{!v.value}"
+                                                               cappRecordType="{!v.cappRecordType}"
+                                                               sobjectName="{!v.sobjectName}"/>
+                                        </aura:if>
+                                        <aura:set attribute="else">
+                                            <aura:if isTrue="{!or(grandGrandchildren.fieldType == 'CURRENCY',
+                                                             grandGrandchildren.fieldType == 'PERCENT')}">
+                                                <lightning:input type="number" label="{!grandGrandchildren.fieldLabel}"
+                                                                 formatter="{!grandGrandchildren.fieldType}"
+                                                                 value="{!grandGrandchildren.fieldValue}"
+                                                                 disabled="{!grandGrandchildren.isReadOnly}" />
+                                                <aura:set attribute="else">
+                                                    <aura:if isTrue="{!or(grandGrandchildren.fieldType == 'DATE',or(grandGrandchildren.fieldType == 'EMAIL',
+                                                                     or(grandGrandchildren.fieldType == 'TIME',grandGrandchildren.fieldType == 'URL')))}">
+                                                        <lightning:input label="{!grandGrandchildren.fieldLabel}"
+                                                                         type="{!grandGrandchildren.fieldType}"
+                                                                         value="{!grandGrandchildren.fieldValue}" 
+                                                                         disabled="{!grandGrandchildren.isReadOnly}" />
+                                                        <aura:set attribute="else">
+                                                            <aura:if isTrue="{!grandGrandchildren.fieldType == 'STRING'}">
+                                                                <lightning:input label="{!grandGrandchildren.fieldLabel}"
+                                                                                 value="{!grandGrandchildren.fieldValue}"
+                                                                                 disabled="{!grandGrandchildren.isReadOnly}" />
+                                                                <aura:set attribute="else">
+                                                                    <aura:if isTrue="{!grandGrandchildren.fieldType == 'PHONE'}">
+                                                                        <lightning:input type="tel" label="{!grandGrandchildren.fieldLabel}"
+                                                                                         value="{!grandGrandchildren.fieldValue}"
+                                                                                         disabled="{!grandGrandchildren.isReadOnly}" />
+                                                                        <aura:set attribute="else">
+                                                                            <aura:if isTrue="{!grandGrandchildren.fieldType == 'LOCATION'}">
+                                                                                <lightning:inputLocation label="{!grandGrandchildren.fieldLabel}"
+                                                                                                         value="{!grandGrandchildren.fieldValue}"
+                                                                                                         disabled="{!grandGrandchildren.isReadOnly}" />
+                                                                                <aura:set attribute="else">
+                                                                                    <aura:if isTrue="{!grandGrandchildren.fieldType == 'TEXTAREA'}">
+                                                                                        <lightning:textarea label="{!grandGrandchildren.fieldLabel}"
+                                                                                                            value="{!grandGrandchildren.fieldValue}"
+                                                                                                            disabled="{!grandGrandchildren.isReadOnly}" />
+                                                                                    </aura:if>
+                                                                                </aura:set>
+                                                                            </aura:if>
+                                                                        </aura:set>
+                                                                    </aura:if>
+                                                                </aura:set>
+                                                            </aura:if>
+                                                        </aura:set>
+                                                    </aura:if>
+                                                </aura:set>
+                                            </aura:if>
+                                        </aura:set>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </aura:set>
+                    </aura:if>
+                </lightning:layoutItem>
+                <aura:set attribute="else">
+                    <aura:if isTrue="{!grandGrandchildren.fieldType == 'BOOLEAN'}">
+                        <lightning:layoutItem size="3" padding="horizontal-small" class="slds-var-m-top_medium">
+                            <c:NewCAPPMultiPicklist label="{!grandGrandchildren.fieldLabel}"
+                                                    fieldType="{!grandGrandchildren.fieldType}"
+                                                    valueInString="{!grandGrandchildren.fieldValue}"
+                                                    fieldName="{!grandGrandchildren.fieldName}"
+                                                    disabled="{!grandGrandchildren.isReadOnly}"
+                                                    currentRecord="{!v.value}"/>
+                        </lightning:layoutItem>
+                        <aura:set attribute="else">
+                            <aura:if isTrue="{!grandGrandchildren.fieldType == 'MULTIPICKLIST'}">
+                                <lightning:layoutItem size="6" padding="horizontal-small" class="layoutCSS">
+                                    <aura:if isTrue="{!not(empty(grandGrandchildren.fieldHelp))}">
+                                        <lightning:helptext content="{!grandGrandchildren.fieldHelp}"
+                                                            class="multiSelectCSS" />
+                                    </aura:if>
+                                    <c:NewCAPPMultiPicklist label="{!grandGrandchildren.fieldLabel}"
+                                                            allOptions="{!grandGrandchildren.pickValues}"
+                                                            fieldType="{!grandGrandchildren.fieldType}"
+                                                            valueInString="{!grandGrandchildren.fieldValue}"
+                                                            disabled="{!grandGrandchildren.isReadOnly}" />
+                                </lightning:layoutItem>
+                                <aura:set attribute="else">
+                                    <aura:if isTrue="{!grandGrandchildren.fieldType == 'DATETIME'}">
+                                        <lightning:layoutItem size="6" padding="horizontal-small">
+                                            <lightning:input type="{!grandGrandchildren.fieldType}"
+                                                             label="{!grandGrandchildren.fieldLabel}"
+                                                             value="{!grandGrandchildren.fieldValue}"
+                                                             disabled="{!grandGrandchildren.isReadOnly}" />
+                                        </lightning:layoutItem>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </aura:set>
+                    </aura:if>
+                </aura:set>
+            </aura:if>
+        </aura:iteration>
+    </lightning:layout>
+</aura:component>

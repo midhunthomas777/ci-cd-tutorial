@@ -1,0 +1,51 @@
+<!--
+  - Copyright (c) 2018. 7Summits Inc.
+  -->
+
+<!--
+ - Created by francoiskorb on 8/9/18.
+ -->
+
+
+<design:component label="7S Match Wizard">
+	<design:attribute name="wizardLabel"
+	                  label="Component Label Text"
+	                  description="This value will be displayed at the top left of the component to describe its purpose."/>
+	<design:attribute name="targetObject"
+	                  label="Target Attribute Object"
+	                  description="Enter the full API Name of the object (e.g., User_Attribute__c)."/>
+	<design:attribute name="attributeTypes"
+	                  label="Applicable Attribute Types"
+	                  description="If a subset of the available attribute types are desired, enter comma-separated type picklist values here."/>
+	<design:attribute name="fieldName"
+	                  label="Field Name"
+	                  description="Field name for parent object lookup (e.g., User__c)"/>
+	<design:attribute name="fieldValue"
+	                  label="Field Value"
+	                  description="This can be {userId},{recordId} or any hardcoded id"/>
+	<design:attribute name="min"
+	                  label="Minimum allowed per category"/>
+	<design:attribute name="max"
+	                  label="Maximum allowed per category"/>
+	<design:attribute name="successMessage"
+	                  label="Success Message"
+	                  description="Message to display on success"/>
+	<design:attribute name="buttonLabel"
+	                  label="Button Label"
+	                  description="Getting start button label"/>
+	<design:attribute name="textAreaText"
+	                  label="Text Area Text"
+	                  description="This field supports rich text in the form of HTML."/>
+	<design:attribute name="imageURL"
+	                  label="Image URL"
+	                  description="Enter the URL of a publicly available image."/>
+	<design:attribute name="showCriticalSelection"
+	                  label="Show Critical Selection"
+	                  description="If Selected, Critical checkbox will be displayed on summary"/>
+	<design:attribute name="summaryHeader"
+	                  label="Summary Header"
+	                  description="Message to show on summary Page"/>
+	<design:attribute name="showIntroScreen"
+	                  label="Show Intro Screen"
+	                  description="Do you want to display Intro screen?"/>
+</design:component>

@@ -1,0 +1,8 @@
+<!--
+ - Copyright (c) 2018. 7Summits Inc.
+ - Created by 7Summits - Joe Callin on 8/15/18.
+-->
+<aura:event type="COMPONENT" description="Adventure_RenderEvent">
+    <aura:attribute name="type" type="String"/>
+    <aura:attribute name="elements" type="List"/>
+</aura:event>

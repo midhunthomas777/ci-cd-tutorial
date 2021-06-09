@@ -1,0 +1,8 @@
+<!--
+ - Copyright (c) 2018. 7Summits Inc.
+ - Created by 7Summits - Joe Callin on 8/23/18.
+-->
+<aura:event type="APPLICATION" description="Adventure_AnimateEvent">
+    <aura:attribute name="steps" type="Integer"/>
+    <aura:attribute name="currentIndex" type="Integer"/>
+</aura:event>

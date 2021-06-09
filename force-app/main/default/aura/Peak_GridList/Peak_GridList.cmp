@@ -1,0 +1,17 @@
+<!--
+ - Created by jonbalza on 2019-01-23.
+ -->
+
+<aura:component description="Peak_GridList">
+    <aura:attribute name="class" type="String" default="" />
+    <aura:attribute name="useSLDSGrid" type="Boolean" default="true" />
+    <aura:attribute name="itemSpacing" type="Integer" default="10" />
+
+    <div class="peak-grid-list__wrapper">
+        <ul class="{!'peak-grid-list ' + if(v.useSLDSGrid, 'slds-grid', '')}"
+            style="{!if(v.itemSpacing, 'margin:-' + (v.itemSpacing / 2) + 'px;', '')}"
+        >
+            {!v.body}
+        </ul>
+    </div>
+</aura:component>

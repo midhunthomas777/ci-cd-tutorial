@@ -1,0 +1,47 @@
+<aura:component controller="AutoCreatedCAPPTableCtrl" access="global" implements="lightning:availableForFlowScreens,lightning:actionOverride,force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,force:lightningQuickActionWithoutHeader,lightning:isUrlAddressable">
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="errorMsg" type ="String"/>
+    <aura:attribute name="cappList" type="List"/>
+    <aura:attribute name="cappListLength" type="Integer" default="10" />
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="loadSpinner" type="Boolean" default="false"/>
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="simpleRecord" type="Object"/>
+    <aura:attribute name="recordError" type="String"/>
+    <force:recordData aura:id="recordLoader"
+      fields="Name,AccountId,Account.Name"
+      recordId="{!v.recordId}"
+      targetFields="{!v.simpleRecord}"
+      targetError="{!v.recordError}"
+      />
+    <aura:handler event="force:refreshView" action="{! c.doInit}" /> 
+    
+    <lightning:navigation aura:id="navService"/>
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="large" aura:id="mySpinner"/>
+    </aura:if>
+    
+    <aura:if isTrue="{!not(empty(v.errorMsg))}">
+        <div class="slds-box slds-align_absolute-center">
+            <c:AlertMessages Message="{!v.errorMsg}" type="error"/>
+        </div>
+    </aura:if>
+    
+    <aura:if isTrue="{!not(empty(v.cappList))}">
+        <lightning:card > 
+            <aura:set attribute="title">
+                CAPP records created or modified on &nbsp;  <a href="{! '/'+v.simpleRecord.AccountId}" target="_new">{!v.simpleRecord.Account.Name}</a> &nbsp; by closing this Opportunity
+            </aura:set>
+            <div>
+                <c:GenerateLightningDataTable columns="{!v.columns}" inlineEditing="false"  resultList ="{!v.cappList}"
+                                              hideSelection="true"  maxRowSelection ="0" pageSize="{!v.cappListLength}" 
+                                              inlineErrors="false" showPagination="false" sortField="RecordTypeName" 
+                                              sortOrder="asc"/>
+            </div>
+            <div class="slds-align_absolute-center">
+                <lightning:button variant="brand" label="Confirm Changes and Close" onclick="{!c.updateReviewedbySales}"/> 
+            </div>
+            </lightning:card>
+    </aura:if>
+</aura:component>

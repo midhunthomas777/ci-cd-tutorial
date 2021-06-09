@@ -1,0 +1,49 @@
+/**
+ * Copyright (c) 2019. 7Summits Inc. All rights reserved.
+ */
+
+.THIS {
+    max-width: 860px;
+    margin: 0 auto;
+}
+.THIS .onboarding-slide__header {
+    text-align: center;
+}
+.THIS .onboarding-slide__title {
+    color: t(brandColor);
+}
+.THIS .onboarding-slide__body {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+.THIS .onboarding-slide__button {
+    border: none;
+    font-size: 1.2rem;
+    padding: .75rem 4.25rem;
+}
+.THIS .onboarding-slide__button-primary {
+    color: #fff;
+}
+
+@media (min-width: 48rem) {
+    .THIS.onboarding-slide_horizontal .onboarding-slide__header {
+        text-align: left
+    }
+    .THIS.onboarding-slide_horizontal .onboarding-slide__body {
+        padding-top: 0;
+    }
+}
+
+@media (max-width: 47.9375em) {
+    .THIS .onboarding-slide__button {
+        display: block;
+        font-size: 1rem;
+        width: 100%;
+        margin: 0;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .THIS .onboarding-slide__button + .onboarding-slide__button {
+        margin-top: .5rem;
+    }
+}

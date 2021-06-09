@@ -1,0 +1,92 @@
+<aura:component controller="UtilsDeeperClone"
+                implements="lightning:actionOverride,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,lightning:availableForFlowScreens,lightning:availableForFlowActions" access="global">	
+    <aura:html tag="style">  
+        .slds-modal__container{max-width: 90rem !important;width:90% !important;}
+    </aura:html>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="userTheme" type="String"/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="false"/>
+    <aura:attribute name="childSelectionsOptions" type="List"/>
+    <aura:attribute name="finalSelectionOptions" type="List"/>
+    <aura:attribute name="oppTypeSelectionOptions" type="List"/>
+    <aura:attribute name="selectedRelationships" type="List"/>
+    <aura:attribute name="selectedOppType" type="String" default="Clone"/>
+    <aura:attribute name="isRenew" type="Boolean" default="false"/>
+    <aura:attribute name="showNewOpportunity" type="Boolean" default="false"/>
+    <aura:attribute name="showChildSelection" type="Boolean" default="false"/>
+    <aura:attribute name="originalOpportunity" type="Opportunity" />
+    <aura:attribute name="executionOrigin" type="String" default="component"/>
+    <aura:attribute name="heading" type="String" default="Please check the checkbox(s) you wanna clone."/>
+    <aura:attribute name="isCreatable" type="Boolean" default="true"/>
+    <aura:attribute name="displayMessage" type="String" default="You donot have access to create Opportunity"/>
+    
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="large" aura:id="mySpinner"/>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.isCreatable}">
+        <div class="slds-page-header">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <lightning:icon iconName="standard:opportunity" alternativeText="opportunity" />
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1>
+                                        <span class="slds-page-header__title slds-truncate" 
+                                              title="{!v.originalOpportunity.Name}">{!v.originalOpportunity.Name}</span>
+                                    </h1>
+                                </div>
+                            </div>
+                            <p class="slds-page-header__name-meta">{!v.originalOpportunity.Owner.Name} • {!v.originalOpportunity.CloseDate}</p>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </div>
+        
+        <aura:If isTrue="{!v.showChildSelection}"> 
+            <!--Start - Edited Sheetal-->
+            <div class="slds-text-heading_small slds-p-vertical_medium slds-text-align_center">Select if you'd like to clone the Opportunity or create a service/subscription renewal Opportunity</div>
+            <div class="slds-box slds-align_absolute-center">
+                <lightning:radioGroup aura:id="radioGrp" name="radioButtonGroup"
+                                      options="{!v.oppTypeSelectionOptions}" value="{!v.selectedOppType}"
+                                      onchange="{!c.handleChangeRadionButton}" type="radio"
+                                      class="customRadioCls" />
+            </div> 
+            <!--End - Edited Sheetal-->   
+            <div class="slds-text-heading_small slds-p-vertical_medium slds-text-align_center">{!v.heading}</div>
+            <div class="slds-box slds-align_absolute-center">
+                <lightning:checkboxGroup options="{!v.finalSelectionOptions}" aura:id="checkboxGrp" 
+                                         value="{!v.selectedRelationships}"/>
+            </div>
+            <div class="slds-box slds-align_absolute-center">
+                <lightning:button variant="brand" label="Cancel" onclick="{!c.cancel}" aura:id="cancelBtn"/>
+                <lightning:button variant="brand" label="Proceed" onclick="{!c.clone}" aura:id="proceedBtn"/>                
+            </div>
+        </aura:If>
+        
+        <aura:if isTrue="{!v.showNewOpportunity}">
+            <aura:if isTrue="{!v.isRenew}">
+                <c:OpportunityLineItemTable oldOpportunityId="{!v.recordId}" 
+                                            childObjectsNames="{!v.selectedRelationships}"/> 
+                <aura:set attribute="else">
+                    <c:NewOpportunity customerAccId="{!v.originalOpportunity.AccountId}"  
+                                      recordTypeId="{!v.originalOpportunity.RecordTypeId}"
+                                      originalOpportunityId="{!v.recordId}" clone="true"
+                                      executionOrigin="{!v.executionOrigin}"
+                                      selectedRelationships="{!v.selectedRelationships}" 
+                                      opportunityName="{!v.originalOpportunity.Name}" /> 
+                    <!-- < sheetal-jira-284 Added closeDate> -->
+                    <!-- closeDate ="{!v.originalOpportunity.CloseDate}" -->
+                </aura:set>
+            </aura:if>
+        </aura:if>
+        <aura:set attribute="else">
+            <c:AlertMessages type="error" Message="{!v.displayMessage}"/>
+        </aura:set>
+    </aura:if>
+</aura:component>

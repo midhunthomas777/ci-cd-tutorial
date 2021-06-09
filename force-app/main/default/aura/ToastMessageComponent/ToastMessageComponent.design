@@ -1,0 +1,9 @@
+<design:component>
+    <design:attribute name="objectField" label="Field" description="API name of the field(TEXT FIELD)" />
+    <design:attribute name="message" label="Message" description="Message Info" />
+    <design:attribute name="toastType" label="Toast Type" datasource="Info,Success,Warning,Error" />
+    <design:attribute name="toastMode" label="Toast Mode" datasource="Dismissible,Pester,Sticky" />
+    <design:attribute name="displayToast" label="Display Toast" description="If checkbox is true then on the basis of displayDecisionField API Name it will show or hide the field." />
+    <design:attribute name="displayDecisionField" label="Display Decision Field API" description="API name of the field which will decide whether to display Toast message or not." />
+    
+</design:component>

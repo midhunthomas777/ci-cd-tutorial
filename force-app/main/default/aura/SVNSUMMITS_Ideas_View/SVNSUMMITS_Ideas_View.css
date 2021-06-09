@@ -1,0 +1,15 @@
+/*
+ * Copyright (c) 2019. 7Summits Inc.
+ */
+.THIS .featured-image {
+    margin-bottom:20px;
+}
+
+.THIS .hidden {
+    display:none;
+}
+
+.THIS .half-size {
+    max-height:250px;
+    overflow:hidden;
+}

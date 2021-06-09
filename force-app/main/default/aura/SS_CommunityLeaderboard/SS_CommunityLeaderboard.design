@@ -1,0 +1,34 @@
+<design:component label="7S Leaderboard">
+    <design:attribute name="titletext" label="Heading Label"/>
+    <design:attribute name="subtitletext" label="Subtitle Label"/>
+    <design:attribute name="headeralign" label="Header Alignment" datasource="center,left,right"/>
+    
+    <design:attribute name="showIcons" label="Show only icons as headers?"/>
+    <design:attribute name="hideInternal" label="Hide internal users?"/>
+    
+    <design:attribute name="showImage" label="Show profile image?"/>
+    
+    <design:attribute name="showName" label="Show name?"/>
+    <design:attribute name="nameLabel" label="Name Label"/>
+    
+    <design:attribute name="showRank" label="Show rank?" description="Only visible to users with access to the standard, internal sharing model (i.e., users with a license of Customer Community Plus, Partner Community, Salesforce, etc. -- not Customer Community)" />
+    <design:attribute name="rankLabel" label="Rank Label"/>
+    
+    <design:attribute name="showPoints" label="Show points?"/>
+    <design:attribute name="pointsLabel" label="Points Label"/>
+    
+    <design:attribute name="showLevel" label="Show level?"/>
+    <design:attribute name="levelLabel" label="Level Label"/>
+    
+    <design:attribute name="showPosts" label="Show posts count?" description="Only visible to users with access to the standard, internal sharing model (i.e., users with a license of Customer Community Plus, Partner Community, Salesforce, etc. -- not Customer Community)" />
+    <design:attribute name="postsLabel" label="Posts Label"/>
+    
+    <design:attribute name="showComments" label="Show comments count?" description="Only visible to users with access to the standard, internal sharing model (i.e., users with a license of Customer Community Plus, Partner Community, Salesforce, etc. -- not Customer Community)" />
+    <design:attribute name="commentsLabel" label="Comments Label"/>
+
+    <design:attribute name="showBadge" label="Show badge?"/>
+    <design:attribute name="badgeLabel" label="Badge Label"/>
+    
+    <design:attribute name="numberOfRecords" label="Number of Records" description="Show up to 100 users!" />
+    <design:attribute name="height" label="Leaderboard Height"/>
+</design:component>

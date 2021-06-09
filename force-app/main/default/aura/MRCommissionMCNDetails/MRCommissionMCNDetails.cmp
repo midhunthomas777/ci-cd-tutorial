@@ -1,0 +1,117 @@
+<aura:component controller="MRCommissionMCNDetailsController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
+    <!--<aura:html tag="style">  
+        .slds-modal__container{max-width: 70rem !important;width:90% !important;}
+    </aura:html>-->
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="mcnId" type="String" />
+    <aura:attribute name="partnerId" type="String" />
+    <aura:attribute name="accountRecType" type="String" />
+    <aura:attribute name="accountId" type="String"/> 
+    <aura:attribute name="motorolaCustomerList" type="List"/>
+    <aura:attribute name="motorolaCustomerNumber" type="String"/>
+    <aura:attribute name="isInternalUser" type="Boolean" />
+    <aura:attribute name="mcn" type="String"/>
+    <aura:attribute name="isAccount" type="String" />
+    <aura:attribute name="showCommissionInfo" type="Boolean" default="false"/>
+    <aura:attribute name="partnerInfo" type="Boolean" default="false"/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="false"/>
+    <aura:attribute name="maxRowSelection" type="Integer" default="1"/>
+    <!-- Attribute Declration For Pagination -->
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="AccountData" type="Object"/>
+    <aura:attribute name="deleteRecId" type="Id" />
+    <aura:attribute name="PaginationList" type="account"/>
+    <aura:attribute name="startPage" type="Integer" />
+    <aura:attribute name="endPage" type="Integer"/>
+    <aura:attribute name="totalRecords" type="Integer"/>
+    <aura:attribute name="pageSize" type="Integer" default="10"/>
+    <aura:attribute name="renderLtngDataTable" type="Boolean" default="true"/>
+    <aura:attribute name="sortedBy" type="String" />
+    <aura:attribute name="sortedDirection" type="Boolean" default="true" />
+    <aura:method name="childmethod" action="{!c.doInit}" access="PUBLIC"/> 
+    
+    <aura:if isTrue="{!not(empty(v.deleteRecId))}">
+        <force:recordData aura:id="delRecord"
+                          recordId="{!v.deleteRecId}"
+                          fields="Id"/>
+    </aura:if>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="c:MRCommissionOderCalculatorCloseEvent" action="{!c.handleCloseEvent}"/>
+    <aura:handler event="c:MRCommissionPartnerDetailEvent" action="{!c.MRCommissionPartnerDetailEvent}"/>    
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="small" aura:id="mySpinner"/>
+    </aura:if>
+    
+    <aura:If isTrue="{!v.renderLtngDataTable}">
+        <div id="displayMCNList">
+            <lightning:datatable aura:id="clearRow" class="cols" columns="{! v.columns }" data="{! v.PaginationList }" keyField="Id" 
+                                 maxRowSelection="{! v.maxRowSelection }" onrowselection="{!c.openMCNDetails}" sortedBy="{!v.sortedBy}" sortedDirection="{!v.sortedDirection}" onsort="{!c.sortColumn}"/>
+            <lightning:buttonGroup class="slds-align_absolute-center slds-m-top_xx-small">
+                <lightning:button label="Previous" disabled="{!v.startPage == 0}" onclick="{!c.previous}" iconName='utility:back'/>
+                <lightning:button label="Next" disabled="{!v.endPage >= v.totalRecords}" onclick="{!c.next}" variant="brand" iconName='utility:forward' iconPosition='right'/>
+            </lightning:buttonGroup>
+        </div>
+    </aura:If>
+    <aura:If isTrue="{!v.partnerInfo}">
+        <aura:html tag="style">  
+            .slds-modal__container{max-width: 5rem !important;width:10% !important;}
+        </aura:html>
+        <div class="slds-m-top_small">
+            <aura:if isTrue="{!empty(v.partnerId)}">
+                <div id="Modal"> 
+                    <div role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal--large">
+                        
+                        <div class="slds-modal__container">
+                            
+                            <div class="slds-modal__header">
+                                <lightning:buttonIcon class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" iconName="utility:close"  size="large" variant="bare" onclick="{!c.closepartner}"/>
+                                <h2 id="header43" class="slds-text-heading--medium"> <b> Select Partner Account</b></h2>
+                            </div>
+                            <div class="slds-modal__content slds-p-around--medium">
+                                <div>
+                                    <c:MRCommissionPartnerAccountDetails aura:id="calculationpartnerDetail" />
+                                    
+                                    <!--  <c:MRCommissionCalculationDetail aura:id="calculationDetail" motocustnum="{!v.mcn}" />-->
+                                </div>
+                            </div>
+                            <div class="slds-modal__footer">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-backdrop slds-backdrop--open"></div>
+                </div>  
+            </aura:if>
+        </div>
+    </aura:If>
+    <div class="slds-m-top_small">
+        <aura:If isTrue="{!v.showCommissionInfo}">
+            <aura:html tag="style">  
+                .slds-modal__container{max-width: 70rem !important;width:90% !important;}
+            </aura:html>
+            <!-- <aura:if isTrue="{!not(empty(v.partnerId))}">-->
+            <div id="Modal"> 
+                <div role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal--large">
+                    <div class="slds-modal__container">
+                        <div class="slds-modal__header">
+                            <lightning:buttonIcon class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" iconName="utility:close"  size="large" variant="bare" onclick="{!c.close}"/>
+                            <h2 id="header43" class="slds-text-heading--medium"> <b>Commission Calculation</b></h2>
+                        </div>
+                        <div class="slds-modal__content slds-p-around--medium">
+                            <div>
+                                <c:MRCommissionCalcDetails aura:id="calculationDetail" motorolaCustomerNumber="{!v.motorolaCustomerNumber}" accountId="{!v.accountId}" mcnId="{!v.mcnId}" accountRecType="SoldToAccount" partnerId="{!v.partnerId}" isInternalUser="{!v.isInternalUser}" />
+                                
+                                <!--  <c:MRCommissionCalculationDetail aura:id="calculationDetail" motocustnum="{!v.mcn}" />-->
+                            </div>
+                        </div>
+                        <div class="slds-modal__footer">
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-backdrop slds-backdrop--open"></div>
+            </div>  
+            <!-- </aura:if>-->
+        </aura:If>
+    </div>
+    
+    
+</aura:component>

@@ -1,0 +1,21 @@
+/*
+ * Copyright (c) 2019. 7Summits Inc. All rights reserved.
+ *
+ */
+
+.THIS .slds-checkbox__label {
+    padding: 1rem 1.5rem;
+    border-radius: token(borderRadiusMedium);
+    background: #f9f9f9;
+    display: block;
+}
+
+@media (max-width: 47.9375em) {
+    .THIS .slds-form-element__label {
+        hyphens: none;
+    }
+    .THIS .slds-checkbox__label {
+        padding: 1rem;
+        text-align: left;
+    }
+}

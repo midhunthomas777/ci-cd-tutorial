@@ -1,0 +1,5 @@
+<aura:component >
+    <c:com_add />
+    <c:com_information />
+               
+</aura:component>

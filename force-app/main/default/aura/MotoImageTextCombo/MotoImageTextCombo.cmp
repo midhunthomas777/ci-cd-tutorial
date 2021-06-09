@@ -1,0 +1,62 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,forceCommunity:availableForAllPageTypes" access="global"  extensible="true">
+  <aura:attribute name="imageUrl" type="String" access="global"/>
+  <aura:attribute name="imageLeftSide" type="Boolean" access="global" default="true"/>
+  <aura:attribute name="newBody" type="Aura.Component[]" required="false"/>  
+  <aura:attribute name="bodyTitle" type="String" access="global"/>
+  <aura:attribute name="textBody" type="String" access="global"/>
+  <aura:attribute name="bulletOne" type="String" access="global"/>
+  <aura:attribute name="bulletTwo" type="String" access="global"/>
+  <aura:attribute name="bulletThree" type="String" access="global"/>
+  <aura:attribute name="bulletFour" type="String" access="global"/>
+  <aura:attribute name="bulletFive" type="String" access="global"/>
+  <aura:attribute name="urlOne" type="String" access="global"/>
+  <aura:attribute name="urlTwo" type="String" access="global"/>
+  <aura:attribute name="urlThree" type="String" access="global"/>
+  <aura:attribute name="urlFour" type="String" access="global"/>
+  <aura:attribute name="urlFive" type="String" access="global"/>
+  <aura:attribute name="imageContainer" type="Aura.Component[]" required="false" />
+  <div>
+    <aura:if isTrue="{!v.imageLeftSide}">
+      <lightning:layout multipleRows="true">
+        <lightning:layoutItem size="12" largeDeviceSize="5" flexibility="auto">
+            <div class="moto-image-container"><img src="{!v.imageUrl}" alt="bodyContext"/></div>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="12" largeDeviceSize="2" flexibility="auto">
+            <div></div>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="12" largeDeviceSize="5" flexibility="auto">
+            <div class="moto-body-container">
+              <h1>{!v.bodyTitle}</h1>
+              <span>{!v.textBody}</span>
+              <p><a href="{!v.urlOne}">{!v.bulletOne}</a></p>
+              <p><a href="{!v.urlTwo}">{!v.bulletTwo}</a></p>
+              <p><a href="{!v.urlThree}">{!v.bulletThree}</a></p>
+              <p><a href="{!v.urlFour}">{!v.bulletFour}</a></p>
+              <p><a href="{!v.urlFive}">{!v.bulletFive}</a></p>
+            </div>
+        </lightning:layoutItem>
+      </lightning:layout>
+      <aura:set attribute="else">
+        <lightning:layout multipleRows="true">
+          <lightning:layoutItem size="12" largeDeviceSize="5" flexibility="auto" class="slds-order_3 slds-large-order_1">
+            <div class="moto-body-container">
+              <h1>{!v.bodyTitle}</h1> 
+              <span>{!v.textBody}</span>
+              <p><a href="{!v.urlOne}">{!v.bulletOne}</a></p>
+              <p><a href="{!v.urlTwo}">{!v.bulletTwo}</a></p>
+              <p><a href="{!v.urlThree}">{!v.bulletThree}</a></p>
+              <p><a href="{!v.urlFour}">{!v.bulletFour}</a></p>
+              <p><a href="{!v.urlFive}">{!v.bulletFive}</a></p>
+            </div>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="12" largeDeviceSize="2" flexibility="auto"  class="slds-order_1 slds-large-order_2">
+          <div></div>
+      </lightning:layoutItem>
+          <lightning:layoutItem size="12" largeDeviceSize="5" flexibility="auto" class="slds-order_2 slds-large-order_3">
+              <div class="moto-image-container"><img src="{!v.imageUrl}" alt="bodyContext"/></div>
+          </lightning:layoutItem>
+        </lightning:layout>
+      </aura:set>
+    </aura:if>
+  </div>
+</aura:component>

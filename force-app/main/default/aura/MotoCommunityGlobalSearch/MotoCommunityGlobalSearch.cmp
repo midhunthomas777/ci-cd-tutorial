@@ -1,0 +1,20 @@
+<aura:component implements="forceCommunity:searchInterface" access="global" >
+    <aura:attribute name="searchTerm" type="String" default="" />
+    <aura:attribute name="searchTermInvalid" type="Boolean" default="false" />
+    
+    <form class="global-search" onsubmit="{!c.handleSearch}" >
+        <lightning:layout horizontalAlign="center">
+            <lightning:layoutItem size="9">
+                    <lightning:input type="text" aura:id="searchInput" name="searchInput" label="" value="{!v.searchTerm}" variant="label-hidden" />
+            </lightning:layoutItem>
+            <lightning:layoutItem size="3">
+                    <lightning:buttonIcon iconName="utility:search" type="Submit" variant="bare-inverse" size="large" alternativeText="Search" title="Search" />
+            </lightning:layoutItem>
+        </lightning:layout>
+    </form>
+    <aura:if isTrue="{!v.searchTermInvalid}">
+        <div class="global-search-alert">
+            {!$Label.c.MotoCommunityEmptySearch}
+        </div>
+    </aura:if>
+</aura:component>

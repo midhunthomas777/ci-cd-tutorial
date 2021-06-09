@@ -1,0 +1,19 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<!--
+ - Created by francois korb on 9/12/16.
+ -->
+
+<aura:component description="SVNSUMMITS_Ideas_Compact_List"
+                extends="c:SVNSUMMITS_Ideas_List"
+                implements="force:appHostable,forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes"
+                access="global">
+
+    <aura:set attribute="displayMode"       value="Compact"/>
+    <aura:set attribute="labelViewMore"     value="{!$Label.c.ss_idea_label_ViewMore}" />
+    <aura:set attribute="displayPagination" value="false"/>
+    <aura:set attribute="showTitle"         value="true"/>
+
+    {!v.body}
+</aura:component>

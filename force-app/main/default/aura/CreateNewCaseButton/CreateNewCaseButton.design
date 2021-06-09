@@ -1,0 +1,3 @@
+<design:component label="Create New Case Button">
+	<design:attribute name="showButton" label="Show Button" />
+</design:component>

@@ -1,0 +1,7 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global"  extensible="true">
+    <aura:attribute name="labelName" type="String" access="global" />
+    <aura:attribute name="text" type="String" default="" access="private"/>
+    <aura:attribute name="style" type="String" default="width:100%; display: inline-block;" access="global"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <span style="{!v.style}">{!v.text}</span>
+</aura:component>

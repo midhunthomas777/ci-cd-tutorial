@@ -1,0 +1,21 @@
+.THIS a {
+    font-size: t(fontSizeMedium);
+    font-family: Arial, Helvetica, sans-serif;
+}
+.THIS p {
+    margin:t(spacingMedium) 0 t(spacingMedium) 0;
+}
+.THIS a:hover, .THIS span:hover, .THIS .slds-button_reset:hover, .THIS .slds-button:hover > span {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #FFFFFF;
+}
+.THIS span, .THIS a, .THIS .slds-button_reset{
+    color: #CCCCCC;
+}
+.THIS .slds-icon-text-default {
+    fill: #CCCCCC;
+}
+.THIS .slds-accordion__list-item {
+    border-top: 1px solid #CCCCCC;
+}

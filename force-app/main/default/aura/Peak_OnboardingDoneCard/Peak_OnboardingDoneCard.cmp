@@ -1,0 +1,29 @@
+<!--
+ - Created by jonbalza on 2019-09-13.
+ -->
+
+<aura:component description="Peak_OnboardingDoneCard">
+    <aura:attribute name="label" type="String" access="global" />
+    <aura:attribute name="icon" type="String" access="global" />
+    <aura:attribute name="link" type="String" access="global" />
+    <aura:attribute name="description" type="String" access="global" />
+    <aura:attribute name="openInNewWindow" type="Boolean" access="global" default="false" />
+
+    <aura:registerEvent name="onclick" type="c:Peak_OnboardingButtonEvent" />
+
+    <a class="onboarding-card" href="{!v.link}" onclick="{!c.handleClick}" target="{!if(v.openInNewWindow, '_blank', '_self')}">
+        <lightning:layout multipleRows="false" verticalAlign="center">
+            <lightning:layoutItem flexibility="no-flex">
+                <lightning:icon iconName="{!v.icon}" size="medium" />
+            </lightning:layoutItem>
+            <lightning:layoutItem flexibility="auto" class="slds-p-left_medium">
+                <aura:if isTrue="{!v.label}">
+                    <strong class="onboarding-card__label">{!v.label}</strong>
+                </aura:if>
+                <aura:if isTrue="{!v.description}">
+                    <span class="onboarding-card__description">{!v.description}</span>
+                </aura:if>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </a>
+</aura:component>

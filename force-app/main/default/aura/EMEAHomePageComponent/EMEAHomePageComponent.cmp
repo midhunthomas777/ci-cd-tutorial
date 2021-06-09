@@ -1,0 +1,20 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" controller="EMEAHomePageController">
+    <aura:attribute name="keyContacts" type="Object"/>
+    <aura:attribute name="columnNames" type="List"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="contactList" type="List" />
+    <lightning:card title=''>
+        <p class="slds-p-horizontal_small">
+            <aura:iteration items="{!v.keyContacts}" var="item">
+                <lightning:recordViewForm recordId="{!item.Contact.Id}" objectApiName="Contact">
+                    <div class="slds-box slds-theme_default">
+                        <lightning:outputField fieldName="Name" />
+                        <lightning:outputField fieldName="Email" />
+                        <lightning:outputField fieldName="Phone" />
+                    </div>
+                </lightning:recordViewForm>
+                <br />
+            </aura:iteration>
+        </p>
+    </lightning:card>
+</aura:component>

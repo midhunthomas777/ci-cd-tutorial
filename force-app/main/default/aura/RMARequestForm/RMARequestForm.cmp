@@ -1,0 +1,45 @@
+<aura:component controller="RMARequestFormController" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global"  extensible="true">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="isOpen" type="Boolean" default="false"/>
+    <aura:attribute name="RMARequestFormWrapper" type="object" />
+    <aura:attribute name="defaultRMARequestFormWrapper" type="object" />
+    <aura:attribute name="isDisabled" type="Boolean" />
+    <lightning:overlayLibrary aura:id="overlayLib" />
+    <aura:html tag="style">  
+        .slds-modal__container{max-width: 75rem !important;width:90% !important;}
+    </aura:html>    
+    <aura:if isTrue="{!!v.isOpen}">
+    		<c:RMASupportForm RMARequestFormWrapper="{!v.RMARequestFormWrapper}" defaultRMARequestFormWrapper="{!v.defaultRMARequestFormWrapper}" isDisabled="false" isOpen="{!v.isOpen}"/>
+    	<aura:set attribute="else">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" isOpen="{!v.isOpen}" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{!c.closeModal}"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01">Review RMA Form</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <div class="c-container">
+                        <c:RMASupportForm RMARequestFormWrapper="{!v.RMARequestFormWrapper}" defaultRMARequestFormWrapper="{!v.defaultRMARequestFormWrapper}" isOpen="{!v.isOpen}" isDisabled="true"/>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="brand" 
+                                      label="Back"
+                                      title="Back"
+                                      onclick="{!c.closeModal}"
+                                      class="moto-submit-buttons"/>
+                    <lightning:button variant="brand" 
+                                      label="Submit" onclick="{!c.submitRequest}"
+                                      class="moto-submit-buttons"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        </aura:set>
+    </aura:if>
+</aura:component>

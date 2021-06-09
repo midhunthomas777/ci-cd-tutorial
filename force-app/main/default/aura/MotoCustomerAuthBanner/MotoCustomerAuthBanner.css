@@ -1,0 +1,40 @@
+.THIS {
+  background-image: linear-gradient(84deg, #000000, rgba(0, 0, 0, 0.07) 102%);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100%;
+  min-height: t(sizeXSmall);
+  margin-bottom: t(spacingMedium);
+  color: #fff;
+}
+.THIS .moto-banner-head,
+.THIS .moto-banner-section {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 210px;
+}
+.THIS .moto-banner-head div {
+  text-align: left;
+}
+.THIS .moto-banner-head-title {
+  margin: 1rem 0;
+  font-family: 'Arial'; /*'Univers Condensed', helvetica, arial, sans-serif;*/
+  font-weight: normal; /* 700;*/
+  font-size: 2rem;
+  line-height: 1.2em;
+  text-transform: uppercase;
+}
+.THIS .moto-header {
+  margin-top: t(spacingXLarge);
+  font-size: t(fontSizeXLarge);
+  color: #FFFFFF;
+}
+
+@media(max-width: 1450px) {  
+  .THIS .moto-banner-container {
+    /*width: 77%;*/
+    margin:auto;
+  }
+}

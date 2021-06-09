@@ -1,0 +1,62 @@
+<aura:component controller="GlobalUtility" implements="flexipage:availableForAllPageTypes,lightning:isUrlAddressable,force:lightningQuickActionWithoutHeader,lightning:actionOverride,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="fieldSetFinalResult" type="Object[]"/>
+    <aura:attribute name="eventFieldsPageOne" type="Object[]"/>
+    <aura:attribute name="firstPageData" type="Object"/>
+    <aura:attribute name="showBackBtn" type="boolean" default="true"/>
+    <aura:attribute name="showSpinner" type ="Boolean" default="true"/>
+    <aura:attribute name="loadData" type ="Boolean" default="false"/>
+    <aura:attribute name="errorMsg" type ="String" />
+    <aura:attribute name="SobjectRecords" type="SObject[]"  />
+    <aura:attribute name="finalContactList" type="String[]"/>
+    <aura:attribute name="functionality" type="String" />
+    <aura:attribute name="partnerRegion" type="String" />
+    <aura:registerEvent name="PartnerOnBoardingEvent" type="c:PartnerOnBoardingEvent"/>
+    <aura:handler event="c:savedItemList" action="{!c.savedItemList}"/> 
+    <aura:if isTrue="{!v.showSpinner}">
+        <lightning:spinner />
+    </aura:if>
+        <aura:if isTrue="{!not(empty(v.errorMsg))}"> 
+            <c:AlertMessages Message="{!v.errorMsg}" type="error"/>
+        </aura:if>
+    <div class="slds-page-header__col-details">
+        <lightning:recordEditForm aura:id="inputForm" objectApiName="Empower_Application__c" onsubmit="{!c.handleSubmit}" onsuccess="{!c.handleSuccess}" onload="{!c.handleLoad}" onerror="{!c.handleError}">   
+           <lightning:messages />            
+            <lightning:layout multipleRows="true">
+                <aura:iteration items="{!v.fieldSetFinalResult}" var="fieldVal">
+                    <aura:if isTrue="{!fieldVal.fieldType == NULL}">
+                        <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="6" largeDeviceSize="4" padding="around-small">
+                            <aura:if isTrue="{!fieldVal.isCustomLabel}">
+                                <label for="{!fieldVal.apiName}">{!fieldVal.description}</label>
+                                <lightning:inputField fieldName="{!fieldVal.apiName}" variant="label-hidden"  disabled="{!fieldVal.required}"/>
+                                <aura:set attribute="else">
+                                    <lightning:inputField fieldName="{!fieldVal.apiName}" variant="label-stack" disabled="{!fieldVal.required}"/>
+                                </aura:set>
+                            </aura:if>
+                        </lightning:layoutItem>
+                        <aura:set attribute="else">
+                            <aura:if isTrue="{!and(fieldVal.fieldType != NULL, fieldVal.fieldType == 'Header')}">
+                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12" padding="around-small">
+                                    <ui:message title="{!fieldVal.helpText}" severity="info" class="slds-text-title_caps slds-align_absolute-center slds-m-top_small slds-text-title_bold" />
+                                </lightning:layoutItem>
+                                <aura:set attribute="else">
+                                    <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="6" largeDeviceSize="12" padding="around-small">
+                                        <lightning:inputField fieldName="{!fieldVal.apiName}"  variant="label-stack" disabled="{!fieldVal.required}"/>
+                                    </lightning:layoutItem>
+                                </aura:set>
+                            </aura:if>
+                        </aura:set>
+                    </aura:if>
+                </aura:iteration>
+                <lightning:input type="checkbox" label="{!$Label.c.Anti_Corruption_Certified}" required="true"/>
+            </lightning:layout>
+           
+            <div class="slds-p-top_x-small"></div>
+            <div class="slds-clearfix">
+                <div class="slds-float_right">
+                    <lightning:button label="{!$Label.c.MM_Back}" title="Back" iconName="utility:back" iconPosition="left" onclick="{!c.backOperation}"/>
+                    <lightning:button variant="brand" type="Submit" iconPosition="right" label="{!$Label.c.PartnerEmpower_Review}" title="Submit Application"/>                
+                </div>
+            </div> 
+        </lightning:recordEditForm>
+    </div>
+</aura:component>

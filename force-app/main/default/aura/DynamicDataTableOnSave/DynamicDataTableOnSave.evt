@@ -1,0 +1,5 @@
+<aura:event type="APPLICATION" description="Event template">
+    <aura:attribute name="editedValues" type="Object"/>
+    <aura:attribute name="paginationListValues" type="List"/>
+    <aura:attribute name="buttonIdentifier" type="String"/>
+</aura:event>

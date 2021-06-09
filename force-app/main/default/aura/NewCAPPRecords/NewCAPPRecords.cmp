@@ -1,0 +1,30 @@
+<aura:component controller="NewCAPPController"  access="global">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="showSpinner" type="Boolean" default="false"/>
+    <aura:attribute name="cappsData" type="List" default="[]"/>
+    <aura:attribute name="finalMap" type="Map"/>
+    <aura:attribute name="value" type="Map"/>
+    <aura:attribute name="key" type="String"/>
+    <aura:attribute name="controllingFieldsMap" type="Map"/>
+    <aura:attribute name="urlTarget" type="String" default="_blank"/>
+    <aura:attribute name="currentRecordId" type="String"/>
+    <aura:attribute name="competitorRecTypeId" type="String" default="" description="Competitor Record Type Id"/>
+    
+    <aura:if isTrue="{!v.showSpinner}">
+        <lightning:spinner variant="brand" alternativeText="Loading"/>
+    </aura:if>
+    <aura:iteration items="{!v.value}" var="grandchildren">
+        <div class="slds-box slds-theme_default slds-m-bottom_small boxCSS">
+            <c:NewCAPPRecordIntermediate value="{!grandchildren.value}"
+                                         cappRecordType="{!v.key}"
+                                         urlTarget="{!v.urlTarget}"
+                                         controllingFieldsMap="{!v.controllingFieldsMap}"
+                                         currentRecordId="{!v.currentRecordId}" 
+                               			 competitorRecTypeId="{!v.competitorRecTypeId}"/>
+        </div>
+    </aura:iteration>
+    <div class="slds-align_absolute-center">
+        <lightning:button variant="Neutral" label="Save" value="{!key}" onclick="{!c.handleSave}" />
+    </div>
+</aura:component>

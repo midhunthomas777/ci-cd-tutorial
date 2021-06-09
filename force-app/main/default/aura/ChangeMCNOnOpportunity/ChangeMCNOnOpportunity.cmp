@@ -1,0 +1,52 @@
+<aura:component controller="DynamicQueryGenerator" implements="lightning:actionOverride,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,lightning:availableForFlowScreens,lightning:availableForFlowActions,force:hasSObjectName" access="global">
+    <aura:html tag="style"> 
+        .slds-modal__container{max-width: 70rem !important;width:90% !important;}
+    </aura:html>    
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="customerAccId" type="String"/>
+    <aura:attribute name="selectedRecId" type="String" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="sObjectName" type="String" />
+    <aura:attribute name="motorolaCustomerNumber" type="String" />
+    <aura:attribute name="changeMCN" type="Boolean" />
+    <aura:attribute name="userTheme" type="String"/>
+    <aura:attribute name="executionOrigin" type="String" default="component"/>
+    <aura:attribute name="andFilters" type="List"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="c:DynamicDataTableEvent" action="{!c.getselectedRecId}"/>    
+    <aura:registerEvent name="NewOpportunityEvent" type="c:NewOpportunityEvent"/>    
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="opportunityRecord" type="Object" default="Opportunity"/>
+    <aura:attribute name="recordError" type="String"/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="true"/>
+    <aura:attribute name="oppoFields" type="List" default="AccountId"/>
+    <aura:attribute name="orFilters" type="List"/><!--SF-2274-->
+    
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="large" aura:id="mySpinner"/>
+    </aura:if>
+    <force:recordData aura:id="recordHandler"
+                      recordId="{!v.recordId}"
+                      layoutType="FULL"
+                      targetRecord="{!v.record}"
+                      targetFields="{!v.opportunityRecord}"
+                      targetError="{!v.recordError}"
+                      fields="Id,CDH_Account__c"
+                      mode="EDIT"
+                      />
+    <aura:if isTrue="{!not(empty(v.recordError))}">
+        <c:AlertMessages Message="{!v.recordError}" type="error"/>
+    </aura:if>
+    <aura:if isTrue="{!not(empty(v.columns))}">
+        <!--SF-2274 Start Added orFilters -->
+        <c:ChildRecordsByParent columns="{!v.columns}" andFilters="{!v.andFilters}" orFilters="{!v.orFilters}" objectName="Account" />
+    </aura:if>
+    
+    <div class='slds-float_right'>
+        <aura:if isTrue="{!and(not(empty(v.selectedRecId)),not(empty(v.recordId)))}">
+            <lightning:Button aura:id="save" variant="brand" label="Save" onclick="{!c.Save}"/>
+        </aura:if>
+        <lightning:Button aura:id="save" variant="brand" label="Cancel" onclick="{!c.cancel}"/>  
+    </div>
+    
+</aura:component>

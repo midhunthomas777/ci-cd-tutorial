@@ -1,0 +1,51 @@
+@font-face {
+    font-family: "UniversLTStd-Cn";
+    src: url("/sfsites/c/resource/partnerCommunityAssets/fonts/UniversLTStd_Cn");
+}
+.THIS .moto-order-header {
+    font-size: t(fontSizeXxLarge);
+    font-family: "UniversLTStd-Cn";
+}
+.THIS .moto-order-title{
+    font-family: t(vestaFontFamily);
+    font-size: t(fontSizeXLarge);
+}
+
+.THIS .moto-track-button {
+    border-radius: t(borderRadiusXLarge);
+    height:t(squareIconMediumBoundaryAlt);
+    background-color: #232323;
+    color: #FFFFFF;
+    font-size: t(fontSizeSmall);
+    padding-left: t(spacingLarge);
+    padding-right: t(spacingLarge);
+}   
+.THIS .moto-input-search .slds-input{
+    border-radius: t(borderRadiusXLarge);
+    box-shadow: 0 10px 20px 0 rgba(35, 35, 35, 0.16);
+    height: 42px;
+}
+/* input */
+.THIS .moto-input-item input, .THIS .moto-select-item select{
+    color: #767676;
+    border-color: #e5e5e5;
+    border-radius: 0;
+    height:t(buttonSizeLarge);
+    font-size: t(fontSizeMedium);
+}
+.THIS .moto-input-item label, .THIS .moto-select-item label{
+    color: #343434;
+    font-weight: t(fontWeightRegular);
+    font-size: t(fontSizeSmall);
+    margin-bottom: t(spacingXSmall);
+}
+
+@media(max-width: 1023px) {
+    .THIS .moto-order-title{
+        margin-top: t(spacingLarge);
+    }
+}
+
+.THIS.slds-spinner_container {
+    z-index: 7000;
+}

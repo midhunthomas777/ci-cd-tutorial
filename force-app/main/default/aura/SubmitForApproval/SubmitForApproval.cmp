@@ -1,0 +1,37 @@
+<!-- Developed as part of SF-1954 - APAC Communities: APAC Deal Registration - Displaying Message for Submitted Opportunity -->
+<aura:component implements="lightning:actionOverride,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,lightning:availableForFlowScreens,lightning:availableForFlowActions" access="global">
+    <aura:attribute name="recId" type="Id" />
+    <aura:attribute name="recordTypeId" type="String" />
+    <aura:attribute name="oppStatus" type="String" />
+    <aura:attribute name="region" type="String" />
+    <aura:attribute name="functionality" type="String" />
+ <!--	<aura:attribute name="functionality" type="String" /> -->
+    <aura:attribute name="Status" type="String" />     
+    <aura:attribute name="Opprecord" type="Object" description="The record object to be displayed" />
+    <aura:attribute name="OppFields" type="Object" description="A simplified view record object to be displayed" />
+    <aura:attribute name="recordError" type="String" description="An error message bound to force:recordData" />
+    
+    <aura:handler event="c:GenericApprovalSubmissionEvent" action="{!c.handleApproval}"/>
+
+    <force:recordData aura:id="records" recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.Opprecord}" 
+                      targetFields="{!v.OppFields}"
+                      fields="Region__c,RecordTypeId,Approval_Status__c"
+                      recordUpdated="{!c.handleRecordUpdated}" />
+    <aura:html tag="style">
+        .slds-backdrop {
+        background: rgba(43, 40, 38, 0) !important;  
+        }
+        .slds-fade-in-open {
+        display:none !important;
+        }
+    </aura:html>
+    <aura:if isTrue="{!and(not(empty(v.functionality)),v.oppStatus != 'Approved')}">
+         <c:GenericApprovalSubmission recId = "{!v.recordId}" recordTypeId = "{!v.OppFields.RecordTypeId}"
+                                             region = "{!v.OppFields.Region__c}" functionality = "{!v.functionality}"  />
+    </aura:if>
+    <aura:if isTrue="{!not(empty(v.recordError))}">
+        <div class="recordError">{!v.recordError}</div>
+    </aura:if>
+</aura:component>

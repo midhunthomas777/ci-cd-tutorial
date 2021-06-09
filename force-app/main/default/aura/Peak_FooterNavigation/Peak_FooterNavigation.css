@@ -1,0 +1,29 @@
+/**
+ * Expedition_Pack - Front-end assets used for the 7Summits Expedition Pack
+ * @version 1.0.0
+ * @author 7Summits
+ *
+ * COMPILED FILE DO NOT DIRECTLY EDIT
+ */
+.THIS {
+  font-style: italic;
+  color: #fff;
+  background: token(brandColor);
+}
+.THIS .slds-p-vertical_large {
+  margin-bottom: 0;
+}
+.THIS a:link,
+.THIS a:visited {
+  font-weight: bold;
+  color: #fff;
+}
+.THIS a:hover,
+.THIS a:active {
+  color: #fff;
+}
+@media screen and (max-width: 767px) {
+  .THIS a {
+    font-size: 0.85rem;
+  }
+}

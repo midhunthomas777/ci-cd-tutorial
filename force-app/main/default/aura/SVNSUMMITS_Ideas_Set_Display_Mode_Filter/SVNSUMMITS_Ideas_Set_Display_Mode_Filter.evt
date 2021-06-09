@@ -1,0 +1,11 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<aura:event description="SVNSUMMITS_Ideas_Set_Display_Mode_Filter"
+            type="APPLICATION"
+            access="global">
+
+	<!-- IDENTIFY THE RELATED LIST -->
+	<aura:attribute name="listId"       type="String"/>
+	<aura:attribute name="displayMode"  type="String"/>
+</aura:event>

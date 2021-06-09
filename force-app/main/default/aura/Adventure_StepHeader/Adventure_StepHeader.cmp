@@ -1,0 +1,42 @@
+<!--
+ - Copyright (c) 2018. 7Summits Inc.
+ - Created by 7Summits - Joe Callin on 8/14/18.
+-->
+<aura:component description="Adventure_StepHeader" access="global" extends="c:Adventure_Peak_Base">
+
+    <aura:attribute name="lastStep" type="Boolean"/>
+    <aura:attribute name="step" type="Object"/>
+
+    <aura:attribute name="customClass" type="String" default=""/>
+    <aura:attribute name="customId" type="String" default="testId"/>
+    <aura:attribute name="adventureStepTextColor" type="String"/>
+
+
+
+    <aura:registerEvent name="renderEvent" type="c:Adventure_RenderEvent"/>
+
+    <section class="{!'peak-component slds-is-relative ' + v.customClass}" id="{!v.customId}">
+        <!--<aura:if isTrue="{!v.isInit}">-->
+            <div aura:id="testId">
+                <lightning:layout>
+                    <lightning:layoutItem size="12">
+                        <lightning:layout>
+                            <lightning:layoutItem class="stepModuleTitle" size="">
+                                <lightning:layout>
+                                    <lightning:layoutItem padding="" class="">
+                                        <h2 class="slds-text-heading_medium slds-p-top_medium slds-p-bottom_x-small slds-p-horizontal_small" style="{!'color:' + v.adventureStepTextColor +';'}"> {!v.step.title} </h2>
+                                    </lightning:layoutItem>
+                                </lightning:layout>
+                                <lightning:layout>
+                                    <lightning:layoutItem padding="" class="">
+                                        <h2 class="slds-text-heading_small slds-p-top_x-small slds-p-bottom_small slds-p-horizontal_small " style="{!'color:' + v.adventureStepTextColor +';'}"> {!v.step.subtitle} </h2>
+                                    </lightning:layoutItem>
+                                </lightning:layout>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </div>
+        <!--</aura:if>-->
+    </section>
+</aura:component>

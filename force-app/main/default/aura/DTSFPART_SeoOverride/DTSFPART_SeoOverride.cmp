@@ -1,0 +1,3 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes">
+    <c:siteNameSeoOverride onoverrideseo="{!c.overrideSeo}" />
+</aura:component>

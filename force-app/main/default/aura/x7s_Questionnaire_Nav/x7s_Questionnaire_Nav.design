@@ -1,0 +1,22 @@
+<design:component label="Questionnaire Navigation">
+   <design:attribute name="scriptText" label="Question" 
+      description="Question in the questionnaire" />
+
+   <design:attribute name="guidanceText" label="Guidance Text" 
+      description="Script text for internal agent to say to the user" />    
+    
+    <design:attribute name="showGuidanceText" label="Show Guidance Text" description="Show guidance text to an internal user"/>
+    
+   <design:attribute name="answer1" label="Answer 1" />
+   <design:attribute name="answer2" label="Answer 2" />
+   <design:attribute name="answer3" label="Answer 3" />
+   <design:attribute name="answer4" label="Answer 4" />
+
+   <design:attribute name="selectedValue" label="Selected Value" description="Value selected by the user"/> 
+
+   <design:attribute name="answer3Populated" label="Answer 3 Populated" />
+   <design:attribute name="answer4Populated" label="Answer 4 Populated" />
+
+   <design:attribute name="slds_icon" label="SLDS Icon" description="SLDS Icon to use"/> 
+    
+</design:component>

@@ -1,0 +1,41 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionwithoutheader" access="global" >
+    <aura:attribute name="accountId" type="String" />
+    <aura:attribute name="accountRecType" type="String" />
+    <aura:attribute name="partnerId" type="String" />
+    <aura:attribute name="mcnId" type="String" />
+    <aura:attribute name="calculatorRecordProcessing" type="Boolean" default="false" />
+    <aura:attribute name="accountDetails" type="List"/>
+    <aura:attribute name="motorolaCustomerNumber" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="mcnrecord" type="Object"
+                    description="The record object to be displayed"/>
+    <aura:attribute name="mcnRecordFields" type="Object"
+                    description="A simplified view record object to be displayed"/>
+    <aura:attribute name="recordError" type="String"
+                    description="An error message bound to force:recordData"/>
+   <aura:html tag="style">  
+        .slds-modal__container{max-width: 70rem !important;width:90% !important;}
+    </aura:html>
+     
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}" 
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.mcnrecord}"
+                      targetFields="{!v.mcnRecordFields}" fields="Id, Motorola_Customer_Number__c,ParentId,Assigned_MR__c" 
+                      mode="VIEW"
+                      recordUpdated="{!c.recordUpdated}"/>
+    <aura:If isTrue="{!v.calculatorRecordProcessing}">
+        <span/>
+        <div>
+            <lightning:spinner variant="brand" aura:id="mySpinner" alternativeText="loading.." />
+        </div>
+    </aura:If>
+    <aura:if isTrue="{!not(empty(v.mcnRecordFields.Motorola_Customer_Number__c))}" > 
+        <div class="slds-align_absolute-center slds-border_bottom ">
+            <h2 id="header43" class="slds-text-heading--medium"> <b>Commission Calculation</b></h2><br/>
+        <br/><br/></div> 
+        
+        <c:MRCommissionCalcDetails aura:id="calculationDetail" motorolaCustomerNumber="{!v.mcnRecordFields.Motorola_Customer_Number__c}" accountId="{!v.mcnRecordFields.ParentId}" mcnId="{!v.recordId}" accountRecType="SoldToAccount" partnerId="{!v.mcnRecordFields.Assigned_MR__c}" />
+    </aura:if>
+</aura:component>

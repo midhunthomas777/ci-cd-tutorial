@@ -1,0 +1,6 @@
+<!--
+ - Created by francois korb on 3/20/18.
+ -->
+
+<aura:event type="APPLICATION" description="Match_Base_Event">
+</aura:event>

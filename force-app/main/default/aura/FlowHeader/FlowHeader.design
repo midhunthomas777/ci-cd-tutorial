@@ -1,0 +1,5 @@
+<design:component>
+    <design:attribute name="iconName" label="Icon Name" />
+    <design:attribute name="heading" label ="Heading"/>
+    <design:attribute name="helpText" label ="Help Text"/>
+</design:component>

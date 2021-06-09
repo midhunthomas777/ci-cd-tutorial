@@ -1,0 +1,103 @@
+<!--
+ * Copyright (c) 2019. 7Summits Inc.
+-->
+<aura:component access="global" >
+    <!--  attributes  -->
+    <aura:attribute name="title" type="String"  access="global" />
+    <aura:attribute name="titleAlignment" type="String"  access="global" />
+    <aura:attribute name="titleSize" type="String" access="global" />
+    
+    <aura:attribute name="metricValue" type="String"  access="global" />
+    <aura:attribute name="metricValueType" type="String"  access="global" />
+    <aura:attribute name="metricLabel" type="String"  access="global" />
+    
+    <aura:attribute name="iconName" type="String"  access="global" />
+    <aura:attribute name="iconHoverText" type="String"  access="global" />
+    <aura:attribute name="iconColor" type="String"  access="global" />
+    <aura:attribute name="iconVariant" type="String"  access="global" default="Default"/>
+    
+    <aura:attribute name="showLeftButton" type="Boolean" default="false" access="global" />
+    <aura:attribute name="labelForLeftButton" type="String"  access="global" />
+    <aura:attribute name="urlForLeftButton" type="String"  access="global" />
+    
+    <aura:attribute name="showRightButton" type="Boolean" default="false" access="global" />
+    <aura:attribute name="labelForRightButton" type="String"  access="global" />
+    <aura:attribute name="urlForRightButton" type="String"  access="global" />
+    
+    <!-- <aura:attribute name="styleValue" type="String"  access="global" /> -->
+    <aura:attribute name="isBold" type="Boolean"  access="global" />
+    
+    <aura:attribute name="isUtility" type="Boolean"  access="global" default="false"/>
+    <aura:attribute name="category" default="" type="String" />
+    <aura:attribute name="icon" default="" type="String" />
+    <!--  End of  attributes  -->
+    <!-- handlers  -->
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    
+    <lightning:layoutItem flexibility="auto" padding="around-small">
+        <div class=" slds-card" >
+            <aura:if isTrue="{!and(v.title != '',v.title != null)}" >
+                <lightning:layout  class=" slds-truncate">
+                    <lightning:layoutItem  flexibility="auto" class="slds-p-top_small slds-p-horizontal_small">
+                        <c:x7sMetricTitleHeading  tag="h2" size="{!v.titleSize}" align="{!v.titleAlignment}">
+                            <lightning:formattedText class="{!'slds-text-heading--'+v.titleSize}" size="{!v.titleSize}"
+                                                     value="{!v.title}"/>
+                        </c:x7sMetricTitleHeading>
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </aura:if>
+            
+            <!-- Metric Body  -->
+            <lightning:layout>
+                <lightning:layoutItem flexibility="auto" padding="around-small" class="slds-truncate">
+                    <div class="page-section page-main ">
+                        <div class="slds-text-heading_large slds-text-align_left " aura:id="changeIt">
+                            <aura:if isTrue="{!((v.metricValueType == 'currency') || (v.metricValueType == 'percent'))}" >
+                                <lightning:formattedNumber value="{!v.metricValue}" style="{!v.metricValueType}" />
+                                
+                                <aura:set attribute="else">
+                                    <p> {!v.metricValue} </p>
+                                </aura:set>
+                            </aura:if>
+                        </div>
+                        <p><lightning:formattedText value="{!v.metricLabel}" /></p>
+                    </div>
+                </lightning:layoutItem>
+                
+                <lightning:layoutItem  padding="around-small" alignmentBump="left" class="slds-align_absolute-center">
+                    <aura:if isTrue="{!v.isUtility}">
+                        <c:x7sMetricSvgIcon svgPath="{!'/_slds/icons/'+v.category+'-sprite/svg/symbols.svg#'+v.icon}" category="{!v.category}" 
+                                            size="medium" name="{!v.icon}" color="{!v.iconColor}"/>
+                        
+                        <aura:set attribute="else">
+                            <lightning:icon class="" aura:id="icon" style="{!'background-color: '+v.iconColor}" 
+                                            iconName="{!v.iconName}" title="{!v.iconHoverText}" size="medium" variant="{!v.iconVariant}"/>
+                        </aura:set>
+                    </aura:if>
+                </lightning:layoutItem>
+            </lightning:layout>
+            
+            <!-- Footer  -->
+            <aura:if isTrue="{! or(( v.showLeftButton), ( v.showRightButton))}">
+                <lightning:layout class="metric-card__footer">
+                    <lightning:layoutItem padding="horizontal-small">
+                        <ul class="slds-list_horizontal slds-has-dividers_left slds-has-block-links">
+                            <aura:if isTrue="{!(v.showLeftButton)}" >
+                                <li class="slds-item">
+                                    <lightning:button label="{!v.labelForLeftButton}" value="{!v.urlForLeftButton}" onclick="{!c.navigateToUrl}" variant="base "/>
+                                </li>
+                            </aura:if>
+                            
+                            <aura:if isTrue="{!(v.showRightButton)}" >
+                                <li class="slds-item">
+                                    <lightning:button label="{!v.labelForRightButton}" value="{!v.urlForRightButton}" onclick="{!c.navigateToUrl}" variant="base " />
+                                </li>
+                            </aura:if>
+                        </ul>
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </aura:if>
+        </div>
+    </lightning:layoutItem>
+    
+</aura:component>

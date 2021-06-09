@@ -1,0 +1,39 @@
+<!--
+ * Copyright (c) 2019. 7Summits Inc.
+-->
+<design:component label="7S Map List">
+    <design:attribute name="mapTitle" label="Map Title" description="Title to be displayed for the map. If blank, no title will be displayed."  default="Map Locations"/>
+    <design:attribute name="showMapTitle" label="Show Map Title"  description="Select to display the map title."/>
+    <design:attribute name="openRecordInNewTab" label="Open Record In New Tab"  description="Select to open record in new tab."/>
+    <design:attribute name="titleAlignment"  label="Map Title Alignment" datasource="Left,Center,Right" default="Center" description="Alignment for the title. Options are Left, Center or Right."/>
+    <design:attribute name="titleSize"  label="Title Size" datasource="Small,Medium,Large" default="Medium" description="Select small, medium or large for the size of title text."/>
+    <design:attribute name="markersTitle" label="List Title" description="Title for the list of markers. If empty, a title will not display.  Note:  The count of results will always display."/>
+    <design:attribute name="zoomLevel" label="Zoom Level" description="Enter the default zoom level for the map."/>
+    <design:attribute name="iconname" label="Icon Name" description="Specify an icon to display next to the location in the list.  If empty, no icon will display."/>
+    <design:attribute name="showFooter" label="Show Footer" description="Shows footer with 'Open in Google Maps' link that opens an external window to display the selected marker location in Google Maps."/>
+    <design:attribute name="showListView" label="Show List" description="Select to display the list of locations next to the map."/>
+    <design:attribute name="objectName" label="Object/Child Object API Name" description="Object name to query for map locations."/>
+    <design:attribute name="parentApi" label="Relationship Field API Name"  description="Specify the lookup field (relationship API Name) from the child to the parent object to filter. If empty, there is no reference to a parent record. For example, contacts (child) for an account (parent)."/>
+    <design:attribute name="locationNameAPI" label="Location Name API"  description="API for the location name. If not specified, a Name will not be shown." default="Name"/>
+    <design:attribute name="streetApi" label="Street API Name" description="API Name mapping when used on a record page."/>    
+    <design:attribute name="cityApi" label="City API Name" description="API Name mapping when used on a record page."/>
+    <design:attribute name="stateApi" label="State API Name" description="API Name mapping when used on a record page." />
+    <design:attribute name="postalApi" label="Postal/Zip Code API Name" description="API Name mapping when used on a record page." />
+    <design:attribute name="countryApi" label="Country API Name" description="API Name mapping when used on a record page." /> 
+    <design:attribute name="geoLocation" label="Geolocation"  description="API Name mapping for the geolocation compound field when used on a record page.  For example, ‘BillingAddress’."/>
+    <design:attribute name="limit" label="Record Limit"  description="Enter to limit the number of records displayed in the list."/>
+    <design:attribute name="sortByField" label="Sort By" datasource="Name,Distance" description="Select how the list should be sorted. Options are Distance or Name."/>
+    <design:attribute name="sortPreference" label="Distance Sort Priority" datasource="User Location,Contact Location,Default Sort Location" default="User Location" description="Specify which location takes priority when sorting the list by distance.Sort preference is considered if the Sort By is distance"/>
+    <design:attribute name="sortLocationName" label="Distance Sort Location Name" description="When list is sorted by distance, and the default sort location is used, this location will be displayed to the user." />
+    <design:attribute name="userlatitude" label="Distance Sort Latitude" description="Specify the latitude for the location to calculate distance from.  If blank, location from the active user will be used." />
+    <design:attribute name="userlongitude" label="Distance Sort Longitude" description="Specify the longitude for the location to calculate distance from.  If blank, location from the active user will be used. "/>
+    <design:attribute name="ascending" label="Sort Ascending" description="Select to sort."/>
+    <design:attribute name="filterFieldName" label="Filter by Field API Name" description="Specify the field to filter the list of locations by."/>
+    <design:attribute name="filterFieldValue" label="Filter by Values" description="Enter comma-separated list of filter values or {userId} for logged in user."/>
+    
+    <design:attribute name="errorIcon" label="Error Icon Name" description="Icon value to be displayed for error message."/>
+    <design:attribute name="noRecordsValue" label="Message For No Records" description="Error message to be displayed when there are no Records/Child records."/>
+    <design:attribute name="noAddressValue" label="Message For Invalid Address" description="Error message to be displayed when there is invalid address."/>
+    <design:attribute name="fielderrorValue" label="Message For Invalid Field Name" description="Error message to be displayed when invalid field api name is entered."/>
+    
+</design:component>

@@ -1,0 +1,14 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="desimUrl" type="String"></aura:attribute>
+    <aura:attribute name="businessonlineUrl" type="String"></aura:attribute>
+
+    <div class="slds-text-align_right">
+        <c:roundedButton label="{!$Label.c.PP_Buttons_NewWarrantyClaim}" iconName="utility:add" onclick="{!c.handleButton}"/>
+    </div>
+
+    <c:warrantyClaimsRefresh aura:id="refresh"></c:warrantyClaimsRefresh>
+
+    <c:communitySettingsHelper onready="{!c.settingsReady}"></c:communitySettingsHelper>
+    <c:tealiumTrigger aura:id="tealium-trigger" />
+        
+   </aura:component>

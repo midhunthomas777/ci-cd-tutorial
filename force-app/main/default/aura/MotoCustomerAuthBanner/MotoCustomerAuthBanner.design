@@ -1,0 +1,3 @@
+<design:component >
+    <design:attribute name="bgImage" label="Background Image" description="URL to the background image file." />
+</design:component>

@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION" description="This event is created for reload 
+                                            E-Invoice Tracking Data on click 
+                                            of Tab" >
+</aura:event>

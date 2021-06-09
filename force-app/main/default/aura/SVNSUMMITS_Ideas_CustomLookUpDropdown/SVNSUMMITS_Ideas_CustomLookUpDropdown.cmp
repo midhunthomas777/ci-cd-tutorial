@@ -1,0 +1,27 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+
+<aura:component description="SVNSUMMITS_Ideas_CustomLookUpDropdown">
+
+    <!-- Internal Attributes -->
+    <aura:attribute name="oRecord" type="Object" />
+    <aura:attribute name="selectedRecord" type="String" />
+    <aura:attribute name="objectType" type="String"/>
+
+    <!--Register the application level event-->
+    <aura:registerEvent name="oSelectedRecordEvent" type="c:SVNSUMMITS_Ideas_CustomLookSelectedRec"/>
+
+    <!-- Dropdown Body Starts Here -->
+    <li role="presentation" class="slds-listbox__item" onclick="{!c.selectRecord}">
+        <span id="listbox-options" role="option"
+              class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta">
+            <span class="slds-media__body">
+                <span class="{! (v.objectType=='User') ?'':'slds-hide'}">
+                    <span class="slds-listbox__option-text slds-listbox__option-text_entity">{!v.oRecord.FirstName}&nbsp;{!v.oRecord.LastName}</span>
+                </span>
+            </span>
+        </span>
+    </li>
+
+</aura:component>

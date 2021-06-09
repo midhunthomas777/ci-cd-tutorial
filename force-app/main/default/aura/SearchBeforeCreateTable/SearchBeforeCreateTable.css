@@ -1,0 +1,42 @@
+.THIS .clickHereText{
+    padding:0.2rem;
+    cursor:pointer;
+    color:white; background-color:#0070d2;
+    font-weight: bold; font-family: sans-serif;
+    font-variant-caps: small-caps;
+}
+.THIS .Customer { 
+    background-image: url("/resource/SBC_Green_Customer");
+    background-repeat: no-repeat;
+    background-position: left center;
+    
+}
+.THIS .Prospect {
+    background-image: url("/resource/SBC_Red_Prospect");
+    background-repeat: no-repeat;
+    background-position: left center;
+    
+}
+.THIS .Type {
+    background-image: url("/resource/SBC_Blue_DnB");
+    background-repeat: no-repeat;
+    background-position: left center;
+}
+.THIS .Procurement {
+    background-image: url("/resource/SBC_Gray_Procurement");
+    background-repeat: no-repeat;
+    background-position: left center;
+}
+.THIS .Exact {
+    padding-left: 30px;
+}
+.THIS .Fuzzy {
+    padding-left: 30px;
+    
+}
+.THIS .DnB {
+    padding-left: 30px;
+}
+.THIS h4{font-size: 12px;font-weight: bold;}
+.THIS .highlight{font-size: 18px;font-weight: bold; color:black; border:}
+.THIS .pull-right { float:right;font-size: 12px;font-weight: bold; }

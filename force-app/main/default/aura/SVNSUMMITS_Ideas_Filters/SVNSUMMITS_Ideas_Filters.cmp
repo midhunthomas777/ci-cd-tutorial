@@ -1,0 +1,179 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<aura:component access="global" controller="SVNSUMMITS_IdeaFiltersController">
+
+    <aura:attribute name="debugMode" type="Boolean" default="false" access="global"/>
+
+    <aura:attribute name="listId" type="String" default="List1" access="global"/>
+    <aura:attribute name="showCategoryFilter" type="Boolean" default="true"/>
+    <aura:attribute name="showTopicFilter" type="Boolean" default="true"/>
+    <aura:attribute name="showStatusFilter" type="Boolean" default="true"/>
+    <aura:attribute name="showThemesFilter" type="Boolean" default="true"/>
+    <aura:attribute name="showViewSelector" type="Boolean" default="true"/>
+    <aura:attribute name="showSortByFilter" type="Boolean" default="true"/>
+    <aura:attribute name="superUser" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="filterValue" type="String"  access="global"/>
+
+    <!-- Ideas Own Filters -->
+    <aura:attribute name="showMyIdeas" type="Boolean" default="true"/>
+    <aura:attribute name="showVoteByMeFilter" type="Boolean" default="true"/>
+    <aura:attribute name="showIdeasCommentedByMeFilter" type="Boolean" default="true"/>
+    <aura:attribute name="showIdeasSubscribedByMeFilter" type="Boolean" default="true"/>
+    <aura:attribute name="multipleFiltersActive" type="Boolean" default="false"/>
+    <aura:attribute name="requireSelectionIdeasFilter" type="Boolean" default="false" access="global"/>
+
+    <!-- Account Filters -->
+    <aura:attribute name="myCompaniesIdeas" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="myCompaniesVotedIdeas" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="myCompaniesCommentedIdeas" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="myCompaniesSubscribedIdeas" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="multipleAccountFiltersActive" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="requireSelectionAccountIdeasFilter" type="Boolean" default="false" access="global"/>
+
+    <!-- Label Attributes-->
+    <aura:attribute name="myIdeasLabel" type="String" default="{!$Label.c.ss_idea_label_myIdeas}"/>
+    <aura:attribute name="myAccountIdeasLabel" type="String" default="{!$Label.c.ss_idea_label_myCompanyIdeas}"/>
+    
+    
+    <aura:attribute name='CatValue' type="String" default=""/>
+    <aura:attribute name='StatusValue' type="String" default=""/>
+    <aura:attribute name='TopicValue' type='String' default=""/>
+
+    <!-- Register Event -->
+    <aura:registerEvent name="appEvent"     type="c:SVNSUMMITS_Ideas_Filters_Event"/>
+    
+    <!-- Init Handler -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+
+    <lightning:layout multipleRows="true"
+                      verticalAlign="end"
+                      class="slds-p-around--small">
+
+        <aura:if isTrue="{!and(v.showMyIdeas, not(v.multipleFiltersActive))}">
+            <lightning:layoutItem flexibility="auto,no-grow" padding="around-small" class="mobile-full-width">
+                <c:SVNSUMMITS_Ideas_Filter_MyIdeas debugMode="{!v.debugMode}"
+                                                   listId="{!v.listId}"/>
+            </lightning:layoutItem>
+        </aura:if>
+
+        <aura:if isTrue="{!v.showTopicFilter}">
+            <lightning:layoutItem flexibility="auto" padding="around-small" class="mobile-full-width">
+                <c:SVNSUMMITS_Ideas_Filter_Topics debugMode="{!v.debugMode}"
+                                                  listId="{!v.listId}"
+                                                  TopicValue='{!v.TopicValue}'/>
+            </lightning:layoutItem>
+        </aura:if>
+
+        <aura:if isTrue="{!v.showCategoryFilter}">
+            <lightning:layoutItem flexibility="auto" padding="around-small" class="mobile-full-width">
+                <c:SVNSUMMITS_Ideas_Filter_Category debugMode="{!v.debugMode}"
+                                                    listId="{!v.listId}"
+                                                    CatValue='{!v.CatValue}'/>
+            </lightning:layoutItem>
+        </aura:if>
+
+        <aura:if isTrue="{!v.showStatusFilter}">
+            <lightning:layoutItem flexibility="auto" padding="around-small" class="mobile-full-width">
+                <c:SVNSUMMITS_Ideas_Filter_Stages debugMode="{!v.debugMode}"
+                                                  listId="{!v.listId}"
+                                                  StatusValue="{!v.StatusValue}"/>
+            </lightning:layoutItem>
+        </aura:if>
+
+        <aura:if isTrue="{!v.showThemesFilter}">
+            <lightning:layoutItem flexibility="auto" padding="around-small" class="mobile-full-width">
+                <c:SVNSUMMITS_Ideas_Filter_Themes debugMode="{!v.debugMode}"
+                                                  listId="{!v.listId}"/>
+            </lightning:layoutItem>
+        </aura:if>
+
+        <aura:if isTrue="{!v.showViewSelector}">
+            <lightning:layoutItem flexibility="auto,no-grow" padding="around-small" class="mobile-full-width">
+                <c:SVNSUMMITS_Ideas_Filter_ListGrid debugMode="{!v.debugMode}"
+                                                    listId="{!v.listId}"/>
+            </lightning:layoutItem>
+        </aura:if>
+
+        <aura:if isTrue="{!v.showSortByFilter}">
+            <lightning:layoutItem flexibility="auto" padding="around-small" class="mobile-full-width">
+                <c:SVNSUMMITS_Ideas_Filter_Sort debugMode="{!v.debugMode}"
+                                                listId="{!v.listId}"/>
+            </lightning:layoutItem>
+        </aura:if>
+
+        <aura:if isTrue="{!and(v.showVoteByMeFilter, not(v.multipleFiltersActive))}">
+            <lightning:layoutItem flexibility="auto" padding="around-small" class="mobile-full-width">
+                <c:SVNSUMMITS_Ideas_Filter_IdeasVotedOn debugMode="{!v.debugMode}"
+                                                        listId="{!v.listId}"/>
+            </lightning:layoutItem>
+        </aura:if>
+
+        <aura:if isTrue="{!and(v.showIdeasCommentedByMeFilter, not(v.multipleFiltersActive))}">
+            <lightning:layoutItem flexibility="auto" padding="around-small" class="mobile-full-width">
+                <c:SVNSUMMITS_Ideas_Filter_IdeasCommentedOn debugMode="{!v.debugMode}"
+                                                            listId="{!v.listId}"/>
+            </lightning:layoutItem>
+        </aura:if>
+
+        <aura:if isTrue="{!and(v.showIdeasSubscribedByMeFilter, not(v.multipleFiltersActive))}">
+            <lightning:layoutItem flexibility="auto" padding="around-small" class="mobile-full-width">
+                <c:SVNSUMMITS_Ideas_Filter_IdeasSubscribed debugMode="{!v.debugMode}"
+                                                           listId="{!v.listId}"/>
+            </lightning:layoutItem>
+        </aura:if>
+
+        <aura:if isTrue="{!or(and(v.multipleFiltersActive, v.showMyIdeas), and(v.multipleFiltersActive,and(v.myCompaniesIdeas, v.superUser)))}">
+            <lightning:layoutItem flexibility="auto" padding="around-small" class="mobile-full-width">
+                <c:SVNSUMMITS_Ideas_Filter_IdeasMultiFilter debugMode="{!v.debugMode}"
+                                                            listId="{!v.listId}"
+                                                            requireSelectionIdeasFilter="{!v.requireSelectionIdeasFilter}"
+                                                            showMyIdeas="{!v.showMyIdeas}"
+                                                            showVoteByMeFilter="{!v.showVoteByMeFilter}"
+                                                            superUser="{!v.superUser}"
+                                                            showIdeasCommentedByMeFilter="{!v.showIdeasCommentedByMeFilter}"
+                                                            showIdeasSubscribedByMeFilter="{!v.showIdeasSubscribedByMeFilter}"
+                                                            myCompaniesIdeas="{!v.myCompaniesIdeas}"
+                                                            myCompaniesVotedIdeas="{!v.myCompaniesVotedIdeas}"
+                                                            myCompaniesCommentedIdeas="{!v.myCompaniesCommentedIdeas}" 
+                                                            myCompaniesSubscribedIdeas="{!v.myCompaniesSubscribedIdeas}"
+                                                            filterValue="{!v.filterValue}"
+                />
+            </lightning:layoutItem>
+        </aura:if>
+
+        <aura:if isTrue="{!v.superUser}">
+
+            <aura:if isTrue="{!and(v.myCompaniesIdeas, not(v.multipleFiltersActive))}">
+                <lightning:layoutItem flexibility="auto" padding="around-small" class="mobile-full-width">
+                    <c:SVNSUMMITS_Ideas_Filter_MyAccount debugMode="{!v.debugMode}"
+                                                         listId="{!v.listId}"/>
+                </lightning:layoutItem>
+            </aura:if>
+
+
+            <aura:if isTrue="{!and(v.myCompaniesVotedIdeas, not(v.multipleFiltersActive))}">
+                <lightning:layoutItem flexibility="auto" padding="around-small" class="mobile-full-width">
+                    <c:SVNSUMMITS_Ideas_Filter_MyAccountVotedOn debugMode="{!v.debugMode}"
+                                                                listId="{!v.listId}"/>
+                </lightning:layoutItem>
+            </aura:if>
+
+            <aura:if isTrue="{!and(v.myCompaniesCommentedIdeas, not(v.multipleFiltersActive))}">
+                <lightning:layoutItem flexibility="auto" padding="around-small" class="mobile-full-width">
+                    <c:SVNSUMMITS_Ideas_Filter_MyAccountComnted debugMode="{!v.debugMode}"
+                                                                listId="{!v.listId}"/>
+                </lightning:layoutItem>
+            </aura:if>
+
+            <aura:if isTrue="{!and(v.myCompaniesSubscribedIdeas, not(v.multipleFiltersActive))}">
+                <lightning:layoutItem flexibility="auto" padding="around-small" class="mobile-full-width">
+                    <c:SVNSUMMITS_Ideas_Filter_MyAccountSubsrbd debugMode="{!v.debugMode}"
+                                                                listId="{!v.listId}"/>
+                </lightning:layoutItem>
+            </aura:if>
+        </aura:if>
+
+    </lightning:layout>
+</aura:component>

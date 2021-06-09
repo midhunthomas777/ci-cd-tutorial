@@ -1,0 +1,38 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<!--
+ - Created by francoiskorb on 9/21/16.
+ -->
+
+<aura:component description="SVNSUMMITS_Ideas_Filter_Category"
+                controller="SVNSUMMITS_IdeaFiltersController"
+                extends="c:SVNSUMMITS_Ideas_Base"
+                access="global">
+
+	<!-- Base -->
+	<aura:attribute name="baseModel"        type="String" access="global"/>
+
+    <aura:attribute name="debugMode"        type="Boolean"  default="false" access="global" />
+	<aura:attribute name="listId"           type="String"   default="List1" access="global"/>
+	<aura:attribute name='CatValue'         type='String'   default=''/>
+    <aura:attribute name="labelFilter"      type="String"   default="{!$Label.c.ss_idea_label_Categories}" access="global"/>
+    <aura:attribute name="categoriesSet"    type="Map"      access="global" />
+	<aura:attribute name="categorySelect"   type="String"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.initializeFilters}" />
+
+	<lightning:select label="{!v.labelFilter}"
+					  onchange="{!c.filterByCategories}"
+					  value="{!v.categorySelect}"
+					  name="selectCategory"
+					  variant="label-hidden">
+
+		<option value="{!v.labelFilter}">{!v.labelFilter}</option>
+
+		<aura:iteration items="{!v.categoriesSet}" var="category">
+			<option value="{!category}" label="{!category}">{!category}</option>
+		</aura:iteration>
+
+	</lightning:select>
+</aura:component>

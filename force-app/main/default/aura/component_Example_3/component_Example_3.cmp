@@ -1,0 +1,8 @@
+<aura:component >
+	<div>
+    
+        Institute:  Capital Info Group <BR/>
+        Location : Hyf <BR/>
+        Course : SFDC <BR/>
+    </div>
+</aura:component>

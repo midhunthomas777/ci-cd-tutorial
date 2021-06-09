@@ -1,0 +1,108 @@
+<aura:component controller="DTSFPART_CommonComponentsController" implements="forceCommunity:availableForAllPageTypes">
+    <aura:attribute name="navigationLinks"      type="Map" />
+    <aura:attribute name="mulesoftCredentials"  type="String" default="Mulesoft_OAuth" />
+    <aura:attribute name="cartCookieName"       type="String" default="occ-shopping-cart" />
+    <aura:attribute name="cartCookieValue"      type="String" />
+    <aura:attribute name="communityUrl"         type="String" default="" />
+    <aura:attribute name="mode"                 type="String" default="" />
+    <aura:attribute name="search"       type="Aura.Component[]" required="false"/>
+    <aura:attribute name="profileMenu"  type="Aura.Component[]" required="false"/>
+    <aura:attribute name="scripts"      type="Aura.Component[]" required="false"/>
+
+    <aura:method name="setMulesoftCredentials" action="{!c.setMulesoftCredentials}">
+        <aura:attribute name="mulesoftCredentials" type="String" default="" /> 
+    </aura:method>    
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <ltng:require styles="{!$Resource.DTSFPART_PartnerCommunityHeader + '/header.css'}" />
+
+    {!v.scripts}
+     
+    <!--
+        <div class="header-skip-ribbon">
+            Skip to : <a href="#" class="header-skip-link">Primary Navigation</a>
+            <a href="#" class="header-skip-link">Main Content</a>
+            <a href="#" class="header-skip-link">Footer</a>
+        </div>
+    -->
+    <c:communityMenuSettings oncommunityurl="{!c.setCommunityUrl}"></c:communityMenuSettings>
+
+    <div class="header-top-ribbon" onhidelayer="{!c.hideLayer}">
+        <!-- msi logo -->
+        <a href="{!v.communityUrl}" class="header-brand" data-uet-link-label="msi logo" />
+
+        <!-- apps explore | shop | partners hub -->
+        <c:communityHeaderLinks links="{!v.navigationLinks.APP_LINK}" module="apps" class="header-apps" />
+        
+        <button class="header-search-button">{#$Label.c.PP_Search}</button>
+        <div class="header-search" data-uet-link-label-prefix="Partners header search">
+            <button class="header-search-close-button"  data-uet-link-label="close icon" data-uet-link-url="@close search popup" aura:id="header-search-close-button">{#$Label.c.PP_Buttons_Close}</button>
+            <div class="header-search-wrapper" onclick="{!c.onSearchClick}" onkeydown="{!c.onSearchKey}">
+                {!v.search}
+            </div>
+        </div>
+
+        <div class="header-support" data-uet-link-label-prefix="primary nav">
+            <!-- desktop open button -->
+            <button class="header-support-button" id="header-support-button" aria-haspopup="true" aria-controls="header-support-items" data-uet-link-url="@open support menu" onclick="{!c.handleTealiumClick}">
+                {#$Label.c.PP_Support}
+            </button>
+            <!-- desktop dropdown -->
+            <div class="header-support-items" id="header-support-items" role="menu" aria-labelledby="header-support-button" data-uet-link-label-prefix="Support menu">
+                <div class="header-dropdown-arrow"></div>
+                <c:communityHeaderLinks links="{!v.navigationLinks.SUPPORT_LINK}" mode="desktop" module="support" />
+            </div>
+        </div>
+
+        <div class="header-quicklinks" data-uet-restriction="private" data-uet-link-label-prefix="primary nav"> 
+            <!-- desktop open button -->
+            <button class="header-quicklinks-button" id="header-quicklinks-button" aria-haspopup="true" aria-controls="header-quicklinks-items" data-uet-link-url="@open quick links menu" onclick="{!c.handleTealiumClick}">
+                {#$Label.c.PP_QuickLinks}
+            </button>
+            <!-- desktop dropdown -->
+            <div class="header-quicklinks-items" id="header-quicklinks-items" role="menu" aria-labelledby="header-quicklinks-button" data-uet-link-label-prefix="Quick links menu">
+                <div class="header-dropdown-arrow"></div>
+                <c:communityHeaderLinks links="{!v.navigationLinks.QUICK_LINK}" mode="desktop" module="quick-links" />
+            </div>
+        </div>
+
+        <div class="header-cart" data-uet-link-label-prefix="primary nav">
+            <c:communityHeaderCart cartValue="{!v.cartCookieValue}"></c:communityHeaderCart>
+        </div>
+
+        <div class="header-user" data-uet-restriction="private" data-uet-link-label-prefix="primary nav">
+            <!-- open button -->
+            <button class="header-user-button" id="header-user-button" aria-haspopup="true" aria-controls="header-user-menu" data-uet-link-label="logged-in" data-uet-link-url="@open login menu" onclick="{!c.handleTealiumClick}">
+                <c:communityGlobalProfileBadge />
+            </button>
+            <!-- desktop dropdown / mobile overlay -->
+            <div class="header-user-menu" id="header-user-menu" role="menu" aria-labelledby="header-user-button" data-uet-link-label-prefix="login menu">
+                <div class="header-dropdown-arrow"></div>
+                {!v.profileMenu}
+            </div>
+        </div>
+        
+        <!-- mobile menu -->
+        <button class="header-menu-button" onclick="{!c.closeSubmenus}" data-uet-link-label="hamburger menu open" data-uet-link-url="@hamburger menu open" data-uet-link-label-prefix="primary nav">
+            {#$Label.c.PP_Buttons_GoToNavigation}
+        </button>
+        
+        <div class="header-menu" data-uet-link-hierarchy="Partner Hub" data-uet-link-label-prefix="primary nav" aura:id="header-menu">
+            <!-- main menu header bar -->
+            <div class="header-menu-header">
+                <div class="header-menu-header-label">{#$Label.c.PP_Labels_Menu}</div>
+                <button class="header-menu-header-button" onclick="{!c.closeSubmenus}" data-uet-link-label="hamburger menu close">
+                    {#$Label.c.PP_Buttons_Close}
+                </button>
+            </div>
+            <div class="header-menu-wrapper" aura:id="header-menu-wrapper">
+                <c:communityMobileMenu onselect="{!c.closeMobileMenu}" onclosemenu="{!c.closeMobileMenuAll}" links="{!v.navigationLinks}" aura:id="mobile-menu" />
+            </div>
+        </div>
+        <div class="header-menu-overlay"></div>
+
+    </div>
+
+    <c:tealiumTrigger aura:id="tealium-trigger" />
+
+</aura:component>

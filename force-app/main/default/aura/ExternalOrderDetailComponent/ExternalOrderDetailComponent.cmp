@@ -1,0 +1,110 @@
+<aura:component controller="ExternalOrdersController" implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,lightning:isUrlAddressable" access="global">
+    <aura:attribute name="refreshTable" type="Boolean" default="false"/>
+    <aura:attribute name="orderNumber" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="singleOrder" type="Object"/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="false"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="ordersDetailList" type="List"/>
+    <aura:attribute name="filteredData" type="List"/>
+    <aura:attribute name="columnWidth" type="Integer" default="110"/>
+    
+    
+    <aura:attribute name="filter" type="String" />
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="medium" aura:id="mySpinner"/>
+    </aura:if>
+    <div class="slds-p-vertical_large slds-m-bottom_medium slds-align_absolute-center">
+      <span  class="moto-order-header">Sales order detail</span> 
+    </div>
+    <div class="slds-m-bottom_small"></div>
+    <aura:if isTrue="{!not(empty(v.singleOrder))}">
+      <div class="slds-p-vertical_large slds-m-bottom_medium">
+        <lightning:layout multipleRows="true">
+          <lightning:layoutItem size="7" largeDeviceSize="3">
+            <div>        
+
+              <lightning:button variant="base" iconName="utility:back" iconPosition="left" onclick="{! c.viewAllOrders }"
+              label="View All Orders" title="View All Orders" />
+            </div>
+          </lightning:layoutItem>
+          <lightning:layoutItem size="12" largeDeviceSize="6" class="slds-order_3 slds-large-order_2">
+            <div class="slds-align_absolute-center">
+              <span class="moto-order-title">Sales Order No. {!v.singleOrder.confirmation_number}</span> 
+            </div>
+          </lightning:layoutItem>
+          <lightning:layoutItem size="5" largeDeviceSize="3" class="slds-order_2 slds-large-order_3">
+            <div class="slds-text-align_right">
+              <lightning:button variant="brand" onclick="{! c.viewTrackOrder }"
+                                    label="TRACK ORDER" title="Track Order=" class="moto-track-button"/>
+            </div>
+          </lightning:layoutItem>
+        </lightning:layout>
+      </div>
+        
+        <div class="c-container slds-border_bottom slds-border_top slds-border_right slds-border_left slds-p-around_small">
+            <lightning:layout horizontalAlign="spread" multipleRows="true">
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Site Id">End User Site ID</p>
+                        <p>{!v.singleOrder.end_user_site_id}</p>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Site Name">End User Site Name</p>
+                        <p>{!v.singleOrder.end_user_site_name}</p>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Customer">Customer</p>
+                        <p>{!v.singleOrder.account_name}</p>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Customer Order Number">Customer Order Number</p>
+                        <p>{!v.singleOrder.po_number}</p>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Ordered By">Ordered By</p>
+                        <p>{!v.singleOrder.ordered_by}</p>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="9" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Shipping Address">Shipping Address</p>
+                        <lightning:formattedAddress street="{!v.singleOrder.shipping_address.line1}"
+                                                    city="{!v.singleOrder.shipping_address.line2}" country="{!v.singleOrder.shipping_address.line4}"
+                                                    province="{!v.singleOrder.shipping_address.line3}" disabled="true" />
+                    </div>
+                </lightning:layoutItem>
+           
+            </lightning:layout>
+        </div>
+        
+        <lightning:layout verticalAlign="center" class="x-large">
+            <lightning:layoutItem flexibility="auto,no-grow" padding="around-small">
+                <lightning:input type="search" 
+                                      label="Search" 
+                                      placeholder = "Search line items ..."
+                                      onchange="{!c.handleFilter}"
+                                      value="{!v.filter}"
+                                      class="moto-input-item"/>
+            </lightning:layoutItem>
+        </lightning:layout>
+        <div class="slds-m-bottom_medium"></div>
+        <aura:if isTrue="{!v.refreshTable}">
+            <c:GenerateLightningDataTable columns="{!v.columns}"
+                                          inlineEditing="false"
+                                          resultList ="{!v.filteredData}"
+                                          hideSelection="true"
+                                          showPagination="true"
+                                          pageSize="10"
+                                          minColumnWidth = "{!v.columnWidth}"/>
+        </aura:if>
+    </aura:if>
+</aura:component>

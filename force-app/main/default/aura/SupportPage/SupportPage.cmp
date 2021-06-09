@@ -1,0 +1,38 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global"  >
+    <lightning:overlayLibrary aura:id="overlayLib" />
+    
+    <div class="moto-form-container">
+        <div class="slds-align_absolute-center slds-p-top_small">
+            <lightning:icon iconName="custom:custom19" alternativeText="Request a Repair" size="large" title="Request a Repair" variant="error"/>
+        </div>
+        <lightning:layout class="slds-align_absolute-center">
+            <lightning:layoutItem class="slds-p-vertical_small">
+                <div class="slds-text-heading_medium"><b>Request a repair</b></div>
+            </lightning:layoutItem>
+        </lightning:layout>
+        <div class="moto-body-section">
+           <!-- <span>Repair Department at 1-800-491-1734, Option 3 / Vesta.PEIRMA@motorolasolutions.com</span>-->
+            <span>Need help with repair? Submit an online request now!</span>
+        </div>
+        <div>
+         <lightning:layout class="slds-align_absolute-center ">
+              <lightning:layoutItem padding="around-small">
+                  <lightning:button class = "moto-download-button" label="DOWNLOAD FORM" iconName="utility:download" onclick="{!c.handleDownload}"/>
+               </lightning:layoutItem>
+             
+               <lightning:layoutItem padding="around-small">                 
+                   <lightning:button class="moto-form-button" label="ONLINE FORM" onclick="{!c.handleClick}" />
+               </lightning:layoutItem>
+          </lightning:layout>  
+		</div>
+        <!--
+        <div class="slds-align_absolute-center">
+            <button onclick="{!c.handleClick}" >ONLINE FORM</button>
+        </div>
+        <div class="slds-align_absolute-center">
+            <button iconName="utility:download" onclick="{!c.handleDownload}">DOWNLOAD FORM</button>
+        </div>  
+		-->
+    </div>
+    
+</aura:component>

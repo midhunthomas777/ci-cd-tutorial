@@ -1,0 +1,15 @@
+.THIS {
+}
+
+.THIS.slds-scope .slds-list--horizontal .slds-item--detail {
+    width: 50% !important;
+}
+.THIS.slds-scope .slds-list--horizontal .slds-item--label {
+    width: 50% !important;
+    padding-right: .75rem;
+}
+.THIS.slds-scope .slds-list--horizontal .slds-item--label1 {
+    width: 40% !important;
+    padding-right: .75rem;
+    text-align:right !important;
+}

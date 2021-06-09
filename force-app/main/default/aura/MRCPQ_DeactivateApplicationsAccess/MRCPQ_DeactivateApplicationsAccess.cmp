@@ -1,0 +1,67 @@
+<aura:component controller="MRCPQ_DeactivateAppAccessController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="false"/>
+    <aura:attribute name="isAdminProfile" type="Boolean" default="false"/>
+    <aura:attribute name="isnotAdminProfile" type="Boolean" default="false"/>
+    <aura:attribute name="Appstatus" type="String" default="{!v.ApplnaccessFields.App_Access_Status__c}"/>
+    
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="small" aura:id="mySpinner"/>
+    </aura:if>
+    <aura:attribute name="Applnaccessrecord" type="Object"
+                    description="The record object to be displayed"/>
+    <aura:attribute name="ApplnaccessFields" type="Object"
+                    description="A simplified view record object to be displayed"/>
+    <aura:attribute name="recordError" type="String"
+                    description="An error message bound to force:recordData"/>
+    
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}" 
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.Applnaccessrecord}"
+                      targetFields="{!v.ApplnaccessFields }"
+					  fields="App_Access_Status__c"
+                      mode="VIEW"/>
+    
+    <aura:if isTrue="{!and(v.Appstatus!='Active',v.isAdminProfile)}"> 
+        <div class="c-container">
+            <lightning:layout>
+                <lightning:layoutItem flexibility="auto" padding="around-small">
+                    <div class="custom-box">
+                        Application Status is already InActive.
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+        </div>
+    </aura:if>    
+    <aura:if isTrue="{!v.Appstatus=='Active'}">  
+        <aura:if isTrue="{!v.isAdminProfile}">            
+            <div class="c-container">
+                <lightning:layout>
+                    <lightning:layoutItem flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            Are you sure you want to deactivate this CPQ Access?
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem flexibility="auto" padding="around-small">
+                        <div class="custom-box">
+                            <lightning:button variant="brand" label="Deactivate" onclick="{!c.Deactivate}"/>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </div>
+        </aura:if>
+    </aura:if>
+    <aura:if isTrue="{!v.isnotAdminProfile}">            
+        <div class="c-container">
+            <lightning:layout>
+                <lightning:layoutItem flexibility="auto" padding="around-small">
+                    <div class="custom-box">
+                        You dont't have sufficient access.Please contact your Administrator.
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+        </div>
+    </aura:if>
+</aura:component>

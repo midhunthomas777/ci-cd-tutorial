@@ -1,0 +1,130 @@
+<aura:component controller="ExternalCasesController" implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,lightning:isUrlAddressable" access="global">
+    <aura:attribute name="caseNumber" type="String" description="Number of the case"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="singleCase" type="Object" description="Object for the Case Detail"/>
+    <aura:attribute name="loadSpinner" type ="Boolean" default="false" description="Boolean varaible to load the spinner"/>
+    <aura:attribute name="columns" type="List" description="Columns of the case detail"/>
+  <!--  <aura:attribute name="filteredData" type="List" description="Filtered data of case detail"/>-->
+    
+    <aura:attribute name="filter" type="String" />
+  <!--  <aura:attribute name="statuses" type="List" default="1,3,6,9"/> -->
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="medium" aura:id="mySpinner"/>
+    </aura:if>
+    <div class="slds-text-align_left">
+        <lightning:button variant="base	" iconName="utility:back" iconPosition="left" onclick="{!c.viewAllCases}"
+                          class="" label="View All Cases" title="View All Cases"/>
+    </div>
+    <div class="slds-p-vertical_large slds-m-bottom_medium slds-align_absolute-center">
+        <span  class="moto-case-header">Support case detail</span> 
+    </div>
+    <div class="slds-m-bottom_small"></div>
+    <aura:if isTrue="{!not(empty(v.singleCase))}">
+        <div class="slds-p-vertical_large slds-align_absolute-center slds-m-bottom_medium">
+            <span class="moto-case-title">Case no. {!v.singleCase.number}</span>           
+        </div>
+        <div class="c-container slds-border_bottom slds-border_top slds-border_right slds-border_left slds-p-around_small">
+            <lightning:layout horizontalAlign="spread" multipleRows="true">
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Date/Time Opened">Date/Time Opened</p>
+                        <p>{!v.singleCase.opened_at}</p>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Contact Name">Contact Name</p>
+                        <p>{!v.singleCase.contact.display_value}</p>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Site">Site</p>
+                        <p>{!v.singleCase.account.display_value}</p>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="City">City</p>
+                        <p>{!v.singleCase.city}</p>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="State">State</p>
+                        <p>{!v.singleCase.state}</p>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="System">System</p>
+                        <p>{!v.singleCase.system.display_value}</p>
+                    </div>
+                </lightning:layoutItem>
+                
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Subject">Subject</p>
+                        <p>{!v.singleCase.short_description}</p>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Service Provider">Service Provider</p>
+                        <p>{!v.singleCase.partnerName}</p>
+                    </div>
+                </lightning:layoutItem>                
+            </lightning:layout>
+            <lightning:layout horizontalAlign="spread" multipleRows="true">
+                
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Type">Type</p>
+                        <p>{!v.singleCase.problem.state}</p>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Severity">Severity</p>
+                        <p>{!v.singleCase.impact}</p>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Status">Status</p>
+                        <p>{!v.singleCase.status}</p>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Current Status">Current Status</p>
+                        <p>{!v.singleCase.u_current_status}</p>
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            <lightning:layout horizontalAlign="spread" multipleRows="true">
+                
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Service Provider Case">Service Provider Case</p>
+                        <p>{!v.singleCase.u_service_provider_case_number}</p>
+                    </div>
+                </lightning:layoutItem>
+                
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Site ID">Site ID</p>
+                        <p>{!v.singleCase.siteNumber}</p>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" padding="around-small">
+                    <div class="header-column">
+                        <p class="slds-text-heading_small slds-text-title_bold" title="Resolution date">Resolution date</p>
+                        <p>{!v.singleCase.resolved_at}</p>
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            
+        </div>
+    </aura:if>
+</aura:component>

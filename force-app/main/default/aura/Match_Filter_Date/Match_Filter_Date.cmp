@@ -1,0 +1,38 @@
+<!--
+  - Copyright (c) 2018. 7Summits Inc.
+  -->
+
+<!--
+ - Created by francois korb on 6/29/18.
+ -->
+
+<aura:component description="Match_Filter_Date"
+                extends="c:Match_Base">
+
+	<aura:registerEvent name="filterSubEvent" type="c:Match_Filter_SubEvent"/>
+	<aura:attribute name="filterItem"   type="Map"    default="" access="public"/>
+	<aura:attribute name="searchString" type="String" default="" access="private"/>
+
+	<aura:attribute name="startDate"    type="Date"   access="private"/>
+	<aura:attribute name="endDate"      type="Date"   access="private"/>
+
+	<lightning:layout multipleRows="false">
+		<lightning:layoutItem size="6">
+			<lightning:input label="{!v.filterItem.label}"
+			                 name="startDate"
+			                 placeholder="{!v.filterItem.labelSet[0]}"
+			                 value="{!v.startDate}"
+			                 type="date"
+			                 onchange="{!c.onFilterChange}"/>
+		</lightning:layoutItem>
+		<lightning:layoutItem size="6" padding="horizontal-small">
+			<lightning:input label=" "
+			                 name="endDate"
+			                 placeholder="{!v.filterItem.labelSet[1]}"
+			                 value="{!v.endDate}"
+			                 type="date"
+			                 onchange="{!c.onFilterChange}"/>
+		</lightning:layoutItem>
+	</lightning:layout>
+
+</aura:component>

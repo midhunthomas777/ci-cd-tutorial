@@ -1,0 +1,35 @@
+.THIS .slds-icon{
+    fill: rgb(22, 50, 92) !important;
+    padding-bottom: 20px !important;
+}
+.THIS .slds-popover__body{
+    text-align:left !important;
+}
+
+.THIS .slds-section-title--divider {
+    background-color: #0066CC;
+    color: white;
+    line-height: 0.5;
+    font-weight: 750; 
+}
+.THIS .slds-box {
+    height: 85%;
+    width: 100%;
+}
+.THIS .uiInputSelect {
+    width: 36%;
+}
+.THIS .slds-p-around_small {
+        padding-right: 38px;
+}
+.THIS .slds-modal__content {
+    display: none;
+}
+.THIS .slds-border_bottom{
+    height:30px;
+}
+
+.THIS .slds-modal__container {
+    width: 60% !important;
+    max-width: none;
+}

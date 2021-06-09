@@ -1,0 +1,8 @@
+<!-- Copyright ©2019 7Summits Inc. All rights reserved. -->
+<aura:component implements="lightning:availableForFlowScreens" access="global">
+    <aura:attribute name="PercentComplete" type="Integer" default="0" access="global"/>
+    <lightning:formattedText value="{!'Profile Progress: '+ v.PercentComplete + '% Complete'}" />
+    <lightning:progressBar value="{!v.PercentComplete}"/>
+    <br />
+    <!-- <div align="right">Powered by&nbsp;<a href="http://www.7summitsinc.com/"><img src="{!$Resource.x7s_7Summits_Blue_Logo}"/></a></div> -->
+</aura:component>

@@ -1,0 +1,6 @@
+<aura:event type="COMPONENT" description="Event to remove Row" >
+    <aura:attribute name="indexVar" type="Integer" description="Use For Delete Row" />
+    <aura:attribute name="processIdentifier" type="String"/>
+    <aura:attribute name="buttonvalue" type="String"/>
+    <aura:attribute name="tabValue" type="String"/>
+</aura:event>

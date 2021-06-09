@@ -1,0 +1,30 @@
+.THIS .moto-order-header {
+    font-size: t(fontSizeXxLarge);
+    font-family: "UniversLTStd-Cn";
+}
+.THIS .moto-order-header {
+    font-size: t(fontSizeXxLarge);
+}
+.THIS .moto-order-title{
+    font-family: t(vestaFontFamily);
+    font-size: t(fontSizeXLarge);
+    font-weight: t(fontWeightBold);
+}
+
+/* turn off row borders */
+.THIS table.slds-table {
+    border: none !important;
+}
+.THIS table.slds-table tbody td {
+    /* turn off the row borders */
+    border: none !important;
+}
+.THIS table.slds-table tbody th {
+    /* turn off the row borders */
+    border: none !important;
+}
+/* end turn off row borders */
+
+.THIS.slds-spinner_container {
+    z-index: 7000;
+}

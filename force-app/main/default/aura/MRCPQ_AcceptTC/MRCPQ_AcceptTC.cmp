@@ -1,0 +1,45 @@
+<aura:component controller="MRCPQ_AcceptTCContoller" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="showTCButton" type="Boolean" default="false"/>
+    <aura:attribute name="openPopup" type="boolean" default="false"/>
+    <aura:attribute name="documentID" type="String" default=""/>
+    <aura:attribute name="documentURL" type="String" default=""/>
+    <aura:attribute name="termsCondition" type="String" default=""/>
+    <aura:attribute name="tcLabel" type="String" default="Review Terms and Conditions"/>
+    
+    <aura:attribute name="getURL" type="String"/>
+    <aura:if isTrue="{!v.showTCButton}" > 
+        <div class="slds-align_absolute-center">
+            <lightning:button variant ="brand" label="{!v.tcLabel}" onclick="{!c.open}"  />
+        </div>
+    </aura:if> 
+    
+    <aura:if isTrue="{!v.openPopup}" >  
+        
+        <div class="demo-only" style="height: 640px;">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" iconName="utility:close"  size="large" variant="bare" onclick="{!c.close}"/>
+                        <h2 id="header43" class="slds-text-heading--medium">Terms and Conditions</h2>
+                    </header> 
+                    <lightning:buttonIcon class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" iconName="utility:close"  size="large" variant="bare" onclick="{!c.close}"/>
+                    
+                    <div class="slds-modal__content slds-p-around_medium" >
+                        <div>
+                        <p>{!v.termsCondition}</p>
+                       </div> 
+                    </div>
+                    
+                    <footer class="slds-modal__footer" >
+                        <lightning:button variant="brand" label ="Accept" onclick="{!c.Agree}"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+        
+        
+        
+    </aura:if>
+</aura:component>

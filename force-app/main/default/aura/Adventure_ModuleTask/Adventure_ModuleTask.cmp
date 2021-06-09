@@ -1,0 +1,53 @@
+<!--
+ - Created by Melinda Grad on 7/25/18.
+   Copyright (c) 2018. 7Summits Inc.
+ -->
+
+<aura:component description="Adventure_ModuleTask" extends="c:Adventure_Peak_Base">
+
+    <!--Attributes-->
+    <aura:attribute name="lastTask" type="Boolean" access="global" default="false"/>
+    <aura:attribute name="moduleTask" type="Object" access="global"/>
+    <aura:attribute name="lastItem" type="Boolean" access="global"/>
+    <aura:registerEvent name="renderEvent" type="c:Adventure_RenderEvent"/>
+
+    <aura:if isTrue="{!v.moduleTask.ContentDocumentLinks[0].ContentDocumentId != undefined}">
+
+        <a href="javascript:void(0)" onclick="{! c.openSingleFile }">
+
+            <lightning:layout verticalAlign="center" class="{!'slds-is-relative ' + if(!v.lastItem,'slds-p-bottom_small','')}">
+                <lightning:layoutItem padding="" class="iconCircle" flexibility="no-shrink">
+                    <lightning:icon iconName="{!v.moduleTask.Icon_Name__c}" alternativeText="Approved" size="small" class="slds-align_absolute-center"/>
+                </lightning:layoutItem>
+
+                <lightning:layoutItem class="slds-p-left_small">
+                    <aura:if isTrue="{!v.moduleTask.isNew__c}">
+                        <span class="newLabel slds-text-body_small slds-is-absolute">New!</span>
+                        <span class="slds-assistive-text">&mdash;</span>
+                    </aura:if>
+                    {!v.moduleTask.Title__c}
+                </lightning:layoutItem>
+            </lightning:layout>
+        </a>
+
+        <aura:set attribute="else">
+            <a href="javascript:void(0)" onclick="{!c.linkClick}" data-url="{!v.moduleTask.Content_URL__c}">
+
+                <lightning:layout verticalAlign="center" class="{!'slds-is-relative ' + if(!v.lastItem,'slds-p-bottom_small','')}">
+                    <lightning:layoutItem padding="" class="iconCircle" flexibility="no-shrink">
+                        <lightning:icon iconName="{!v.moduleTask.Icon_Name__c}" alternativeText="Approved" size="small" class="slds-align_absolute-center"/>
+                    </lightning:layoutItem>
+
+                    <lightning:layoutItem class="slds-p-left_small">
+                        <aura:if isTrue="{!v.moduleTask.isNew__c}">
+                            <span class="newLabel slds-text-body_small slds-is-absolute">New!</span>
+                            <span class="slds-assistive-text">&mdash;</span>
+                        </aura:if>
+                        {!v.moduleTask.Title__c}
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </a>
+
+        </aura:set>
+    </aura:if>
+</aura:component>

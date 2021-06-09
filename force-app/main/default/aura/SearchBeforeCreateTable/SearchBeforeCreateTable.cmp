@@ -1,0 +1,150 @@
+<aura:component controller="SearchBeforeCreateCtrl" implements="force:appHostable,lightning:availableForFlowScreens,lightning:availableForFlowActions,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+<aura:html tag="style">   
+    .slds-modal__container{max-width: 90rem !important;width:90% !important;}
+</aura:html>
+
+<aura:handler name="init" value="{!this}" action="{!c.invoke}"/>
+<aura:attribute name="accountName" type="String" />
+<aura:attribute name="countryName" type="String" />
+<aura:attribute name="stateName" type="String" /> 
+<aura:attribute name="cityName" type="String" />
+<aura:attribute name="streetName" type="String" /> 
+<aura:attribute name="postalCode" type="String" />
+<aura:attribute name="countyName" type="String" />
+<aura:attribute name="dunsNumber" type="String" />
+<aura:attribute name="website" type="String" />
+<aura:attribute name="sicCode" type="String" />
+<aura:attribute name="industry" type="String" />
+<aura:attribute name="territory" type="String" />
+<aura:attribute name="region" type="String" />
+<aura:attribute name="finaldata" type="String" />
+<aura:attribute name="AccountRecordId" type="String" />
+<aura:attribute name="isChooseAccDisable" type="Boolean" default="true"/>
+<aura:attribute name="isCreateAccDisable" type="Boolean" default="true"/>
+<aura:attribute name="isDBAccDisable" type="Boolean" default="true"/>
+<aura:attribute name="title" type="String" default="Account Create"/>
+<aura:attribute name="searchTitle" type="String" default="Search Result"/>
+<aura:attribute name="isChanged" type="Boolean" default="true" />
+<aura:attribute name="isAccountSearched" type="Boolean" default="true" />
+<aura:attribute name="isValidated" type ="Boolean"/>
+<aura:attribute name="columns" type="List" />
+<aura:attribute name="resultData" type="List"/>
+<aura:attribute name="dnbColumns" type="List" />
+<aura:attribute name="resultList" type="List" />
+<aura:attribute name="noSFRecord" type ="Boolean" />
+<aura:attribute name="sicSetting" type="Object" />  
+
+
+<aura:attribute name="resultListLength" type="Integer" default="10" />
+<aura:attribute name="dnbResultListLength" type="Integer" default="10" />
+<aura:attribute name="showDnBRecordsTable" type="Boolean" default="false"/>
+<aura:attribute name="isLeadConvert" type ="Boolean" default="false"/>
+<aura:attribute name="noExactMatch" type="Boolean" default='true'/>
+<aura:attribute name="exactMatch" type ="Boolean" default="false"/>
+<aura:attribute name="showSpinner" type ="Boolean" default="false"/>
+<aura:attribute name="doNotCreateOpportunity" type ="Boolean" default="false"/>
+<aura:attribute name="oppRecordTypeId" type ="String" access="global" default="01280000000M0qO"/>
+<aura:attribute name="leadId" type="String" />
+<aura:attribute name="showSearchForDnb" type ="Boolean" default="false"/>
+<aura:attribute name="showChooseSFAccBtn" type ="Boolean" default="false"/>
+<aura:attribute name="showcreateAccFromDnB" type ="Boolean" default="false"/>
+<aura:attribute name="showcreateSFAccountRecord" type ="Boolean" default="false"/>
+<aura:attribute name="resetSelection" type ="Boolean" default="true"/>
+<aura:attribute name="userTheme" type="String"  />
+<aura:attribute name="accRecordTypeId" type="String" />
+<aura:attribute name="newSFAccount" type ="Boolean" default="false"/>
+<aura:attribute name="routeToMarket" type="String" />
+<aura:attribute name="errorMsg" type ="String" /><!-- default="" added by Anitha-->
+<aura:attribute name="leadSourceValue" type="String" />
+<aura:attribute name="childData" type="List" />
+<aura:attribute name="countryISOCode" type="String" />
+<aura:attribute name="countryCode" type="String" />
+<aura:attribute name="stateCode" type="String" />
+<aura:attribute name="phone" type="String" />
+<aura:attribute name="tradeName" type="String" />
+<aura:attribute name="rowData" type="List" />
+<aura:attribute name="oppSalesProcess" type="String" />
+<aura:attribute name="accRecordTypeName" type="String" />
+<aura:handler event="c:DynamicDataTableEvent" action="{!c.getSelectedRows}"/>
+
+<aura:attribute name="currentUser" type="User"/> 
+<force:recordData aura:id="recordLoader" recordId="{!$SObjectType.CurrentUser.Id}" 
+                  fields="UserTheater__c,Default_Territory__c" targetFields="{!v.currentUser}"/>
+
+<aura:if isTrue="{!v.showSpinner}">
+    <lightning:spinner variant="brand"/>
+</aura:if>
+
+<aura:if isTrue="{!v.isAccountSearched}">
+    <lightning:card>           
+            <aura:set attribute="title">
+                <lightning:icon iconName="standard:account" size="small"/>
+                <span class="slds-var-m-left_x-small">{!v.searchTitle}</span>
+                <span class="slds-var-p-left_x-small pull-right"/> 
+                <span class="slds-var-p-left_x-small pull-right"> <img src="{!$Resource.SBC_Blue_DnB}"/> DnB</span> 
+                <aura:if isTrue="{!v.accRecordTypeId =='01280000000M0pzAAC'}"> 
+                    <span class="slds-var-p-left_x-small pull-right"> <img src="{!$Resource.SBC_Gray_Procurement}"/> Procurement</span>
+                    <aura:set attribute="else">
+                        <span class="slds-var-p-left_x-small pull-right"> <img src="{!$Resource.SBC_Red_Prospect}"/> Prospect</span>
+                <span class="slds-var-p-left_x-small pull-right"><img src="{!$Resource.SBC_Green_Customer}"/> Customer</span>
+                    </aura:set>
+                </aura:if>
+        </aura:set> 
+        <div class="c-container"> 
+            <aura:if isTrue="{!not(empty(v.errorMsg))}"> 
+                <c:AlertMessages Message="{!v.errorMsg}" type="error"/>
+            </aura:if>
+            <aura:if isTrue="{!v.resetSelection}">
+                <div> <c:GenerateLightningDataTable columns="{!v.columns}" inlineEditing="false"  resultList ="{!v.resultList}"
+                                                    hideSelection="false"  maxRowSelection ="1" pageSize="{!v.resultListLength}" 
+                                                    inlineErrors="false" showPagination="false"/> </div>
+            </aura:if>
+        </div>
+        <aura:if isTrue="{!v.noExactMatch}">                
+            <!--<h1 class="slds-text-heading_small">-->
+            <aura:if isTrue="{!v.showSearchForDnb}">
+                <div class="slds-var-p-around_small">
+                    <h4>
+                        <span class="clickHereText"  onclick="{!c.searchDnB}"> 
+                            I didn't find the account I'm looking for. Click here to search more
+                        </span>
+                    </h4>
+                </div>
+            </aura:if>
+            <!--</h1>-->      
+            <div class="slds-var-p-top_small"></div>
+            <div class="c-container">
+                <!--aura:if isTrue="{!and(v.showDnBRecordsTable,not(empty(v.resultData)))}"-->
+                <aura:if isTrue="{!v.showDnBRecordsTable}">
+                    <c:GenerateLightningDataTable aura:id="linesTable" columns="{!v.dnbColumns}"  inlineEditing="false" resultList ="{!v.resultData}"
+                                                    hideSelection="false"  maxRowSelection ="1"  pageSize="{!v.dnbResultListLength}" inlineErrors="false" showPagination="false"/>
+                </aura:if>
+            </div>
+        </aura:if>
+        <!--<div class="slds-p-top_medium"></div>-->            
+                        
+        <!--<div class="slds-p-top_large"></div>
+                    <div class="slds-p-top_medium"></div>-->  
+            <div class="slds-var-p-top_small"></div>
+        <aura:if isTrue ="{!v.showcreateSFAccountRecord}">
+            <div class = "slds-box slds-box_x-small highlight">                    
+                <b><lightning:input type="checkbox" label="Create New Account" aura:id="createNewSFAccount" checked ="{!v.newSFAccount}"                                       
+                                    onchange="{!c.handleCheck}"/></b>  
+            </div>
+        </aura:if>
+        <aura:if isTrue ="{!v.showcreateAccFromDnB}">
+            <div class="slds-var-p-around_x-small">
+                <lightning:button variant="brand" name ="Create DnB" label="Choose Account"
+                onclick="{!c.dnbDetails}"/>
+            </div>
+        </aura:if> 
+        <aura:if isTrue ="{!v.showChooseSFAccBtn}">
+            <div class="slds-var-p-around_x-small">
+                <lightning:button variant="brand" name ="Choose Existing Salesforce" label="Choose Account" 
+                                    onclick="{!c.selectSFAccount}"/>
+            </div>
+        </aura:if> 
+        
+    </lightning:card>
+</aura:if> 
+</aura:component>

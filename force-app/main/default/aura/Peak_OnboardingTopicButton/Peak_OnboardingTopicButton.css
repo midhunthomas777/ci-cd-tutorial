@@ -1,0 +1,48 @@
+/**
+ * Created by jonbalza on 2019-09-12.
+ */
+.THIS {
+    display: block;
+    border-radius: token(borderRadiusMedium);
+    border: none;
+    background: #f9f9f9;
+    color: token(textColor);
+    cursor: pointer;
+    text-align: left;
+    padding: 1rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    transition: .2s all linear;
+}
+.THIS:hover,
+.THIS:focus {
+    background: #E4E5E6;
+    text-decoration: none;
+}
+.THIS.following {
+    background-color: token(colorBrand);
+    color: #fff;
+}
+.THIS.following .slds-icon {
+    fill: rgba(255,255,255,.6);
+}
+.THIS + .THIS {
+    margin-top: .75rem;
+}
+.THIS .onboarding-topic__label {
+    line-height: 1.1;
+    font-size: .875rem;
+}
+
+.THIS._loading .slds-icon {
+    animation: 2s linear infinite spinner;
+}
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

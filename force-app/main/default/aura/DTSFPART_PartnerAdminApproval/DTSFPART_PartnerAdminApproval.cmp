@@ -1,0 +1,32 @@
+<aura:component access="global" controller="DTSFPART_PartnerAdminController"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader">
+
+    <!-- workaround to inject proper modal styles -->
+    <aura:html tag="style">
+        .cuf-content { 
+        	padding: 0 0 !important; 
+        } 
+        .slds-p-around--medium,
+        .slds-p-around_medium {
+        	padding: 0 !important; 
+        } 
+        .slds-modal__content { 
+        	overflow-y: hidden !important;
+        	height: unset !important;
+        	max-height: unset !important;
+        }
+        @media (min-width: 48em) {
+            .slds-modal__container {
+                max-width: 930px;
+            }
+        }
+        .forceChatterLightningComponent,
+        .forceChatterPublisherPresentationPanel,
+        .container,
+        .cuf-content {
+            height: 100%;
+        }
+    </aura:html>
+
+    <c:userApproval recordId="{!v.recordId}" onclose="{!c.handleModalClose}"></c:userApproval>
+</aura:component>

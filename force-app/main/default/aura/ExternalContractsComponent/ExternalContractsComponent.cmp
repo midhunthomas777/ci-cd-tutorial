@@ -1,0 +1,75 @@
+<aura:component controller="ExternalContractsController"
+    implements="forceCommunity:availableForAllPageTypes,force:hasRecordId,lightning:isUrlAddressable" access="global">
+    <aura:attribute name="pageName" type="String" description="Name of the page component resides" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="paramName" type="String" description="Name of the parameter" />
+
+    <aura:attribute name="columns" type="List" description="Columns for the Case List" />
+
+    <aura:attribute name="unfilteredContractList" type="Object" description="Original unfiltered list" />
+    <aura:attribute name="contractList" type="Object" description="Object for the Case List" default="[]" />
+
+    <aura:attribute name="fromValue" type="date" />
+    <aura:attribute name="toValue" type="date" />
+    <aura:attribute name="recordId" type="String" />
+
+    <aura:attribute name="loadSpinner" type="Boolean" default="false"
+        description="Boolean varaible to load the spinner" />
+    <aura:attribute name="refreshTable" type="Boolean" default="false"
+        description="Boolean variable to refresh the table " />
+
+    <aura:attribute name="searchText" type="String" description="Variable to store search text value" />
+
+    <aura:attribute name="pageSizes" type="List" default="[10,20,50,100]" description="Records per page" />
+    <aura:attribute name="selectedPageSize" type="Integer" default="10"
+        description="Selected records to display per page" />
+    <aura:attribute name="dynamicPageSize" type="Integer" default="10"
+        description="Page size used in data table component" />
+
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="medium" aura:id="mySpinner" />
+    </aura:if>
+    <div aura:id="title" class="title-container">
+        <h2>Contracts</h2>
+    </div>
+    <div class="moto-sub-title">
+        <p>Below is a summary of support by End User Site Name. Please select the
+            Contract Number to obtain contract specific details. Renewal orders may
+            take 5-7 business days to update. Please contact sales for a renewal quote
+            or contract related questions.</p>
+    </div>
+
+    <aura:if isTrue="{!not(empty(v.unfilteredContractList))}">
+        <lightning:layout verticalAlign="center" class="x-large filter-bottom-space" pullToBoundary="medium"
+            multipleRows="true">
+            <lightning:layoutItem flexibility="auto,no-grow" padding="around-small" size="12" mediumDeviceSize="6"
+                largeDeviceSize="3">
+                <lightning:input type="search" label="Search" placeholder="{!$Label.c.Vesta_Search_Contracts}"
+                    onchange="{!c.handleFilter}" value="{!v.searchText}" class="moto-input-item" />
+            </lightning:layoutItem>
+
+            <lightning:layoutItem flexibility="auto,no-grow" padding="around-small" size="12" mediumDeviceSize="6"
+                largeDeviceSize="3">
+            </lightning:layoutItem>
+
+            <lightning:layoutItem flexibility="auto,no-grow" padding="around-small" size="12" mediumDeviceSize="6"
+                largeDeviceSize="3">
+                <lightning:input type="date" label="From date" value="{!v.fromValue}" onchange="{!c.handleFilter}"
+                    class="moto-input-item" />
+            </lightning:layoutItem>
+
+            <lightning:layoutItem flexibility="auto,no-grow" padding="around-small" size="12" mediumDeviceSize="6"
+                largeDeviceSize="3">
+                <lightning:input type="date" label="To date" value="{!v.toValue}" onchange="{!c.handleFilter}"
+                    class="moto-input-item" />
+            </lightning:layoutItem>
+        </lightning:layout>
+    </aura:if>
+
+    <aura:if isTrue="{!v.refreshTable}">
+        <c:GenerateLightningDataTable columns="{!v.columns}" inlineEditing="false" resultList="{!v.contractList}"
+            hideSelection="true" showPagination="true" pageSize="{!v.dynamicPageSize}"
+            showPageSize="{!v.pageName == 'Home' ? 'false' : 'true'}" sortField="SITE_STATE" showExport="true"
+            exportBtnPosition="right" exportBtnIconPosition="left" exportBtnLabel="Export" exportBtnValue="Export" />
+    </aura:if>
+</aura:component>

@@ -1,0 +1,29 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+
+<!--
+ - Created by francoiskorb on 11/29/18.
+ -->
+
+<aura:component description="SVNSUMMITS_Ideas_User_Image">
+	<aura:attribute name="userId"   type="String"/>
+	<aura:attribute name="user"     type="Map"/>
+
+	<aura:if isTrue="{!!empty(v.userId)}">
+		<force:recordData aura:id="recordLoader"
+		                  mode="VIEW"
+		                  recordId="{!v.userId}"
+		                  fields="Id, SmallPhotoUrl"
+		                  targetFields="{!v.user}"/>
+
+		<lightning:layout class="slds-avatar slds-avatar_circle">
+			<lightning:layoutItem size="1"
+			                      class="userImage">
+				<img src="{!v.user.SmallPhotoUrl}"
+				     title="User icon"
+				     class="slds-align--absolute-center userImage"/>
+			</lightning:layoutItem>
+		</lightning:layout>
+	</aura:if>
+</aura:component>

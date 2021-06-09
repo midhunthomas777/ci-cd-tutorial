@@ -1,0 +1,45 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+  
+<design:component label="7S Twitter Feed">
+	<design:attribute name="heading"
+                      label="Heading"
+                      description="Enter an optional component label"/>
+    <design:attribute name="size"
+                      label="Heading Size"
+                      datasource="large, medium, small, default"
+                      description="Select the heading size"/>
+    <design:attribute name="align"
+                      label="Heading Alignment"
+                      datasource="left, center, right"
+                      description="Select the heading alignment"/>
+    <design:attribute name="handle"
+                      label="Twitter Username"
+                      description="Twitter username without the '@' character. This will determine the twitter feed."/>
+	<design:attribute name="handleObject"
+	                  label="Twitter Handle Object API name"
+	                  description="Object API name - leave blank to default to User"/>
+	<design:attribute name="handleField"
+	                  label="Twitter Handle Field API name"
+	                  description="Field API name on the specified object for the twitter handle"/>
+	<design:attribute name="showHandle"
+                      label="Show username in header?" />
+    <design:attribute name="showReplies"
+                      label="Show replies?" />
+    <design:attribute name="hasBorder"
+                      label="Add border to feed?" />
+    <design:attribute name="tweetLimit"
+                      label="Maximum Number of Tweets"
+                      description="Limit the number of feeds to display (optional)"/>
+    <design:attribute name="theme"
+                      label="Theme"
+                      datasource="dark,light"
+                      description="Feed background color"/>
+    <design:attribute name="linkColor"
+                      label="Link Color (hex code)" />
+    <design:attribute name="borderColor"
+                      label="Tweet Border Color (hex code)" />
+    <design:attribute name="height"
+                      label="Height (px)" />
+</design:component>

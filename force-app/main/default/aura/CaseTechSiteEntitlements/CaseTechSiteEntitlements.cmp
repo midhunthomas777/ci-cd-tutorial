@@ -1,0 +1,40 @@
+<aura:component controller="CaseTechSiteEntController" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    
+    <aura:attribute name="loadSpinner" type ="Boolean" default="false"/>
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="resultList" type="List"/>
+    <aura:attribute name="resultListLength" type="Integer" default="10"/>
+    <aura:attribute name="maxRowSelection" type="Integer" default="1"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="selectedRows" type="List"/>
+    <aura:attribute name="decision" type="String" default="SITE"/>
+    <aura:attribute name="errorMsg" type ="String"/>
+    <aura:attribute name="warningType" type ="String"/>
+    <aura:attribute name="headingName" type ="String"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" /> 
+    <aura:handler event="c:DynamicDataTableEvent" action="{!c.handleSelectedRows}"/>
+    
+    <aura:if isTrue="{!v.loadSpinner}">
+        <lightning:spinner variant="brand" size="medium" aura:id="mySpinner"/>
+    </aura:if>
+    
+    <c:GeneratePageHeader iconName="action:announcement" iconSize="medium" alternativeText="announcement" 
+                          headingName="{!v.headingName}" />
+    
+    <aura:if isTrue="{!not(empty(v.errorMsg))}">
+        <c:AlertMessages Message="{!v.errorMsg}" type="error"/>
+    </aura:if>
+    
+    <aura:if isTrue="{!not(empty(v.warningType))}">
+        <c:AlertMessages Message="{!v.warningType}" type="warning"/>
+    </aura:if>
+    
+    <aura:if isTrue="{!not(empty(v.resultList))}">
+        <c:GenerateLightningDataTable columns="{!v.columns}" inlineEditing="true" resultList ="{!v.resultList}"
+                                      hideSelection="false" maxRowSelection ="{!v.maxRowSelection}" showPagination="false"
+                                      pageSize="{!v.resultListLength}"/>
+        
+        <lightning:button variant="brand" label="Save" value="Save" onclick="{!c.updateCaseRecord}"/>
+    </aura:if>
+</aura:component>

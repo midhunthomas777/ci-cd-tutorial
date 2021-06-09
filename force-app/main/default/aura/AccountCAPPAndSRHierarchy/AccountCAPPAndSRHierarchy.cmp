@@ -1,0 +1,40 @@
+<aura:component Controller = "AccountCAPPAndSRHierarchyController" access="global"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,lightning:isUrlAddressable" >
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="gridColumns" type="List" />
+    <aura:attribute name="gridData" type="Object" />
+    <aura:attribute name="gridExpandedRows" type="List"/>
+    <aura:attribute name="fieldsArray" type="List" description="used to store fields of a record"/>
+    
+    <aura:attribute name="urlTarget" type="String" default="_parent"/>
+    <lightning:layout>
+        <lightning:layoutItem padding="horizontal-small" size="12">
+            <div class="slds-page-header">
+                <div class="slds-page-header__row">
+                    <div class="slds-page-header__col-title">
+                        <div class="slds-media">
+                            <div class="slds-media__figure">
+                                <lightning:icon iconName="action:add_contact" size="small" 
+                                                alternativeText="Account,CAPP &amp; System Relationship Hierarchy" />
+                            </div>
+                            <div class="slds-media__body slds-m-top_x-small">
+                                <div class="slds-page-header__name">
+                                    <div class="slds-page-header__name-title">
+                                        <h1><span class="slds-page-header__title headerfont">Account, CAPP and System Relationship Hierarchy</span></h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </lightning:layoutItem>
+    </lightning:layout>
+     <lightning:layout>
+        <lightning:layoutItem padding="around-small" size="12">
+            <lightning:treeGrid columns="{!v.gridColumns}" data="{!v.gridData}"
+                                keyField="genericName" aura:id="mytree" hideCheckboxColumn="true"
+                                expandedRows="{!v.gridExpandedRows}"/>
+        </lightning:layoutItem>
+    </lightning:layout>
+</aura:component>

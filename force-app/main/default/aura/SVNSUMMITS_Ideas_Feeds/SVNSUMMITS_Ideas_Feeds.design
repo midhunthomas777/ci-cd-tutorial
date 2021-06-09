@@ -1,0 +1,13 @@
+<!-- Copyright ©2019 7Summits Inc. All rights reserved. -->
+
+
+<design:component label="7S Ideas Feed">
+
+    <design:attribute name="title"
+                      label="Feed Title"
+                      description="Add a title" />
+
+    <design:attribute name="showFeed"
+                      label = "Show Feed"
+                      description="Enable chatter feed"/>
+</design:component>

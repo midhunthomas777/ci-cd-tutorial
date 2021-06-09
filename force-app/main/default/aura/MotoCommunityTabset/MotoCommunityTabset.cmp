@@ -1,0 +1,16 @@
+<aura:component controller="MotoCommunityTabsController" implements="force:hasRecordId,forceCommunity:themeLayout,forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="userContactId" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="tabsMeta" type="List"/>
+    <div class="c-container slds-align_absolute-center">    
+        <lightning:tabset class="tabNavStyle tabItem">
+            <aura:iteration items="{!v.tabsMeta}" var="tab">
+                <lightning:tab id="{!tab.tabName}" onactive="{! c.handleActive }" iconName="{!tab.icon}">
+                    <aura:set attribute="label">
+                        {!tab.tabName}
+                    </aura:set>
+                </lightning:tab> 
+            </aura:iteration>
+        </lightning:tabset>
+    </div>
+</aura:component>

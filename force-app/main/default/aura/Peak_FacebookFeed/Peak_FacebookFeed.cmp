@@ -1,0 +1,39 @@
+<aura:component access="global"
+                implements="lightning:availableForFlowScreens,force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes">
+    
+    <aura:attribute name="href" access="global" type="String" default="https://www.facebook.com/salesforce/" />
+    <aura:attribute name="height" access="global" type="String" default="500" />
+    <aura:attribute name="tabs" access="global" type="String" default="timeline" />
+    <aura:attribute name="hide_cover" access="global" type="Boolean" default="false" />
+    <aura:attribute name="show_facepile" access="global" type="Boolean" default="true" />
+    <aura:attribute name="hide_cta" access="global" type="Boolean" default="false" />
+    <aura:attribute name="small_header" access="global" type="Boolean" default="false" />
+    
+    <aura:attribute name="appId" access="global" type="String" default="" />
+    
+    <aura:attribute name="title" access="global" type="String" default="Facebook Feed" />
+    <aura:attribute name="subTitle" access="global" type="String" default="Join In The Fun!" />
+    <aura:attribute name="align" access="global" type="String" default="center" />
+
+	<lightning:card title="">
+	    <section>
+	        <h2 class="{!'slds-text-heading_medium slds-text-align_'+v.align}">{!v.title}
+	            <br />
+	            <aura:if isTrue="{!v.subTitle != ''}">
+	                <small>
+	                    {!v.subTitle}
+	                </small>
+	                <br />
+	            </aura:if>
+	        </h2>
+
+	        <iframe src="{!'https://www.facebook.com/plugins/page.php?href='+v.href+'&amp;tabs='+v.tabs+'&amp;height='+v.height+'&amp;small_header='+v.small_header+'&amp;adapt_container_width=true&amp;hide_cover='+v.hide_cover+'&amp;show_facepile='+v.show_facepile}"
+	                width="340"
+	                height="{!v.height}"
+	                scrolling="no"
+	                frameborder="0"
+	                allowTransparency="true"
+	                allow="encrypted-media"></iframe>
+	    </section>
+	</lightning:card>
+</aura:component>

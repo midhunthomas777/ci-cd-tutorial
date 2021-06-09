@@ -1,0 +1,11 @@
+<!--
+  - Copyright (c) 2018. 7Summits Inc.
+  -->
+
+<!--
+ - Created by francois korb on 6/15/18.
+ -->
+
+<aura:event type="APPLICATION" description="Match_Filter_Sort_Event">
+	<aura:attribute name="sortString" type="String"/>
+</aura:event>

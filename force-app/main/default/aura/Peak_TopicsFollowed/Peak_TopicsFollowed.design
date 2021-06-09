@@ -1,0 +1,4 @@
+<design:component label="7S Topics I Follow">
+    <design:attribute name="title" label="Component title" description="This is the text that will be displayed as the component title. If blank, the title will not display." />
+    <design:attribute name="recordsToShow" label="Maximum number of records to show" />
+</design:component>

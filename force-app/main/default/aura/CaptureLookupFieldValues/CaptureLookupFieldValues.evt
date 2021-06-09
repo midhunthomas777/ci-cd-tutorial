@@ -1,0 +1,3 @@
+<aura:event type="APPLICATION" description="To capture Custom look up field and thier values" >
+        <aura:attribute name="lookupFieldValues" type="String"/>
+</aura:event>

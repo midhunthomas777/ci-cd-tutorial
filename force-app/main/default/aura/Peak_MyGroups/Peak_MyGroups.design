@@ -1,0 +1,12 @@
+<design:component label="7S My Groups">
+    <design:attribute name="title" label="Component title" description="This is the text that will be displayed as the component title. If blank, this title will not display." />
+    <design:attribute name="titleNoGroups" label="Component title - No groups" description="This is the text that will be displayed as a title when a user has not joined any groups. If blank, this title will not display." />
+    <design:attribute name="numberOfResults" label="Number of 'My Groups' results" />
+    <design:attribute name="showDescription" label="Show Group Description?" />
+    <design:attribute name="showMembers" label="Show Group Member Count?" />
+    <design:attribute name="RecommendedGroup" label="Recommended Group ID" />
+    <design:attribute name="GroupsUrl" label="Groups URL"/>
+
+    <design:attribute name="CustomClassName" label="Custom Class Name" description="Custom CSS class name. Usually remains blank." />
+    <design:attribute name="CustomIdName" label="Custom ID Name" description="Custom, distinct CSS ID name. Usually remains blank." />
+</design:component>

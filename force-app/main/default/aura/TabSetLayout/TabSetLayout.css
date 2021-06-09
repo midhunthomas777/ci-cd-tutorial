@@ -1,0 +1,8 @@
+.THIS.siteforceSldsOneColLayout .comm-content-header:not(:empty) {
+    display: block;
+    padding-bottom: 0px;
+}
+
+.THIS.siteforceSldsOneColLayout .comm-content-header:not(:empty) + .contentRegion {
+    padding-top: 0px;
+}

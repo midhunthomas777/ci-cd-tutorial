@@ -1,0 +1,117 @@
+.THIS .moto-sales360-container {
+    position: fixed;
+    top: 0;
+    width:100%;
+    min-height: t(sizeXxSmall);
+    z-index: 8000;
+    background-color: white;
+}
+.THIS .moto-sales360-header-container {
+    display: flex;
+    align-items: center;
+    margin: 0 66px;
+    min-height: 84px;
+}
+.THIS .moto-leftnav-container {
+    padding-right: 20px;
+}
+.THIS .moto-logo {
+    max-width: 339px;
+}
+.THIS .overwrite-menu-font {
+    font-family: Arial;
+}
+/* Search bar start */
+.THIS .moto-searchbar-container {
+    display: block;
+}
+.THIS .moto-searchbar-mobile-container {
+    width: 96%;
+    padding: 0 t(spacingSmall) 0 t(spacingSmall);
+    margin: auto;
+    display: block;
+    min-height: t(heightHeader);
+}
+.THIS .CoveoV2Searchbox .magic-box {
+    box-shadow: 0 10px 20px 0 rgba(35, 35, 35, 0.16);
+    border: 0;
+    border-radius: t(borderRadiusXLarge);
+    height: 3.125rem;
+}
+.THIS .CoveoV2Searchbox .magic-box-input {
+    border-radius: t(borderRadiusXLarge);
+    height: 3.125rem;
+}
+.THIS .CoveoV2Searchbox .CoveoSearchButton {
+    background-color: #343434;
+    border-left: 0;
+    border-radius: t(borderRadiusXLarge);
+    height: 3.125rem;
+    width: 5.125rem;
+}
+.THIS .CoveoV2Searchbox .CoveoSearchButton:hover .coveo-magnifier-circle-svg {
+    fill: #fff;
+}
+.THIS .CoveoV2Searchbox .magic-box-input>input {
+    height: 3.125rem;
+}
+.THIS .coveo-search-button-svg {
+    color: #FFFFFF;
+}
+/* Search bar end  */
+
+
+.THIS .moto-button-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.THIS .moto-nav-account-button {
+    font-size: t(fontSizeMedium);
+    color: #005eb8;
+    cursor: pointer;
+    margin-left: t(spacingXxSmall);
+    z-index: 8050;
+}
+.THIS .moto-nav-account-button lightning-primitive-icon {
+    display: none;
+}
+.THIS .moto-icon-item {
+    width: t(squareIconLargeBoundary);
+    cursor: pointer;
+}
+
+.THIS .moto-welcome-user {
+    font-size: t(fontSizeMedium);
+    color: #343434;
+    margin-left: t(spacingLarge);
+}
+
+@media(max-width: 1023px) {
+    .THIS .moto-sales360-header-container {
+        margin: 0 20px;
+    }
+    .THIS .moto-logo {
+        max-width: 290px;
+        padding-right: 20px;
+    }
+    .THIS .moto-searchbar-mobile-container{
+        display: block;
+    }
+}
+@media(max-width: 478px) {
+    .THIS .moto-leftnav-container a img {
+        width: t(sizeXSmall);
+    }
+    .THIS .moto-icon-item {
+        width: t(squareIconUtilitySmall);
+    }
+    .THIS .moto-welcome-user {
+        font-size: t(fontSizeXSmall);
+        margin-left: t(spacingXxSmall);
+    }
+    .THIS .moto-nav-account-button {
+        font-size: t(fontSizeXSmall);
+        margin-left: t(spacingXxxSmall);
+    }
+}

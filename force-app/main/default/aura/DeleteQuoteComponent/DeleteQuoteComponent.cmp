@@ -1,0 +1,20 @@
+<!--Developed as part of SF-2059 - Partners get redirected to wrong place after quote deletion -->
+<aura:component controller="GlobalUtility" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:html tag="style">
+        .slds-backdrop {
+        background: rgba(43, 40, 38, 0) !important;  
+        }
+        .slds-fade-in-open {
+        display:none !important;
+        }
+    </aura:html> 
+    <aura:attribute name="recordError" type="String" access="private"/>
+    <aura:attribute name="showErrors" type="boolean" />
+    <aura:attribute name="errorMessage" type="String" />
+    <aura:attribute name="recordId" type="String"/>    
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+    <aura:if isTrue="{!not(empty(v.recordError))}">
+    <div class="recordError">
+     {!v.recordError}</div>
+    </aura:if>
+</aura:component>

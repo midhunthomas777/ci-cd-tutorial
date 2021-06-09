@@ -1,0 +1,11 @@
+<!--
+  - Copyright (c) 2019. 7Summits Inc.
+  -->
+<aura:event description="SVNSUMMITS_Ideas_SortBy_Events"
+            type="APPLICATION"
+            access="global">
+
+	<!-- IDENTIFY THE RELATED LIST -->
+	<aura:attribute name="listId"   type="String"   default=""   access="global"/>
+	<aura:attribute name="sortBy"   type="String"   access="global"/>
+</aura:event>
